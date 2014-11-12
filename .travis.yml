@@ -5,7 +5,6 @@ php:
   - 5.4
   - 5.5
   - 5.6
-  - hhvm
 
 # execute unit tests, integration test stubs and integration tests using legacy storage engine
 env:
@@ -56,17 +55,6 @@ matrix:
     - php: 5.6
       env: SOLR_VERSION="4.7.2" TEST_CONFIG="phpunit-integration-legacy-solr.xml"
     - php: 5.6
-      env: ELASTICSEARCH_VERSION="1.4.0.Beta1" TEST_CONFIG="phpunit-integration-legacy-elasticsearch.xml"
-# hhvm run: unit test + sqlite integration test
-    - php: hhvm
-      env: TEST_CONFIG="phpunit.xml"
-    - php: hhvm
-      env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="postgresql" DATABASE="pgsql://postgres@localhost/$DB_NAME"
-    - php: hhvm
-      env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="mysql" DATABASE="mysql://root@localhost/$DB_NAME"
-    - php: hhvm
-      env: SOLR_VERSION="4.7.2" TEST_CONFIG="phpunit-integration-legacy-solr.xml"
-    - php: hhvm
       env: ELASTICSEARCH_VERSION="1.4.0.Beta1" TEST_CONFIG="phpunit-integration-legacy-elasticsearch.xml"
 
 # test only master (+ Pull requests)
