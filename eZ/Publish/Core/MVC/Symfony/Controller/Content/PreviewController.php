@@ -10,10 +10,12 @@
 namespace eZ\Publish\Core\MVC\Symfony\Controller\Content;
 
 use eZ\Publish\API\Repository\ContentService;
+use eZ\Publish\API\Repository\Exceptions\NotImplementedException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\Core\Helper\ContentPreviewHelper;
+use eZ\Publish\Core\Helper\PreviewLocationProvider;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use eZ\Publish\Core\MVC\Symfony\View\ViewManagerInterface;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
@@ -50,17 +52,24 @@ class PreviewController
      */
     private $request;
 
+    /**
+     * @var \eZ\Publish\Core\Helper\PreviewLocationProvider
+     */
+    private $locationProvider;
+
     public function __construct(
         ContentService $contentService,
         HttpKernelInterface $kernel,
         ContentPreviewHelper $previewHelper,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        PreviewLocationProvider $locationProvider
     )
     {
         $this->contentService = $contentService;
         $this->kernel = $kernel;
         $this->previewHelper = $previewHelper;
         $this->securityContext = $securityContext;
+        $this->locationProvider = $locationProvider;
     }
 
     public function setRequest( Request $request = null )
@@ -68,6 +77,9 @@ class PreviewController
         $this->request = $request;
     }
 
+    /**
+     * @throws NotImplementedException If Content is missing location as this is not supported in current version
+     */
     public function previewContentAction( $contentId, $versionNo, $language, $siteAccessName = null )
     {
         $this->previewHelper->setPreviewActive( true );
@@ -75,7 +87,13 @@ class PreviewController
         try
         {
             $content = $this->contentService->loadContent( $contentId, array( $language ), $versionNo );
-            $location = $this->previewHelper->getPreviewLocation( $contentId );
+            $location = $this->locationProvider->loadMainLocation( $contentId );
+
+            if ( !$location instanceof Location )
+            {
+                throw new NotImplementedException( "Preview for content without locations" );
+            }
+
             $this->previewHelper->setPreviewedContent( $content );
             $this->previewHelper->setPreviewedLocation( $location );
         }
