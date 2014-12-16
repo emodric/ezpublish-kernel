@@ -14,6 +14,7 @@ use eZ\Publish\Core\Persistence\Legacy\User;
 use eZ\Publish\Core\Persistence\Legacy\User\Role\LimitationConverter;
 use eZ\Publish\Core\Persistence\Legacy\User\Role\LimitationHandler\ObjectStateHandler as ObjectStateLimitationHandler;
 use eZ\Publish\SPI\Persistence;
+use eZ\Publish\SPI\Persistence\Content\ContentInfo;
 
 /**
  * Test case for UserHandlerTest
@@ -41,6 +42,26 @@ class UserHandlerTest extends TestCase
         $user->hashAlgorithm = 2;
         $user->isEnabled = true;
         $user->maxLogin = 23;
+
+        return $user;
+    }
+
+    protected function createValidUser()
+    {
+        $handler = $this->getUserHandler();
+        $handler->create( $user = $this->getValidUser() );
+
+        $insertQuery = $this->handler->createInsertQuery();
+
+        $insertQuery->insertInto(
+            'ezcontentobject'
+        )->set(
+            'id', $user->id
+        )->set(
+            'status', ContentInfo::STATUS_PUBLISHED
+        );
+        $statement = $insertQuery->prepare();
+        $statement->execute();
 
         return $user;
     }
@@ -90,7 +111,7 @@ class UserHandlerTest extends TestCase
     public function testLoadUser()
     {
         $handler = $this->getUserHandler();
-        $handler->create( $user = $this->getValidUser() );
+        $user = $this->createValidUser();
 
         $this->assertEquals(
             $user,
@@ -111,7 +132,7 @@ class UserHandlerTest extends TestCase
     public function testLoadUserByLogin()
     {
         $handler = $this->getUserHandler();
-        $handler->create( $user = $this->getValidUser() );
+        $user = $this->createValidUser();
 
         $loadedUser = $handler->loadByLogin( $user->login );
         $this->assertEquals(
@@ -134,7 +155,7 @@ class UserHandlerTest extends TestCase
     public function testLoadUserByEmail()
     {
         $handler = $this->getUserHandler();
-        $handler->create( $user = $this->getValidUser() );
+        $user = $this->createValidUser();
 
         $users = $handler->loadByEmail( $user->email );
         $this->assertEquals(
