@@ -11,6 +11,7 @@ namespace eZ\Publish\Core\Persistence\Legacy\User\Gateway;
 
 use eZ\Publish\Core\Persistence\Legacy\User\Gateway;
 use eZ\Publish\Core\Persistence\Database\DatabaseHandler;
+use eZ\Publish\SPI\Persistence\Content\ContentInfo;
 use eZ\Publish\SPI\Persistence\User;
 
 /**
@@ -112,6 +113,30 @@ class DoctrineDatabase extends Gateway
     }
 
     /**
+     * Helper for public load* methods, returns content object criteria for fetching users
+     *
+     * @param \eZ\Publish\Core\Persistence\Database\SelectQuery
+     *
+     * @return \eZ\Publish\Core\Persistence\Database\SelectQuery
+     */
+    private function addContentObjectJoin( $query )
+    {
+        return $query->innerJoin(
+            $this->handler->quoteTable( 'ezcontentobject' ),
+            $query->expr->lAnd(
+                $query->expr->eq(
+                    $this->handler->quoteColumn( 'id', 'ezcontentobject' ),
+                    $this->handler->quoteColumn( 'contentobject_id', 'ezuser' )
+                ),
+                $query->expr->eq(
+                    $this->handler->quoteColumn( 'status', 'ezcontentobject' ),
+                    $query->bindValue( ContentInfo::STATUS_PUBLISHED, null, \PDO::PARAM_INT )
+                )
+            )
+        );
+    }
+
+    /**
      * Loads user with user ID.
      *
      * @param mixed $userId
@@ -131,7 +156,11 @@ class DoctrineDatabase extends Gateway
             $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
         )->from(
             $this->handler->quoteTable( 'ezuser' )
-        )->leftJoin(
+        );
+
+        $query = $this->addContentObjectJoin( $query );
+
+        $query->leftJoin(
             $this->handler->quoteTable( 'ezuser_setting' ),
             $query->expr->eq(
                 $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
@@ -170,7 +199,11 @@ class DoctrineDatabase extends Gateway
             $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
         )->from(
             $this->handler->quoteTable( 'ezuser' )
-        )->leftJoin(
+        );
+
+        $query = $this->addContentObjectJoin( $query );
+
+        $query->leftJoin(
             $this->handler->quoteTable( 'ezuser_setting' ),
             $query->expr->eq(
                 $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
@@ -209,7 +242,11 @@ class DoctrineDatabase extends Gateway
              $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
          )->from(
              $this->handler->quoteTable( 'ezuser' )
-         )->leftJoin(
+         );
+
+         $query = $this->addContentObjectJoin( $query );
+
+         $query->leftJoin(
              $this->handler->quoteTable( 'ezuser_setting' ),
              $query->expr->eq(
                  $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
