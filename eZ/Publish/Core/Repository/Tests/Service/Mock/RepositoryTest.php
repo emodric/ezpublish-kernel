@@ -297,6 +297,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "getRoleService", "getCurrentUser" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
             )
         );
 
@@ -438,6 +439,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "getRoleService", "getCurrentUser" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
             )
         );
 
@@ -556,6 +558,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "getRoleService", "getCurrentUser" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
             )
         );
         $roleServiceMock = $this->getMock(
@@ -682,6 +685,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "hasAccess", "getCurrentUser" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
             )
         );
 
@@ -715,6 +719,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "hasAccess", "getCurrentUser" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
             )
         );
 
@@ -1041,6 +1046,7 @@ class RepositoryTest extends BaseServiceMockTest
             array( "getUserService" ),
             array(
                 $this->getPersistenceMock(),
+                $this->getSPIMockHandler( "Search\\Handler" ),
                 array(
                     'user' => array(
                         'anonymousUserID' => 10
