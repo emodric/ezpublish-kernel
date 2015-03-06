@@ -23,12 +23,6 @@ use eZ\Publish\Core\Persistence\Database\SelectQuery;
 class DoctrineDatabase extends Gateway
 {
     /**
-     * 2^30, since PHP_INT_MAX can cause overflows in DB systems, if PHP is run
-     * on 64 bit systems.
-     */
-    const MAX_LIMIT = 1073741824;
-
-    /**
      * Database handler.
      *
      * @var \eZ\Publish\Core\Persistence\Database\DatabaseHandler
@@ -73,17 +67,21 @@ class DoctrineDatabase extends Gateway
      *
      * @param Criterion $criterion
      * @param int $offset
-     * @param int|null $limit
+     * @param int $limit
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause[] $sort
      * @param string[] $translations
      * @param bool $doCount
      *
      * @return mixed[][]
      */
-    public function find(Criterion $criterion, $offset = 0, $limit = null, array $sort = null, array $translations = null, $doCount = true)
-    {
-        $limit = $limit !== null ? $limit : self::MAX_LIMIT;
-
+    public function find(
+        Criterion $criterion,
+        $offset,
+        $limit,
+        array $sort = null,
+        array $translations = null,
+        $doCount = true
+    ) {
         $count = $doCount ? $this->getResultCount($criterion, $translations) : null;
 
         if (!$doCount && $limit === 0) {
@@ -154,7 +152,6 @@ class DoctrineDatabase extends Gateway
      * Get result count.
      *
      * @param Criterion $filter
-     * @param array $sort
      * @param mixed $translations
      * @return int
      */

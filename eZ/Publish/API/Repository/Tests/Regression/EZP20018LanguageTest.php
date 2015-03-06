@@ -54,6 +54,8 @@ class EZP20018LanguageTest extends BaseTest
         $contentService->publishVersion(
             $draft->getVersionInfo()
         );
+
+        $this->refreshSearch($repository);
     }
 
     /**
@@ -92,6 +94,7 @@ class EZP20018LanguageTest extends BaseTest
     {
         $query = new Query();
         $query->filter = new LanguageCode(array('eng-US'), false);
+        $query->limit = 50;
         $results = $this->getRepository()->getSearchService()->findContent($query);
 
         $this->assertEquals(16, $results->totalCount);

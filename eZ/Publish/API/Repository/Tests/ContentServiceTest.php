@@ -4373,6 +4373,8 @@ class ContentServiceTest extends BaseContentServiceTest
             throw $e;
         }
 
+        $this->refreshSearch($repository);
+
         // This will contain the admin user and the new child location
         $locations = $locationService->loadLocationChildren(
             $locationService->loadLocation($locationId)

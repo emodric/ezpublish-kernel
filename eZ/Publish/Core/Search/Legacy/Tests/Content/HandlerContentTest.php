@@ -656,6 +656,7 @@ class HandlerContentTest extends LanguageAwareTestCase
                 new Query(
                     array(
                         'criterion' => new Criterion\Depth(Criterion\Operator::IN, array(1, 2)),
+                        'limit' => 50,
                     )
                 )
             )
@@ -684,6 +685,7 @@ class HandlerContentTest extends LanguageAwareTestCase
                 new Query(
                     array(
                         'criterion' => new Criterion\Depth(Criterion\Operator::GT, 4),
+                        'limit' => 50,
                     )
                 )
             )
@@ -698,6 +700,7 @@ class HandlerContentTest extends LanguageAwareTestCase
                 new Query(
                     array(
                         'criterion' => new Criterion\Depth(Criterion\Operator::GTE, 5),
+                        'limit' => 50,
                     )
                 )
             )
@@ -727,6 +730,7 @@ class HandlerContentTest extends LanguageAwareTestCase
                 new Query(
                     array(
                         'criterion' => new Criterion\Depth(Criterion\Operator::LTE, 2),
+                        'limit' => 50,
                     )
                 )
             )

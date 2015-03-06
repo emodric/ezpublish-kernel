@@ -14,13 +14,13 @@ use InvalidArgumentException;
 class StorageConnectionFactory extends ContainerAware
 {
     /**
-     * @var \eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider
+     * @var \eZ\Bundle\EzPublishCoreBundle\ApiLoader\RepositoryConfigurationProvider
      */
-    protected $storageRepositoryProvider;
+    protected $repositoryConfigurationProvider;
 
-    public function __construct(StorageRepositoryProvider $storageRepositoryProvider)
+    public function __construct(RepositoryConfigurationProvider $repositoryConfigurationProvider)
     {
-        $this->storageRepositoryProvider = $storageRepositoryProvider;
+        $this->repositoryConfigurationProvider = $repositoryConfigurationProvider;
     }
 
     /**
@@ -32,11 +32,11 @@ class StorageConnectionFactory extends ContainerAware
      */
     public function getConnection()
     {
-        $repositoryConfig = $this->storageRepositoryProvider->getRepositoryConfig();
+        $repositoryConfig = $this->repositoryConfigurationProvider->getRepositoryConfig();
         // Taking provided connection name if any.
         // Otherwise, just fallback to the default connection.
-        if (isset($repositoryConfig['connection'])) {
-            $doctrineConnectionId = sprintf('doctrine.dbal.%s_connection', $repositoryConfig['connection']);
+        if (isset($repositoryConfig['storage']['connection'])) {
+            $doctrineConnectionId = sprintf('doctrine.dbal.%s_connection', $repositoryConfig['storage']['connection']);
         } else {
             // "database_connection" is an alias to the default connection, set up by DoctrineBundle.
             $doctrineConnectionId = 'database_connection';
@@ -44,7 +44,7 @@ class StorageConnectionFactory extends ContainerAware
 
         if (!$this->container->has($doctrineConnectionId)) {
             throw new InvalidArgumentException(
-                "Invalid Doctrine connection '{$repositoryConfig['connection']}' for repository '{$repositoryConfig['alias']}'." .
+                "Invalid Doctrine connection '{$repositoryConfig['storage']['connection']}' for repository '{$repositoryConfig['alias']}'." .
                 'Valid connections are ' . implode(', ', array_keys($this->container->getParameter('doctrine.connections')))
             );
         }

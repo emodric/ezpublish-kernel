@@ -157,6 +157,79 @@ Changes affecting version compatibility with former or future versions.
   are removed, and class `eZ\Publish\Core\Search\Legacy\Content\Handler` is updated and now implements
   `eZ\Publish\SPI\Search\Handler` interface.
 
+* 5.4.5: Semantic configuration for search engines has been implemented
+
+    At the moment of writing, only Legacy Search Engine is supported. Search engine bundles are also
+    introduced here, these need to be activated in `EzPublishKernel.php` in order for the engine to be
+    available for configuration. For the Legacy Search Engine the bundle is located at
+    `eZ/Bundle/EzPublishLegacySearchEngineBundle`.
+
+    With semantic configuration for search engines, repository configuration has changed. Previous
+    structure:
+
+    ```yml
+    ezpublish:
+        repositories:
+            main:
+                engine: legacy
+                connection: default
+    ```
+
+    has been updated with search engine configuration. With it, storage settings are now moved under
+    `storage` key. New structure looks like this:
+
+    ```yml
+    ezpublish:
+        repositories:
+            main:
+                storage:
+                    engine: legacy
+                    connection: my_connection
+                search:
+                    engine: legacy
+                    connection: my_connection
+    ```
+
+    The same as was previously the case with storage configuration, it is not mandatory to provide
+    search configuration. In that case the system will try to use default search engine and default
+    connection. Old structure is still supported, but is deprecated. The support will be removed in
+    one of the future releases.
+
+* 5.4.5: `eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider` has been renamed to
+  `eZ\Bundle\EzPublishCoreBundle\ApiLoader\RepositoryConfigurationProvider`, as it now provides
+  repository configuration for both storage and search engines. Class signature has remained the
+  same.
+
+* 5.4.5: `eZ\Publish\API\Repository\Values\Content\Query` and `eZ\Publish\API\Repository\Values\Content\LocationQuery`
+  property `$limit` is now defined as `integer` (instead of `integer|null`), which means its value must always be
+  set. By default, it's value will be `25`. No way is provided to return all search hits, pagination should be used
+  if full result set is desired.
+
+* 5.4.5: `eZ\Publish\API\Repository\LocationService::loadLocationChildren()` signature has changed, default value of
+  parameter `$limit` is now `25`. No way is provided to return all children, pagination should be used if full
+  result set is desired.
+
+* 5.4.5: `eZ\Publish\API\Repository\UserService::loadUsersOfUserGroup()` signature has changed, default value of
+  parameter `$limit` is now `25`. No way is provided to return all users, pagination should be used if full
+  result set is desired.
+
+* 5.4.5: `eZ\Publish\API\Repository\UserService::loadSubUserGroups()` signature has changed, parameters `$offset = 0`
+  and `$limit = 25` are added. No way is provided to return all user groups, pagination should be used if full
+  result set is desired.
+
+* 5.4.5: `eZ\Publish\API\Repository\UserService::loadUserGroupsOfUser()` signature has changed, parameters `$offset = 0`
+  and `$limit = 25` are added. No way is provided to return all user groups, pagination should be used if full
+  result set is desired.
+
+* 5.4.5: `eZ\Publish\API\Repository\Values\ValueObject\SearchHit` has a new property `$matchedTranslation`,
+  which will hold language code of the Content translation that matched the search query.
+
+* 5.4.5: Interface `eZ\Publish\SPI\FieldType\Indexable` has changed. When using Solr search engine (and
+  all future search engines), all field types will need to have an implementation of this interface configured.
+  If you implemented some custom field types, make sure that is indeed the case. Note that if the field
+  type does not index data, you should use common implementation for the case, found at
+  `eZ\Publish\Core\FieldType\Unindexed`.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.

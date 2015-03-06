@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 namespace eZ\Publish\API\Repository\Tests\FieldType;
@@ -22,7 +24,6 @@ use eZ\Publish\API\Repository\Values\Content\Query\CustomFieldInterface;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause\Field as FieldSortClause;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
-use eZ\Publish\API\Repository\Tests\SetupFactory\LegacySolr;
 use eZ\Publish\API\Repository\Tests\SetupFactory\LegacyElasticsearch;
 
 /**
@@ -55,7 +56,28 @@ use eZ\Publish\API\Repository\Tests\SetupFactory\LegacyElasticsearch;
  * which by default fall back to the methods mentioned above:
  *
  * - getSearchTargetValueOne()
- * - getValidSearchValueTwo()
+ * - getSearchTargetValueTwo()
+ *
+ * In order to test fields additionally indexed by the field type, provide the required
+ * data by overriding method:
+ *
+ * - getAdditionallyIndexedFieldData()
+ *
+ * The method must return an array of field data for each additionally indexed field,
+ * consisting of field's name, as defined in field type's Indexable definition, value One
+ * and value Two, corresponding to the data indexed by getValidSearchValueOne() and
+ * getValidSearchValueTwo() methods described above. For example:
+ *
+ * <code>
+ *  array(
+ *      array(
+ *          'file_size',
+ *          1024,
+ *          4096
+ *      ),
+ *      ...
+ *  )
+ * </code>
  *
  * Note: this test case does not concern itself with testing field filters, behaviour
  * of multiple sort clauses or combination with other criteria. These are tested
@@ -120,9 +142,53 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
         return $this->getValidSearchValueTwo();
     }
 
+    /**
+     * Returns test data for field type's additionally indexed fields.
+     *
+     * An array of field data is returned for each additionally indexed field,
+     * consisting of field's name, as defined in field type's Indexable
+     * definition, value One, and value Two, corresponding to the data indexed
+     * by {@link getValidSearchValueOne()} and {@link getValidSearchValueTwo()}
+     * methods. For example:
+     *
+     * <code>
+     *  array(
+     *      array(
+     *          'file_size',
+     *          1024,
+     *          4096
+     *      ),
+     *      ...
+     *  )
+     * </code>
+     *
+     * @return array
+     */
+    protected function getAdditionallyIndexedFieldData()
+    {
+        return array();
+    }
+
+    /**
+     * Used to control test execution by search engine.
+     */
+    protected function checkSearchEngineSupport()
+    {
+        // Does nothing by default, override in a concrete test case as needed
+    }
+
     protected function checkCustomFieldsSupport()
     {
         if (ltrim(get_class($this->getSetupFactory()), '\\') === 'eZ\\Publish\\API\\Repository\\Tests\\SetupFactory\\Legacy') {
+            $this->markTestSkipped(
+                'Legacy Search Engine does not support custom fields'
+            );
+        }
+    }
+
+    protected function checkLocationFieldSearchSupport()
+    {
+        if ($this->getSetupFactory() instanceof LegacyElasticsearch) {
             $this->markTestSkipped(
                 'Legacy Search Engine does not support custom fields'
             );
@@ -162,504 +228,6 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
         );
     }
 
-    public function criteriaProvider()
-    {
-        return $this->provideCriteria(
-            $this->getSearchTargetValueOne(),
-            $this->getSearchTargetValueTwo()
-        );
-    }
-
-    public function provideCriteria($valueOne, $valueTwo)
-    {
-        return array(
-            0 => array(
-                // Tests search with EQ operator.
-                //
-                // Simplified representation:
-                //
-                //     value EQ One
-                //
-                // The result should contain Content One.
-                new Field('data', Operator::EQ, $valueOne),
-                true,
-                false,
-            ),
-            1 => array(
-                // Tests search with EQ operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value EQ One )
-                //
-                // The result should contain Content Two.
-                new LogicalNot(new Field('data', Operator::EQ, $valueOne)),
-                false,
-                true,
-            ),
-            2 => array(
-                // Tests search with EQ operator.
-                //
-                // Simplified representation:
-                //
-                //     value EQ Two
-                //
-                // The result should contain Content Two.
-                new Field('data', Operator::EQ, $valueTwo),
-                false,
-                true,
-            ),
-            3 => array(
-                // Tests search with EQ operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value EQ Two )
-                //
-                // The result should contain Content One.
-                new LogicalNot(new Field('data', Operator::EQ, $valueTwo)),
-                true,
-                false,
-            ),
-            4 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     value IN [One]
-                //
-                // The result should contain Content One.
-                new Field('data', Operator::IN, array($valueOne)),
-                true,
-                false,
-            ),
-            5 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value IN [One] )
-                //
-                // The result should contain Content Two.
-                new LogicalNot(
-                    new Field('data', Operator::IN, array($valueOne))
-                ),
-                false,
-                true,
-            ),
-            6 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     value IN [Two]
-                //
-                // The result should contain Content Two.
-                new Field('data', Operator::IN, array($valueTwo)),
-                false,
-                true,
-            ),
-            7 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value IN [Two] )
-                //
-                // The result should contain Content One.
-                new LogicalNot(
-                    new Field('data', Operator::IN, array($valueTwo))
-                ),
-                true,
-                false,
-            ),
-            8 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     value IN [One,Two]
-                //
-                // The result should contain both Content One and Content Two.
-                new Field(
-                    'data',
-                    Operator::IN,
-                    array(
-                        $valueOne,
-                        $valueTwo,
-                    )
-                ),
-                true,
-                true,
-            ),
-            9 => array(
-                // Tests search with IN operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value IN [One,Two] )
-                //
-                // The result should be empty.
-                new LogicalNot(
-                    new Field(
-                        'data',
-                        Operator::IN,
-                        array(
-                            $valueOne,
-                            $valueTwo,
-                        )
-                    )
-                ),
-                false,
-                false,
-            ),
-            10 => array(
-                // Tests search with GT operator.
-                //
-                // Simplified representation:
-                //
-                //     value GT One
-                //
-                // The result should contain Content Two.
-                new Field('data', Operator::GT, $valueOne),
-                false,
-                true,
-            ),
-            11 => array(
-                // Tests search with GT operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value GT One )
-                //
-                // The result should contain Content One.
-                new LogicalNot(new Field('data', Operator::GT, $valueOne)),
-                true,
-                false,
-            ),
-            12 => array(
-                // Tests search with GT operator.
-                //
-                // Simplified representation:
-                //
-                //     value GT Two
-                //
-                // The result should be empty.
-                new Field('data', Operator::GT, $valueTwo),
-                false,
-                false,
-            ),
-            13 => array(
-                // Tests search with GT operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value GT Two )
-                //
-                // The result should contain both Content One and Content Two.
-                new LogicalNot(new Field('data', Operator::GT, $valueTwo)),
-                true,
-                true,
-            ),
-            14 => array(
-                // Tests search with GTE operator.
-                //
-                // Simplified representation:
-                //
-                //     value GTE One
-                //
-                // The result should contain both Content One and Content Two.
-                new Field('data', Operator::GTE, $valueOne),
-                true,
-                true,
-            ),
-            15 => array(
-                // Tests search with GTE operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value GTE One )
-                //
-                // The result should be empty.
-                new LogicalNot(new Field('data', Operator::GTE, $valueOne)),
-                false,
-                false,
-            ),
-            16 => array(
-                // Tests search with GTE operator.
-                //
-                // Simplified representation:
-                //
-                //     value GTE Two
-                //
-                // The result should contain Content Two.
-                new Field('data', Operator::GTE, $valueTwo),
-                false,
-                true,
-            ),
-            17 => array(
-                // Tests search with GTE operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value GTE Two )
-                //
-                // The result should contain Content One.
-                new LogicalNot(new Field('data', Operator::GTE, $valueTwo)),
-                true,
-                false,
-            ),
-            18 => array(
-                // Tests search with LT operator.
-                //
-                // Simplified representation:
-                //
-                //     value LT One
-                //
-                // The result should be empty.
-                new Field('data', Operator::LT, $valueOne),
-                false,
-                false,
-            ),
-            19 => array(
-                // Tests search with LT operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value LT One )
-                //
-                // The result should contain both Content One and Content Two.
-                new LogicalNot(new Field('data', Operator::LT, $valueOne)),
-                true,
-                true,
-            ),
-            20 => array(
-                // Tests search with LT operator.
-                //
-                // Simplified representation:
-                //
-                //     value LT Two
-                //
-                // The result should contain Content One.
-                new Field('data', Operator::LT, $valueTwo),
-                true,
-                false,
-            ),
-            21 => array(
-                // Tests search with LT operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value LT Two )
-                //
-                // The result should contain Content Two.
-                new LogicalNot(new Field('data', Operator::LT, $valueTwo)),
-                false,
-                true,
-            ),
-            22 => array(
-                // Tests search with LTE operator.
-                //
-                // Simplified representation:
-                //
-                //     value LTE One
-                //
-                // The result should contain Content One.
-                new Field('data', Operator::LTE, $valueOne),
-                true,
-                false,
-            ),
-            23 => array(
-                // Tests search with LTE operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value LTE One )
-                //
-                // The result should contain Content Two.
-                new LogicalNot(new Field('data', Operator::LTE, $valueOne)),
-                false,
-                true,
-            ),
-            24 => array(
-                // Tests search with LTE operator.
-                //
-                // Simplified representation:
-                //
-                //     value LTE Two
-                //
-                // The result should contain both Content One and Content Two.
-                new Field('data', Operator::LTE, $valueTwo),
-                true,
-                true,
-            ),
-            25 => array(
-                // Tests search with LTE operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value LTE Two )
-                //
-                // The result should be empty.
-                new LogicalNot(new Field('data', Operator::LTE, $valueTwo)),
-                false,
-                false,
-            ),
-            26 => array(
-                // Tests search with BETWEEN operator.
-                //
-                // Simplified representation:
-                //
-                //     value BETWEEN [One,Two]
-                //
-                // The result should contain both Content One and Content Two.
-                new Field(
-                    'data',
-                    Operator::BETWEEN,
-                    array(
-                        $valueOne,
-                        $valueTwo,
-                    )
-                ),
-                true,
-                true,
-            ),
-            27 => array(
-                // Tests search with BETWEEN operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value BETWEEN [One,Two] )
-                //
-                // The result should contain both Content One and Content Two.
-                new LogicalNot(
-                    new Field(
-                        'data',
-                        Operator::BETWEEN,
-                        array(
-                            $valueOne,
-                            $valueTwo,
-                        )
-                    )
-                ),
-                false,
-                false,
-            ),
-            28 => array(
-                // Tests search with BETWEEN operator.
-                //
-                // Simplified representation:
-                //
-                //     value BETWEEN [Two,One]
-                //
-                // The result should be empty.
-                new Field(
-                    'data',
-                    Operator::BETWEEN,
-                    array(
-                        $valueTwo,
-                        $valueOne,
-                    )
-                ),
-                false,
-                false,
-            ),
-            29 => array(
-                // Tests search with BETWEEN operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value BETWEEN [Two,One] )
-                //
-                // The result should contain both Content One and Content Two.
-                new LogicalNot(
-                    new Field(
-                        'data',
-                        Operator::BETWEEN,
-                        array(
-                            $valueTwo,
-                            $valueOne,
-                        )
-                    )
-                ),
-                true,
-                true,
-            ),
-            30 => array(
-                // Tests search with CONTAINS operator.
-                //
-                // Simplified representation:
-                //
-                //     value CONTAINS One
-                //
-                // The result should contain Content One.
-                new Field('data', Operator::CONTAINS, $valueOne),
-                true,
-                false,
-            ),
-            31 => array(
-                // Tests search with CONTAINS operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value CONTAINS One )
-                //
-                // The result should contain Content Two.
-                new LogicalNot(new Field('data', Operator::CONTAINS, $valueOne)),
-                false,
-                true,
-            ),
-            32 => array(
-                // Tests search with CONTAINS operator.
-                //
-                // Simplified representation:
-                //
-                //     value CONTAINS Two
-                //
-                // The result should contain Content Two.
-                new Field('data', Operator::CONTAINS, $valueTwo),
-                false,
-                true,
-            ),
-            33 => array(
-                // Tests search with CONTAINS operator.
-                //
-                // Simplified representation:
-                //
-                //     NOT( value CONTAINS Two )
-                //
-                // The result should contain Content One.
-                new LogicalNot(
-                    new Field('data', Operator::CONTAINS, $valueTwo)
-                ),
-                true,
-                false,
-            ),
-        );
-    }
-
-    public function sortClauseProvider()
-    {
-        return array(
-            0 => array(
-                new FieldSortClause(
-                    'test-' . $this->getTypeName(),
-                    'data',
-                    Query::SORT_ASC
-                ),
-                true,
-            ),
-            1 => array(
-                new FieldSortClause(
-                    'test-' . $this->getTypeName(),
-                    'data',
-                    Query::SORT_DESC
-                ),
-                false,
-            ),
-        );
-    }
-
     /**
      * Creates test Content and Locations and returns the context for subsequent testing.
      *
@@ -677,9 +245,11 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
             $this->markTestSkipped("Field type '{$this->getTypeName()}' is not searchable.");
         }
 
+        $this->checkSearchEngineSupport();
+
         $contentType = $this->testCreateContentType();
 
-        return array(
+        $context = array(
             $repository,
             $this->createTestSearchContent(
                 $this->getValidSearchValueOne(),
@@ -692,92 +262,747 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 $contentType
             )->id,
         );
+
+        $this->refreshSearch($repository);
+
+        return $context;
     }
 
     /**
-     * Tests Content Search querying with Field criterion on a field of specific field type.
+     * Provider method for testFind* methods.
      *
-     * @dataProvider criteriaProvider
-     * @depends testCreateTestContent
+     * Do not use directly, use getAdditionallyIndexedFieldData() instead.
      *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param bool $includesOne
-     * @param bool $includesTwo
-     * @param array $context
+     * @return array
      */
-    public function testFilterContent(
-        Criterion $criterion,
-        $includesOne,
-        $includesTwo,
-        array $context
-    ) {
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->findContent($repository, $criterion, true);
+    public function findProvider()
+    {
+        $additionalFields = $this->getAdditionallyIndexedFieldData();
+        $additionalFields[] = array(
+            null,
+            $this->getSearchTargetValueOne(),
+            $this->getSearchTargetValueTwo(),
+        );
+        $templates = array(
+            array(true, true),
+            array(true, false),
+            array(false, true),
+            array(false, false),
+        );
 
-        $this->assertFindResult($searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId);
-    }
+        $fixture = array();
 
-    /**
-     * Asserts search result for modified field.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param bool $includesOne
-     * @param bool $includesTwo
-     * @param array $context
-     * @param bool $filter
-     * @param string $fieldName
-     */
-    public function assertFilterContentModifiedField(
-        Criterion $criterion,
-        $includesOne,
-        $includesTwo,
-        array $context,
-        $filter,
-        $fieldName
-    ) {
-        $this->checkCustomFieldsSupport();
+        foreach ($additionalFields as $additionalField) {
+            foreach ($templates as $template) {
+                array_push($template, $additionalField[0]);
+                array_unshift($template, $additionalField[2]);
+                array_unshift($template, $additionalField[1]);
 
-        $this->modifyFieldCriterion($criterion, $fieldName);
-
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->findContent($repository, $criterion, $filter);
-
-        $this->assertFindResult($searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId);
-    }
-
-    /**
-     * Tests Content Search sort with Field sort clause on a field of specific field type.
-     *
-     * @dataProvider sortClauseProvider
-     * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param bool $ascending
-     * @param array $context
-     * @param string $fieldName
-     */
-    public function assertSortContentModifiedField(
-        SortClause $sortClause,
-        $ascending,
-        array $context,
-        $fieldName
-    ) {
-        $setupFactory = $this->getSetupFactory();
-
-        $this->checkCustomFieldsSupport();
-
-        if ($setupFactory instanceof LegacySolr) {
-            $this->markTestSkipped(
-                'For Solr engine Field sort clause is not yet implemented'
-            );
+                $fixture[] = $template;
+            }
         }
 
-        $this->modifyFieldSortClause($sortClause, $fieldName);
+        return $fixture;
+    }
 
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->sortContent($repository, $sortClause);
+    /**
+     * Tests search with EQ operator.
+     *
+     * Simplified representation:
+     *
+     *     value EQ One
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindEqualsOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::EQ, $valueOne);
 
-        $this->assertSortResult($searchResult, $ascending, $contentOneId, $contentTwoId);
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with EQ operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value EQ One )
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotEqualsOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::EQ, $valueOne));
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with EQ operator.
+     *
+     * Simplified representation:
+     *
+     *     value EQ Two
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindEqualsTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::EQ, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with EQ operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value EQ Two )
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotEqualsTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::EQ, $valueTwo));
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     value IN [One]
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindInOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::IN, array($valueOne));
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value IN [One] )
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotInOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field('data', Operator::IN, array($valueOne))
+        );
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     value IN [Two]
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindInTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::IN, array($valueTwo));
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value IN [Two] )
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotInTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field('data', Operator::IN, array($valueTwo))
+        );
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     value IN [One,Two]
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindInOneTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field(
+            'data',
+            Operator::IN,
+            array(
+                $valueOne,
+                $valueTwo,
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with IN operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value IN [One,Two] )
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotInOneTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field(
+                'data',
+                Operator::IN,
+                array(
+                    $valueOne,
+                    $valueTwo,
+                )
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GT operator.
+     *
+     * Simplified representation:
+     *
+     *     value GT One
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindGreaterThanOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::GT, $valueOne);
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GT operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value GT One )
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotGreaterThanOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::GT, $valueOne));
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GT operator.
+     *
+     * Simplified representation:
+     *
+     *     value GT Two
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindGreaterThanTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::GT, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GT operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value GT Two )
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotGreaterThanTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::GT, $valueTwo));
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GTE operator.
+     *
+     * Simplified representation:
+     *
+     *     value GTE One
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindGreaterThanOrEqualOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::GTE, $valueOne);
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GTE operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value GTE One )
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotGreaterThanOrEqual($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::GTE, $valueOne));
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GTE operator.
+     *
+     * Simplified representation:
+     *
+     *     value GTE Two
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindGreaterThanOrEqualTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::GTE, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with GTE operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value GTE Two )
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotGreaterThanOrEqualTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::GTE, $valueTwo));
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LT operator.
+     *
+     * Simplified representation:
+     *
+     *     value LT One
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindLowerThanOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::LT, $valueOne);
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LT operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value LT One )
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotLowerThanOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::LT, $valueOne));
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LT operator.
+     *
+     * Simplified representation:
+     *
+     *     value LT Two
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindLowerThanTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::LT, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LT operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value LT Two )
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotLowerThanTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::LT, $valueTwo));
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LTE operator.
+     *
+     * Simplified representation:
+     *
+     *     value LTE One
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindLowerThanOrEqualOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::LTE, $valueOne);
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LTE operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value LTE One )
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotLowerThanOrEqualOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::LTE, $valueOne));
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LTE operator.
+     *
+     * Simplified representation:
+     *
+     *     value LTE Two
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindLowerThanOrEqualTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::LTE, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with LTE operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value LTE Two )
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotLowerThanOrEqualTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::LTE, $valueTwo));
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with BETWEEN operator.
+     *
+     * Simplified representation:
+     *
+     *     value BETWEEN [One,Two]
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindBetweenOneTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field(
+            'data',
+            Operator::BETWEEN,
+            array(
+                $valueOne,
+                $valueTwo,
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with BETWEEN operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value BETWEEN [One,Two] )
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotBetweenOneTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field(
+                'data',
+                Operator::BETWEEN,
+                array(
+                    $valueOne,
+                    $valueTwo,
+                )
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with BETWEEN operator.
+     *
+     * Simplified representation:
+     *
+     *     value BETWEEN [Two,One]
+     *
+     * The result should be empty.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindBetweenTwoOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field(
+            'data',
+            Operator::BETWEEN,
+            array(
+                $valueTwo,
+                $valueOne,
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, false, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with BETWEEN operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value BETWEEN [Two,One] )
+     *
+     * The result should contain both Content One and Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotBetweenTwoOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field(
+                'data',
+                Operator::BETWEEN,
+                array(
+                    $valueTwo,
+                    $valueOne,
+                )
+            )
+        );
+
+        $this->assertFindResult($context, $criteria, true, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with CONTAINS operator.
+     *
+     * Simplified representation:
+     *
+     *     value CONTAINS One
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindContainsOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::CONTAINS, $valueOne);
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with CONTAINS operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value CONTAINS One )
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotContainsOne($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(new Field('data', Operator::CONTAINS, $valueOne));
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with CONTAINS operator.
+     *
+     * Simplified representation:
+     *
+     *     value CONTAINS Two
+     *
+     * The result should contain Content Two.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindContainsTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new Field('data', Operator::CONTAINS, $valueTwo);
+
+        $this->assertFindResult($context, $criteria, false, true, $filter, $content, $modifyField);
+    }
+
+    /**
+     * Tests search with CONTAINS operator.
+     *
+     * Simplified representation:
+     *
+     *     NOT( value CONTAINS Two )
+     *
+     * The result should contain Content One.
+     *
+     * @dataProvider findProvider
+     * @depends testCreateTestContent
+     */
+    public function testFindNotContainsTwo($valueOne, $valueTwo, $filter, $content, $modifyField, array $context)
+    {
+        $criteria = new LogicalNot(
+            new Field('data', Operator::CONTAINS, $valueTwo)
+        );
+
+        $this->assertFindResult($context, $criteria, true, false, $filter, $content, $modifyField);
     }
 
     /**
@@ -860,157 +1085,54 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
         }
     }
 
-    /**
-     * Tests Content Search querying with Field criterion on a field of specific field type.
-     *
-     * @dataProvider criteriaProvider
-     * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param bool $includesOne
-     * @param bool $includesTwo
-     * @param array $context
-     */
-    public function testQueryContent(
-        Criterion $criterion,
-        $includesOne,
-        $includesTwo,
-        array $context
-    ) {
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->findContent($repository, $criterion, false);
+    public function sortProvider()
+    {
+        $additionalFields = $this->getAdditionallyIndexedFieldData();
+        $additionalFields[] = null;
+        $templates = array(
+            array(true, true),
+            array(true, false),
+            array(false, true),
+            array(false, false),
+        );
 
-        $this->assertFindResult($searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId);
+        $fixture = array();
+
+        foreach ($additionalFields as $additionalField) {
+            foreach ($templates as $template) {
+                array_push($template, $additionalField[0]);
+                $fixture[] = $template;
+            }
+        }
+
+        return $fixture;
     }
 
     /**
      * Tests Content Search sort with Field sort clause on a field of specific field type.
      *
-     * @dataProvider sortClauseProvider
+     * @dataProvider sortProvider
      * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param bool $ascending
-     * @param array $context
      */
-    public function testSortContent(SortClause $sortClause, $ascending, array $context)
+    public function testSort($ascending, $content, $modifyField, array $context)
     {
-        $setupFactory = $this->getSetupFactory();
-
-        if ($setupFactory instanceof LegacySolr) {
-            $this->markTestSkipped(
-                'For Solr engine Field sort clause is not yet implemented'
-            );
-        }
-
         list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->sortContent($repository, $sortClause);
+        $sortClause = new FieldSortClause(
+            'test-' . $this->getTypeName(),
+            'data',
+            $ascending ? Query::SORT_ASC : Query::SORT_DESC
+        );
 
-        $this->assertSortResult($searchResult, $ascending, $contentOneId, $contentTwoId);
-    }
-
-    /**
-     * Tests Location Search filtering with Field criterion on a field of specific field type.
-     *
-     * @dataProvider criteriaProvider
-     * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param bool $includesOne
-     * @param bool $includesTwo
-     * @param array $context
-     */
-    public function testFilterLocations(
-        Criterion $criterion,
-        $includesOne,
-        $includesTwo,
-        array $context
-    ) {
-        $setupFactory = $this->getSetupFactory();
-
-        if ($setupFactory instanceof LegacySolr) {
-            $this->markTestSkipped(
-                'For Solr engine fields are not searchable with Location Search'
-            );
+        if ($content) {
+            $searchResult = $this->sortContent($repository, $sortClause);
+        } else {
+            $searchResult = $this->sortLocations($repository, $sortClause);
         }
 
-        if ($setupFactory instanceof LegacyElasticsearch) {
-            $this->markTestSkipped(
-                'For Elasticsearch engine fields are not searchable with Location Search'
-            );
+        if ($modifyField !== null) {
+            $this->checkCustomFieldsSupport();
+            $this->modifyFieldSortClause($sortClause, $modifyField);
         }
-
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->findLocations($repository, $criterion, true);
-
-        $this->assertFindResult($searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId);
-    }
-
-    /**
-     * Tests Location Search querying with Field criterion on a field of specific field type.
-     *
-     * @dataProvider criteriaProvider
-     * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param bool $includesOne
-     * @param bool $includesTwo
-     * @param array $context
-     */
-    public function testQueryLocations(
-        Criterion $criterion,
-        $includesOne,
-        $includesTwo,
-        array $context
-    ) {
-        $setupFactory = $this->getSetupFactory();
-
-        if ($setupFactory instanceof LegacySolr) {
-            $this->markTestSkipped(
-                'For Solr engine fields are not searchable with Location Search'
-            );
-        }
-
-        if ($setupFactory instanceof LegacyElasticsearch) {
-            $this->markTestSkipped(
-                'For Elasticsearch engine fields are not searchable with Location Search'
-            );
-        }
-
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->findLocations($repository, $criterion, false);
-
-        $this->assertFindResult($searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId);
-    }
-
-    /**
-     * Tests Location Search sort with Field sort clause on a field of specific field type.
-     *
-     * @dataProvider sortClauseProvider
-     * @depends testCreateTestContent
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param bool $ascending
-     * @param array $context
-     */
-    public function testSortLocations(SortClause $sortClause, $ascending, array $context)
-    {
-        $setupFactory = $this->getSetupFactory();
-
-        if ($setupFactory instanceof LegacySolr) {
-            $this->markTestSkipped(
-                'For Solr engine fields are not searchable with Location Search'
-            );
-        }
-
-        if ($setupFactory instanceof LegacyElasticsearch) {
-            $this->markTestSkipped(
-                'For Elasticsearch engine fields are not searchable with Location Search'
-            );
-        }
-
-        list($repository, $contentOneId, $contentTwoId) = $context;
-        $searchResult = $this->sortLocations($repository, $sortClause);
 
         $this->assertSortResult($searchResult, $ascending, $contentOneId, $contentTwoId);
     }
@@ -1083,6 +1205,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
      */
     protected function findLocations(Repository $repository, Criterion $criterion, $filter)
     {
+        $this->checkLocationFieldSearchSupport();
         $searchService = $repository->getSearchService();
 
         if ($filter) {
@@ -1102,7 +1225,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
             )
         );
 
-        return $searchService->findContent($query);
+        return $searchService->findLocations($query);
     }
 
     /**
@@ -1115,6 +1238,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
      */
     protected function sortLocations(Repository $repository, SortClause $sortClause)
     {
+        $this->checkLocationFieldSearchSupport();
         $searchService = $repository->getSearchService();
 
         $query = new LocationQuery(
@@ -1167,19 +1291,36 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
      *
      * Search result can be empty, contain both Content One and Content Two or only one of them.
      *
-     * @param \eZ\Publish\API\Repository\Values\Content\Search\SearchResult $searchResult
+     * @param array $context
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      * @param bool $includesOne
      * @param bool $includesTwo
-     * @param string|int $contentOneId
-     * @param string|int $contentTwoId
+     * @param bool $filter
+     * @param bool $content
+     * @param null|string $modifyField
      */
     protected function assertFindResult(
-        SearchResult $searchResult,
+        array $context,
+        Criterion $criterion,
         $includesOne,
         $includesTwo,
-        $contentOneId,
-        $contentTwoId
+        $filter,
+        $content,
+        $modifyField
     ) {
+        list($repository, $contentOneId, $contentTwoId) = $context;
+
+        if ($modifyField !== null) {
+            $this->checkCustomFieldsSupport();
+            $this->modifyFieldCriterion($criterion, $modifyField);
+        }
+
+        if ($content) {
+            $searchResult = $this->findContent($repository, $criterion, $filter);
+        } else {
+            $searchResult = $this->findLocations($repository, $criterion, $filter);
+        }
+
         $contentIdList = $this->getResultContentIdList($searchResult);
 
         if ($includesOne && $includesTwo) {
@@ -1234,6 +1375,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
             $indexTwo = 0;
         }
 
+        $this->assertEquals(2, $searchResult->totalCount);
         $this->assertEquals($contentOneId, $contentIdList[$indexOne]);
         $this->assertEquals($contentTwoId, $contentIdList[$indexTwo]);
     }

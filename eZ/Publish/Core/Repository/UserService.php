@@ -8,6 +8,7 @@
  */
 namespace eZ\Publish\Core\Repository;
 
+use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\Core\Repository\Values\User\UserCreateStruct;
 use eZ\Publish\API\Repository\Values\User\UserCreateStruct as APIUserCreateStruct;
 use eZ\Publish\API\Repository\Values\User\UserUpdateStruct;
@@ -25,7 +26,6 @@ use eZ\Publish\API\Repository\Repository as RepositoryInterface;
 use eZ\Publish\API\Repository\UserService as UserServiceInterface;
 use eZ\Publish\SPI\Persistence\User as SPIUser;
 use eZ\Publish\Core\FieldType\User\Value as UserValue;
-use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\LogicalAnd as CriterionLogicalAnd;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\ContentTypeId as CriterionContentTypeId;
@@ -155,12 +155,14 @@ class UserService implements UserServiceInterface
      * Loads the sub groups of a user group.
      *
      * @param \eZ\Publish\API\Repository\Values\User\UserGroup $userGroup
+     * @param int $offset the start offset for paging
+     * @param int $limit the number of user groups returned
      *
      * @return \eZ\Publish\API\Repository\Values\User\UserGroup[]
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException if the authenticated user is not allowed to read the user group
      */
-    public function loadSubUserGroups(APIUserGroup $userGroup)
+    public function loadSubUserGroups(APIUserGroup $userGroup, $offset = 0, $limit = 25)
     {
         $locationService = $this->repository->getLocationService();
 
@@ -180,7 +182,9 @@ class UserService implements UserServiceInterface
         $searchResult = $this->searchSubGroups(
             $mainGroupLocation->id,
             $mainGroupLocation->sortField,
-            $mainGroupLocation->sortOrder
+            $mainGroupLocation->sortOrder,
+            $offset,
+            $limit
         );
         if ($searchResult->totalCount == 0) {
             return array();
@@ -188,7 +192,11 @@ class UserService implements UserServiceInterface
 
         $subUserGroups = array();
         foreach ($searchResult->searchHits as $searchHit) {
-            $subUserGroups[] = $this->buildDomainUserGroupObject($searchHit->valueObject);
+            $subUserGroups[] = $this->buildDomainUserGroupObject(
+                $this->repository->getContentService()->internalLoadContent(
+                    $searchHit->valueObject->contentInfo->id
+                )
+            );
         }
 
         return $subUserGroups;
@@ -205,12 +213,12 @@ class UserService implements UserServiceInterface
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
      */
-    protected function searchSubGroups($locationId, $sortField = null, $sortOrder = Location::SORT_ORDER_ASC, $offset = 0, $limit = -1)
+    protected function searchSubGroups($locationId, $sortField = null, $sortOrder = Location::SORT_ORDER_ASC, $offset = 0, $limit = 25)
     {
-        $searchQuery = new Query();
+        $searchQuery = new LocationQuery();
 
-        $searchQuery->offset = $offset >= 0 ? (int)$offset : 0;
-        $searchQuery->limit = $limit >= 0 ? (int)$limit  : null;
+        $searchQuery->offset = $offset;
+        $searchQuery->limit = $limit;
 
         $searchQuery->filter = new CriterionLogicalAnd(
             array(
@@ -224,7 +232,7 @@ class UserService implements UserServiceInterface
             $searchQuery->sortClauses[] = $this->getSortClauseBySortField($sortField, $sortOrder);
         }
 
-        return $this->repository->getSearchService()->findContent($searchQuery, array(), false);
+        return $this->repository->getSearchService()->findLocations($searchQuery, array(), false);
     }
 
     /**
@@ -860,10 +868,12 @@ class UserService implements UserServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException if the authenticated user is not allowed read the user or user group
      *
      * @param \eZ\Publish\API\Repository\Values\User\User $user
+     * @param int $offset the start offset for paging
+     * @param int $limit the number of user groups returned
      *
      * @return \eZ\Publish\API\Repository\Values\User\UserGroup[]
      */
-    public function loadUserGroupsOfUser(APIUser $user)
+    public function loadUserGroupsOfUser(APIUser $user, $offset = 0, $limit = 25)
     {
         $locationService = $this->repository->getLocationService();
 
@@ -882,10 +892,10 @@ class UserService implements UserServiceInterface
             }
         }
 
-        $searchQuery = new Query();
+        $searchQuery = new LocationQuery();
 
-        $searchQuery->offset = 0;
-        $searchQuery->limit = null;
+        $searchQuery->offset = $offset;
+        $searchQuery->limit = $limit;
         $searchQuery->performCount = false;
 
         $searchQuery->filter = new CriterionLogicalAnd(
@@ -895,11 +905,15 @@ class UserService implements UserServiceInterface
             )
         );
 
-        $searchResult = $this->repository->getSearchService()->findContent($searchQuery, array());
+        $searchResult = $this->repository->getSearchService()->findLocations($searchQuery);
 
         $userGroups = array();
         foreach ($searchResult->searchHits as $resultItem) {
-            $userGroups[] = $this->buildDomainUserGroupObject($resultItem->valueObject);
+            $userGroups[] = $this->buildDomainUserGroupObject(
+                $this->repository->getContentService()->internalLoadContent(
+                    $resultItem->valueObject->contentInfo->id
+                )
+            );
         }
 
         return $userGroups;
@@ -911,12 +925,12 @@ class UserService implements UserServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException if the authenticated user is not allowed to read the users or user group
      *
      * @param \eZ\Publish\API\Repository\Values\User\UserGroup $userGroup
-     * @param int $offset
-     * @param int $limit
+     * @param int $offset the start offset for paging
+     * @param int $limit the number of users returned
      *
      * @return \eZ\Publish\API\Repository\Values\User\User[]
      */
-    public function loadUsersOfUserGroup(APIUserGroup $userGroup, $offset = 0, $limit = -1)
+    public function loadUsersOfUserGroup(APIUserGroup $userGroup, $offset = 0, $limit = 25)
     {
         $loadedUserGroup = $this->loadUserGroup($userGroup->id);
 
@@ -928,7 +942,7 @@ class UserService implements UserServiceInterface
             $loadedUserGroup->getVersionInfo()->getContentInfo()->mainLocationId
         );
 
-        $searchQuery = new Query();
+        $searchQuery = new LocationQuery();
 
         $searchQuery->filter = new CriterionLogicalAnd(
             array(
@@ -937,21 +951,24 @@ class UserService implements UserServiceInterface
             )
         );
 
-        $searchQuery->offset = $offset > 0 ? (int)$offset : 0;
-        $searchQuery->limit = $limit >= 1 ? (int)$limit : null;
+        $searchQuery->offset = $offset;
+        $searchQuery->limit = $limit;
         $searchQuery->performCount = false;
 
         $searchQuery->sortClauses = array(
             $this->getSortClauseBySortField($mainGroupLocation->sortField, $mainGroupLocation->sortOrder),
         );
 
-        $searchResult = $this->repository->getSearchService()->findContent($searchQuery, array());
+        $searchResult = $this->repository->getSearchService()->findLocations($searchQuery);
 
         $users = array();
         foreach ($searchResult->searchHits as $resultItem) {
-            $spiUser = $this->userHandler->load($resultItem->valueObject->id);
-
-            $users[] = $this->buildDomainUserObject($spiUser, $resultItem->valueObject);
+            $users[] = $this->buildDomainUserObject(
+                $this->userHandler->load($resultItem->valueObject->contentInfo->id),
+                $this->repository->getContentService()->internalLoadContent(
+                    $resultItem->valueObject->contentInfo->id
+                )
+            );
         }
 
         return $users;
@@ -1131,10 +1148,10 @@ class UserService implements UserServiceInterface
      */
     protected function getSortClauseBySortField($sortField, $sortOrder = Location::SORT_ORDER_ASC)
     {
-        $sortOrder = $sortOrder == Location::SORT_ORDER_DESC ? Query::SORT_DESC : Query::SORT_ASC;
+        $sortOrder = $sortOrder == Location::SORT_ORDER_DESC ? LocationQuery::SORT_DESC : LocationQuery::SORT_ASC;
         switch ($sortField) {
             case Location::SORT_FIELD_PATH:
-                return new SortClause\LocationPathString($sortOrder);
+                return new SortClause\Location\Path($sortOrder);
 
             case Location::SORT_FIELD_PUBLISHED:
                 return new SortClause\DatePublished($sortOrder);
@@ -1146,7 +1163,7 @@ class UserService implements UserServiceInterface
                 return new SortClause\SectionIdentifier($sortOrder);
 
             case Location::SORT_FIELD_DEPTH:
-                return new SortClause\LocationDepth($sortOrder);
+                return new SortClause\Location\Depth($sortOrder);
 
             //@todo: enable
             // case APILocation::SORT_FIELD_CLASS_IDENTIFIER:
@@ -1155,7 +1172,7 @@ class UserService implements UserServiceInterface
             // case APILocation::SORT_FIELD_CLASS_NAME:
 
             case Location::SORT_FIELD_PRIORITY:
-                return new SortClause\LocationPriority($sortOrder);
+                return new SortClause\Location\Priority($sortOrder);
 
             case Location::SORT_FIELD_NAME:
                 return new SortClause\ContentName($sortOrder);
@@ -1170,7 +1187,7 @@ class UserService implements UserServiceInterface
             // case APILocation::SORT_FIELD_CONTENTOBJECT_ID:
 
             default:
-                return new SortClause\LocationPathString($sortOrder);
+                return new SortClause\Location\Path($sortOrder);
         }
     }
 }

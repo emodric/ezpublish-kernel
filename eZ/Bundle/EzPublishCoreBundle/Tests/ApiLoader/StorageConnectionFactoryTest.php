@@ -9,7 +9,7 @@
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\ApiLoader;
 
 use eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageConnectionFactory;
-use eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider;
+use eZ\Bundle\EzPublishCoreBundle\ApiLoader\RepositoryConfigurationProvider;
 
 class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,8 +20,10 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $repositories = array(
             $repositoryAlias => array(
-                'engine' => 'legacy',
-                'connection' => $doctrineConnection,
+                'storage' => array(
+                    'engine' => 'legacy',
+                    'connection' => $doctrineConnection,
+                ),
             ),
         );
 
@@ -44,8 +46,8 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             ->with("doctrine.dbal.{$doctrineConnection}_connection")
             ->will($this->returnValue($this->getMock('Doctrine\DBAL\Driver\Connection')));
 
-        $storageRepositoryProvider = new StorageRepositoryProvider($configResolver, $repositories);
-        $factory = new StorageConnectionFactory($storageRepositoryProvider);
+        $repositoryConfigurationProvider = new RepositoryConfigurationProvider($configResolver, $repositories);
+        $factory = new StorageConnectionFactory($repositoryConfigurationProvider);
         $factory->setContainer($container);
         $connection = $factory->getConnection();
         $this->assertInstanceOf(
@@ -70,8 +72,10 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $repositories = array(
             'foo' => array(
-                'engine' => 'legacy',
-                'connection' => 'my_doctrine_connection',
+                'storage' => array(
+                    'engine' => 'legacy',
+                    'connection' => 'my_doctrine_connection',
+                ),
             ),
         );
 
@@ -82,8 +86,8 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             ->with('repository')
             ->will($this->returnValue('inexistent_repository'));
 
-        $storageRepositoryProvider = new StorageRepositoryProvider($configResolver, $repositories);
-        $factory = new StorageConnectionFactory($storageRepositoryProvider);
+        $repositoryConfigurationProvider = new RepositoryConfigurationProvider($configResolver, $repositories);
+        $factory = new StorageConnectionFactory($repositoryConfigurationProvider);
         $factory->setContainer($this->getMock('Symfony\Component\DependencyInjection\ContainerInterface'));
         $factory->getConnection();
     }
@@ -93,15 +97,17 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetConnectionInvalidConnection()
     {
-        $storageRepositoryProviderMock = $this->getMockBuilder('eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider')
+        $repositoryConfigurationProviderMock = $this->getMockBuilder('eZ\Bundle\EzPublishCoreBundle\ApiLoader\RepositoryConfigurationProvider')
             ->disableOriginalConstructor()
             ->getMock();
         $repositoryConfig = array(
             'alias' => 'foo',
-            'engine' => 'legacy',
-            'connection' => 'my_doctrine_connection',
+            'storage' => array(
+                'engine' => 'legacy',
+                'connection' => 'my_doctrine_connection',
+            ),
         );
-        $storageRepositoryProviderMock
+        $repositoryConfigurationProviderMock
             ->expects($this->once())
             ->method('getRepositoryConfig')
             ->will($this->returnValue($repositoryConfig));
@@ -117,7 +123,7 @@ class StorageConnectionFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getParameter')
             ->with('doctrine.connections')
             ->will($this->returnValue(array()));
-        $factory = new StorageConnectionFactory($storageRepositoryProviderMock);
+        $factory = new StorageConnectionFactory($repositoryConfigurationProviderMock);
         $factory->setContainer($container);
         $factory->getConnection();
     }

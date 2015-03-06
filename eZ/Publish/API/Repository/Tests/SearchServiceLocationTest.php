@@ -82,6 +82,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $content = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         return $content;
     }
 
@@ -922,6 +924,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $tree = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $query = new LocationQuery(
             array(
                 'filter' => new Criterion\LogicalAnd(
@@ -1001,6 +1005,8 @@ class SearchServiceLocationTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $tree = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         $query = new LocationQuery(
             array(
@@ -1098,6 +1104,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $query = new LocationQuery(
             array(
                 'filter' => new Criterion\LogicalAnd(
@@ -1193,6 +1201,8 @@ class SearchServiceLocationTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         $wellInVodice = array(
             'latitude' => 43.756825,
@@ -1311,6 +1321,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $well = array(
             'latitude' => 43.756825,
             'longitude' => 15.775074,
@@ -1412,6 +1424,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $tree = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $distanceCriterion = new Criterion\MapLocationDistance(
             'maplocation',
             Criterion\Operator::LTE,
@@ -1511,6 +1525,8 @@ class SearchServiceLocationTest extends BaseTest
         $draft = $contentService->createContent($createStruct, array($locationCreateStruct));
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $well = array(
             'latitude' => 43.756825,
             'longitude' => 15.775074,
@@ -1600,6 +1616,16 @@ class SearchServiceLocationTest extends BaseTest
 
         if ($closure !== null) {
             $closure($result);
+        }
+
+        foreach ($result->searchHits as $hit) {
+            $property = new \ReflectionProperty(get_class($hit), 'index');
+            $property->setAccessible(true);
+            $property->setValue($hit, null);
+
+            $property = new \ReflectionProperty(get_class($hit), 'matchedTranslation');
+            $property->setAccessible(true);
+            $property->setValue($hit, null);
         }
 
         $this->assertEquals(

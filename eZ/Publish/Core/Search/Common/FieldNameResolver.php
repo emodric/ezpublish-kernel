@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 namespace eZ\Publish\Core\Search\Common;
@@ -129,7 +131,8 @@ class FieldNameResolver
                 $contentTypeIdentifier,
                 $fieldDefinitionIdentifier,
                 $fieldIdentifierMap[$fieldDefinitionIdentifier]['field_type_identifier'],
-                $name
+                $name,
+                false
             );
         }
 
@@ -174,7 +177,8 @@ class FieldNameResolver
             $contentTypeIdentifier,
             $fieldDefinitionIdentifier,
             $fieldMap[$contentTypeIdentifier][$fieldDefinitionIdentifier]['field_type_identifier'],
-            $name
+            $name,
+            true
         );
     }
 
@@ -186,6 +190,7 @@ class FieldNameResolver
      * @param string $fieldDefinitionIdentifier
      * @param string $fieldTypeIdentifier
      * @param string $name
+     * @param bool $isSortField
      *
      * @return string
      */
@@ -194,7 +199,8 @@ class FieldNameResolver
         $contentTypeIdentifier,
         $fieldDefinitionIdentifier,
         $fieldTypeIdentifier,
-        $name
+        $name,
+        $isSortField
     ) {
         // If criterion or sort clause implements CustomFieldInterface and custom field is set for
         // ContentType/FieldDefinition, return it
@@ -212,9 +218,13 @@ class FieldNameResolver
 
         $indexFieldType = $this->fieldRegistry->getType($fieldTypeIdentifier);
 
-        // If $name is not given use default search field name
+        // If $name is not given use default field name
         if ($name === null) {
-            $name = $indexFieldType->getDefaultField();
+            if ($isSortField) {
+                $name = $indexFieldType->getDefaultSortField();
+            } else {
+                $name = $indexFieldType->getDefaultMatchField();
+            }
         }
 
         $indexDefinition = $indexFieldType->getIndexDefinition();

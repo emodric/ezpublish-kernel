@@ -444,6 +444,7 @@ class HandlerLocationTest extends LanguageAwareTestCase
                 new LocationQuery(
                     array(
                         'filter' => new Criterion\Location\Depth(Criterion\Operator::IN, array(1, 2)),
+                        'limit' => 50,
                     )
                 )
             )
@@ -472,6 +473,7 @@ class HandlerLocationTest extends LanguageAwareTestCase
                 new LocationQuery(
                     array(
                         'filter' => new Criterion\Location\Depth(Criterion\Operator::GT, 4),
+                        'limit' => 50,
                     )
                 )
             )
@@ -486,6 +488,7 @@ class HandlerLocationTest extends LanguageAwareTestCase
                 new LocationQuery(
                     array(
                         'filter' => new Criterion\Location\Depth(Criterion\Operator::GTE, 5),
+                        'limit' => 50,
                     )
                 )
             )
@@ -515,6 +518,7 @@ class HandlerLocationTest extends LanguageAwareTestCase
                 new LocationQuery(
                     array(
                         'filter' => new Criterion\Location\Depth(Criterion\Operator::LTE, 2),
+                        'limit' => 50,
                     )
                 )
             )

@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\RepositoryTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 namespace eZ\Publish\API\Repository\Tests\FieldType;
@@ -20,7 +22,7 @@ use eZ\Publish\API\Repository\Values\Content\Content;
  * @group integration
  * @group field-type
  */
-class RelationListIntegrationTest extends RelationBaseIntegrationTest
+class RelationListIntegrationTest extends RelationSearchMultivaluedBaseIntegrationTest
 {
     /**
      * Get name of tested field type.
@@ -393,5 +395,44 @@ class RelationListIntegrationTest extends RelationBaseIntegrationTest
                 $this->getValidCreationFieldData(),
             ),
         );
+    }
+
+    protected function checkSearchEngineSupport()
+    {
+        if (ltrim(get_class($this->getSetupFactory()), '\\') === 'eZ\\Publish\\API\\Repository\\Tests\\SetupFactory\\Legacy') {
+            $this->markTestSkipped(
+                "'ezobjectrelationlist' field type is not searchable with Legacy Search Engine"
+            );
+        }
+    }
+
+    protected function getValidSearchValueOne()
+    {
+        return array(11);
+    }
+
+    protected function getValidSearchValueTwo()
+    {
+        return array(12);
+    }
+
+    protected function getSearchTargetValueOne()
+    {
+        return 11;
+    }
+
+    protected function getSearchTargetValueTwo()
+    {
+        return 12;
+    }
+
+    protected function getValidMultivaluedSearchValuesOne()
+    {
+        return array(11, 12);
+    }
+
+    protected function getValidMultivaluedSearchValuesTwo()
+    {
+        return array(13, 14);
     }
 }

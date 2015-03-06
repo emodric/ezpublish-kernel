@@ -17,6 +17,9 @@ env:
     - TEST_CONFIG="phpunit-integration-legacy.xml" SYMFONY_VERSION="2.6.*"
     - TEST_CONFIG="phpunit-integration-legacy.xml" DB="postgresql" DATABASE="pgsql://postgres@localhost/$DB_NAME"
     - TEST_CONFIG="phpunit-integration-legacy.xml" DB="mysql" DATABASE="mysql://root@localhost/$DB_NAME"
+    - SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="single" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
+    - SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="shared" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
+    - SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="dedicated" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
 
 matrix:
   exclude:
@@ -27,6 +30,10 @@ matrix:
       env: TEST_CONFIG="phpunit-integration-legacy.xml" SYMFONY_VERSION="2.6.*"
     - php: 5.4
       env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="mysql" DATABASE="mysql://root@localhost/$DB_NAME"
+    - php: 5.4
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="shared" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
+    - php: 5.4
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="dedicated" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
 # 5.5 run: unit test (Symfony 2.3) + mysql integration test + solr 4.x integration test
     - php: 5.5
       env: TEST_CONFIG="phpunit.xml"
@@ -34,6 +41,10 @@ matrix:
       env: TEST_CONFIG="phpunit-integration-legacy.xml" SYMFONY_VERSION="2.6.*"
     - php: 5.5
       env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="postgresql" DATABASE="pgsql://postgres@localhost/$DB_NAME"
+    - php: 5.5
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="single" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
+    - php: 5.5
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="dedicated" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
 # 5.6 run: unit test + sqlite integration test
     - php: 5.6
       env: TEST_CONFIG="phpunit.xml" SYMFONY_VERSION="2.6.*"
@@ -41,6 +52,10 @@ matrix:
       env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="postgresql" DATABASE="pgsql://postgres@localhost/$DB_NAME"
     - php: 5.6
       env: TEST_CONFIG="phpunit-integration-legacy.xml" DB="mysql" DATABASE="mysql://root@localhost/$DB_NAME"
+    - php: 5.6
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="single" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
+    - php: 5.6
+      env: SOLR_VERSION="4.10.4" TEST_CONFIG="phpunit-integration-legacy-solr.xml" CORES_SETUP="shared" SOLR_CORES="core0 core1 core2 core3" SOLR_CONFS="vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/schema.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/custom-fields-types.xml vendor/ezsystems/ezplatform-solr-search-engine/lib/eZ/Publish/Core/Search/Solr/Resources/language-fieldtypes.xml"
 
 # test only master (+ Pull requests)
 branches:
@@ -59,9 +74,11 @@ before_script:
   # Setup github key to avoid api rate limit
   - ./bin/.travis/install_composer_github_key.sh
   # Switch to another Symfony version if asked for
-  - if [ $SYMFONY_VERSION != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update symfony/symfony=$SYMFONY_VERSION; fi;
   # Install packages using composer
   - composer install --dev --prefer-dist
+  # Install Solr Search Engine
+  - if [ "$TEST_CONFIG" = "phpunit-integration-legacy-solr.xml" ]; then ./bin/.travis/init_solr.sh ; fi
   # Detecting timezone issues by testing on random timezone
   - TEST_TIMEZONES=("America/New_York" "Asia/Calcutta" "UTC")
   - TEST_TIMEZONE=${TEST_TIMEZONES["`shuf -i 0-2 -n 1`"]}

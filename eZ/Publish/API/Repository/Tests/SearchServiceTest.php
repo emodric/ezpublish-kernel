@@ -331,6 +331,7 @@ class SearchServiceTest extends BaseTest
                         '/1/'
                     ),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'Status.php',
                 // Result having the same sort level should be sorted between them to be system independent
@@ -363,6 +364,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -376,6 +378,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -389,6 +392,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -402,6 +406,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -415,6 +420,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -428,6 +434,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -441,6 +448,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -454,6 +462,7 @@ class SearchServiceTest extends BaseTest
                     'sortClauses' => array(
                         new SortClause\ContentId(),
                     ),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'UserMetadata.php',
             ),
@@ -528,6 +537,7 @@ class SearchServiceTest extends BaseTest
                         Criterion\Visibility::VISIBLE
                     ),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'Visibility.php',
             ),
@@ -564,6 +574,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Depth(Criterion\Operator::GTE, 2),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthGte.php',
             ),
@@ -578,6 +589,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Depth(Criterion\Operator::LTE, 2),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthLte.php',
             ),
@@ -585,6 +597,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Depth(Criterion\Operator::BETWEEN, array(1, 2)),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthLte.php',
             ),
@@ -621,6 +634,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Location\Depth(Criterion\Operator::GTE, 2),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthGte.php',
             ),
@@ -635,6 +649,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Location\Depth(Criterion\Operator::LTE, 2),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthLte.php',
             ),
@@ -642,6 +657,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'criterion' => new Criterion\Location\Depth(Criterion\Operator::BETWEEN, array(1, 2)),
                     'sortClauses' => array(new SortClause\ContentId()),
+                    'limit' => 50,
                 ),
                 $fixtureDir . 'DepthLte.php',
             ),
@@ -974,6 +990,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $content = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         return $content;
     }
 
@@ -1231,7 +1249,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\SectionId(array(2)),
                     'offset' => 0,
-                    'limit' => 10,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\DateModified(),
                         new SortClause\ContentId(),
@@ -1243,7 +1261,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\SectionId(array(4, 2, 6, 3)),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\SectionIdentifier(),
                         new SortClause\ContentId(),
@@ -1255,7 +1273,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\SectionId(array(4, 2, 6, 3)),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\SectionName(),
                         new SortClause\ContentId(),
@@ -1267,7 +1285,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\SectionId(array(2, 3)),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\ContentName(),
                         new SortClause\ContentId(),
@@ -1279,7 +1297,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\ContentTypeId(1),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\Field('folder', 'name', Query::SORT_ASC, 'eng-US'),
                         new SortClause\ContentId(),
@@ -1291,7 +1309,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\ContentTypeId(array(1, 3)),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\Field('folder', 'name', Query::SORT_ASC, 'eng-US'),
                         new SortClause\ContentId(),
@@ -1303,7 +1321,7 @@ class SearchServiceTest extends BaseTest
                 array(
                     'filter' => new Criterion\ContentTypeId(array(1, 3)),
                     'offset' => 0,
-                    'limit' => null,
+                    'limit' => 50,
                     'sortClauses' => array(
                         new SortClause\Field('folder', 'name', Query::SORT_DESC, 'eng-US'),
                         new SortClause\ContentId(),
@@ -1576,6 +1594,8 @@ class SearchServiceTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct);
         $content = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         return $content;
     }
@@ -2518,7 +2538,7 @@ class SearchServiceTest extends BaseTest
             array(
                 'filter' => new Criterion\ContentTypeId(1),
                 'offset' => 0,
-                'limit' => null,
+                'limit' => 10,
                 'sortClauses' => array(
                     $sortClause,
                     new SortClause\ContentId(),
@@ -2612,6 +2632,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $tree = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $query = new Query(
             array(
                 'filter' => new Criterion\LogicalAnd(
@@ -2690,6 +2712,8 @@ class SearchServiceTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct);
         $tree = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         $query = new Query(
             array(
@@ -2786,6 +2810,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $query = new Query(
             array(
                 'filter' => new Criterion\LogicalAnd(
@@ -2856,6 +2882,8 @@ class SearchServiceTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct);
         $polarBear = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         $query = new Query(
             array(
@@ -2951,6 +2979,8 @@ class SearchServiceTest extends BaseTest
 
         $draft = $contentService->createContent($createStruct);
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
+
+        $this->refreshSearch($repository);
 
         $wellInVodice = array(
             'latitude' => 43.756825,
@@ -3068,6 +3098,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $well = array(
             'latitude' => 43.756825,
             'longitude' => 15.775074,
@@ -3173,6 +3205,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $tree = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $distanceCriterion = new Criterion\MapLocationDistance(
             'maplocation',
             Criterion\Operator::LTE,
@@ -3276,6 +3310,8 @@ class SearchServiceTest extends BaseTest
         $draft = $contentService->createContent($createStruct);
         $mushrooms = $contentService->publishVersion($draft->getVersionInfo());
 
+        $this->refreshSearch($repository);
+
         $well = array(
             'latitude' => 43.756825,
             'longitude' => 15.775074,
@@ -3351,6 +3387,8 @@ class SearchServiceTest extends BaseTest
             $locationService->newLocationCreateStruct($designLocationId)
         );
 
+        $this->refreshSearch($repository);
+
         $query = new LocationQuery(
             array(
                 'filter' => new Criterion\LogicalAnd(
@@ -3393,6 +3431,8 @@ class SearchServiceTest extends BaseTest
             $contentService->loadContentInfo($partnersContentId),
             $locationService->newLocationCreateStruct($designLocationId)
         );
+
+        $this->refreshSearch($repository);
 
         $query = new LocationQuery(
             array(
@@ -3438,6 +3478,8 @@ class SearchServiceTest extends BaseTest
             $locationService->newLocationCreateStruct($designLocationId)
         );
 
+        $this->refreshSearch($repository);
+
         $query = new LocationQuery(
             array(
                 'filter' => new Criterion\ParentLocationId($designLocationId),
@@ -3479,6 +3521,8 @@ class SearchServiceTest extends BaseTest
             $contentService->loadContentInfo($partnersContentId),
             $locationService->newLocationCreateStruct($designLocationId)
         );
+
+        $this->refreshSearch($repository);
 
         $query = new LocationQuery(
             array(
@@ -3527,6 +3571,8 @@ class SearchServiceTest extends BaseTest
         $location1 = $locationService->createLocation($content->contentInfo, $locationCreateStruct);
         $locationCreateStruct = $repository->getLocationService()->newLocationCreateStruct(5);
         $location2 = $locationService->createLocation($content->contentInfo, $locationCreateStruct);
+
+        $this->refreshSearch($repository);
 
         $query = new LocationQuery(
             array(
@@ -3923,6 +3969,8 @@ class SearchServiceTest extends BaseTest
         $content = $contentService->publishVersion($draft->getVersionInfo());
         $contentTypeService->createContentTypeDraft($contentType);
 
+        $this->refreshSearch($repository);
+
         return $content;
     }
 
@@ -3965,6 +4013,7 @@ class SearchServiceTest extends BaseTest
                 'sortClauses' => array(
                     new SortClause\ContentId(),
                 ),
+                'limit' => 50,
             )
         );
 
@@ -4055,6 +4104,7 @@ class SearchServiceTest extends BaseTest
                 'sortClauses' => array(
                     new SortClause\Location\Id(),
                 ),
+                'limit' => 50,
             )
         );
 
@@ -4361,6 +4411,16 @@ class SearchServiceTest extends BaseTest
                     $property->setValue($hit, 0.0);
                 }
             }
+        }
+
+        foreach ($result->searchHits as $hit) {
+            $property = new \ReflectionProperty(get_class($hit), 'index');
+            $property->setAccessible(true);
+            $property->setValue($hit, null);
+
+            $property = new \ReflectionProperty(get_class($hit), 'matchedTranslation');
+            $property->setAccessible(true);
+            $property->setValue($hit, null);
         }
 
         $this->assertEquals(

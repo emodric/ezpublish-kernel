@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File contains: eZ\Publish\API\Repository\Tests\FieldType\TextBlockIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 namespace eZ\Publish\API\Repository\Tests\FieldType;
@@ -323,8 +325,20 @@ class TextBlockIntegrationTest extends SearchBaseIntegrationTest
         return 'caution is the " path to \\mediocrity';
     }
 
+    protected function getSearchTargetValueOne()
+    {
+        // ensure case-insensitivity
+        return strtoupper($this->getValidSearchValueOne());
+    }
+
     protected function getValidSearchValueTwo()
     {
         return "truth suffers from ' \\too much analysis";
+    }
+
+    protected function getSearchTargetValueTwo()
+    {
+        // ensure case-insensitivity
+        return strtoupper($this->getValidSearchValueTwo());
     }
 }

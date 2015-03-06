@@ -58,6 +58,8 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
         $locationService->createLocation($feedbackFormContentInfo, $locationCreateStruct1);
         $locationCreateStruct2 = $locationService->newLocationCreateStruct($locationsFolder2[0]->id);
         $locationService->createLocation($feedbackFormContentInfo, $locationCreateStruct2);
+
+        $this->refreshSearch($repository);
     }
 
     /**
@@ -112,7 +114,6 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
                                 new Criterion\Visibility(Criterion\Visibility::VISIBLE),
                             )
                         ),
-                        'sortClauses' => array(new SortClause\ContentName(), new SortClause\LocationPriority()),
                     )
                 ),
                 1,
@@ -142,7 +143,7 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
                                 new Criterion\Visibility(Criterion\Visibility::VISIBLE),
                             )
                         ),
-                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\LocationPriority(), new SortClause\DatePublished()),
+                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\DatePublished()),
                     )
                 ),
                 1,
@@ -187,7 +188,7 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
                                 new Criterion\Visibility(Criterion\Visibility::VISIBLE),
                             )
                         ),
-                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\LocationPriority(), new SortClause\DatePublished()),
+                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\DatePublished()),
                     )
                 ),
                 2,
@@ -202,7 +203,7 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
                                 new Criterion\Visibility(Criterion\Visibility::VISIBLE),
                             )
                         ),
-                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\LocationPriority(), new SortClause\DatePublished(), new SortClause\ContentId()),
+                        'sortClauses' => array(new SortClause\ContentName(Query::SORT_DESC), new SortClause\DatePublished(), new SortClause\ContentId()),
                     )
                 ),
                 2,
@@ -217,7 +218,7 @@ class EZP21906SearchOneContentMultipleLocationsTest extends BaseTest
                                 new Criterion\Visibility(Criterion\Visibility::VISIBLE),
                             )
                         ),
-                        'sortClauses' => array(new SortClause\ContentName(), new SortClause\LocationPriority()),
+                        'sortClauses' => array(new SortClause\ContentName()),
                     )
                 ),
                 0,

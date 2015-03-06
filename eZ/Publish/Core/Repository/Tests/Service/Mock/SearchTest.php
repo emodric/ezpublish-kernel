@@ -266,7 +266,7 @@ class SearchTest extends BaseServiceMockTest
             );
 
         $serviceQuery = new Query();
-        $handlerQuery = new Query(array('filter' => new Criterion\MatchAll(), 'limit' => SearchService::MAX_LIMIT));
+        $handlerQuery = new Query(array('filter' => new Criterion\MatchAll(), 'limit' => 25));
         $fieldFilters = array();
         $spiContentInfo = new SPIContentInfo();
         $contentMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\Content\\Content');
@@ -586,7 +586,7 @@ class SearchTest extends BaseServiceMockTest
                 new Query(
                     array(
                         'filter' => new Criterion\MatchAll(),
-                        'limit' => 1073741824,
+                        'limit' => 25,
                     )
                 ),
                 array()
@@ -835,7 +835,7 @@ class SearchTest extends BaseServiceMockTest
         $repositoryMock->expects($this->never())->method('hasAccess');
 
         $serviceQuery = new LocationQuery();
-        $handlerQuery = new LocationQuery(array('filter' => new Criterion\MatchAll(), 'limit' => SearchService::MAX_LIMIT));
+        $handlerQuery = new LocationQuery(array('filter' => new Criterion\MatchAll(), 'limit' => 25));
         $spiLocation = new SPILocation();
         $locationMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\Content\\Location');
 
@@ -1028,7 +1028,7 @@ class SearchTest extends BaseServiceMockTest
                 new LocationQuery(
                     array(
                         'filter' => new Criterion\MatchAll(),
-                        'limit' => 1073741824,
+                        'limit' => 25,
                     )
                 )
             )

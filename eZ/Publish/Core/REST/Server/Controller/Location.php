@@ -338,19 +338,16 @@ class Location extends RestController
     public function loadLocationChildren($locationPath)
     {
         $offset = $this->request->query->has('offset') ? (int)$this->request->query->get('offset') : 0;
-        $limit = $this->request->query->has('limit') ? (int)$this->request->query->get('limit') : -1;
+        $limit = $this->request->query->has('limit') ? (int)$this->request->query->get('limit') : 10;
 
         $restLocations = array();
         $locationId = $this->extractLocationIdFromPath($locationPath);
-        foreach (
-            $this->locationService->loadLocationChildren(
-                $this->locationService->loadLocation(
-                    $locationId
-                ),
-                $offset >= 0 ? $offset : 0,
-                $limit >= 0 ? $limit : -1
-            )->locations as $location
-        ) {
+        $children = $this->locationService->loadLocationChildren(
+            $this->locationService->loadLocation($locationId),
+            $offset >= 0 ? $offset : 0,
+            $limit >= 0 ? $limit : 25
+        )->locations;
+        foreach ($children as $location) {
             $restLocations[] = new Values\RestLocation(
                 $location,
                 $this->locationService->getLocationChildCount($location)

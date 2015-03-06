@@ -76,9 +76,12 @@ class Query extends ValueObject
     /**
      * Query limit.
      *
+     * Limit for number of search hits to return.
+     * If value is `0`, search query will not return any search hits, useful for doing a count.
+     *
      * @var int
      */
-    public $limit;
+    public $limit = 25;
 
     /**
      * If true spellcheck suggestions are returned.
