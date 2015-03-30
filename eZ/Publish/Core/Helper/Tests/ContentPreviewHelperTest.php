@@ -33,9 +33,9 @@ class ContentPreviewHelperTest extends PHPUnit_Framework_TestCase
     private $eventDispatcher;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \eZ\Publish\Core\Helper\ContentPreviewHelper
      */
-    private $configResolver;
+    private $previewHelper;
 
     protected function setUp()
     {
@@ -44,6 +44,12 @@ class ContentPreviewHelperTest extends PHPUnit_Framework_TestCase
         $this->locationService = $this->getMock( 'eZ\Publish\API\Repository\LocationService' );
         $this->eventDispatcher = $this->getMock( 'Symfony\Component\EventDispatcher\EventDispatcherInterface' );
         $this->configResolver = $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        $this->previewHelper = new ContentPreviewHelper(
+            $this->contentService,
+            $this->locationService,
+            $this->eventDispatcher,
+            $this->configResolver
+        );
     }
 
     public function testChangeConfigScope()
@@ -57,16 +63,10 @@ class ContentPreviewHelperTest extends PHPUnit_Framework_TestCase
             ->with( MVCEvents::CONFIG_SCOPE_CHANGE, $this->equalTo( $event ) );
 
         $originalSiteAccess = new SiteAccess( 'foo', 'bar' );
-        $helper = new ContentPreviewHelper(
-            $this->contentService,
-            $this->locationService,
-            $this->eventDispatcher,
-            $this->configResolver
-        );
-        $helper->setSiteAccess( $originalSiteAccess );
+        $this->previewHelper->setSiteAccess( $originalSiteAccess );
         $this->assertEquals(
             $newSiteAccess,
-            $helper->changeConfigScope( $newSiteAccessName )
+            $this->previewHelper->changeConfigScope( $newSiteAccessName )
         );
     }
 
@@ -79,17 +79,36 @@ class ContentPreviewHelperTest extends PHPUnit_Framework_TestCase
             ->method( 'dispatch' )
             ->with( MVCEvents::CONFIG_SCOPE_RESTORE, $this->equalTo( $event ) );
 
-        $helper = new ContentPreviewHelper(
-            $this->contentService,
-            $this->locationService,
-            $this->eventDispatcher,
-            $this->configResolver
-        );
-        $helper->setSiteAccess( $originalSiteAccess );
+        $this->previewHelper->setSiteAccess( $originalSiteAccess );
         $this->assertEquals(
             $originalSiteAccess,
-            $helper->restoreConfigScope()
+            $this->previewHelper->restoreConfigScope()
         );
+    }
+
+    public function testPreviewActive()
+    {
+        $this->assertFalse( $this->previewHelper->isPreviewActive() );
+        $this->previewHelper->setPreviewActive( true );
+        $this->assertTrue( $this->previewHelper->isPreviewActive() );
+        $this->previewHelper->setPreviewActive( false );
+        $this->assertFalse( $this->previewHelper->isPreviewActive() );
+    }
+
+    public function testPreviewedContent()
+    {
+        $this->assertNull( $this->previewHelper->getPreviewedContent() );
+        $content = $this->getMock( '\eZ\Publish\API\Repository\Values\Content\Content' );
+        $this->previewHelper->setPreviewedContent( $content );
+        $this->assertSame( $content, $this->previewHelper->getPreviewedContent() );
+    }
+
+    public function testPreviewedLocation()
+    {
+        $this->assertNull( $this->previewHelper->getPreviewedLocation() );
+        $location = $this->getMock( '\eZ\Publish\API\Repository\Values\Content\Location' );
+        $this->previewHelper->setPreviewedLocation( $location );
+        $this->assertSame( $location, $this->previewHelper->getPreviewedLocation() );
     }
 
     public function testGetPreviewLocationNoMainLocation()

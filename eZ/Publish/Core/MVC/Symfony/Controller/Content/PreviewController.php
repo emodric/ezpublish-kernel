@@ -70,10 +70,14 @@ class PreviewController
 
     public function previewContentAction( $contentId, $versionNo, $language, $siteAccessName = null )
     {
+        $this->previewHelper->setPreviewActive( true );
+
         try
         {
             $content = $this->contentService->loadContent( $contentId, array( $language ), $versionNo );
             $location = $this->previewHelper->getPreviewLocation( $contentId );
+            $this->previewHelper->setPreviewedContent( $content );
+            $this->previewHelper->setPreviewedLocation( $location );
         }
         catch ( UnauthorizedException $e )
         {
@@ -100,6 +104,7 @@ class PreviewController
         $response->headers->remove( 'expires' );
 
         $this->previewHelper->restoreConfigScope();
+        $this->previewHelper->setPreviewActive( false );
 
         return $response;
     }
