@@ -3,7 +3,7 @@
         "dynamic": false,
         "_all" : { "enabled": false },
         "properties": {
-            "id": { "type": "integer", "index": "not_analyzed" },
+            "id": { "type": "string", "index": "not_analyzed" },
             "type_id": { "type": "string", "index": "not_analyzed" },
             "group_mid": { "type": "string", "index": "not_analyzed" },
             "version_id": { "type": "integer", "index": "not_analyzed" },
@@ -25,7 +25,7 @@
                 "type": "nested",
                 "dynamic": false,
                 "properties": {
-                    "id": { "type": "integer", "index": "not_analyzed" },
+                    "id": { "type": "string", "index": "not_analyzed" },
                     "priority_i": { "type": "integer", "index": "not_analyzed" },
                     "hidden_b": { "type": "boolean", "index": "not_analyzed" },
                     "invisible_b": { "type": "boolean", "index": "not_analyzed" },
@@ -170,7 +170,7 @@
                 }
             },
             {
-                "field_integer": {
+                "field_float": {
                     "path_match": "fields_doc.*_f",
                     "match_mapping_type": "float",
                     "mapping": {
@@ -180,7 +180,7 @@
                 }
             },
             {
-                "field_integer": {
+                "field_long": {
                     "path_match": "fields_doc.*_l",
                     "match_mapping_type": "long",
                     "mapping": {
@@ -190,7 +190,7 @@
                 }
             },
             {
-                "field_integer": {
+                "field_double": {
                     "path_match": "fields_doc.*_d",
                     "match_mapping_type": "double",
                     "mapping": {
@@ -200,7 +200,7 @@
                 }
             },
             {
-                "field_integer": {
+                "field_boolean": {
                     "path_match": "fields_doc.*_b",
                     "match_mapping_type": "boolean",
                     "mapping": {
@@ -214,6 +214,16 @@
                     "path_match": "fields_doc.*_gl",
                     "mapping": {
                         "type": "geo_point"
+                    }
+                }
+            },
+            {
+                "field_datetime": {
+                    "path_match": "fields_doc.*_dt",
+                    "match_mapping_type": "date",
+                    "mapping": {
+                        "type": "date",
+                        "index": "not_analyzed"
                     }
                 }
             }

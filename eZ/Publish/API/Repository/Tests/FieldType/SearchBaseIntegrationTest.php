@@ -18,6 +18,8 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Field;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\LogicalNot;
+use eZ\Publish\API\Repository\Values\Content\Query\Criterion\LogicalOperator;
+use eZ\Publish\API\Repository\Values\Content\Query\CustomFieldInterface;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause\Field as FieldSortClause;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
@@ -50,6 +52,12 @@ use eZ\Publish\API\Repository\Tests\SetupFactory\LegacyElasticsearch;
  * as Content One, and Content Two. See the descriptions of the abstract declarations of
  * these methods for more details on how to choose proper values.
  *
+ * If needed you can override the methods that provide Field criterion target value and
+ * which by default fall back to the methods mentioned above:
+ *
+ * - getSearchTargetValueOne()
+ * - getValidSearchValueTwo()
+ *
  * Note: this test case does not concern itself with testing field filters, behaviour
  * of multiple sort clauses or combination with other criteria. These are tested
  * elsewhere as a general field search cases, which enables keeping this test case
@@ -73,6 +81,19 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
     abstract protected function getValidSearchValueOne();
 
     /**
+     * Get search target field value One.
+     *
+     * Returns the Field criterion target value for the field value One.
+     * Default implementation falls back on {@link getValidSearchValueOne}.
+     *
+     * @return mixed
+     */
+    protected function getSearchTargetValueOne()
+    {
+        return $this->getValidSearchValueOne();
+    }
+
+    /**
      * Get search field value Two.
      *
      * The value must be valid for Content creation.
@@ -86,6 +107,29 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
      * @return mixed
      */
     abstract protected function getValidSearchValueTwo();
+
+    /**
+     * Get search target field value Two.
+     *
+     * Returns the Field criterion target value for the field value Two.
+     * Default implementation falls back on {@link getValidSearchValueTwo}.
+     *
+     * @return mixed
+     */
+    protected function getSearchTargetValueTwo()
+    {
+        return $this->getValidSearchValueTwo();
+    }
+
+    protected function checkCustomFieldsSupport()
+    {
+        if ( ltrim( get_class( $this->getSetupFactory() ), '\\' ) === 'eZ\\Publish\\API\\Repository\\Tests\\SetupFactory\\Legacy' )
+        {
+            $this->markTestSkipped(
+                "Legacy Search Engine does not support custom fields"
+            );
+        }
+    }
 
     /**
      * Creates and returns content with given $fieldData
@@ -122,6 +166,14 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
 
     public function criteriaProvider()
     {
+        return $this->provideCriteria(
+            $this->getSearchTargetValueOne(),
+            $this->getSearchTargetValueTwo()
+        );
+    }
+
+    public function provideCriteria( $valueOne, $valueTwo )
+    {
         return array(
             0 => array(
                 // Tests search with EQ operator.
@@ -131,7 +183,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value EQ One
                 //
                 // The result should contain Content One.
-                new Field( "data", Operator::EQ, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::EQ, $valueOne ),
                 true,
                 false,
             ),
@@ -143,7 +195,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value EQ One )
                 //
                 // The result should contain Content Two.
-                new LogicalNot( new Field( "data", Operator::EQ, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::EQ, $valueOne ) ),
                 false,
                 true,
             ),
@@ -155,7 +207,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value EQ Two
                 //
                 // The result should contain Content Two.
-                new Field( "data", Operator::EQ, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::EQ, $valueTwo ),
                 false,
                 true,
             ),
@@ -167,7 +219,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value EQ Two )
                 //
                 // The result should contain Content One.
-                new LogicalNot( new Field( "data", Operator::EQ, $this->getValidSearchValueTwo() ) ),
+                new LogicalNot( new Field( "data", Operator::EQ, $valueTwo ) ),
                 true,
                 false,
             ),
@@ -179,7 +231,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value IN [One]
                 //
                 // The result should contain Content One.
-                new Field( "data", Operator::IN, array( $this->getValidSearchValueOne() ) ),
+                new Field( "data", Operator::IN, array( $valueOne ) ),
                 true,
                 false,
             ),
@@ -192,7 +244,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //
                 // The result should contain Content Two.
                 new LogicalNot(
-                    new Field( "data", Operator::IN, array( $this->getValidSearchValueOne() ) )
+                    new Field( "data", Operator::IN, array( $valueOne ) )
                 ),
                 false,
                 true,
@@ -205,7 +257,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value IN [Two]
                 //
                 // The result should contain Content Two.
-                new Field( "data", Operator::IN, array( $this->getValidSearchValueTwo() ) ),
+                new Field( "data", Operator::IN, array( $valueTwo ) ),
                 false,
                 true,
             ),
@@ -218,7 +270,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //
                 // The result should contain Content One.
                 new LogicalNot(
-                    new Field( "data", Operator::IN, array( $this->getValidSearchValueTwo() ) )
+                    new Field( "data", Operator::IN, array( $valueTwo ) )
                 ),
                 true,
                 false,
@@ -235,8 +287,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                     "data",
                     Operator::IN,
                     array(
-                        $this->getValidSearchValueOne(),
-                        $this->getValidSearchValueTwo(),
+                        $valueOne,
+                        $valueTwo,
                     )
                 ),
                 true,
@@ -255,8 +307,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                         "data",
                         Operator::IN,
                         array(
-                            $this->getValidSearchValueOne(),
-                            $this->getValidSearchValueTwo(),
+                            $valueOne,
+                            $valueTwo,
                         )
                     )
                 ),
@@ -271,7 +323,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value GT One
                 //
                 // The result should contain Content Two.
-                new Field( "data", Operator::GT, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::GT, $valueOne ),
                 false,
                 true,
             ),
@@ -283,7 +335,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value GT One )
                 //
                 // The result should contain Content One.
-                new LogicalNot( new Field( "data", Operator::GT, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::GT, $valueOne ) ),
                 true,
                 false,
             ),
@@ -295,7 +347,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value GT Two
                 //
                 // The result should be empty.
-                new Field( "data", Operator::GT, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::GT, $valueTwo ),
                 false,
                 false,
             ),
@@ -307,7 +359,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value GT Two )
                 //
                 // The result should contain both Content One and Content Two.
-                new LogicalNot( new Field( "data", Operator::GT, $this->getValidSearchValueTwo() ) ),
+                new LogicalNot( new Field( "data", Operator::GT, $valueTwo ) ),
                 true,
                 true,
             ),
@@ -319,7 +371,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value GTE One
                 //
                 // The result should contain both Content One and Content Two.
-                new Field( "data", Operator::GTE, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::GTE, $valueOne ),
                 true,
                 true,
             ),
@@ -331,7 +383,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value GTE One )
                 //
                 // The result should be empty.
-                new LogicalNot( new Field( "data", Operator::GTE, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::GTE, $valueOne ) ),
                 false,
                 false,
             ),
@@ -343,7 +395,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value GTE Two
                 //
                 // The result should contain Content Two.
-                new Field( "data", Operator::GTE, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::GTE, $valueTwo ),
                 false,
                 true,
             ),
@@ -355,7 +407,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value GTE Two )
                 //
                 // The result should contain Content One.
-                new LogicalNot( new Field( "data", Operator::GTE, $this->getValidSearchValueTwo() ) ),
+                new LogicalNot( new Field( "data", Operator::GTE, $valueTwo ) ),
                 true,
                 false,
             ),
@@ -367,7 +419,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value LT One
                 //
                 // The result should be empty.
-                new Field( "data", Operator::LT, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::LT, $valueOne ),
                 false,
                 false,
             ),
@@ -379,7 +431,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value LT One )
                 //
                 // The result should contain both Content One and Content Two.
-                new LogicalNot( new Field( "data", Operator::LT, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::LT, $valueOne ) ),
                 true,
                 true,
             ),
@@ -391,7 +443,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value LT Two
                 //
                 // The result should contain Content One.
-                new Field( "data", Operator::LT, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::LT, $valueTwo ),
                 true,
                 false,
             ),
@@ -403,7 +455,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value LT Two )
                 //
                 // The result should contain Content Two.
-                new LogicalNot( new Field( "data", Operator::LT, $this->getValidSearchValueTwo() ) ),
+                new LogicalNot( new Field( "data", Operator::LT, $valueTwo ) ),
                 false,
                 true,
             ),
@@ -415,7 +467,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value LTE One
                 //
                 // The result should contain Content One.
-                new Field( "data", Operator::LTE, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::LTE, $valueOne ),
                 true,
                 false,
             ),
@@ -427,7 +479,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value LTE One )
                 //
                 // The result should contain Content Two.
-                new LogicalNot( new Field( "data", Operator::LTE, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::LTE, $valueOne ) ),
                 false,
                 true,
             ),
@@ -439,7 +491,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value LTE Two
                 //
                 // The result should contain both Content One and Content Two.
-                new Field( "data", Operator::LTE, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::LTE, $valueTwo ),
                 true,
                 true,
             ),
@@ -451,7 +503,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value LTE Two )
                 //
                 // The result should be empty.
-                new LogicalNot( new Field( "data", Operator::LTE, $this->getValidSearchValueTwo() ) ),
+                new LogicalNot( new Field( "data", Operator::LTE, $valueTwo ) ),
                 false,
                 false,
             ),
@@ -467,8 +519,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                     "data",
                     Operator::BETWEEN,
                     array(
-                        $this->getValidSearchValueOne(),
-                        $this->getValidSearchValueTwo(),
+                        $valueOne,
+                        $valueTwo,
                     )
                 ),
                 true,
@@ -487,8 +539,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                         "data",
                         Operator::BETWEEN,
                         array(
-                            $this->getValidSearchValueOne(),
-                            $this->getValidSearchValueTwo(),
+                            $valueOne,
+                            $valueTwo,
                         )
                     )
                 ),
@@ -507,8 +559,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                     "data",
                     Operator::BETWEEN,
                     array(
-                        $this->getValidSearchValueTwo(),
-                        $this->getValidSearchValueOne(),
+                        $valueTwo,
+                        $valueOne,
                     )
                 ),
                 false,
@@ -527,8 +579,8 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                         "data",
                         Operator::BETWEEN,
                         array(
-                            $this->getValidSearchValueTwo(),
-                            $this->getValidSearchValueOne(),
+                            $valueTwo,
+                            $valueOne,
                         )
                     )
                 ),
@@ -543,7 +595,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value CONTAINS One
                 //
                 // The result should contain Content One.
-                new Field( "data", Operator::CONTAINS, $this->getValidSearchValueOne() ),
+                new Field( "data", Operator::CONTAINS, $valueOne ),
                 true,
                 false,
             ),
@@ -555,7 +607,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     NOT( value CONTAINS One )
                 //
                 // The result should contain Content Two.
-                new LogicalNot( new Field( "data", Operator::CONTAINS, $this->getValidSearchValueOne() ) ),
+                new LogicalNot( new Field( "data", Operator::CONTAINS, $valueOne ) ),
                 false,
                 true,
             ),
@@ -567,7 +619,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //     value CONTAINS Two
                 //
                 // The result should contain Content Two.
-                new Field( "data", Operator::CONTAINS, $this->getValidSearchValueTwo() ),
+                new Field( "data", Operator::CONTAINS, $valueTwo ),
                 false,
                 true,
             ),
@@ -580,7 +632,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
                 //
                 // The result should contain Content One.
                 new LogicalNot(
-                    new Field( "data", Operator::CONTAINS, $this->getValidSearchValueTwo() )
+                    new Field( "data", Operator::CONTAINS, $valueTwo )
                 ),
                 true,
                 false,
@@ -670,6 +722,156 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
     }
 
     /**
+     * Asserts search result for modified field
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
+     * @param boolean $includesOne
+     * @param boolean $includesTwo
+     * @param array $context
+     * @param boolean $filter
+     * @param string $fieldName
+     */
+    public function assertFilterContentModifiedField(
+        Criterion $criterion,
+        $includesOne,
+        $includesTwo,
+        array $context,
+        $filter,
+        $fieldName
+    )
+    {
+        $this->checkCustomFieldsSupport();
+
+        $this->modifyFieldCriterion( $criterion, $fieldName );
+
+        list( $repository, $contentOneId, $contentTwoId ) = $context;
+        $searchResult = $this->findContent( $repository, $criterion, $filter );
+
+        $this->assertFindResult( $searchResult, $includesOne, $includesTwo, $contentOneId, $contentTwoId );
+    }
+
+    /**
+     * Tests Content Search sort with Field sort clause on a field of specific field type
+     *
+     * @dataProvider sortClauseProvider
+     * @depends testCreateTestContent
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
+     * @param boolean $ascending
+     * @param array $context
+     * @param string $fieldName
+     */
+    public function assertSortContentModifiedField(
+        SortClause $sortClause,
+        $ascending,
+        array $context,
+        $fieldName
+    )
+    {
+        $setupFactory = $this->getSetupFactory();
+
+        $this->checkCustomFieldsSupport();
+
+        if ( $setupFactory instanceof LegacySolr )
+        {
+            $this->markTestSkipped(
+                "For Solr engine Field sort clause is not yet implemented"
+            );
+        }
+
+        $this->modifyFieldSortClause( $sortClause, $fieldName );
+
+        list( $repository, $contentOneId, $contentTwoId ) = $context;
+        $searchResult = $this->sortContent( $repository, $sortClause );
+
+        $this->assertSortResult( $searchResult, $ascending, $contentOneId, $contentTwoId );
+    }
+
+    /**
+     * Sets given custom field $fieldName on a Field criteria.
+     *
+     * $fieldName refers to additional field (to the default field) defined in Indexable definition,
+     * and is resolved using FieldNameResolver.
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
+     * @param string $fieldName
+     */
+    protected function modifyFieldCriterion( Criterion $criterion, $fieldName )
+    {
+        $setupFactory = $this->getSetupFactory();
+        /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $container */
+        $container = $setupFactory->getServiceContainer()->getInnerContainer();
+
+        /** @var \eZ\Publish\Core\Search\Common\FieldNameResolver $fieldNameResolver */
+        $fieldNameResolver = $container->get( "ezpublish.search.common.field_name_resolver" );
+        $resolvedFieldNames = $fieldNameResolver->getFieldNames(
+            $criterion,
+            "data",
+            $this->getTypeName(),
+            $fieldName
+        );
+        $resolvedFieldName = reset( $resolvedFieldNames );
+        $criterion = array( $criterion );
+
+        $this->doModifyField( $criterion, $resolvedFieldName );
+    }
+
+    /**
+     * Sets given custom field $fieldName on a Field sort clause.
+     *
+     * $fieldName refers to additional field (to the default field) defined in Indexable definition,
+     * and is resolved using FieldNameResolver.
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause $sortClause
+     * @param string $fieldName
+     */
+    protected function modifyFieldSortClause( SortClause $sortClause, $fieldName )
+    {
+        $setupFactory = $this->getSetupFactory();
+        /** @var \Symfony\Component\DependencyInjection\ContainerBuilder $container */
+        $container = $setupFactory->getServiceContainer()->getInnerContainer();
+
+        /** @var \eZ\Publish\Core\Search\Common\FieldNameResolver $fieldNameResolver */
+        $fieldNameResolver = $container->get( "ezpublish.search.common.field_name_resolver" );
+        $resolvedFieldName = $fieldNameResolver->getSortFieldName(
+            $sortClause,
+            "test-" . $this->getTypeName(),
+            "data",
+            $fieldName
+        );
+        $sortClause = array( $sortClause );
+
+        $this->doModifyField( $sortClause, $resolvedFieldName );
+    }
+
+    /**
+     * Sets given custom field $fieldName on a Field criteria or sort clauses.
+     *
+     * Implemented separately to utilize recursion.
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion[]|\eZ\Publish\API\Repository\Values\Content\Query\SortClause[] $criteriaOrSortClauses
+     * @param string $fieldName
+     */
+    protected function doModifyField( array $criteriaOrSortClauses, $fieldName )
+    {
+        foreach ( $criteriaOrSortClauses as $criterionOrSortClause )
+        {
+            if ( $criterionOrSortClause instanceof LogicalOperator )
+            {
+                $this->doModifyField( $criterionOrSortClause->criteria, $fieldName );
+            }
+            else if ( $criterionOrSortClause instanceof CustomFieldInterface )
+            {
+                $criterionOrSortClause->setCustomField(
+                    "test-" . $this->getTypeName(),
+                    "data",
+                    $fieldName
+                );
+            }
+        }
+    }
+
+    /**
      * Tests Content Search querying with Field criterion on a field of specific field type
      *
      * @dataProvider criteriaProvider
@@ -710,7 +912,7 @@ abstract class SearchBaseIntegrationTest extends BaseIntegrationTest
         if ( $setupFactory instanceof LegacySolr )
         {
             $this->markTestSkipped(
-                "For Solr engine fields are not searchable with Location Search"
+                "For Solr engine Field sort clause is not yet implemented"
             );
         }
 
