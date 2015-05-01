@@ -142,6 +142,10 @@ Changes affecting version compatibility with former or future versions.
     Note: Does not affect future Solr/ElasticSearch search engines which has far more
           advanced search options built in.
 
+* 5.4.3: `eZ\Publish\Core\Repository\ContentService::deleteVersion()` now throws `BadStateException`
+  when deleting last version of the Content. Since Content without a version does not make sense, in
+  this case `eZ\Publish\Core\Repository\ContentService::deleteContent()` should be used instead.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.

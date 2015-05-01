@@ -75,6 +75,10 @@ Changes affecting version compatibility with former or future versions.
 * 5.3.4: `ViewCaching` legacy setting is now enforced and injected in legacy kernel when booted. This is to avoid persistence/Http
   cache clear not working when publishing content.
 
+* 5.3.6: `eZ\Publish\Core\Repository\ContentService::deleteVersion()` now throws `BadStateException`
+  when deleting last version of the Content. Since Content without a version does not make sense, in
+  this case `eZ\Publish\Core\Repository\ContentService::deleteContent()` should be used instead.
+
 ## Deprecations
 
 * Method `eZ\Publish\API\Repository\RoleService::removePolicy` is deprecated in
