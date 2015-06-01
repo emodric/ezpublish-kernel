@@ -12,6 +12,9 @@
 use eZ\Publish\Core\MVC\Legacy\Kernel as LegacyKernel;
 use eZ\Publish\Core\MVC\Legacy\Kernel\CLIHandler as LegacyKernelCLI;
 
+// Silencing deprecation errors from Symfony 2.7
+error_reporting( error_reporting() & ~E_USER_DEPRECATED );
+
 // Get global config.php settings
 if ( !file_exists( __DIR__ . '/config.php' ) )
 {
