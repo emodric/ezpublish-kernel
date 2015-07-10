@@ -243,6 +243,11 @@ Changes affecting version compatibility with former or future versions.
   Note: Possibility to search across all languages remains, however Field SortClause will
   for instance not work properly in this case, and we plan to start to give warnings about this.
 
+* 5.4.5: New SearchService API has been added: `findContentInfo()`
+  Method allows to search and get ContentInfo back instead of full content, allows for use cases
+  where full content in not needed, so search can work more or less only against search
+  engine without any database or persistence cache lookups to load the full objects.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.

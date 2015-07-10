@@ -9,6 +9,7 @@
 namespace eZ\Publish\Core\SignalSlot\Tests;
 
 use eZ\Publish\API\Repository\Values\Content\Query;
+use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Visibility;
 use eZ\Publish\Core\SignalSlot\SignalDispatcher;
@@ -30,7 +31,7 @@ class SearchServiceTest extends ServiceTest
 
     public function serviceProvider()
     {
-        $fieldFilters = array('languages' => array('fre-FR'));
+        $languageFilter = array('languages' => array('fre-FR'));
         $content = $this->getContent(
             $this->getVersionInfo(
                 $this->getContentInfo(42, md5(__METHOD__)),
@@ -44,7 +45,17 @@ class SearchServiceTest extends ServiceTest
                 'findContent',
                 array(
                     new Query(),
-                    $fieldFilters,
+                    $languageFilter,
+                    false,
+                ),
+                new SearchResult(array('totalCount' => 0)),
+                0,
+            ),
+            array(
+                'findContentInfo',
+                array(
+                    new Query(),
+                    $languageFilter,
                     false,
                 ),
                 new SearchResult(array('totalCount' => 0)),
@@ -54,10 +65,20 @@ class SearchServiceTest extends ServiceTest
                 'findSingle',
                 array(
                     $criterion,
-                    $fieldFilters,
+                    $languageFilter,
                     false,
                 ),
                 $content,
+                0,
+            ),
+            array(
+                'findLocations',
+                array(
+                    new LocationQuery(),
+                    $languageFilter,
+                    false,
+                ),
+                new SearchResult(array('totalCount' => 0)),
                 0,
             ),
             array(
