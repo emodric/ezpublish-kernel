@@ -212,9 +212,10 @@ class MapperTest extends LanguageAwareTestCase
         );
 
         $rowsFixture = $this->getContentExtractFixture();
+        $nameRowsFixture = $this->getNamesExtractFixture();
 
         $mapper = new Mapper($reg, $this->getLanguageHandler());
-        $result = $mapper->extractContentFromRows($rowsFixture);
+        $result = $mapper->extractContentFromRows($rowsFixture, $nameRowsFixture);
 
         $this->assertEquals(
             array(
@@ -245,9 +246,10 @@ class MapperTest extends LanguageAwareTestCase
         );
 
         $rowsFixture = $this->getMultipleVersionsExtractFixture();
+        $nameRowsFixture = $this->getMultipleVersionsNamesExtractFixture();
 
         $mapper = new Mapper($reg, $this->getLanguageHandler());
-        $result = $mapper->extractContentFromRows($rowsFixture);
+        $result = $mapper->extractContentFromRows($rowsFixture, $nameRowsFixture);
 
         $this->assertEquals(
             2,
@@ -463,6 +465,18 @@ class MapperTest extends LanguageAwareTestCase
     }
 
     /**
+     * Returns a fixture of database rows for content names extraction.
+     *
+     * Fixture is stored in _fixtures/extract_names_from_rows.php
+     *
+     * @return array
+     */
+    protected function getNamesExtractFixture()
+    {
+        return require __DIR__ . '/_fixtures/extract_names_from_rows.php';
+    }
+
+    /**
      * Returns a reference result for content extraction.
      *
      * Fixture is stored in _fixtures/extract_content_from_rows_result.php
@@ -482,6 +496,18 @@ class MapperTest extends LanguageAwareTestCase
     protected function getMultipleVersionsExtractFixture()
     {
         return require __DIR__ . '/_fixtures/extract_content_from_rows_multiple_versions.php';
+    }
+
+    /**
+     * Returns a fixture of database rows for content names extraction across multiple versions.
+     *
+     * Fixture is stored in _fixtures/extract_names_from_rows_multiple_versions.php
+     *
+     * @return array
+     */
+    protected function getMultipleVersionsNamesExtractFixture()
+    {
+        return require __DIR__ . '/_fixtures/extract_names_from_rows_multiple_versions.php';
     }
 
     /**
