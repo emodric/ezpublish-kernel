@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache;
 
 /**
@@ -22,7 +21,7 @@ interface GatewayCachePurger
      *
      * @return mixed
      */
-    public function purge( $cacheElements );
+    public function purge($cacheElements);
 
     /**
      * Triggers the cache purge for all content in cache.

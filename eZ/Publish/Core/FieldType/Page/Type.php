@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Page class
+ * File containing the Page class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Page;
 
 use eZ\Publish\Core\FieldType\FieldType;
@@ -26,7 +25,7 @@ class Type extends FieldType
         'defaultLayout' => array(
             'type' => 'string',
             'default' => '',
-        )
+        ),
     );
 
     /**
@@ -43,60 +42,54 @@ class Type extends FieldType
      * @param \eZ\Publish\Core\FieldType\Page\PageService $pageService
      * @param \eZ\Publish\Core\FieldType\Page\HashConverter $hashConverter
      */
-    public function __construct( PageService $pageService, HashConverter $hashConverter )
+    public function __construct(PageService $pageService, HashConverter $hashConverter)
     {
         $this->pageService = $pageService;
         $this->hashConverter = $hashConverter;
     }
 
     /**
-     * Returns the field type identifier for this field type
+     * Returns the field type identifier for this field type.
      *
      * @return string
      */
     public function getFieldTypeIdentifier()
     {
-        return "ezpage";
+        return 'ezpage';
     }
 
     /**
-     * Validates the fieldSettings of a FieldDefinitionCreateStruct or FieldDefinitionUpdateStruct
+     * Validates the fieldSettings of a FieldDefinitionCreateStruct or FieldDefinitionUpdateStruct.
      *
      * @param mixed $fieldSettings
      *
      * @return \eZ\Publish\SPI\FieldType\ValidationError[]
      */
-    public function validateFieldSettings( $fieldSettings )
+    public function validateFieldSettings($fieldSettings)
     {
         $validationErrors = array();
 
-        foreach ( $fieldSettings as $name => $value )
-        {
-            if ( isset( $this->settingsSchema[$name] ) )
-            {
-                switch ( $name )
-                {
+        foreach ($fieldSettings as $name => $value) {
+            if (isset($this->settingsSchema[$name])) {
+                switch ($name) {
                     case 'defaultLayout':
-                        if ( !in_array( $value, $this->pageService->getAvailableZoneLayouts() ) )
-                        {
+                        if (!in_array($value, $this->pageService->getAvailableZoneLayouts())) {
                             $validationErrors[] = new ValidationError(
                                 "Layout '{$value}' for setting '%setting%' is not available",
                                 null,
                                 array(
-                                    'setting' => $name
+                                    'setting' => $name,
                                 )
                             );
                         }
                         break;
                 }
-            }
-            else
-            {
+            } else {
                 $validationErrors[] = new ValidationError(
                     "Setting '%setting%' is unknown",
                     null,
                     array(
-                        'setting' => $name
+                        'setting' => $name,
                     )
                 );
             }
@@ -119,23 +112,20 @@ class Type extends FieldType
     }
 
     /**
-     * Returns if the given $value is considered empty by the field type
+     * Returns if the given $value is considered empty by the field type.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Value $value
      *
-     * @return boolean
+     * @return bool
      */
-    public function isEmptyValue( SPIValue $value )
+    public function isEmptyValue(SPIValue $value)
     {
-        if ( $value === null || $value == $this->getEmptyValue() )
-        {
+        if ($value === null || $value == $this->getEmptyValue()) {
             return true;
         }
 
-        foreach ( $value->page->zones as $zone )
-        {
-            if ( !empty( $zone->blocks ) )
-            {
+        foreach ($value->page->zones as $zone) {
+            if (!empty($zone->blocks)) {
                 return false;
             }
         }
@@ -144,68 +134,67 @@ class Type extends FieldType
     }
 
     /**
-     * Converts an $hash to the Value defined by the field type
+     * Converts an $hash to the Value defined by the field type.
      *
      * @param mixed $hash
      *
      * @return \eZ\Publish\Core\FieldType\Page\Value
      */
-    public function fromHash( $hash )
+    public function fromHash($hash)
     {
-        if ( $hash === null )
-        {
+        if ($hash === null) {
             return $this->getEmptyValue();
         }
-        return $this->hashConverter->convertToValue( $hash );
+
+        return $this->hashConverter->convertToValue($hash);
     }
 
     /**
-     * Converts a Value to a hash
+     * Converts a Value to a hash.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Value $value
      *
      * @return mixed
      */
-    public function toHash( SPIValue $value )
+    public function toHash(SPIValue $value)
     {
-        if ( $this->isEmptyValue( $value ) )
-        {
+        if ($this->isEmptyValue($value)) {
             return null;
         }
-        return $this->hashConverter->convertFromValue( $value );
+
+        return $this->hashConverter->convertFromValue($value);
     }
 
     /**
-     * Converts a persistence $fieldValue to a Value
+     * Converts a persistence $fieldValue to a Value.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\FieldValue $fieldValue
      *
      * @return \eZ\Publish\Core\FieldType\Page\Value
      */
-    public function fromPersistenceValue( FieldValue $fieldValue )
+    public function fromPersistenceValue(FieldValue $fieldValue)
     {
-        if ( $fieldValue->data === null )
-        {
+        if ($fieldValue->data === null) {
             return $this->getEmptyValue();
         }
 
-        return new Value( $fieldValue->data );
+        return new Value($fieldValue->data);
     }
 
     /**
-     * Converts a $value to a persistence value
+     * Converts a $value to a persistence value.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Value $value
      *
      * @return \eZ\Publish\SPI\Persistence\Content\FieldValue
      */
-    public function toPersistenceValue( SPIValue $value )
+    public function toPersistenceValue(SPIValue $value)
     {
         return new FieldValue(
             array(
-                "data" => $value->page,
-                "externalData" => null,
-                "sortKey" => $this->getSortInfo( $value )
+                'data' => $value->page,
+                'externalData' => null,
+                'sortKey' => $this->getSortInfo($value),
             )
         );
     }
@@ -226,7 +215,7 @@ class Type extends FieldType
      *
      * @return mixed
      */
-    protected function getSortInfo( BaseValue $value )
+    protected function getSortInfo(BaseValue $value)
     {
         return false;
     }
@@ -241,7 +230,7 @@ class Type extends FieldType
      *
      * @return string
      */
-    public function getName( SPIValue $value )
+    public function getName(SPIValue $value)
     {
         return '';
     }
@@ -253,7 +242,7 @@ class Type extends FieldType
      *
      * @return \eZ\Publish\Core\FieldType\Page\Value The potentially converted and structurally plausible value.
      */
-    protected function createValueFromInput( $inputValue )
+    protected function createValueFromInput($inputValue)
     {
         return $inputValue;
     }
@@ -264,16 +253,13 @@ class Type extends FieldType
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException If the value does not match the expected structure.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Value $value
-     *
-     * @return void
      */
-    protected function checkValueStructure( BaseValue $value )
+    protected function checkValueStructure(BaseValue $value)
     {
-        if ( !$value->page instanceof Page )
-        {
+        if (!$value->page instanceof Page) {
             throw new InvalidArgumentType(
-                "\$value->page",
-                "eZ\\Publish\\Core\\FieldType\\Page\\Parts\\Page",
+                '$value->page',
+                'eZ\\Publish\\Core\\FieldType\\Page\\Parts\\Page',
                 $value->page
             );
         }

@@ -6,11 +6,8 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishRestBundle\Features\Context\RestClient;
 
-use eZ\Bundle\EzPublishRestBundle\Features\Context\RestClient\DriverInterface;
-use eZ\Bundle\EzPublishRestBundle\Features\Context\RestClient\DriverHelper;
 use Buzz\Message\Request;
 use Buzz\Message\Response;
 use Buzz\Client\Curl;
@@ -20,7 +17,7 @@ class BuzzDriver implements DriverInterface
     use DriverHelper;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $sent = false;
 
@@ -35,7 +32,7 @@ class BuzzDriver implements DriverInterface
     private $response;
 
     /**
-     * Initialize the request and response
+     * Initialize the request and response.
      */
     public function __construct()
     {
@@ -44,7 +41,7 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Get reponse
+     * Get reponse.
      *
      * @return \Buzz\Message\Response
      *
@@ -52,16 +49,15 @@ class BuzzDriver implements DriverInterface
      */
     protected function getResponse()
     {
-        if ( $this->sent )
-        {
+        if ($this->sent) {
             return $this->response;
         }
 
-        throw new \RuntimeException( "Attempt to get response data when request hasn't been sent yet" );
+        throw new \RuntimeException("Attempt to get response data when request hasn't been sent yet");
     }
 
     /**
-     * Get request
+     * Get request.
      *
      * @return \Buzz\Message\Response
      */
@@ -71,13 +67,13 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Send the request
+     * Send the request.
      */
     public function send()
     {
         // prepare client
         $curl = new Curl();
-        $curl->setTimeout( 10 );
+        $curl->setTimeout(10);
         $curl->send(
             $this->request,
             $this->response
@@ -87,48 +83,41 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Set request host
+     * Set request host.
      *
      * @param string $host
-     *
-     * @return void
      */
-    public function setHost( $host )
+    public function setHost($host)
     {
-        if ( substr( $host, -1 ) === '/' )
-        {
-            $host = substr( $host, 0, strlen( $host ) - 1 );
+        if (substr($host, -1) === '/') {
+            $host = substr($host, 0, strlen($host) - 1);
         }
 
-        $this->getRequest()->setHost( $host );
+        $this->getRequest()->setHost($host);
     }
 
     /**
-     * Set request resource url
+     * Set request resource url.
      *
      * @param string $resource
-     *
-     * @return void
      */
-    public function setResource( $resource )
+    public function setResource($resource)
     {
-        $this->getRequest()->setResource( $resource );
+        $this->getRequest()->setResource($resource);
     }
 
     /**
-     * Set request method
+     * Set request method.
      *
      * @param string $method Can be GET, POST, PATCH, ...
-     *
-     * @return void
      */
-    public function setMethod( $method )
+    public function setMethod($method)
     {
-        $this->getRequest()->setMethod( $method );
+        $this->getRequest()->setMethod($method);
     }
 
     /**
-     * Get response status code
+     * Get response status code.
      *
      * @return string
      *
@@ -140,7 +129,7 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Get response status message
+     * Get response status message.
      *
      * @return string
      *
@@ -152,24 +141,21 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Set request header
+     * Set request header.
      *
      * @param string $header Header to be set
-     *
-     * @return void
      */
-    public function setHeader( $header, $value )
+    public function setHeader($header, $value)
     {
-        if ( is_array( $value ) )
-        {
-            $value = implode( ';', $value );
+        if (is_array($value)) {
+            $value = implode(';', $value);
         }
 
-        $this->getRequest()->addHeader( "$header: $value" );
+        $this->getRequest()->addHeader("$header: $value");
     }
 
     /**
-     * Get all response headers
+     * Get all response headers.
      *
      * @return array Associative array with $header => $value (value can be an array if it hasn't a single value)
      *
@@ -177,11 +163,11 @@ class BuzzDriver implements DriverInterface
      */
     public function getHeaders()
     {
-        return $this->unFormatHeaders( $this->response->getHeaders() );
+        return $this->unFormatHeaders($this->response->getHeaders());
     }
 
     /**
-     * Get response body
+     * Get response body.
      *
      * @return string
      *
@@ -193,40 +179,34 @@ class BuzzDriver implements DriverInterface
     }
 
     /**
-     * Set request body
+     * Set request body.
      *
      * @param string $body
-     *
-     * @return void
      */
-    public function setBody( $body )
+    public function setBody($body)
     {
-        $this->getRequest()->setContent( $body );
+        $this->getRequest()->setContent($body);
     }
 
     /**
-     * Converts the buzz headers attributes into single lines
+     * Converts the buzz headers attributes into single lines.
      *
      * @param array $headers All headers
      *
      * @return array
      */
-    protected function unFormatHeaders( array $headers )
+    protected function unFormatHeaders(array $headers)
     {
         $headersInAssociativeArray = array();
-        foreach ( $headers as $header )
-        {
-            $colonPosition = strpos( $header, ':' );
+        foreach ($headers as $header) {
+            $colonPosition = strpos($header, ':');
 
             // if no ':' is found than add all header to array
-            if ( $colonPosition === false )
-            {
+            if ($colonPosition === false) {
                 $headersInAssociativeArray[] = $header;
-            }
-            else
-            {
-                $key = strtolower( trim( substr( $header, 0, $colonPosition ) ) );
-                $value = trim( substr( $header, $colonPosition + 1, strlen( $header ) ) );
+            } else {
+                $key = strtolower(trim(substr($header, 0, $colonPosition)));
+                $value = trim(substr($header, $colonPosition + 1, strlen($header)));
                 $headersInAssociativeArray[$key] = $value;
             }
         }

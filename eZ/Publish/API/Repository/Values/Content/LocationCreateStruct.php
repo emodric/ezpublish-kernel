@@ -6,18 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class is used to create a new Location for a content object
+ * This class is used to create a new Location for a content object.
  */
 class LocationCreateStruct extends ValueObject
 {
     /**
-     * Location priority
+     * Location priority.
      *
      * Position of the Location among its siblings when sorted using priority
      * sort order.
@@ -29,7 +28,7 @@ class LocationCreateStruct extends ValueObject
     /**
      * Indicates that the Location entity has been explicitly marked as hidden.
      *
-     * @var boolean
+     * @var bool
      */
     public $hidden = false;
 

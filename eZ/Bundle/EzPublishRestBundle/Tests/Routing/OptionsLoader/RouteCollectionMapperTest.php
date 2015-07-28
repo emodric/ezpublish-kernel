@@ -32,11 +32,11 @@ class RouteCollectionMapperTest extends PHPUnit_Framework_TestCase
     public function testAddRestRoutesCollection()
     {
         $restRoutesCollection = new RouteCollection();
-        $restRoutesCollection->add( 'ezpublish_rest_route_one_get', $this->createRoute( '/route/one', array( 'GET' ) ) );
-        $restRoutesCollection->add( 'ezpublish_rest_route_one_post', $this->createRoute( '/route/one', array( 'POST' ) ) );
-        $restRoutesCollection->add( 'ezpublish_rest_route_two_delete', $this->createRoute( '/route/two', array( 'DELETE' ) ) );
+        $restRoutesCollection->add('ezpublish_rest_route_one_get', $this->createRoute('/route/one', array('GET')));
+        $restRoutesCollection->add('ezpublish_rest_route_one_post', $this->createRoute('/route/one', array('POST')));
+        $restRoutesCollection->add('ezpublish_rest_route_two_delete', $this->createRoute('/route/two', array('DELETE')));
 
-        $optionsRouteCollection = $this->collectionMapper->mapCollection( $restRoutesCollection );
+        $optionsRouteCollection = $this->collectionMapper->mapCollection($restRoutesCollection);
 
         self::assertEquals(
             2,
@@ -45,22 +45,22 @@ class RouteCollectionMapperTest extends PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(
             'Symfony\Component\Routing\Route',
-            $optionsRouteCollection->get( 'ezpublish_rest_options_route_one' )
+            $optionsRouteCollection->get('ezpublish_rest_options_route_one')
         );
 
         self::assertInstanceOf(
             'Symfony\Component\Routing\Route',
-            $optionsRouteCollection->get( 'ezpublish_rest_options_route_two' )
+            $optionsRouteCollection->get('ezpublish_rest_options_route_two')
         );
 
         self::assertEquals(
             'GET,POST',
-            $optionsRouteCollection->get( 'ezpublish_rest_options_route_one' )->getDefault( 'allowedMethods' )
+            $optionsRouteCollection->get('ezpublish_rest_options_route_one')->getDefault('allowedMethods')
         );
 
         self::assertEquals(
             'DELETE',
-            $optionsRouteCollection->get( 'ezpublish_rest_options_route_two' )->getDefault( 'allowedMethods' )
+            $optionsRouteCollection->get('ezpublish_rest_options_route_two')->getDefault('allowedMethods')
         );
     }
 
@@ -69,8 +69,8 @@ class RouteCollectionMapperTest extends PHPUnit_Framework_TestCase
      * @param array $methods
      * @return Route
      */
-    private function createRoute( $path, array $methods )
+    private function createRoute($path, array $methods)
     {
-        return new Route( $path, array(), array(), array(), '', array(), $methods );
+        return new Route($path, array(), array(), array(), '', array(), $methods);
     }
 }

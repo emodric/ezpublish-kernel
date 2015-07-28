@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing an interface for the database abstractions
+ * File containing an interface for the database abstractions.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Database;
 
 /**
@@ -22,7 +21,7 @@ interface DeleteQuery extends Query
      * @param string $table
      * @return \eZ\Publish\Core\Persistence\Database\DeleteQuery
      */
-    public function deleteFrom( $table );
+    public function deleteFrom($table);
 
     /**
      * Adds a where clause with logical expressions to the query.

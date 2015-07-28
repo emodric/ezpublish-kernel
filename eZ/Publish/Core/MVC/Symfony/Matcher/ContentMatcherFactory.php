@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
@@ -25,11 +24,12 @@ class ContentMatcherFactory extends ContentBasedMatcherFactory
      *
      * @return bool
      */
-    protected function doMatch( MatcherInterface $matcher, ValueObject $valueObject )
+    protected function doMatch(MatcherInterface $matcher, ValueObject $valueObject)
     {
-        if ( !$valueObject instanceof ContentInfo )
-            throw new InvalidArgumentException( 'Value object must be a valid ContentInfo instance' );
+        if (!$valueObject instanceof ContentInfo) {
+            throw new InvalidArgumentException('Value object must be a valid ContentInfo instance');
+        }
 
-        return $matcher->matchContentInfo( $valueObject );
+        return $matcher->matchContentInfo($valueObject);
     }
 }

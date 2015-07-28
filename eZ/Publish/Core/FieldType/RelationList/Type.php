@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RelationList FieldType class
+ * File containing the RelationList FieldType class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\RelationList;
 
 use eZ\Publish\Core\FieldType\FieldType;
@@ -29,7 +28,6 @@ class Type extends FieldType
 {
     /**
      * @todo Consider to add all 6 selection options
-     *
      */
     const SELECTION_BROWSE = 0,
           SELECTION_DROPDOWN = 1;
@@ -56,60 +54,54 @@ class Type extends FieldType
      *
      * @return \eZ\Publish\SPI\FieldType\ValidationError[]
      */
-    public function validateFieldSettings( $fieldSettings )
+    public function validateFieldSettings($fieldSettings)
     {
         $validationErrors = array();
 
-        foreach ( $fieldSettings as $name => $value )
-        {
-            if ( !isset( $this->settingsSchema[$name] ) )
-            {
+        foreach ($fieldSettings as $name => $value) {
+            if (!isset($this->settingsSchema[$name])) {
                 $validationErrors[] = new ValidationError(
                     "Setting '%setting%' is unknown",
                     null,
                     array(
-                        "setting" => $name
+                        'setting' => $name,
                     )
                 );
                 continue;
             }
 
-            switch ( $name )
-            {
-                case "selectionMethod":
-                    if ( $value !== self::SELECTION_BROWSE && $value !== self::SELECTION_DROPDOWN )
-                    {
+            switch ($name) {
+                case 'selectionMethod':
+                    if ($value !== self::SELECTION_BROWSE && $value !== self::SELECTION_DROPDOWN) {
                         $validationErrors[] = new ValidationError(
                             "Setting '%setting%' must be either %selection_browse% or %selection_dropdown%",
                             null,
                             array(
-                                "setting" => $name,
-                                "selection_browse" => self::SELECTION_BROWSE,
-                                "selection_dropdown" => self::SELECTION_DROPDOWN
+                                'setting' => $name,
+                                'selection_browse' => self::SELECTION_BROWSE,
+                                'selection_dropdown' => self::SELECTION_DROPDOWN,
                             )
                         );
                     }
                     break;
-                case "selectionDefaultLocation":
-                    if ( !is_int( $value ) && !is_string( $value ) && $value !== null )
-                    {
+                case 'selectionDefaultLocation':
+                    if (!is_int($value) && !is_string($value) && $value !== null) {
                         $validationErrors[] = new ValidationError(
                             "Setting '%setting%' value must be of either null, string or integer",
                             null,
                             array(
-                                "setting" => $name
+                                'setting' => $name,
                             )
                         );
                     }
                     break;
-                case "selectionContentTypes":
-                    if ( !is_array( $value ) )
-                    {
+                case 'selectionContentTypes':
+                    if (!is_array($value)) {
                         $validationErrors[] = new ValidationError(
                             "Setting '%setting%' value must be of array type",
                             null,
                             array(
-                                "setting" => $name
+                                'setting' => $name,
                             )
                         );
                     }
@@ -121,13 +113,13 @@ class Type extends FieldType
     }
 
     /**
-     * Returns the field type identifier for this field type
+     * Returns the field type identifier for this field type.
      *
      * @return string
      */
     public function getFieldTypeIdentifier()
     {
-        return "ezobjectrelationlist";
+        return 'ezobjectrelationlist';
     }
 
     /**
@@ -140,9 +132,9 @@ class Type extends FieldType
      *
      * @return string
      */
-    public function getName( SPIValue $value )
+    public function getName(SPIValue $value)
     {
-        throw new \RuntimeException( '@todo Implement this method' );
+        throw new \RuntimeException('@todo Implement this method');
     }
 
     /**
@@ -163,22 +155,19 @@ class Type extends FieldType
      *
      * @return \eZ\Publish\Core\FieldType\RelationList\Value The potentially converted and structurally plausible value.
      */
-    protected function createValueFromInput( $inputValue )
+    protected function createValueFromInput($inputValue)
     {
         // ContentInfo
-        if ( $inputValue instanceof ContentInfo )
-        {
-            $inputValue = new Value( array( $inputValue->id ) );
+        if ($inputValue instanceof ContentInfo) {
+            $inputValue = new Value(array($inputValue->id));
         }
         // content id
-        else if ( is_integer( $inputValue ) || is_string( $inputValue ) )
-        {
-            $inputValue = new Value( array( $inputValue ) );
+        elseif (is_integer($inputValue) || is_string($inputValue)) {
+            $inputValue = new Value(array($inputValue));
         }
         // content id's
-        else if ( is_array( $inputValue ) )
-        {
-            $inputValue = new Value( $inputValue );
+        elseif (is_array($inputValue)) {
+            $inputValue = new Value($inputValue);
         }
 
         return $inputValue;
@@ -190,24 +179,19 @@ class Type extends FieldType
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException If the value does not match the expected structure.
      *
      * @param \eZ\Publish\Core\FieldType\RelationList\Value $value
-     *
-     * @return void
      */
-    protected function checkValueStructure( BaseValue $value )
+    protected function checkValueStructure(BaseValue $value)
     {
-        if ( !is_array( $value->destinationContentIds ) )
-        {
+        if (!is_array($value->destinationContentIds)) {
             throw new InvalidArgumentType(
-                "\$value->destinationContentIds",
+                '$value->destinationContentIds',
                 'array',
                 $value->destinationContentIds
             );
         }
 
-        foreach ( $value->destinationContentIds as $key => $destinationContentId )
-        {
-            if ( !is_integer( $destinationContentId ) && !is_string( $destinationContentId ) )
-            {
+        foreach ($value->destinationContentIds as $key => $destinationContentId) {
+            if (!is_integer($destinationContentId) && !is_string($destinationContentId)) {
                 throw new InvalidArgumentType(
                     "\$value->destinationContentIds[$key]",
                     'string|int',
@@ -225,39 +209,39 @@ class Type extends FieldType
      *
      * @return array
      */
-    protected function getSortInfo( BaseValue $value )
+    protected function getSortInfo(BaseValue $value)
     {
         return false;
     }
 
     /**
-     * Converts an $hash to the Value defined by the field type
+     * Converts an $hash to the Value defined by the field type.
      *
      * @param mixed $hash
      *
      * @return \eZ\Publish\Core\FieldType\RelationList\Value $value
      */
-    public function fromHash( $hash )
+    public function fromHash($hash)
     {
-        return new Value( $hash['destinationContentIds'] );
+        return new Value($hash['destinationContentIds']);
     }
 
     /**
-     * Converts a $Value to a hash
+     * Converts a $Value to a hash.
      *
      * @param \eZ\Publish\Core\FieldType\RelationList\Value $value
      *
      * @return mixed
      */
-    public function toHash( SPIValue $value )
+    public function toHash(SPIValue $value)
     {
-        return array( 'destinationContentIds' => $value->destinationContentIds );
+        return array('destinationContentIds' => $value->destinationContentIds);
     }
 
     /**
-     * Returns whether the field type is searchable
+     * Returns whether the field type is searchable.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSearchable()
     {
@@ -289,11 +273,11 @@ class Type extends FieldType
      *  )
      * </code>
      */
-    public function getRelations( SPIValue $value )
+    public function getRelations(SPIValue $value)
     {
         /** @var \eZ\Publish\Core\FieldType\RelationList\Value $value */
         return array(
-            Relation::FIELD => $value->destinationContentIds
+            Relation::FIELD => $value->destinationContentIds,
         );
     }
 }

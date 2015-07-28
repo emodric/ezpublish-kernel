@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RelationTest class
+ * File containing the RelationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Tests;
 
 use eZ\Publish\Core\FieldType\Relation\Type as RelationType;
@@ -31,7 +30,7 @@ class RelationTest extends FieldTypeTest
     protected function createFieldTypeUnderTest()
     {
         $fieldType = new RelationType();
-        $fieldType->setTransformationProcessor( $this->getTransformationProcessorMock() );
+        $fieldType->setTransformationProcessor($this->getTransformationProcessorMock());
 
         return $fieldType;
     }
@@ -104,7 +103,7 @@ class RelationTest extends FieldTypeTest
             array(
                 true,
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException',
-            )
+            ),
         );
     }
 
@@ -146,17 +145,17 @@ class RelationTest extends FieldTypeTest
             ),
             array(
                 23,
-                new Value( 23 ),
+                new Value(23),
             ),
             array(
-                new ContentInfo( array( 'id' => 23 ) ),
-                new Value( 23 ),
+                new ContentInfo(array('id' => 23)),
+                new Value(23),
             ),
         );
     }
 
     /**
-     * Provide input for the toHash() method
+     * Provide input for the toHash() method.
      *
      * Returns an array of data provider sets with 2 arguments: 1. The valid
      * input to toHash(), 2. The expected return value from toHash().
@@ -194,18 +193,18 @@ class RelationTest extends FieldTypeTest
     {
         return array(
             array(
-                new Value( 23 ),
-                array( 'destinationContentId' => 23 ),
+                new Value(23),
+                array('destinationContentId' => 23),
             ),
             array(
                 new Value(),
-                array( 'destinationContentId' => null ),
+                array('destinationContentId' => null),
             ),
         );
     }
 
     /**
-     * Provide input to fromHash() method
+     * Provide input to fromHash() method.
      *
      * Returns an array of data provider sets with 2 arguments: 1. The valid
      * input to fromHash(), 2. The expected return value from fromHash().
@@ -243,11 +242,11 @@ class RelationTest extends FieldTypeTest
     {
         return array(
             array(
-                array( 'destinationContentId' => 23 ),
-                new Value( 23 ),
+                array('destinationContentId' => 23),
+                new Value(23),
             ),
             array(
-                array( 'destinationContentId' => null ),
+                array('destinationContentId' => null),
                 new Value(),
             ),
         );
@@ -282,13 +281,13 @@ class RelationTest extends FieldTypeTest
                 array(
                     'selectionMethod' => RelationType::SELECTION_BROWSE,
                     'selectionRoot' => 42,
-                )
+                ),
             ),
             array(
                 array(
                     'selectionMethod' => RelationType::SELECTION_DROPDOWN,
                     'selectionRoot' => 'some-key',
-                )
+                ),
             ),
         );
     }
@@ -324,22 +323,22 @@ class RelationTest extends FieldTypeTest
                 array(
                     'unknownKey' => 23,
                     'selectionMethod' => RelationType::SELECTION_BROWSE,
-                    'selectionRoot' => 42
-                )
+                    'selectionRoot' => 42,
+                ),
             ),
             array(
                 // Invalid selectionMethod
                 array(
                     'selectionMethod' => 2342,
-                    'selectionRoot' => 42
-                )
+                    'selectionRoot' => 42,
+                ),
             ),
             array(
                 // Invalid selectionRoot
                 array(
                     'selectionMethod' => RelationType::SELECTION_DROPDOWN,
-                    'selectionRoot' => array()
-                )
+                    'selectionRoot' => array(),
+                ),
             ),
         );
     }
@@ -352,9 +351,9 @@ class RelationTest extends FieldTypeTest
         $ft = $this->createFieldTypeUnderTest();
         $this->assertEquals(
             array(
-                Relation::FIELD => array( 70 ),
+                Relation::FIELD => array(70),
             ),
-            $ft->getRelations( $ft->acceptValue( 70 ) )
+            $ft->getRelations($ft->acceptValue(70))
         );
     }
 
@@ -367,15 +366,15 @@ class RelationTest extends FieldTypeTest
      * @dataProvider provideDataForGetName
      * @expectedException \RuntimeException
      */
-    public function testGetName( SPIValue $value, $expected )
+    public function testGetName(SPIValue $value, $expected)
     {
-        $this->getFieldTypeUnderTest()->getName( $value );
+        $this->getFieldTypeUnderTest()->getName($value);
     }
 
     public function provideDataForGetName()
     {
         return array(
-            array( $this->getEmptyValueExpectation(), '' )
+            array($this->getEmptyValueExpectation(), ''),
         );
     }
 }

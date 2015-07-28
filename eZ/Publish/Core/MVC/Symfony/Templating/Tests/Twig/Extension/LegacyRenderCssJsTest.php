@@ -6,15 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Templating\Tests\Twig\Extension;
 
 use eZ\Publish\Core\MVC\Legacy\Templating\Twig\Extension\LegacyExtension;
 
 /**
- * Class LegacyRenderCssJsTest
- *
- * @package eZ\Publish\Core\MVC\Symfony\Templating\Tests\Twig\Extension
+ * Class LegacyRenderCssJsTest.
  */
 class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
 {
@@ -39,7 +36,7 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
     /**
      * @param array $jsFiles
      */
-    public function setJsFiles( array $jsFiles )
+    public function setJsFiles(array $jsFiles)
     {
         $this->jsFiles = $jsFiles;
     }
@@ -55,7 +52,7 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
     /**
      * @param array $cssFiles
      */
-    public function setCssFiles( array $cssFiles )
+    public function setCssFiles(array $cssFiles)
     {
         $this->cssFiles = $cssFiles;
     }
@@ -73,7 +70,7 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
                 $this->getLegacyHelperMock(),
                 $templatesPath . 'ez_legacy_render_js.html.twig',
                 $templatesPath . 'ez_legacy_render_css.html.twig'
-            )
+            ),
         );
     }
 
@@ -90,19 +87,17 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
      */
     protected function getLegacyEngineMock()
     {
-        $multipleObjectConverterMock = $this->getMock( 'eZ\Publish\Core\MVC\Legacy\Templating\Converter\MultipleObjectConverter' );
+        $multipleObjectConverterMock = $this->getMock('eZ\Publish\Core\MVC\Legacy\Templating\Converter\MultipleObjectConverter');
 
         return $this->getMock(
             'eZ\Publish\Core\MVC\Legacy\Templating\LegacyEngine',
             array(),
             array(
-                function ()
-                {
+                function () {
                 },
-                $multipleObjectConverterMock
+                $multipleObjectConverterMock,
             )
         );
-
     }
 
     /**
@@ -114,23 +109,22 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
             'eZ\Publish\Core\MVC\Legacy\Templating\LegacyHelper',
             array(),
             array(
-                function ()
-                {
-                }
+                function () {
+                },
             )
         );
 
-        $legacyHelperMock->expects( $this->any() )
-            ->method( "get" )
+        $legacyHelperMock->expects($this->any())
+            ->method('get')
             ->with(
                 $this->logicalOr(
-                    $this->equalTo( "js_files" ),
-                    $this->equalTo( "css_files" )
+                    $this->equalTo('js_files'),
+                    $this->equalTo('css_files')
                 )
             )
             ->will(
                 $this->returnCallback(
-                    array( $this, "legacyHelperMockCallback" )
+                    array($this, 'legacyHelperMockCallback')
                 )
             );
 
@@ -144,14 +138,13 @@ class LegacyRenderCssJsTest extends FileSystemTwigIntegrationTestCase
      *
      * @return mixed
      */
-    public function legacyHelperMockCallback( $id )
+    public function legacyHelperMockCallback($id)
     {
-        switch ( $id )
-        {
-            case "js_files":
+        switch ($id) {
+            case 'js_files':
                 return $this->getJsFiles();
 
-            case "css_files":
+            case 'css_files':
                 return $this->getCssFiles();
         }
 

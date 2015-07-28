@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\View;
 
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
@@ -61,10 +60,11 @@ class ContentView implements ContentViewInterface
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentType
      */
-    public function __construct( $templateIdentifier = null, array $parameters = array() )
+    public function __construct($templateIdentifier = null, array $parameters = array())
     {
-        if ( isset( $templateIdentifier ) && !is_string( $templateIdentifier ) && !$templateIdentifier instanceof \Closure )
-            throw new InvalidArgumentType( 'templateIdentifier', 'string or \Closure', $templateIdentifier );
+        if (isset($templateIdentifier) && !is_string($templateIdentifier) && !$templateIdentifier instanceof \Closure) {
+            throw new InvalidArgumentType('templateIdentifier', 'string or \Closure', $templateIdentifier);
+        }
 
         $this->templateIdentifier = $templateIdentifier;
         $this->parameters = $parameters;
@@ -73,17 +73,17 @@ class ContentView implements ContentViewInterface
     /**
      * @param array $parameters Hash of parameters to pass to the template/closure
      */
-    public function setParameters( array $parameters )
+    public function setParameters(array $parameters)
     {
         $this->parameters = $parameters;
     }
 
     /**
-     * Adds a hash of parameters to the existing parameters
+     * Adds a hash of parameters to the existing parameters.
      *
      * @param array $parameters
      */
-    public function addParameters( array $parameters )
+    public function addParameters(array $parameters)
     {
         $this->parameters += $parameters;
     }
@@ -97,15 +97,15 @@ class ContentView implements ContentViewInterface
     }
 
     /**
-     * Checks if $parameterName exists
+     * Checks if $parameterName exists.
      *
      * @param string $parameterName
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasParameter( $parameterName )
+    public function hasParameter($parameterName)
     {
-        return isset( $this->parameters[$parameterName] );
+        return isset($this->parameters[$parameterName]);
     }
 
     /**
@@ -118,12 +118,13 @@ class ContentView implements ContentViewInterface
      *
      * @return mixed
      */
-    public function getParameter( $parameterName )
+    public function getParameter($parameterName)
     {
-        if ( $this->hasParameter( $parameterName ) )
+        if ($this->hasParameter($parameterName)) {
             return $this->parameters[$parameterName];
+        }
 
-        throw new \InvalidArgumentException( "Parameter '$parameterName' is not set." );
+        throw new \InvalidArgumentException("Parameter '$parameterName' is not set.");
     }
 
     /**
@@ -131,10 +132,11 @@ class ContentView implements ContentViewInterface
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentType
      */
-    public function setTemplateIdentifier( $templateIdentifier )
+    public function setTemplateIdentifier($templateIdentifier)
     {
-        if ( !is_string( $templateIdentifier ) && !$templateIdentifier instanceof \Closure )
-            throw new InvalidArgumentType( 'templateIdentifier', 'string or \Closure', $templateIdentifier );
+        if (!is_string($templateIdentifier) && !$templateIdentifier instanceof \Closure) {
+            throw new InvalidArgumentType('templateIdentifier', 'string or \Closure', $templateIdentifier);
+        }
 
         $this->templateIdentifier = $templateIdentifier;
     }
@@ -152,11 +154,11 @@ class ContentView implements ContentViewInterface
      * Typically, the hash would have as keys:
      *  - template : The template that has been matched
      *  - match : The matching configuration, including the matcher "identifier" and what has been passed to it.
-     *  - matcher : The matcher object
+     *  - matcher : The matcher object.
      *
      * @param array $config
      */
-    public function setConfigHash( array $config )
+    public function setConfigHash(array $config)
     {
         $this->configHash = $config;
     }

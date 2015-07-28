@@ -6,14 +6,13 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 
 /**
- * Sets sort direction on Content ID for a content query
+ * Sets sort direction on Content ID for a content query.
  *
  * Especially useful to get reproducible search results in tests.
  *
@@ -27,11 +26,11 @@ use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 class ContentId extends SortClause
 {
     /**
-     * Constructs a new ContentId SortClause
+     * Constructs a new ContentId SortClause.
      * @param string $sortDirection
      */
-    public function __construct( $sortDirection = Query::SORT_ASC )
+    public function __construct($sortDirection = Query::SORT_ASC)
     {
-        parent::__construct( 'content_id', $sortDirection );
+        parent::__construct('content_id', $sortDirection);
     }
 }

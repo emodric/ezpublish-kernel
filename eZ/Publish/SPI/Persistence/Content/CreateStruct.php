@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content CreateStruct struct
+ * File containing the Content CreateStruct struct.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Persistence\Content;
 
 use eZ\Publish\SPI\Persistence\ValueObject;
@@ -56,7 +55,7 @@ class CreateStruct extends ValueObject
     public $fields = array();
 
     /**
-     * @var boolean Always available flag
+     * @var bool Always available flag
      */
     public $alwaysAvailable = false;
 
@@ -66,14 +65,14 @@ class CreateStruct extends ValueObject
     public $remoteId;
 
     /**
-     * Language id the content was initially created in
+     * Language id the content was initially created in.
      *
      * @var mixed
      */
     public $initialLanguageId;
 
     /**
-     * Modification date
+     * Modification date.
      *
      * @var int
      */

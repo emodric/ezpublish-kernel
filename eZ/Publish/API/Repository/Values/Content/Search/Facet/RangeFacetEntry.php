@@ -9,47 +9,47 @@
 namespace eZ\Publish\API\Repository\Values\Content\Search\Facet;
 
 /**
- * This class holds statistical data for value ranges
+ * This class holds statistical data for value ranges.
  */
 class RangeFacetEntry
 {
     /**
-     * The lower bound of the range
+     * The lower bound of the range.
      *
      * @var mixed
      */
     public $from;
 
     /**
-     * The upper bound of the range
+     * The upper bound of the range.
      *
      * @var mixed
      */
     public $to;
 
     /**
-     * The total count of objects in the range
+     * The total count of objects in the range.
      *
      * @var int
      */
     public $totalCount;
 
     /**
-     * The minimum count in the range
+     * The minimum count in the range.
      *
      * @var int
      */
     public $min;
 
     /**
-     * The maximum count in the range
+     * The maximum count in the range.
      *
      * @var int
      */
     public $max;
 
     /**
-     * The average count in the range
+     * The average count in the range.
      *
      * @var float
      */

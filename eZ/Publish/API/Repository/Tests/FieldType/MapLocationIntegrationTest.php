@@ -1,19 +1,18 @@
 <?php
 /**
- * File contains: eZ\Publish\API\Repository\Tests\FieldType\MapLocationIntegrationTest class
+ * File contains: eZ\Publish\API\Repository\Tests\FieldType\MapLocationIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\MapLocation\Value as MapLocationValue;
 use eZ\Publish\API\Repository\Values\Content\Field;
 
 /**
- * Integration test for use field type
+ * Integration test for use field type.
  *
  * @group integration
  * @group field-type
@@ -21,7 +20,7 @@ use eZ\Publish\API\Repository\Values\Content\Field;
 class MapLocationIntegrationTest extends BaseIntegrationTest
 {
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -31,7 +30,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get expected settings schema
+     * Get expected settings schema.
      *
      * @return array
      */
@@ -41,7 +40,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get a valid $fieldSettings value
+     * Get a valid $fieldSettings value.
      *
      * @return mixed
      */
@@ -51,7 +50,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get $fieldSettings value not accepted by the field type
+     * Get $fieldSettings value not accepted by the field type.
      *
      * @return mixed
      */
@@ -63,7 +62,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get expected validator schema
+     * Get expected validator schema.
      *
      * @return array
      */
@@ -73,7 +72,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get a valid $validatorConfiguration
+     * Get a valid $validatorConfiguration.
      *
      * @return mixed
      */
@@ -83,19 +82,19 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get $validatorConfiguration not accepted by the field type
+     * Get $validatorConfiguration not accepted by the field type.
      *
      * @return mixed
      */
     public function getInvalidValidatorConfiguration()
     {
         return array(
-            'unknown' => array( 'value' => 23 )
+            'unknown' => array('value' => 23),
         );
     }
 
     /**
-     * Get initial field data for valid object creation
+     * Get initial field data for valid object creation.
      *
      * @return mixed
      */
@@ -117,10 +116,8 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
      * was stored and loaded correctly.
      *
      * @param Field $field
-     *
-     * @return void
      */
-    public function assertFieldDataLoadedCorrect( Field $field )
+    public function assertFieldDataLoadedCorrect(Field $field)
     {
         $this->assertEquals(
             $this->getValidCreationFieldData(),
@@ -129,7 +126,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during creation
+     * Get field data which will result in errors during creation.
      *
      * This is a PHPUnit data provider.
      *
@@ -163,7 +160,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
             array(
                 new MapLocationValue(
                     array(
-                        'latitude' => 'string'
+                        'latitude' => 'string',
                     )
                 ),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentType',
@@ -191,7 +188,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get update field externals data
+     * Get update field externals data.
      *
      * @return array
      */
@@ -208,13 +205,13 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get externals updated field data values
+     * Get externals updated field data values.
      *
      * This is a PHPUnit data provider
      *
      * @return array
      */
-    public function assertUpdatedFieldDataLoadedCorrect( Field $field )
+    public function assertUpdatedFieldDataLoadedCorrect(Field $field)
     {
         $this->assertEquals(
             $this->getValidUpdateFieldData(),
@@ -223,7 +220,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during update
+     * Get field data which will result in errors during update.
      *
      * This is a PHPUnit data provider.
      *
@@ -256,7 +253,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
      *
      * @param Field $field
      */
-    public function assertCopiedFieldDataLoadedCorrectly( Field $field )
+    public function assertCopiedFieldDataLoadedCorrectly(Field $field)
     {
         $this->assertEquals(
             $this->getValidCreationFieldData(),
@@ -265,7 +262,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get data to test to hash method
+     * Get data to test to hash method.
      *
      * This is a PHPUnit data provider
      *
@@ -305,7 +302,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get expectations for the fromHash call on our field value
+     * Get expectations for the fromHash call on our field value.
      *
      * This is a PHPUnit data provider
      *
@@ -326,7 +323,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
                         'longitude' => 6.767921,
                         'address' => 'Bielefeld',
                     )
-                )
+                ),
             ),
         );
     }
@@ -334,15 +331,15 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     public function providerForTestIsEmptyValue()
     {
         return array(
-            array( new MapLocationValue ),
+            array(new MapLocationValue()),
             array(
                 new MapLocationValue(
                     array(
                         'latitude' => null,
                         'longitude' => null,
                     )
-                )
-            )
+                ),
+            ),
         );
     }
 
@@ -350,7 +347,7 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
     {
         return array(
             array(
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
             array(
                 new MapLocationValue(
@@ -358,8 +355,8 @@ class MapLocationIntegrationTest extends BaseIntegrationTest
                         'latitude' => 0,
                         'longitude' => 0,
                     )
-                )
-            )
+                ),
+            ),
         );
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler\Search;
 
 use eZ\Publish\Core\Base\Container\Compiler\Search\SignalSlotPass;
@@ -20,18 +19,18 @@ class SignalSlotPassTest extends AbstractCompilerPassTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->setDefinition( 'ezpublish.signalslot.signal_dispatcher', new Definition() );
+        $this->setDefinition('ezpublish.signalslot.signal_dispatcher', new Definition());
     }
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new SignalSlotPass() );
+        $container->addCompilerPass(new SignalSlotPass());
     }
 
     public function testAttachSignal()
@@ -39,15 +38,15 @@ class SignalSlotPassTest extends AbstractCompilerPassTestCase
         $signal = 'signal_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.slot', array( 'signal' => $signal ) );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.slot', array('signal' => $signal));
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.signalslot.signal_dispatcher',
             'attach',
-            array( $signal, new Reference( $serviceId ) )
+            array($signal, new Reference($serviceId))
         );
     }
 
@@ -59,15 +58,15 @@ class SignalSlotPassTest extends AbstractCompilerPassTestCase
         $signal = 'signal_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.slot' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.slot');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.signalslot.signal_dispatcher',
             'attach',
-            array( $signal, new Reference( $serviceId ) )
+            array($signal, new Reference($serviceId))
         );
     }
 }

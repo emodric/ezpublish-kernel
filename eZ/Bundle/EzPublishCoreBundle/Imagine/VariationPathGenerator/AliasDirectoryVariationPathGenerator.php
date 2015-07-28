@@ -14,15 +14,16 @@ use eZ\Bundle\EzPublishCoreBundle\Imagine\VariationPathGenerator;
  */
 class AliasDirectoryVariationPathGenerator implements VariationPathGenerator
 {
-    public function getVariationPath( $originalPath, $filter )
+    public function getVariationPath($originalPath, $filter)
     {
-        $info = pathinfo( $originalPath );
+        $info = pathinfo($originalPath);
+
         return sprintf(
             '_aliases/%s/%s/%s%s',
             $filter,
             $info['dirname'],
             $info['filename'],
-            empty( $info['extension'] ) ? '' : '.' . $info['extension']
+            empty($info['extension']) ? '' : '.' . $info['extension']
         );
     }
 }

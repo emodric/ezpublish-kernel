@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\EventListener;
 
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
@@ -32,7 +31,7 @@ class LocaleListener extends BaseRequestListener
     /**
      * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver
      */
-    public function setConfigResolver( ConfigResolverInterface $configResolver )
+    public function setConfigResolver(ConfigResolverInterface $configResolver)
     {
         $this->configResolver = $configResolver;
     }
@@ -40,28 +39,25 @@ class LocaleListener extends BaseRequestListener
     /**
      * @param \eZ\Publish\Core\MVC\Symfony\Locale\LocaleConverterInterface $localeConverter
      */
-    public function setLocaleConverter( LocaleConverterInterface $localeConverter )
+    public function setLocaleConverter(LocaleConverterInterface $localeConverter)
     {
         $this->localeConverter = $localeConverter;
     }
 
-    public function onKernelRequest( GetResponseEvent $event )
+    public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-        if ( !$request->attributes->has( '_locale' ) )
-        {
-            foreach ( $this->configResolver->getParameter( 'languages' ) as $locale )
-            {
-                $convertedLocale = $this->localeConverter->convertToPOSIX( $locale );
-                if ( $convertedLocale !== null )
-                {
+        if (!$request->attributes->has('_locale')) {
+            foreach ($this->configResolver->getParameter('languages') as $locale) {
+                $convertedLocale = $this->localeConverter->convertToPOSIX($locale);
+                if ($convertedLocale !== null) {
                     // Setting the converted locale to the _locale request attribute, so that it can be properly processed by parent listener.
-                    $request->attributes->set( '_locale', $convertedLocale );
+                    $request->attributes->set('_locale', $convertedLocale);
                     break;
                 }
             }
         }
 
-        parent::onKernelRequest( $event );
+        parent::onKernelRequest($event);
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\ApiLoader;
 
 use eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider;
@@ -20,24 +19,24 @@ class StorageRepositoryProviderTest extends PHPUnit_Framework_TestCase
         $repositoryAlias = 'main';
         $repositoryConfig = array(
             'engine' => 'foo',
-            'connection' => 'some_connection'
+            'connection' => 'some_connection',
         );
         $repositories = array(
             $repositoryAlias => $repositoryConfig,
             'another' => array(
-                'engine' => 'bar'
-            )
+                'engine' => 'bar',
+            ),
         );
-        $provider = new StorageRepositoryProvider( $configResolver, $repositories );
+        $provider = new StorageRepositoryProvider($configResolver, $repositories);
 
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'repository' )
-            ->will( $this->returnValue( $repositoryAlias ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('repository')
+            ->will($this->returnValue($repositoryAlias));
 
         $this->assertSame(
-            array( 'alias' => $repositoryAlias ) + $repositoryConfig,
+            array('alias' => $repositoryAlias) + $repositoryConfig,
             $provider->getRepositoryConfig()
         );
     }
@@ -48,24 +47,24 @@ class StorageRepositoryProviderTest extends PHPUnit_Framework_TestCase
         $repositoryAlias = 'main';
         $repositoryConfig = array(
             'engine' => 'foo',
-            'connection' => 'some_connection'
+            'connection' => 'some_connection',
         );
         $repositories = array(
             $repositoryAlias => $repositoryConfig,
             'another' => array(
-                'engine' => 'bar'
-            )
+                'engine' => 'bar',
+            ),
         );
-        $provider = new StorageRepositoryProvider( $configResolver, $repositories );
+        $provider = new StorageRepositoryProvider($configResolver, $repositories);
 
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'repository' )
-            ->will( $this->returnValue( null ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('repository')
+            ->will($this->returnValue(null));
 
         $this->assertSame(
-            array( 'alias' => $repositoryAlias ) + $repositoryConfig,
+            array('alias' => $repositoryAlias) + $repositoryConfig,
             $provider->getRepositoryConfig()
         );
     }
@@ -78,20 +77,20 @@ class StorageRepositoryProviderTest extends PHPUnit_Framework_TestCase
         $configResolver = $this->getConfigResolverMock();
         $repositories = array(
             'main' => array(
-                'engine' => 'foo'
+                'engine' => 'foo',
             ),
             'another' => array(
-                'engine' => 'bar'
-            )
+                'engine' => 'bar',
+            ),
         );
 
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'repository' )
-            ->will( $this->returnValue( 'undefined_repository' ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('repository')
+            ->will($this->returnValue('undefined_repository'));
 
-        $provider = new StorageRepositoryProvider( $configResolver, $repositories );
+        $provider = new StorageRepositoryProvider($configResolver, $repositories);
         $provider->getRepositoryConfig();
     }
 
@@ -100,6 +99,6 @@ class StorageRepositoryProviderTest extends PHPUnit_Framework_TestCase
      */
     protected function getConfigResolverMock()
     {
-        return $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        return $this->getMock('eZ\Publish\Core\MVC\ConfigResolverInterface');
     }
 }

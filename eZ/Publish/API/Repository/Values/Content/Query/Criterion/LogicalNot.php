@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 /**
- * A NOT logical criterion
+ * A NOT logical criterion.
  */
 class LogicalNot extends LogicalOperator
 {
@@ -25,8 +24,8 @@ class LogicalNot extends LogicalOperator
      *
      * @throws \InvalidArgumentException if more than one criterion is given in the array parameter
      */
-    public function __construct( Criterion $criterion )
+    public function __construct(Criterion $criterion)
     {
-        parent::__construct( array( $criterion ) );
+        parent::__construct(array($criterion));
     }
 }

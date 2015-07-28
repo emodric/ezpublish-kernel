@@ -1,16 +1,15 @@
 <?php
 /**
- * File containing the Xhtml5ToDocbook conversion test
+ * File containing the Xhtml5ToDocbook conversion test.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Tests\RichText\Converter\Xslt;
 
 /**
- * Tests conversion from xhtml5 edit format to docbook
+ * Tests conversion from xhtml5 edit format to docbook.
  */
 class Xhtml5ToDocbookTest extends BaseTest
 {
@@ -34,8 +33,8 @@ class Xhtml5ToDocbookTest extends BaseTest
     public function getFixtureSubdirectories()
     {
         return array(
-            "input" => "xhtml5/edit",
-            "output" => "docbook"
+            'input' => 'xhtml5/edit',
+            'output' => 'docbook',
         );
     }
 
@@ -46,7 +45,7 @@ class Xhtml5ToDocbookTest extends BaseTest
      */
     protected function getConversionTransformationStylesheet()
     {
-        return __DIR__ . "/../../../../RichText/Resources/stylesheets/xhtml5/edit/docbook.xsl";
+        return __DIR__ . '/../../../../RichText/Resources/stylesheets/xhtml5/edit/docbook.xsl';
     }
 
     /**
@@ -75,8 +74,8 @@ class Xhtml5ToDocbookTest extends BaseTest
     {
         return array(
             array(
-                "path" => __DIR__ . "/_fixtures/xhtml5/edit/custom_stylesheets/youtube_docbook.xsl",
-                "priority" => 99
+                'path' => __DIR__ . '/_fixtures/xhtml5/edit/custom_stylesheets/youtube_docbook.xsl',
+                'priority' => 99,
             ),
         );
     }
@@ -89,7 +88,7 @@ class Xhtml5ToDocbookTest extends BaseTest
     protected function getConversionValidationSchema()
     {
         return array(
-            __DIR__ . "/_fixtures/docbook/custom_schemas/youtube.rng"
+            __DIR__ . '/_fixtures/docbook/custom_schemas/youtube.rng',
         );
     }
 }

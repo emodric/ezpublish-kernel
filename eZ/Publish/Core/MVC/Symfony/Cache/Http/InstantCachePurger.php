@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache\Http;
 
 use eZ\Publish\Core\MVC\Symfony\Cache\GatewayCachePurger;
@@ -19,7 +18,7 @@ class InstantCachePurger implements GatewayCachePurger
      */
     private $purgeClient;
 
-    public function __construct( PurgeClientInterface $purgeClient )
+    public function __construct(PurgeClientInterface $purgeClient)
     {
         $this->purgeClient = $purgeClient;
     }
@@ -31,9 +30,9 @@ class InstantCachePurger implements GatewayCachePurger
      *
      * @return mixed
      */
-    public function purge( $cacheElements )
+    public function purge($cacheElements)
     {
-        $this->purgeClient->purge( $cacheElements );
+        $this->purgeClient->purge($cacheElements);
 
         return $cacheElements;
     }

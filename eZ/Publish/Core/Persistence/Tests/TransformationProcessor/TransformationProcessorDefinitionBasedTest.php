@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\SearchHandler\TransformationProcessorDefinitionBasedTest class
+ * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\SearchHandler\TransformationProcessorDefinitionBasedTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Tests\TransformationProcessor;
 
 use eZ\Publish\Core\Persistence\Legacy\Tests\TestCase;
@@ -14,7 +13,7 @@ use eZ\Publish\Core\Persistence;
 use eZ\Publish\Core\Persistence\TransformationProcessor\DefinitionBased;
 
 /**
- * Test case for LocationHandlerTest
+ * Test case for LocationHandlerTest.
  */
 class TransformationProcessorDefinitionBasedTest extends TestCase
 {
@@ -22,8 +21,8 @@ class TransformationProcessorDefinitionBasedTest extends TestCase
     {
         return new DefinitionBased(
             new Persistence\TransformationProcessor\DefinitionBased\Parser(),
-            new Persistence\TransformationProcessor\PcreCompiler( new Persistence\Utf8Converter() ),
-            glob( __DIR__ . '/_fixtures/transformations/*.tr' )
+            new Persistence\TransformationProcessor\PcreCompiler(new Persistence\Utf8Converter()),
+            glob(__DIR__ . '/_fixtures/transformations/*.tr')
         );
     }
 
@@ -33,7 +32,7 @@ class TransformationProcessorDefinitionBasedTest extends TestCase
 
         $this->assertSame(
             'hello world!',
-            $processor->transform( 'Hello World!', array( 'ascii_lowercase' ) )
+            $processor->transform('Hello World!', array('ascii_lowercase'))
         );
     }
 
@@ -43,7 +42,7 @@ class TransformationProcessorDefinitionBasedTest extends TestCase
 
         $this->assertSame(
             'HELLO WORLD!',
-            $processor->transform( 'Hello World!', array( 'ascii_uppercase' ) )
+            $processor->transform('Hello World!', array('ascii_uppercase'))
         );
     }
 
@@ -53,7 +52,7 @@ class TransformationProcessorDefinitionBasedTest extends TestCase
 
         $this->assertSame(
             'hello world!',
-            $processor->transformByGroup( 'Hello World!', 'lowercase' )
+            $processor->transformByGroup('Hello World!', 'lowercase')
         );
     }
 
@@ -68,8 +67,7 @@ class TransformationProcessorDefinitionBasedTest extends TestCase
 
         $this->assertSame(
             'HELLO WORLD.',
-            $processor->transform( 'Hello World!' )
+            $processor->transform('Hello World!')
         );
     }
 }
-

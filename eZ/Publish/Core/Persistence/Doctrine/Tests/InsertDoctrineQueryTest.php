@@ -22,4 +22,3 @@ class InsertDoctrineQueryTest extends TestCase
         );
     }
 }
-

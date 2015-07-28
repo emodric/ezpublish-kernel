@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * GeoLocation document field
+ * GeoLocation document field.
  */
 class GeoLocationField extends FieldType
 {

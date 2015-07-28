@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\Loader;
 
 use eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\FilterInterface;
@@ -20,18 +19,17 @@ class SwirlFilterLoader implements LoaderInterface
      */
     private $filter;
 
-    public function __construct( FilterInterface $filter )
+    public function __construct(FilterInterface $filter)
     {
         $this->filter = $filter;
     }
 
-    public function load( ImageInterface $image, array $options = array() )
+    public function load(ImageInterface $image, array $options = array())
     {
-        if ( !empty( $options ) )
-        {
-            $this->filter->setOption( 'degrees', $options[0] );
+        if (!empty($options)) {
+            $this->filter->setOption('degrees', $options[0]);
         }
 
-        return $this->filter->apply( $image );
+        return $this->filter->apply($image);
     }
 }

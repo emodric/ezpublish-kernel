@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Routing;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -76,7 +75,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param array $headers
      */
-    public function setHeaders( array $headers )
+    public function setHeaders(array $headers)
     {
         $this->headers = $headers;
     }
@@ -84,7 +83,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param string $host
      */
-    public function setHost( $host )
+    public function setHost($host)
     {
         $this->host = $host;
     }
@@ -92,7 +91,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param array $languages
      */
-    public function setLanguages( array $languages )
+    public function setLanguages(array $languages)
     {
         $this->languages = $languages;
     }
@@ -100,7 +99,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param string $pathinfo
      */
-    public function setPathinfo( $pathinfo )
+    public function setPathinfo($pathinfo)
     {
         $this->pathinfo = $pathinfo;
     }
@@ -108,7 +107,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param string $port
      */
-    public function setPort( $port )
+    public function setPort($port)
     {
         $this->port = $port;
     }
@@ -116,7 +115,7 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param array $queryParams
      */
-    public function setQueryParams( array $queryParams )
+    public function setQueryParams(array $queryParams)
     {
         $this->queryParams = $queryParams;
     }
@@ -124,13 +123,13 @@ class SimplifiedRequest extends ValueObject
     /**
      * @param string $scheme
      */
-    public function setScheme( $scheme )
+    public function setScheme($scheme)
     {
         $this->scheme = $scheme;
     }
 
     /**
-     * Constructs a SimplifiedRequest object from a standard URL (http://www.example.com/foo/bar?queryParam=value)
+     * Constructs a SimplifiedRequest object from a standard URL (http://www.example.com/foo/bar?queryParam=value).
      *
      * @param string $url
      *
@@ -138,26 +137,27 @@ class SimplifiedRequest extends ValueObject
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest
      */
-    public static function fromUrl( $url )
+    public static function fromUrl($url)
     {
-        $elements = parse_url( $url );
-        $elements['pathinfo'] = isset( $elements['path'] ) ? $elements['path'] : '';
+        $elements = parse_url($url);
+        $elements['pathinfo'] = isset($elements['path']) ? $elements['path'] : '';
 
-        if ( isset( $elements['query'] ) )
-        {
-            parse_str( $elements['query'], $queryParams );
+        if (isset($elements['query'])) {
+            parse_str($elements['query'], $queryParams);
             $elements['queryParams'] = $queryParams;
         }
 
         // Remove unwanted keys returned by parse_url() so that we don't have them as properties.
-        unset( $elements['path'], $elements['query'], $elements['user'], $elements['pass'], $elements['fragment'] );
-        return new static( $elements );
+        unset($elements['path'], $elements['query'], $elements['user'], $elements['pass'], $elements['fragment']);
+
+        return new static($elements);
     }
 
     public function __sleep()
     {
         // Clean up headers for serialization not have a too heavy string (i.e. for ESI/Hinclude tags).
         $this->headers = array();
-        return array( 'scheme', 'host', 'port', 'pathinfo', 'queryParams', 'languages', 'headers' );
+
+        return array('scheme', 'host', 'port', 'pathinfo', 'queryParams', 'languages', 'headers');
     }
 }

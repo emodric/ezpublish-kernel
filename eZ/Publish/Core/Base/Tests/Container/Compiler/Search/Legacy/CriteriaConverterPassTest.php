@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler\Search\Legacy;
 
 use eZ\Publish\Core\Base\Container\Compiler\Search\Legacy\CriteriaConverterPass;
@@ -19,13 +18,13 @@ class CriteriaConverterPassTest extends AbstractCompilerPassTestCase
 {
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new CriteriaConverterPass() );
+        $container->addCompilerPass(new CriteriaConverterPass());
     }
 
     public function testAddContentHandlers()
@@ -37,15 +36,15 @@ class CriteriaConverterPassTest extends AbstractCompilerPassTestCase
 
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.legacy.gateway.criterion_handler.content' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.legacy.gateway.criterion_handler.content');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criteria_converter.content',
             'addHandler',
-            array( new Reference( $serviceId ) )
+            array(new Reference($serviceId))
         );
     }
 
@@ -58,15 +57,15 @@ class CriteriaConverterPassTest extends AbstractCompilerPassTestCase
 
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.legacy.gateway.criterion_handler.location' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.legacy.gateway.criterion_handler.location');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criteria_converter.location',
             'addHandler',
-            array( new Reference( $serviceId ) )
+            array(new Reference($serviceId))
         );
     }
 
@@ -83,22 +82,22 @@ class CriteriaConverterPassTest extends AbstractCompilerPassTestCase
 
         $commonServiceId = 'common_service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.legacy.gateway.criterion_handler.content' );
-        $def->addTag( 'ezpublish.search.legacy.gateway.criterion_handler.location' );
-        $this->setDefinition( $commonServiceId, $def );
+        $def->addTag('ezpublish.search.legacy.gateway.criterion_handler.content');
+        $def->addTag('ezpublish.search.legacy.gateway.criterion_handler.location');
+        $this->setDefinition($commonServiceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criteria_converter.content',
             'addHandler',
-            array( new Reference( $commonServiceId ) )
+            array(new Reference($commonServiceId))
         );
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criteria_converter.location',
             'addHandler',
-            array( new Reference( $commonServiceId ) )
+            array(new Reference($commonServiceId))
         );
     }
 }

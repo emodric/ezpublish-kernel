@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued;
@@ -20,20 +19,19 @@ class Section extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchLocation( Location $location )
+    public function matchLocation(Location $location)
     {
         $section = $this->repository->sudo(
-            function ( $repository ) use ( $location )
-            {
+            function ($repository) use ($location) {
                 return $repository->getSectionService()->loadSection(
                     $location->getContentInfo()->sectionId
                 );
             }
         );
 
-        return isset( $this->values[$section->identifier] );
+        return isset($this->values[$section->identifier]);
     }
 
     /**
@@ -41,19 +39,18 @@ class Section extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchContentInfo( ContentInfo $contentInfo )
+    public function matchContentInfo(ContentInfo $contentInfo)
     {
         $section = $this->repository->sudo(
-            function ( $repository ) use ( $contentInfo )
-            {
+            function ($repository) use ($contentInfo) {
                 return $repository->getSectionService()->loadSection(
                     $contentInfo->sectionId
                 );
             }
         );
 
-        return isset( $this->values[$section->identifier] );
+        return isset($this->values[$section->identifier]);
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Event\Tests;
 
 use eZ\Publish\Core\MVC\Symfony\Event\RouteReferenceGenerationEvent;
@@ -18,24 +17,24 @@ class RouteReferenceGenerationEventTest extends PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $routeReference = new RouteReference( 'foo' );
+        $routeReference = new RouteReference('foo');
         $request = new Request();
-        $event = new RouteReferenceGenerationEvent( $routeReference, $request );
-        $this->assertSame( $routeReference, $event->getRouteReference() );
-        $this->assertSame( $request, $event->getRequest() );
+        $event = new RouteReferenceGenerationEvent($routeReference, $request);
+        $this->assertSame($routeReference, $event->getRouteReference());
+        $this->assertSame($request, $event->getRequest());
     }
 
     public function testGetSet()
     {
-        $routeReference = new RouteReference( 'foo' );
+        $routeReference = new RouteReference('foo');
         $request = new Request();
 
-        $event = new RouteReferenceGenerationEvent( $routeReference, $request );
-        $this->assertSame( $routeReference, $event->getRouteReference() );
-        $this->assertSame( $request, $event->getRequest() );
+        $event = new RouteReferenceGenerationEvent($routeReference, $request);
+        $this->assertSame($routeReference, $event->getRouteReference());
+        $this->assertSame($request, $event->getRequest());
 
-        $newRouteReference = new RouteReference( 'bar' );
-        $event->setRouteReference( $newRouteReference );
-        $this->assertSame( $newRouteReference, $event->getRouteReference() );
+        $newRouteReference = new RouteReference('bar');
+        $event->setRouteReference($newRouteReference);
+        $this->assertSame($newRouteReference, $event->getRouteReference());
     }
 }

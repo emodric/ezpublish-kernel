@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -15,7 +14,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 use eZ\Publish\API\Repository\Values\Content\Query\CustomFieldInterface;
 
 /**
- * Full text search criterion
+ * Full text search criterion.
  *
  * The string provided in this criterion is matched as a full text query
  * against all indexed content objects in the storage layer.
@@ -46,7 +45,7 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
     public $fuzziness = 1.;
 
     /**
-     * Boost for certain fields
+     * Boost for certain fields.
      *
      * Array of boosts to apply for certain fields – the array should look like
      * this:
@@ -63,7 +62,7 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
     public $boost = array();
 
     /**
-     * Analyzer configuration
+     * Analyzer configuration.
      *
      * @TODO: Define how this could look like
      *
@@ -72,7 +71,7 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
     public $analyzers;
 
     /**
-     * Analyzer wildcard handling configuration
+     * Analyzer wildcard handling configuration.
      *
      * @TODO: Define how this could look like
      *
@@ -81,23 +80,21 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
     public $wildcards;
 
     /**
-     * Custom field definitions to query instead of default field
+     * Custom field definitions to query instead of default field.
      *
      * @var array
      */
     protected $customFields = array();
 
-    public function __construct( $value, array $properties = array() )
+    public function __construct($value, array $properties = array())
     {
-        parent::__construct( null, Operator::LIKE, $value );
+        parent::__construct(null, Operator::LIKE, $value);
 
         // Assign additional properties, ugly but with the existing constructor
         // API the only sensible way, I guess.
-        foreach ( $properties as $name => $value )
-        {
-            if ( !isset( $this->$name ) )
-            {
-                throw new \InvalidArgumentException( "Unknown property $name." );
+        foreach ($properties as $name => $value) {
+            if (!isset($this->$name)) {
+                throw new \InvalidArgumentException("Unknown property $name.");
             }
 
             $this->$name = $value;
@@ -107,32 +104,31 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
     public function getSpecifications()
     {
         return array(
-            new Specifications( Operator::LIKE, Specifications::FORMAT_SINGLE )
+            new Specifications(Operator::LIKE, Specifications::FORMAT_SINGLE),
         );
     }
 
-    public static function createFromQueryBuilder( $target, $operator, $value )
+    public static function createFromQueryBuilder($target, $operator, $value)
     {
-        return new self( $value );
+        return new self($value);
     }
 
     /**
-     * Set a custom field to query
+     * Set a custom field to query.
      *
      * Set a custom field to query for a defined field in a defined type.
      *
      * @param string $type
      * @param string $field
      * @param string $customField
-     * @return void
      */
-    public function setCustomField( $type, $field, $customField )
+    public function setCustomField($type, $field, $customField)
     {
         $this->customFields[$type][$field] = $customField;
     }
 
     /**
-     * Retun custom field
+     * Retun custom field.
      *
      * If no custom field is set, return null
      *
@@ -140,11 +136,10 @@ class FullText extends Criterion implements CriterionInterface, CustomFieldInter
      * @param string $field
      * @return mixed
      */
-    public function getCustomField( $type, $field )
+    public function getCustomField($type, $field)
     {
-        if ( !isset( $this->customFields[$type] ) ||
-             !isset( $this->customFields[$type][$field] ) )
-        {
+        if (!isset($this->customFields[$type]) ||
+             !isset($this->customFields[$type][$field])) {
             return null;
         }
 

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Templating\Twig\Extension;
 
 use eZ\Publish\Core\MVC\Exception\SourceImageNotFoundException;
@@ -45,7 +44,7 @@ class ContentExtension extends Twig_Extension
     /**
      * Array of Twig template resources for ez_render_field
      * Either the path to each template and its priority in a hash or its
-     * \Twig_Template (compiled) counterpart
+     * \Twig_Template (compiled) counterpart.
      *
      * @var array|\Twig_Template[]
      */
@@ -54,7 +53,7 @@ class ContentExtension extends Twig_Extension
     /**
      * Array of Twig template resources for ez_render_fielddefinition_settings
      * Either the path to each template and its priority in a hash or its
-     * \Twig_Template (compiled) counterpart
+     * \Twig_Template (compiled) counterpart.
      *
      * @var array|\Twig_Template[]
      */
@@ -68,42 +67,42 @@ class ContentExtension extends Twig_Extension
     protected $template;
 
     /**
-     * The Twig environment
+     * The Twig environment.
      *
      * @var \Twig_Environment
      */
     protected $environment;
 
     /**
-     * Template blocks
+     * Template blocks.
      *
      * @var array
      */
     protected $blocks;
 
     /**
-     * Converter used to transform XmlText content in HTML5
+     * Converter used to transform XmlText content in HTML5.
      *
      * @var \eZ\Publish\Core\FieldType\XmlText\Converter\Html5
      */
     protected $xmlTextConverter;
 
     /**
-     * Converter used to transform RichText content to HTML5 for rendering purposes
+     * Converter used to transform RichText content to HTML5 for rendering purposes.
      *
      * @var \eZ\Publish\Core\FieldType\RichText\Converter
      */
     protected $richTextConverter;
 
     /**
-     * Converter used to transform RichText content to HTML5 for editing purposes
+     * Converter used to transform RichText content to HTML5 for editing purposes.
      *
      * @var \eZ\Publish\Core\FieldType\RichText\Converter
      */
     protected $richTextEditConverter;
 
     /**
-     * Hash of field type identifiers (i.e. "ezstring"), indexed by field definition identifier
+     * Hash of field type identifiers (i.e. "ezstring"), indexed by field definition identifier.
      *
      * @var array
      */
@@ -160,18 +159,16 @@ class ContentExtension extends Twig_Extension
         TranslationHelper $translationHelper,
         FieldHelper $fieldHelper,
         LoggerInterface $logger = null
-    )
-    {
-        $comp = function ( $a, $b )
-        {
+    ) {
+        $comp = function ($a, $b) {
             return $b['priority'] - $a['priority'];
         };
-        $this->renderFieldResources = $resolver->getParameter( 'field_templates' );
+        $this->renderFieldResources = $resolver->getParameter('field_templates');
         $this->renderFieldDefinitionSettingsResources = $resolver->getParameter(
             'fielddefinition_settings_templates'
         );
-        usort( $this->renderFieldResources, $comp );
-        usort( $this->renderFieldDefinitionSettingsResources, $comp );
+        usort($this->renderFieldResources, $comp);
+        usort($this->renderFieldDefinitionSettingsResources, $comp);
 
         $this->blocks = array();
         $this->repository = $repository;
@@ -191,7 +188,7 @@ class ContentExtension extends Twig_Extension
      *
      * @param \Twig_Environment $environment
      */
-    public function initRuntime( Twig_Environment $environment )
+    public function initRuntime(Twig_Environment $environment)
     {
         $this->environment = $environment;
     }
@@ -206,48 +203,48 @@ class ContentExtension extends Twig_Extension
         return array(
             new Twig_SimpleFunction(
                 'ez_render_field',
-                array( $this, 'renderField' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'renderField'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFunction(
                 'ez_render_fielddefinition_settings',
-                array( $this, 'renderFieldDefinitionSettings' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'renderFieldDefinitionSettings'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFunction(
                 'ez_image_alias',
-                array( $this, 'getImageVariation' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'getImageVariation'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFunction(
                 'ez_content_name',
-                array( $this, 'getTranslatedContentName' )
+                array($this, 'getTranslatedContentName')
             ),
             new Twig_SimpleFunction(
                 'ez_field_value',
-                array( $this, 'getTranslatedFieldValue' )
+                array($this, 'getTranslatedFieldValue')
             ),
             new Twig_SimpleFunction(
                 'ez_is_field_empty',
-                array( $this, 'isFieldEmpty' )
+                array($this, 'isFieldEmpty')
             ),
             new Twig_SimpleFunction(
                 'ez_field_name',
-                array( $this, 'getTranslatedFieldDefinitionName' )
+                array($this, 'getTranslatedFieldDefinitionName')
             ),
             new Twig_SimpleFunction(
                 'ez_field_description',
-                array( $this, 'getTranslatedFieldDefinitionDescription' )
+                array($this, 'getTranslatedFieldDefinitionDescription')
             ),
             new Twig_SimpleFunction(
                 'ez_trans_prop',
-                array( $this, 'getTranslatedProperty' )
+                array($this, 'getTranslatedProperty')
             ),
         );
     }
 
     /**
-     * Returns a list of filters to add to the existing list
+     * Returns a list of filters to add to the existing list.
      *
      * @return array
      */
@@ -256,19 +253,19 @@ class ContentExtension extends Twig_Extension
         return array(
             new Twig_SimpleFilter(
                 'xmltext_to_html5',
-                array( $this, 'xmlTextToHtml5' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'xmlTextToHtml5'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFilter(
                 'richtext_to_html5',
-                array( $this, 'richTextToHtml5' ),
-                array( 'is_safe' => array( 'html' ) )
+                array($this, 'richTextToHtml5'),
+                array('is_safe' => array('html'))
             ),
             new Twig_SimpleFilter(
                 'richtext_to_html5_edit',
-                array( $this, 'richTextToHtml5Edit' ),
-                array( 'is_safe' => array( 'html' ) )
-            )
+                array($this, 'richTextToHtml5Edit'),
+                array('is_safe' => array('html'))
+            ),
         );
     }
 
@@ -293,18 +290,17 @@ class ContentExtension extends Twig_Extension
      */
     protected function getRenderFieldBlockParameters(
         Content $content, Field $field, array $params = array()
-    )
-    {
+    ) {
         // Merging passed parameters to default ones
         $params += array(
             'parameters' => array(), // parameters dedicated to template processing
-            'attr' => array() // attributes to add on the enclosing HTML tags
+            'attr' => array(), // attributes to add on the enclosing HTML tags
         );
 
         $versionInfo = $content->getVersionInfo();
         $contentInfo = $versionInfo->getContentInfo();
-        $contentType = $this->repository->getContentTypeService()->loadContentType( $contentInfo->contentTypeId );
-        $fieldDefinition = $contentType->getFieldDefinition( $field->fieldDefIdentifier );
+        $contentType = $this->repository->getContentTypeService()->loadContentType($contentInfo->contentTypeId);
+        $fieldDefinition = $contentType->getFieldDefinition($field->fieldDefIdentifier);
         // Adding Field, FieldSettings and ContentInfo objects to
         // parameters to be passed to the template
         $params += array(
@@ -312,43 +308,39 @@ class ContentExtension extends Twig_Extension
             'content' => $content,
             'contentInfo' => $contentInfo,
             'versionInfo' => $versionInfo,
-            'fieldSettings' => $fieldDefinition->getFieldSettings()
+            'fieldSettings' => $fieldDefinition->getFieldSettings(),
         );
 
         // Adding field type specific parameters if any.
-        if ( $this->parameterProviderRegistry->hasParameterProvider( $fieldDefinition->fieldTypeIdentifier ) )
-        {
+        if ($this->parameterProviderRegistry->hasParameterProvider($fieldDefinition->fieldTypeIdentifier)) {
             $params['parameters'] += $this->parameterProviderRegistry
-                ->getParameterProvider( $fieldDefinition->fieldTypeIdentifier )
-                ->getViewParameters( $field );
+                ->getParameterProvider($fieldDefinition->fieldTypeIdentifier)
+                ->getViewParameters($field);
         }
 
         // make sure we can easily add class="<fieldtypeidentifier>-field" to the
         // generated HTML
-        if ( isset( $params['attr']['class'] ) )
-        {
-            $params['attr']['class'] .= ' ' . $this->getFieldTypeIdentifier( $content, $field ) . '-field';
+        if (isset($params['attr']['class'])) {
+            $params['attr']['class'] .= ' ' . $this->getFieldTypeIdentifier($content, $field) . '-field';
+        } else {
+            $params['attr']['class'] = $this->getFieldTypeIdentifier($content, $field) . '-field';
         }
-        else
-        {
-            $params['attr']['class'] = $this->getFieldTypeIdentifier( $content, $field ) . '-field';
-        }
+
         return $params;
     }
 
     /**
      * Renders the HTML for the settings for the given field definition
-     * $definition
+     * $definition.
      *
      * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $definition
      * @return string
      */
-    public function renderFieldDefinitionSettings( FieldDefinition $definition )
+    public function renderFieldDefinitionSettings(FieldDefinition $definition)
     {
-        if ( !$this->template instanceof Twig_Template )
-        {
-            $tpl = reset( $this->renderFieldDefinitionSettingsResources );
-            $this->template = $this->environment->loadTemplate( $tpl['template'] );
+        if (!$this->template instanceof Twig_Template) {
+            $tpl = reset($this->renderFieldDefinitionSettingsResources);
+            $this->template = $this->environment->loadTemplate($tpl['template']);
         }
         $parameters = array(
             'fielddefinition' => $definition,
@@ -356,9 +348,9 @@ class ContentExtension extends Twig_Extension
         );
 
         return $this->template->renderBlock(
-            $this->getRenderFieldDefinitionSettingsBlockName( $definition ),
+            $this->getRenderFieldDefinitionSettingsBlockName($definition),
             $parameters,
-            $this->getBlockByFieldDefinition( $definition )
+            $this->getBlockByFieldDefinition($definition)
         );
     }
 
@@ -372,12 +364,11 @@ class ContentExtension extends Twig_Extension
      * @throws InvalidArgumentException
      * @return string The HTML markup
      */
-    public function renderField( Content $content, $fieldIdentifier, array $params = array() )
+    public function renderField(Content $content, $fieldIdentifier, array $params = array())
     {
-        $field = $this->translationHelper->getTranslatedField( $content, $fieldIdentifier, isset( $params['lang'] ) ? $params['lang'] : null );
+        $field = $this->translationHelper->getTranslatedField($content, $fieldIdentifier, isset($params['lang']) ? $params['lang'] : null);
 
-        if ( !$field instanceof Field )
-        {
+        if (!$field instanceof Field) {
             throw new InvalidArgumentException(
                 '$fieldIdentifier',
                 "Invalid for content #{$content->contentInfo->id} '{$content->contentInfo->name}'"
@@ -385,68 +376,66 @@ class ContentExtension extends Twig_Extension
         }
 
         $localTemplate = null;
-        if ( isset( $params['template'] ) )
-        {
+        if (isset($params['template'])) {
             // local override of the template
             // this template is put on the top the templates stack
             $localTemplate = $params['template'];
-            unset( $params['template'] );
+            unset($params['template']);
         }
 
-        $params = $this->getRenderFieldBlockParameters( $content, $field, $params );
+        $params = $this->getRenderFieldBlockParameters($content, $field, $params);
 
         // Getting instance of Twig_Template that will be used to render blocks
-        if ( !$this->template instanceof Twig_Template )
-        {
-            $tpl = reset( $this->renderFieldResources );
-            $this->template = $this->environment->loadTemplate( $tpl['template'] );
+        if (!$this->template instanceof Twig_Template) {
+            $tpl = reset($this->renderFieldResources);
+            $this->template = $this->environment->loadTemplate($tpl['template']);
         }
 
         return $this->template->renderBlock(
-            $this->getRenderFieldBlockName( $content, $field ),
+            $this->getRenderFieldBlockName($content, $field),
             $params,
-            $this->getBlocksByField( $content, $field, $localTemplate )
+            $this->getBlocksByField($content, $field, $localTemplate)
         );
     }
 
     /**
-     * Implements the "xmltext_to_html5" filter
+     * Implements the "xmltext_to_html5" filter.
      *
      * @param string $xmlData
      *
      * @return string
      */
-    public function xmltextToHtml5( $xmlData )
+    public function xmltextToHtml5($xmlData)
     {
-        return $this->xmlTextConverter->convert( $xmlData );
+        return $this->xmlTextConverter->convert($xmlData);
     }
 
     /**
-     * Implements the "richtext_to_html5" filter
+     * Implements the "richtext_to_html5" filter.
      *
      * @param \DOMDocument $xmlData
      *
      * @return string
      */
-    public function richTextToHtml5( $xmlData )
+    public function richTextToHtml5($xmlData)
     {
-        return $this->richTextConverter->convert( $xmlData )->saveHTML();
+        return $this->richTextConverter->convert($xmlData)->saveHTML();
     }
 
     /**
-     * Implements the "richtext_to_html5_edit" filter
+     * Implements the "richtext_to_html5_edit" filter.
      *
      * @param \DOMDocument $xmlData
      *
      * @return string
      */
-    public function richTextToHtml5Edit( $xmlData )
+    public function richTextToHtml5Edit($xmlData)
     {
-        return $this->richTextEditConverter->convert( $xmlData )->saveHTML();
+        return $this->richTextEditConverter->convert($xmlData)->saveHTML();
     }
 
     /**
-     * Returns the image variation object for $field/$versionInfo
+     * Returns the image variation object for $field/$versionInfo.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Field $field
      * @param \eZ\Publish\API\Repository\Values\Content\VersionInfo $versionInfo
@@ -454,23 +443,16 @@ class ContentExtension extends Twig_Extension
      *
      * @return \eZ\Publish\SPI\Variation\Values\Variation
      */
-    public function getImageVariation( Field $field, VersionInfo $versionInfo, $variationName )
+    public function getImageVariation(Field $field, VersionInfo $versionInfo, $variationName)
     {
-        try
-        {
-            return $this->imageVariationService->getVariation( $field, $versionInfo, $variationName );
-        }
-        catch ( InvalidVariationException $e )
-        {
-            if ( isset( $this->logger ) )
-            {
-                $this->logger->error( "Couldn't get variation '{$variationName}' for image with id {$field->value->id}" );
+        try {
+            return $this->imageVariationService->getVariation($field, $versionInfo, $variationName);
+        } catch (InvalidVariationException $e) {
+            if (isset($this->logger)) {
+                $this->logger->error("Couldn't get variation '{$variationName}' for image with id {$field->value->id}");
             }
-        }
-        catch ( SourceImageNotFoundException $e )
-        {
-            if ( isset( $this->logger ) )
-            {
+        } catch (SourceImageNotFoundException $e) {
+            if (isset($this->logger)) {
                 $this->logger->error(
                     "Couldn't create variation '{$variationName}' for image with id {$field->value->id} because source image can't be found"
                 );
@@ -487,21 +469,17 @@ class ContentExtension extends Twig_Extension
      *
      * @return array|null
      */
-    protected function searchBlock( $blockName, Twig_Template $tpl )
+    protected function searchBlock($blockName, Twig_Template $tpl)
     {
         // Current template might have parents, so we need to loop against
         // them to find a matching block
-        do
-        {
-            foreach ( $tpl->getBlocks() as $name => $block )
-            {
-                if ( $name === $blockName )
-                {
+        do {
+            foreach ($tpl->getBlocks() as $name => $block) {
+                if ($name === $blockName) {
                     return $block;
                 }
             }
-        }
-        while ( ( $tpl = $tpl->getParent( array() ) ) instanceof Twig_Template );
+        } while (($tpl = $tpl->getParent(array())) instanceof Twig_Template);
 
         return null;
     }
@@ -510,7 +488,7 @@ class ContentExtension extends Twig_Extension
      * Returns template blocks for $field. First check in the $localTemplate if
      * it's provided.
      * Template block convention name is <fieldTypeIdentifier>_field
-     * Example: 'ezstring_field' will be relevant for a full view of ezstring field type
+     * Example: 'ezstring_field' will be relevant for a full view of ezstring field type.
      *
      * @param Content $content
      * @param Field $field
@@ -520,24 +498,22 @@ class ContentExtension extends Twig_Extension
      *
      * @return array
      */
-    protected function getBlocksByField( Content $content, Field $field, $localTemplate = null )
+    protected function getBlocksByField(Content $content, Field $field, $localTemplate = null)
     {
-        $fieldBlockName = $this->getRenderFieldBlockName( $content, $field );
-        if ( $localTemplate !== null )
-        {
+        $fieldBlockName = $this->getRenderFieldBlockName($content, $field);
+        if ($localTemplate !== null) {
             // $localTemplate might be a Twig_Template instance already (e.g. using _self Twig keyword)
-            if ( !$localTemplate instanceof Twig_Template )
-            {
-                $localTemplate = $this->environment->loadTemplate( $localTemplate );
+            if (!$localTemplate instanceof Twig_Template) {
+                $localTemplate = $this->environment->loadTemplate($localTemplate);
             }
 
-            $block = $this->searchBlock( $fieldBlockName, $localTemplate );
-            if ( $block !== null )
-            {
-                return array( $fieldBlockName => $block );
+            $block = $this->searchBlock($fieldBlockName, $localTemplate);
+            if ($block !== null) {
+                return array($fieldBlockName => $block);
             }
         }
-        return $this->getBlockByName( $fieldBlockName, 'renderFieldResources' );
+
+        return $this->getBlockByName($fieldBlockName, 'renderFieldResources');
     }
 
     /**
@@ -546,17 +522,17 @@ class ContentExtension extends Twig_Extension
      * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $definition
      * @return array
      */
-    protected function getBlockByFieldDefinition( FieldDefinition $definition )
+    protected function getBlockByFieldDefinition(FieldDefinition $definition)
     {
         return $this->getBlockByName(
-            $this->getRenderFieldDefinitionSettingsBlockName( $definition ),
+            $this->getRenderFieldDefinitionSettingsBlockName($definition),
             'renderFieldDefinitionSettingsResources'
         );
     }
 
     /**
      * Returns the template block of the given $name available in the resources
-     * which name is $resourcesName
+     * which name is $resourcesName.
      *
      * @param string $name
      * @param string $resourcesName
@@ -565,28 +541,27 @@ class ContentExtension extends Twig_Extension
      *
      * @return array
      */
-    protected function getBlockByName( $name, $resourcesName )
+    protected function getBlockByName($name, $resourcesName)
     {
-        if ( isset( $this->blocks[$name] ) )
-        {
-            return array( $name => $this->blocks[$name] );
+        if (isset($this->blocks[$name])) {
+            return array($name => $this->blocks[$name]);
         }
 
-        foreach ( $this->{$resourcesName} as &$template )
-        {
-            if ( !$template instanceof Twig_Template )
-                $template = $this->environment->loadTemplate( $template['template'] );
+        foreach ($this->{$resourcesName} as &$template) {
+            if (!$template instanceof Twig_Template) {
+                $template = $this->environment->loadTemplate($template['template']);
+            }
 
             $tpl = $template;
 
-            $block = $this->searchBlock( $name, $tpl );
-            if ( $block !== null )
-            {
+            $block = $this->searchBlock($name, $tpl);
+            if ($block !== null) {
                 $this->blocks[$name] = $block;
-                return array( $name => $block );
+
+                return array($name => $block);
             }
         }
-        throw new LogicException( "Cannot find '$name' template block." );
+        throw new LogicException("Cannot find '$name' template block.");
     }
 
     /**
@@ -597,43 +572,42 @@ class ContentExtension extends Twig_Extension
      *
      * @return string
      */
-    protected function getRenderFieldBlockName( Content $content, Field $field )
+    protected function getRenderFieldBlockName(Content $content, Field $field)
     {
-        return $this->getFieldTypeIdentifier( $content, $field ) . '_field';
+        return $this->getFieldTypeIdentifier($content, $field) . '_field';
     }
 
     /**
      * Returns the name of the block to render the settings of the field
-     * definition $definition
+     * definition $definition.
      *
      * @param \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition $definition
      * @return string
      */
-    protected function getRenderFieldDefinitionSettingsBlockName( FieldDefinition $definition )
+    protected function getRenderFieldDefinitionSettingsBlockName(FieldDefinition $definition)
     {
         return $definition->fieldTypeIdentifier . '_settings';
     }
 
     /**
-     * Returns the field type identifier for $field
+     * Returns the field type identifier for $field.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Content $content
      * @param \eZ\Publish\API\Repository\Values\Content\Field $field
      *
      * @return string
      */
-    protected function getFieldTypeIdentifier( Content $content, Field $field )
+    protected function getFieldTypeIdentifier(Content $content, Field $field)
     {
         $contentInfo = $content->getVersionInfo()->getContentInfo();
         $key = $contentInfo->contentTypeId . '  ' . $field->fieldDefIdentifier;
 
-        if ( !isset( $this->fieldTypeIdentifiers[$key] ) )
-        {
+        if (!isset($this->fieldTypeIdentifiers[$key])) {
             $contentType = $this->repository->getContentTypeService()->loadContentType(
                 $contentInfo->contentTypeId
             );
             $this->fieldTypeIdentifiers[$key] = $contentType
-                ->getFieldDefinition( $field->fieldDefIdentifier )
+                ->getFieldDefinition($field->fieldDefIdentifier)
                 ->fieldTypeIdentifier;
         }
 
@@ -648,18 +622,15 @@ class ContentExtension extends Twig_Extension
      *
      * @return string
      */
-    public function getTranslatedContentName( ValueObject $content, $forcedLanguage = null )
+    public function getTranslatedContentName(ValueObject $content, $forcedLanguage = null)
     {
-        if ( $content instanceof Content )
-        {
-            return $this->translationHelper->getTranslatedContentName( $content, $forcedLanguage );
-        }
-        else if ( $content instanceof ContentInfo )
-        {
-            return $this->translationHelper->getTranslatedContentNameByContentInfo( $content, $forcedLanguage );
+        if ($content instanceof Content) {
+            return $this->translationHelper->getTranslatedContentName($content, $forcedLanguage);
+        } elseif ($content instanceof ContentInfo) {
+            return $this->translationHelper->getTranslatedContentNameByContentInfo($content, $forcedLanguage);
         }
 
-        throw new InvalidArgumentType( '$content', 'eZ\Publish\API\Repository\Values\Content\Content or eZ\Publish\API\Repository\Values\Content\ContentInfo', $content );
+        throw new InvalidArgumentType('$content', 'eZ\Publish\API\Repository\Values\Content\Content or eZ\Publish\API\Repository\Values\Content\ContentInfo', $content);
     }
 
     /**
@@ -669,13 +640,13 @@ class ContentExtension extends Twig_Extension
      *
      * @return mixed A primitive type or a field type Value object depending on the field type.
      */
-    public function getTranslatedFieldValue( Content $content, $fieldDefIdentifier, $forcedLanguage = null )
+    public function getTranslatedFieldValue(Content $content, $fieldDefIdentifier, $forcedLanguage = null)
     {
-        return $this->translationHelper->getTranslatedField( $content, $fieldDefIdentifier, $forcedLanguage )->value;
+        return $this->translationHelper->getTranslatedField($content, $fieldDefIdentifier, $forcedLanguage)->value;
     }
 
     /**
-     * Gets name of a FieldDefinition name by loading ContentType based on Content/ContentInfo object
+     * Gets name of a FieldDefinition name by loading ContentType based on Content/ContentInfo object.
      *
      * @param \eZ\Publish\API\Repository\Values\ValueObject $content Must be Content or ContentInfo object
      * @param string $fieldDefIdentifier Identifier for the field we want to get the name from
@@ -685,10 +656,9 @@ class ContentExtension extends Twig_Extension
      *
      * @return string|null
      */
-    public function getTranslatedFieldDefinitionName( ValueObject $content, $fieldDefIdentifier, $forcedLanguage = null )
+    public function getTranslatedFieldDefinitionName(ValueObject $content, $fieldDefIdentifier, $forcedLanguage = null)
     {
-        if ( $contentType = $this->getContentType( $content ) )
-        {
+        if ($contentType = $this->getContentType($content)) {
             return $this->translationHelper->getTranslatedFieldDefinitionProperty(
                 $contentType,
                 $fieldDefIdentifier,
@@ -697,11 +667,11 @@ class ContentExtension extends Twig_Extension
             );
         }
 
-        throw new InvalidArgumentType( '$content', 'Content|ContentInfo', $content );
+        throw new InvalidArgumentType('$content', 'Content|ContentInfo', $content);
     }
 
     /**
-     * Gets name of a FieldDefinition description by loading ContentType based on Content/ContentInfo object
+     * Gets name of a FieldDefinition description by loading ContentType based on Content/ContentInfo object.
      *
      * @param \eZ\Publish\API\Repository\Values\ValueObject $content Must be Content or ContentInfo object
      * @param string $fieldDefIdentifier Identifier for the field we want to get the name from
@@ -711,10 +681,9 @@ class ContentExtension extends Twig_Extension
      *
      * @return string|null
      */
-    public function getTranslatedFieldDefinitionDescription( ValueObject $content, $fieldDefIdentifier, $forcedLanguage = null )
+    public function getTranslatedFieldDefinitionDescription(ValueObject $content, $fieldDefIdentifier, $forcedLanguage = null)
     {
-        if ( $contentType = $this->getContentType( $content ) )
-        {
+        if ($contentType = $this->getContentType($content)) {
             return $this->translationHelper->getTranslatedFieldDefinitionProperty(
                 $contentType,
                 $fieldDefIdentifier,
@@ -723,11 +692,11 @@ class ContentExtension extends Twig_Extension
             );
         }
 
-        throw new InvalidArgumentType( '$content', 'Content|ContentInfo', $content );
+        throw new InvalidArgumentType('$content', 'Content|ContentInfo', $content);
     }
 
     /**
-     * Gets translated property generic helper
+     * Gets translated property generic helper.
      *
      * For generic use, expects property in singular form. For instance if 'name' is provided it will first look for
      * getName( $lang ) method, then property called ->names[$lang], in either case look for correct translation.
@@ -744,19 +713,16 @@ class ContentExtension extends Twig_Extension
      *
      * @return string|null
      */
-    public function getTranslatedProperty( ValueObject $object, $property, $forcedLanguage = null )
+    public function getTranslatedProperty(ValueObject $object, $property, $forcedLanguage = null)
     {
         $pluralProperty = $property . 's';
-        if ( method_exists( $object, 'get' . $property ) )
-        {
+        if (method_exists($object, 'get' . $property)) {
             return $this->translationHelper->getTranslatedByMethod(
                 $object,
                 'get' . $property,
                 $forcedLanguage
             );
-        }
-        else if ( property_exists( $object, $pluralProperty ) && is_array( $object->$pluralProperty ) )
-        {
+        } elseif (property_exists($object, $pluralProperty) && is_array($object->$pluralProperty)) {
             return $this->translationHelper->getTranslatedByProperty(
                 $object,
                 $pluralProperty,
@@ -764,7 +730,7 @@ class ContentExtension extends Twig_Extension
             );
         }
 
-        throw new InvalidArgumentValue( '$property', $property, get_class( $object ) );
+        throw new InvalidArgumentValue('$property', $property, get_class($object));
     }
 
     /**
@@ -779,33 +745,29 @@ class ContentExtension extends Twig_Extension
      *
      * @return bool
      */
-    public function isFieldEmpty( Content $content, $fieldDefIdentifier, $forcedLanguage = null )
+    public function isFieldEmpty(Content $content, $fieldDefIdentifier, $forcedLanguage = null)
     {
-        if ( $fieldDefIdentifier instanceof Field )
-        {
+        if ($fieldDefIdentifier instanceof Field) {
             $fieldDefIdentifier = $fieldDefIdentifier->fieldDefIdentifier;
         }
 
-        return $this->fieldHelper->isFieldEmpty( $content, $fieldDefIdentifier, $forcedLanguage );
+        return $this->fieldHelper->isFieldEmpty($content, $fieldDefIdentifier, $forcedLanguage);
     }
 
     /**
-     * Get ContentType by Content/ContentInfo
+     * Get ContentType by Content/ContentInfo.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Content|\eZ\Publish\API\Repository\Values\Content\ContentInfo $content
      * @return \eZ\Publish\API\Repository\Values\ContentType\ContentType|null
      */
-    private function getContentType( ValueObject $content )
+    private function getContentType(ValueObject $content)
     {
-        if ( $content instanceof Content )
-        {
+        if ($content instanceof Content) {
             return $this->repository->getContentTypeService()->loadContentType(
                 $content->getVersionInfo()->getContentInfo()->contentTypeId
             );
-        }
-        else if ( $content instanceof ContentInfo )
-        {
-            return $this->repository->getContentTypeService()->loadContentType( $content->contentTypeId );
+        } elseif ($content instanceof ContentInfo) {
+            return $this->repository->getContentTypeService()->loadContentType($content->contentTypeId);
         }
     }
 }

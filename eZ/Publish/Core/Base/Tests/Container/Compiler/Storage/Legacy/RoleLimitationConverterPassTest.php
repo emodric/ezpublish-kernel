@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler\Storage\Legacy;
 
 use eZ\Publish\Core\Base\Container\Compiler\Storage\Legacy\RoleLimitationConverterPass;
@@ -28,28 +27,28 @@ class RoleLimitationConverterPassTest extends AbstractCompilerPassTestCase
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new RoleLimitationConverterPass() );
+        $container->addCompilerPass(new RoleLimitationConverterPass());
     }
 
     public function testRegisterRoleLimitationConverter()
     {
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.persistence.legacy.role.limitation.handler' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.persistence.legacy.role.limitation.handler');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.persistence.legacy.role.limitation.converter',
             'addHandler',
-            array( new Reference( $serviceId ) )
+            array(new Reference($serviceId))
         );
     }
 }

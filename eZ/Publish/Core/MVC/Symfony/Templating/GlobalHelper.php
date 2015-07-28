@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Templating;
 
 use eZ\Publish\API\Repository\LocationService;
@@ -51,8 +50,7 @@ class GlobalHelper
         LocationService $locationService,
         RouterInterface $router,
         TranslationHelper $translationHelper
-    )
-    {
+    ) {
         $this->configResolver = $configResolver;
         $this->locationService = $locationService;
         $this->router = $router;
@@ -62,7 +60,7 @@ class GlobalHelper
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
@@ -74,9 +72,8 @@ class GlobalHelper
      */
     public function getSiteaccess()
     {
-        if ( $this->request )
-        {
-            return $this->request->attributes->get( 'siteaccess' );
+        if ($this->request) {
+            return $this->request->attributes->get('siteaccess');
         }
     }
 
@@ -87,23 +84,21 @@ class GlobalHelper
      */
     public function getViewParameters()
     {
-        if ( $this->request )
-        {
-            return $this->request->attributes->get( 'viewParameters' );
+        if ($this->request) {
+            return $this->request->attributes->get('viewParameters');
         }
     }
 
     /**
      * Returns the view parameters as a string.
-     * e.g. /(foo)/bar
+     * e.g. /(foo)/bar.
      *
      * @return string
      */
     public function getViewParametersString()
     {
-        if ( $this->request )
-        {
-            return $this->request->attributes->get( 'viewParametersString' );
+        if ($this->request) {
+            return $this->request->attributes->get('viewParametersString');
         }
     }
 
@@ -114,16 +109,15 @@ class GlobalHelper
      */
     public function getRequestedUriString()
     {
-        if ( $this->request )
-        {
-            return $this->request->attributes->get( 'semanticPathinfo' );
+        if ($this->request) {
+            return $this->request->attributes->get('semanticPathinfo');
         }
     }
 
     /**
      * Returns the "system" URI string.
      * System URI is the URI for internal content controller.
-     * E.g. /content/location/123/full
+     * E.g. /content/location/123/full.
      *
      * If current route is not an URLAlias, then the current Pathinfo is returned.
      *
@@ -131,16 +125,14 @@ class GlobalHelper
      */
     public function getSystemUriString()
     {
-        if ( $this->request )
-        {
-            if ( $this->request->attributes->get( '_route' ) === UrlAliasRouter::URL_ALIAS_ROUTE_NAME )
-            {
+        if ($this->request) {
+            if ($this->request->attributes->get('_route') === UrlAliasRouter::URL_ALIAS_ROUTE_NAME) {
                 return $this->router
                     ->generate(
                         '_ezpublishLocation',
                         array(
-                            'locationId' => $this->request->attributes->get( 'locationId' ),
-                            'viewType' => $this->request->attributes->get( 'viewType' )
+                            'locationId' => $this->request->attributes->get('locationId'),
+                            'viewType' => $this->request->attributes->get('viewType'),
                         )
                     );
             }
@@ -157,7 +149,7 @@ class GlobalHelper
     public function getRootLocation()
     {
         return $this->locationService->loadLocation(
-            $this->configResolver->getParameter( 'content.tree_root.location_id' )
+            $this->configResolver->getParameter('content.tree_root.location_id')
         );
     }
 
@@ -168,9 +160,9 @@ class GlobalHelper
      *
      * @return null|string
      */
-    public function getTranslationSiteAccess( $language )
+    public function getTranslationSiteAccess($language)
     {
-        return $this->translationHelper->getTranslationSiteAccess( $language );
+        return $this->translationHelper->getTranslationSiteAccess($language);
     }
 
     /**

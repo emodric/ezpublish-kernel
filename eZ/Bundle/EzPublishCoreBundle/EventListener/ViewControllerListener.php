@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\EventListener;
 
 use eZ\Publish\API\Repository\Repository;
@@ -49,8 +48,7 @@ class ViewControllerListener implements EventSubscriberInterface
         ControllerManagerInterface $controllerManager,
         Repository $repository,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->controllerManager = $controllerManager;
         $this->controllerResolver = $controllerResolver;
         $this->repository = $repository;
@@ -59,7 +57,7 @@ class ViewControllerListener implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array( KernelEvents::CONTROLLER => 'getController' );
+        return array(KernelEvents::CONTROLLER => 'getController');
     }
 
     /**
@@ -69,64 +67,53 @@ class ViewControllerListener implements EventSubscriberInterface
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
-    public function getController( FilterControllerEvent $event )
+    public function getController(FilterControllerEvent $event)
     {
         $request = $event->getRequest();
         // Only taking content related controller (i.e. ez_content:viewLocation or ez_content:viewContent)
-        if ( strpos( $request->attributes->get( '_controller' ), 'ez_content:' ) === false )
-        {
+        if (strpos($request->attributes->get('_controller'), 'ez_content:') === false) {
             return;
         }
-        try
-        {
-            if ( $request->attributes->has( 'locationId' ) )
-            {
+        try {
+            if ($request->attributes->has('locationId')) {
                 $valueObject = $this->repository->getLocationService()->loadLocation(
-                    $request->attributes->get( 'locationId' )
+                    $request->attributes->get('locationId')
                 );
-            }
-            else if ( $request->attributes->get( 'location' ) instanceof Location )
-            {
-                $valueObject = $request->attributes->get( 'location' );
-                $request->attributes->set( 'locationId', $valueObject->id );
-            }
-            else if ( $request->attributes->has( 'contentId' ) )
-            {
+            } elseif ($request->attributes->get('location') instanceof Location) {
+                $valueObject = $request->attributes->get('location');
+                $request->attributes->set('locationId', $valueObject->id);
+            } elseif ($request->attributes->has('contentId')) {
                 $valueObject = $this->repository->sudo(
-                    function ( $repository ) use ( $request )
-                    {
+                    function ($repository) use ($request) {
                         return $repository->getContentService()->loadContentInfo(
-                            $request->attributes->get( 'contentId' )
+                            $request->attributes->get('contentId')
                         );
                     }
                 );
+            } elseif ($request->attributes->get('contentInfo') instanceof ContentInfo) {
+                $valueObject = $request->attributes->get('contentInfo');
+                $request->attributes->set('contentId', $valueObject->id);
             }
-            else if ( $request->attributes->get( 'contentInfo' ) instanceof ContentInfo )
-            {
-                $valueObject = $request->attributes->get( 'contentInfo' );
-                $request->attributes->set( 'contentId', $valueObject->id );
-            }
-        }
-        catch ( UnauthorizedException $e)
-        {
+        } catch (UnauthorizedException $e) {
             throw new AccessDeniedException();
         }
 
-        if ( !isset( $valueObject ) )
-        {
-            $this->logger->error( 'Could not resolver a view controller, invalid value object to match.' );
+        if (!isset($valueObject)) {
+            $this->logger->error('Could not resolver a view controller, invalid value object to match.');
+
             return;
         }
 
         $controllerReference = $this->controllerManager->getControllerReference(
             $valueObject,
-            $request->attributes->get( 'viewType' )
+            $request->attributes->get('viewType')
         );
 
-        if ( !$controllerReference instanceof ControllerReference )
+        if (!$controllerReference instanceof ControllerReference) {
             return;
+        }
 
-        $request->attributes->set( '_controller', $controllerReference->controller );
-        $event->setController( $this->controllerResolver->getController( $request ) );
+        $request->attributes->set('_controller', $controllerReference->controller);
+        $event->setController($this->controllerResolver->getController($request));
     }
 }

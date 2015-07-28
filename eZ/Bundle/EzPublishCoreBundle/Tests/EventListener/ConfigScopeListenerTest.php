@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\EventListener;
 
 use eZ\Bundle\EzPublishCoreBundle\EventListener\ConfigScopeListener;
@@ -30,16 +29,16 @@ class ConfigScopeListenerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->configResolver = $this->getMock( 'eZ\Publish\Core\MVC\Symfony\Configuration\VersatileScopeInterface' );
-        $this->viewManager = $this->getMock( 'eZ\Bundle\EzPublishCoreBundle\Tests\EventListener\Stubs\ViewManager' );
+        $this->configResolver = $this->getMock('eZ\Publish\Core\MVC\Symfony\Configuration\VersatileScopeInterface');
+        $this->viewManager = $this->getMock('eZ\Bundle\EzPublishCoreBundle\Tests\EventListener\Stubs\ViewManager');
     }
 
     public function testGetSubscribedEvents()
     {
         $this->assertSame(
             array(
-                MVCEvents::CONFIG_SCOPE_CHANGE => array( 'onConfigScopeChange', 100 ),
-                MVCEvents::CONFIG_SCOPE_RESTORE => array( 'onConfigScopeChange', 100 )
+                MVCEvents::CONFIG_SCOPE_CHANGE => array('onConfigScopeChange', 100),
+                MVCEvents::CONFIG_SCOPE_RESTORE => array('onConfigScopeChange', 100),
             ),
             ConfigScopeListener::getSubscribedEvents()
         );
@@ -47,19 +46,19 @@ class ConfigScopeListenerTest extends PHPUnit_Framework_TestCase
 
     public function testOnConfigScopeChange()
     {
-        $siteAccess = new SiteAccess( 'test' );
-        $event = new ScopeChangeEvent( $siteAccess );
+        $siteAccess = new SiteAccess('test');
+        $event = new ScopeChangeEvent($siteAccess);
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'setDefaultScope' )
-            ->with( $siteAccess->name );
+            ->expects($this->once())
+            ->method('setDefaultScope')
+            ->with($siteAccess->name);
         $this->viewManager
-            ->expects( $this->once() )
-            ->method( 'setSiteAccess' )
-            ->with( $siteAccess );
+            ->expects($this->once())
+            ->method('setSiteAccess')
+            ->with($siteAccess);
 
-        $listener = new ConfigScopeListener( $this->configResolver, $this->viewManager );
-        $listener->onConfigScopeChange( $event );
-        $this->assertSame( $siteAccess, $event->getSiteAccess() );
+        $listener = new ConfigScopeListener($this->configResolver, $this->viewManager);
+        $listener->onConfigScopeChange($event);
+        $this->assertSame($siteAccess, $event->getSiteAccess());
     }
 }

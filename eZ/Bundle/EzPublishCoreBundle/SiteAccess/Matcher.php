@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\SiteAccess;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher as BaseMatcher;
@@ -21,5 +20,5 @@ interface Matcher extends BaseMatcher
      *
      * @param mixed $matchingConfiguration
      */
-    public function setMatchingConfiguration( $matchingConfiguration );
+    public function setMatchingConfiguration($matchingConfiguration);
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributd with this source code.
@@ -18,44 +18,39 @@ class ComplexSettingsPass implements CompilerPassInterface
     /** @var ComplexSettingParserInterface */
     private $parser;
 
-    public function __construct( ComplexSettingParserInterface $parser )
+    public function __construct(ComplexSettingParserInterface $parser)
     {
         $this->parser = $parser;
     }
 
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        foreach ( $container->getDefinitions() as $serviceId => $definition )
-        {
+        foreach ($container->getDefinitions() as $serviceId => $definition) {
             $arguments = $definition->getArguments();
-            foreach ( $arguments as $argumentIndex => $argumentValue )
-            {
-                if ( !is_string( $argumentValue ) )
-                {
+            foreach ($arguments as $argumentIndex => $argumentValue) {
+                if (!is_string($argumentValue)) {
                     continue;
                 }
 
-                if ( !$this->parser->containsDynamicSettings( $argumentValue ) )
-                {
+                if (!$this->parser->containsDynamicSettings($argumentValue)) {
                     continue;
                 }
 
-                if ( $this->parser->isDynamicSetting( $argumentValue ) )
-                {
+                if ($this->parser->isDynamicSetting($argumentValue)) {
                     continue;
                 }
 
-                $factoryServiceId = sprintf( '%s.%s_%d', $serviceId, '__complex_setting_factory', $argumentIndex );
+                $factoryServiceId = sprintf('%s.%s_%d', $serviceId, '__complex_setting_factory', $argumentIndex);
                 $container->setDefinition(
                     $factoryServiceId,
                     $this->createFactoryDefinition(
                         $argumentValue,
-                        $this->parser->parseComplexSetting( $argumentValue )
+                        $this->parser->parseComplexSetting($argumentValue)
                     )
                 );
 
-                $arguments[$argumentIndex] = new Reference( $factoryServiceId );
-                $definition->setArguments( $arguments );
+                $arguments[$argumentIndex] = new Reference($factoryServiceId);
+                $definition->setArguments($arguments);
             }
         }
     }
@@ -72,26 +67,25 @@ class ComplexSettingsPass implements CompilerPassInterface
      *
      * @return Definition
      */
-    private function createFactoryDefinition( $argumentValue, $dynamicSettings )
+    private function createFactoryDefinition($argumentValue, $dynamicSettings)
     {
         $definition = new Definition(
             'stdClass',
-            array( $argumentValue )
+            array($argumentValue)
         );
 
         $definition->setFactory(
             [
                 'eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ComplexSettings\ComplexSettingValueFactory',
-                'getArgumentValue'
+                'getArgumentValue',
             ]
         );
-        foreach ( $dynamicSettings as $dynamicSetting )
-        {
+        foreach ($dynamicSettings as $dynamicSetting) {
             // Trim the '$'  so that the dynamic setting doesn't get transformed
-            $definition->addArgument( trim( $dynamicSetting, '$' ) );
+            $definition->addArgument(trim($dynamicSetting, '$'));
 
             // This one will be transformed
-            $definition->addArgument( $dynamicSetting );
+            $definition->addArgument($dynamicSetting);
         }
 
         return $definition;

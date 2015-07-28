@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing an interface for the database abstractions
+ * File containing an interface for the database abstractions.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Database;
 
 use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
@@ -17,7 +16,7 @@ use eZ\Publish\Core\Persistence\Legacy\EzcDbHandler;
 interface DatabaseHandler extends EzcDbHandler
 {
     /**
-     * Name of the database technology
+     * Name of the database technology.
      *
      * @return string
      */
@@ -25,55 +24,49 @@ interface DatabaseHandler extends EzcDbHandler
 
     /**
      * Begin a transaction.
-     *
-     * @return void
      */
     public function beginTransaction();
 
     /**
      * Commit a transaction.
-     *
-     * @return void
      */
     public function commit();
 
     /**
      * Rollback a transaction.
-     *
-     * @return void
      */
     public function rollBack();
 
     /**
-     * Check for sequence based driver or not
+     * Check for sequence based driver or not.
      *
      * @return bool
      */
     public function useSequences();
 
     /**
-     * Retrieve the last auto incremet or sequence id
+     * Retrieve the last auto incremet or sequence id.
      *
      * @param string $sequenceName
      * @return string
      */
-    public function lastInsertId( $sequenceName = null );
+    public function lastInsertId($sequenceName = null);
 
     /**
-     * Execute a query against the database
+     * Execute a query against the database.
      *
      * @param string $query
      */
-    public function exec( $query );
+    public function exec($query);
 
     /**
-     * Prepare and return a statement
+     * Prepare and return a statement.
      *
      * Statements are ducktyped, but need to work like PDOStatement.
      *
      * @return object
      */
-    public function prepare( $query );
+    public function prepare($query);
 
     /**
      * Create Select Query object.
@@ -112,7 +105,7 @@ interface DatabaseHandler extends EzcDbHandler
      *
      * @return string
      */
-    public function aliasedColumn( $query, $columnName, $tableName = null );
+    public function aliasedColumn($query, $columnName, $tableName = null);
 
     /**
      * Returns a qualified identifier for $columnName in $tableName.
@@ -122,7 +115,7 @@ interface DatabaseHandler extends EzcDbHandler
      *
      * @return string
      */
-    public function quoteColumn( $columnName, $tableName = null );
+    public function quoteColumn($columnName, $tableName = null);
 
     /**
      * Returns a qualified identifier for $tableName.
@@ -131,10 +124,10 @@ interface DatabaseHandler extends EzcDbHandler
      *
      * @return string
      */
-    public function quoteTable( $tableName );
+    public function quoteTable($tableName);
 
     /**
-     * Custom alias method
+     * Custom alias method.
      *
      * Ignores some properties of identifier quoting, but since we use somehow
      * sane table and column names, ourselves, this is fine.
@@ -144,10 +137,10 @@ interface DatabaseHandler extends EzcDbHandler
      * @param string $identifier
      * @return string
      */
-    public function alias( $name, $alias );
+    public function alias($name, $alias);
 
     /**
-     * Custom quote identifier method
+     * Custom quote identifier method.
      *
      * Ignores some properties of identifier quoting, but since we use somehow
      * sane table and column names, ourselves, this is fine.
@@ -157,10 +150,10 @@ interface DatabaseHandler extends EzcDbHandler
      * @param string $identifier
      * @return string
      */
-    public function quoteIdentifier( $identifier );
+    public function quoteIdentifier($identifier);
 
     /**
-     * Get auto increment value
+     * Get auto increment value.
      *
      * Returns the value used for autoincrement tables. Usually this will just
      * be null. In case for sequence based RDBMS this method can return a
@@ -171,17 +164,17 @@ interface DatabaseHandler extends EzcDbHandler
      *
      * @return mixed
      */
-    public function getAutoIncrementValue( $table, $column );
+    public function getAutoIncrementValue($table, $column);
 
     /**
-     * Returns the name of the affected sequence
+     * Returns the name of the affected sequence.
      *
      * @param string $table
      * @param string $column
      *
      * @return string
      */
-    public function getSequenceName( $table, $column );
+    public function getSequenceName($table, $column);
 
     /**
      * Returns underlying connection (e.g. Doctrine connection object).

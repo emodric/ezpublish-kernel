@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the StorageFieldValue class
+ * File containing the StorageFieldValue class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Content;
 
 use eZ\Publish\SPI\Persistence\ValueObject;

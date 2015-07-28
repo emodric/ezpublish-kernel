@@ -1,12 +1,11 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\TextBlock\Type;
@@ -26,14 +25,13 @@ class SearchableTextBlock extends Type
         return true;
     }
 
-    static protected function checkValueType( $value )
+    protected static function checkValueType($value)
     {
-        $fieldTypeFQN = "eZ\\Publish\\Core\\FieldType\\TextBlock\\Value";
-        $valueFQN = substr_replace( $fieldTypeFQN, "Value", strrpos( $fieldTypeFQN, "\\" ) + 1 );
+        $fieldTypeFQN = 'eZ\\Publish\\Core\\FieldType\\TextBlock\\Value';
+        $valueFQN = substr_replace($fieldTypeFQN, 'Value', strrpos($fieldTypeFQN, '\\') + 1);
 
-        if ( !$value instanceof $valueFQN )
-        {
-            throw new InvalidArgumentType( "\$value", $valueFQN, $value );
+        if (!$value instanceof $valueFQN) {
+            throw new InvalidArgumentType('$value', $valueFQN, $value);
         }
     }
 }

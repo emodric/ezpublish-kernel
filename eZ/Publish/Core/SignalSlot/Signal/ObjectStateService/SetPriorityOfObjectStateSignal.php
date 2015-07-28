@@ -1,31 +1,29 @@
 <?php
 /**
- * SetPriorityOfObjectStateSignal class
+ * SetPriorityOfObjectStateSignal class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\SignalSlot\Signal\ObjectStateService;
 
 use eZ\Publish\Core\SignalSlot\Signal;
 
 /**
- * SetPriorityOfObjectStateSignal class
- * @package eZ\Publish\Core\SignalSlot\Signal\ObjectStateService
+ * SetPriorityOfObjectStateSignal class.
  */
 class SetPriorityOfObjectStateSignal extends Signal
 {
     /**
-     * ObjectStateId
+     * ObjectStateId.
      *
      * @var mixed
      */
     public $objectStateId;
 
     /**
-     * Priority
+     * Priority.
      *
      * @var mixed
      */

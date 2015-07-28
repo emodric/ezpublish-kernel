@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -11,7 +11,7 @@ use eZ\Publish\Core\IO\TolerantIOService;
 use eZ\Publish\Core\IO\Values\MissingBinaryFile;
 
 /**
- * Test case for the TolerantIOService
+ * Test case for the TolerantIOService.
  */
 class TolerantIOServiceTest extends IOServiceTest
 {
@@ -23,7 +23,7 @@ class TolerantIOServiceTest extends IOServiceTest
             $this->metadataHandlerMock,
             $this->binarydataHandlerMock,
             $this->mimeTypeDetectorMock,
-            array( 'prefix' => self::PREFIX )
+            array('prefix' => self::PREFIX)
         );
     }
 
@@ -34,7 +34,7 @@ class TolerantIOServiceTest extends IOServiceTest
     {
         $binaryFile = parent::testLoadBinaryFileNotFound();
         self::assertEquals(
-            new MissingBinaryFile( array( 'id' => 'id.ext' ) ),
+            new MissingBinaryFile(array('id' => 'id.ext')),
             $binaryFile
         );
     }
@@ -45,23 +45,23 @@ class TolerantIOServiceTest extends IOServiceTest
     public function testCreateMissingBinaryFile()
     {
         $id = 'id.ext';
-        $prefixedUri = $this->getPrefixedUri( $id );
+        $prefixedUri = $this->getPrefixedUri($id);
 
         $this->binarydataHandlerMock
-            ->expects( $this->once() )
-            ->method( 'getUri' )
-            ->with( $prefixedUri )
-            ->will( $this->returnValue( "/$prefixedUri" ) );
+            ->expects($this->once())
+            ->method('getUri')
+            ->with($prefixedUri)
+            ->will($this->returnValue("/$prefixedUri"));
 
         $binaryFile = parent::testLoadBinaryFileNotFound();
         self::assertEquals(
-            new MissingBinaryFile( array( 'id' => 'id.ext', 'uri' => "/$prefixedUri" ) ),
+            new MissingBinaryFile(array('id' => 'id.ext', 'uri' => "/$prefixedUri")),
             $binaryFile
         );
     }
 
     /**
-     * Overridden to change the expected exception (none)
+     * Overridden to change the expected exception (none).
      * @covers \eZ\Publish\Core\IO\IOService::deleteBinaryFile
      */
     public function testDeleteBinaryFileNotFound()
@@ -72,7 +72,7 @@ class TolerantIOServiceTest extends IOServiceTest
     public function testLoadBinaryFileByUriNotFound()
     {
         self::assertEquals(
-            new MissingBinaryFile( array( 'id' => "my/path.png" ) ),
+            new MissingBinaryFile(array('id' => 'my/path.png')),
             parent::testLoadBinaryFileByUriNotFound()
         );
     }

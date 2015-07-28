@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Pagination\Pagerfanta;
 
 /**
@@ -18,16 +17,15 @@ class ContentSearchAdapter extends ContentSearchHitAdapter
     /**
      * Returns a slice of the results as Content objects.
      *
-     * @param integer $offset The offset.
-     * @param integer $length The length.
+     * @param int $offset The offset.
+     * @param int $length The length.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Content[]
      */
-    public function getSlice( $offset, $length )
+    public function getSlice($offset, $length)
     {
         $list = array();
-        foreach ( parent::getSlice( $offset, $length ) as $hit )
-        {
+        foreach (parent::getSlice($offset, $length) as $hit) {
             $list[] = $hit->valueObject;
         }
 

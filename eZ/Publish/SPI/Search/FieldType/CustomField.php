@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Custom document field
+ * Custom document field.
  */
 class CustomField extends FieldType
 {
@@ -22,4 +22,3 @@ class CustomField extends FieldType
      */
     public $type;
 }
-

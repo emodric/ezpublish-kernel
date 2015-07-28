@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Boolean document field
+ * Boolean document field.
  */
 class BooleanField extends FieldType
 {
@@ -22,4 +22,3 @@ class BooleanField extends FieldType
      */
     protected $type = 'ez_boolean';
 }
-

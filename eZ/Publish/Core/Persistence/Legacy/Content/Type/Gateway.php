@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Type Gateway class
+ * File containing the Content Type Gateway class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Content\Type;
 
 use eZ\Publish\SPI\Persistence\Content\Type;
@@ -28,16 +27,14 @@ abstract class Gateway
      *
      * @return mixed Group ID
      */
-    abstract public function insertGroup( Group $group );
+    abstract public function insertGroup(Group $group);
 
     /**
      * Updates a group with data in $group.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\Type\Group\UpdateStruct $group
-     *
-     * @return void
      */
-    abstract public function updateGroup( GroupUpdateStruct $group );
+    abstract public function updateGroup(GroupUpdateStruct $group);
 
     /**
      * Returns the number of types in a certain group.
@@ -46,7 +43,7 @@ abstract class Gateway
      *
      * @return int
      */
-    abstract public function countTypesInGroup( $groupId );
+    abstract public function countTypesInGroup($groupId);
 
     /**
      * Returns the number of Groups the type is assigned to.
@@ -56,16 +53,14 @@ abstract class Gateway
      *
      * @return int
      */
-    abstract public function countGroupsForType( $typeId, $status );
+    abstract public function countGroupsForType($typeId, $status);
 
     /**
      * Deletes the Group with the given $groupId.
      *
      * @param int $groupId
-     *
-     * @return void
      */
-    abstract public function deleteGroup( $groupId );
+    abstract public function deleteGroup($groupId);
 
     /**
      * Returns an array with data about the Group with $groupId.
@@ -74,7 +69,7 @@ abstract class Gateway
      *
      * @return array
      */
-    abstract public function loadGroupData( $groupId );
+    abstract public function loadGroupData($groupId);
 
     /**
      * Returns an array with data about the Group with $identifier.
@@ -83,7 +78,7 @@ abstract class Gateway
      *
      * @return array
      */
-    abstract public function loadGroupDataByIdentifier( $identifier );
+    abstract public function loadGroupDataByIdentifier($identifier);
 
     /**
      * Returns an array with data about all Group objects.
@@ -100,7 +95,7 @@ abstract class Gateway
      *
      * @return string[][]
      */
-    abstract public function loadTypesDataForGroup( $groupId, $status );
+    abstract public function loadTypesDataForGroup($groupId, $status);
 
     /**
      * Inserts a new content type.
@@ -110,7 +105,7 @@ abstract class Gateway
      *
      * @return mixed Type ID
      */
-    abstract public function insertType( Type $type, $typeId = null );
+    abstract public function insertType(Type $type, $typeId = null);
 
     /**
      * Insert assignment of $typeId to $groupId.
@@ -118,10 +113,8 @@ abstract class Gateway
      * @param mixed $typeId
      * @param int $status
      * @param mixed $groupId
-     *
-     * @return void
      */
-    abstract public function insertGroupAssignment( $typeId, $status, $groupId );
+    abstract public function insertGroupAssignment($typeId, $status, $groupId);
 
     /**
      * Deletes a group assignments for a Type.
@@ -129,10 +122,8 @@ abstract class Gateway
      * @param mixed $groupId
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    abstract public function deleteGroupAssignment( $groupId, $typeId, $status );
+    abstract public function deleteGroupAssignment($groupId, $typeId, $status);
 
     /**
      * Loads an array with data about field definition referred $id and $status.
@@ -142,7 +133,7 @@ abstract class Gateway
      *
      * @return array Data rows.
      */
-    abstract public function loadFieldDefinition( $id, $status );
+    abstract public function loadFieldDefinition($id, $status);
 
     /**
      * Inserts a $fieldDefinition for $typeId.
@@ -165,10 +156,8 @@ abstract class Gateway
      * @param mixed $typeId
      * @param int $status
      * @param mixed $fieldDefinitionId
-     *
-     * @return void
      */
-    abstract public function deleteFieldDefinition( $typeId, $status, $fieldDefinitionId );
+    abstract public function deleteFieldDefinition($typeId, $status, $fieldDefinitionId);
 
     /**
      * Updates a $fieldDefinition for $typeId.
@@ -177,8 +166,6 @@ abstract class Gateway
      * @param int $status
      * @param \eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition $fieldDefinition
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldDefinition $storageFieldDef
-     *
-     * @return void
      */
     abstract public function updateFieldDefinition(
         $typeId, $status, FieldDefinition $fieldDefinition,
@@ -191,10 +178,8 @@ abstract class Gateway
      * @param mixed $typeId
      * @param int $status
      * @param \eZ\Publish\SPI\Persistence\Content\Type\UpdateStruct $updateStruct
-     *
-     * @return void
      */
-    abstract public function updateType( $typeId, $status, UpdateStruct $updateStruct );
+    abstract public function updateType($typeId, $status, UpdateStruct $updateStruct);
 
     /**
      * Loads an array with data about $typeId in $status.
@@ -204,7 +189,7 @@ abstract class Gateway
      *
      * @return array Data rows.
      */
-    abstract public function loadTypeData( $typeId, $status );
+    abstract public function loadTypeData($typeId, $status);
 
     /**
      * Loads an array with data about the type referred to by $identifier in
@@ -215,7 +200,7 @@ abstract class Gateway
      *
      * @return array(int=>array(string=>mixed)) Data rows.
      */
-    abstract public function loadTypeDataByIdentifier( $identifier, $status );
+    abstract public function loadTypeDataByIdentifier($identifier, $status);
 
     /**
      * Loads an array with data about the type referred to by $remoteId in
@@ -226,7 +211,7 @@ abstract class Gateway
      *
      * @return array(int=>array(string=>mixed)) Data rows.
      */
-    abstract public function loadTypeDataByRemoteId( $remoteId, $status );
+    abstract public function loadTypeDataByRemoteId($remoteId, $status);
 
     /**
      * Counts the number of instances that exists of the identified type.
@@ -235,27 +220,23 @@ abstract class Gateway
      *
      * @return int
      */
-    abstract public function countInstancesOfType( $typeId );
+    abstract public function countInstancesOfType($typeId);
 
     /**
      * Deletes a Type completely.
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    abstract public function delete( $typeId, $status );
+    abstract public function delete($typeId, $status);
 
     /**
      * Deletes all field definitions of a Type.
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    abstract public function deleteFieldDefinitionsForType( $typeId, $status );
+    abstract public function deleteFieldDefinitionsForType($typeId, $status);
 
     /**
      * Deletes a the Type.
@@ -264,35 +245,29 @@ abstract class Gateway
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    abstract public function deleteType( $typeId, $status );
+    abstract public function deleteType($typeId, $status);
 
     /**
      * Deletes all group assignments for a Type.
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    abstract public function deleteGroupAssignmentsForType( $typeId, $status );
+    abstract public function deleteGroupAssignmentsForType($typeId, $status);
 
     /**
      * Publishes the Type with $typeId from $sourceVersion to $targetVersion,
-     * including its fields
+     * including its fields.
      *
      * @param int $typeId
      * @param int $sourceStatus
      * @param int $targetStatus
-     *
-     * @return void
      */
-    abstract public function publishTypeAndFields( $typeId, $sourceStatus, $targetStatus );
+    abstract public function publishTypeAndFields($typeId, $sourceStatus, $targetStatus);
 
     /**
-     * Returns searchable fields mapping data
+     * Returns searchable fields mapping data.
      *
      * @return array
      */

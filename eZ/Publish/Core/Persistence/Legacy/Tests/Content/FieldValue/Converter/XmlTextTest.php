@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the XmlTextTest class
+ * File containing the XmlTextTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\FieldValue\Converter;
 
 use eZ\Publish\SPI\Persistence\Content\FieldValue;
@@ -16,7 +15,7 @@ use PHPUnit_Framework_TestCase;
 use DOMDocument;
 
 /**
- * Test case for XmlText converter in Legacy storage
+ * Test case for XmlText converter in Legacy storage.
  *
  * @group fieldType
  * @group ezxmltext
@@ -36,7 +35,7 @@ class XmlTextTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->converter = new XmlTextConverter;
+        $this->converter = new XmlTextConverter();
         $this->xmlText = <<<EOT
 <?xml version="1.0" encoding="utf-8"?>
 <section xmlns:image="http://ez.no/namespaces/ezpublish3/image/" xmlns:xhtml="http://ez.no/namespaces/ezpublish3/xhtml/" xmlns:custom="http://ez.no/namespaces/ezpublish3/custom/"><paragraph>Some paragraph content</paragraph></section>
@@ -46,7 +45,7 @@ EOT;
 
     protected function tearDown()
     {
-        unset( $this->xmlText );
+        unset($this->xmlText);
         parent::tearDown();
     }
 
@@ -55,13 +54,13 @@ EOT;
      */
     public function testToStorageValue()
     {
-        $value = new FieldValue;
-        $value->data = new DOMDocument;
-        $value->data->loadXML( $this->xmlText );
-        $storageFieldValue = new StorageFieldValue;
+        $value = new FieldValue();
+        $value->data = new DOMDocument();
+        $value->data->loadXML($this->xmlText);
+        $storageFieldValue = new StorageFieldValue();
 
-        $this->converter->toStorageValue( $value, $storageFieldValue );
-        self::assertSame( $value->data->saveXML(), $storageFieldValue->dataText );
+        $this->converter->toStorageValue($value, $storageFieldValue);
+        self::assertSame($value->data->saveXML(), $storageFieldValue->dataText);
     }
 
     /**
@@ -69,11 +68,11 @@ EOT;
      */
     public function testToFieldValue()
     {
-        $storageFieldValue = new StorageFieldValue;
+        $storageFieldValue = new StorageFieldValue();
         $storageFieldValue->dataText = $this->xmlText;
-        $fieldValue = new FieldValue;
+        $fieldValue = new FieldValue();
 
-        $this->converter->toFieldValue( $storageFieldValue, $fieldValue );
-        self::assertSame( $storageFieldValue->dataText, $fieldValue->data->saveXML() );
+        $this->converter->toFieldValue($storageFieldValue, $fieldValue);
+        self::assertSame($storageFieldValue->dataText, $fieldValue->data->saveXML());
     }
 }

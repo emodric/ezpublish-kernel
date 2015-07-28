@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * String document field
+ * String document field.
  */
 class StringField extends FieldType
 {
@@ -22,4 +22,3 @@ class StringField extends FieldType
      */
     protected $type = 'ez_string';
 }
-

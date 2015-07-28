@@ -6,16 +6,15 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Exceptions;
 
 /**
- * This Exception is thrown on create or update content one or more given fields are not valid
+ * This Exception is thrown on create or update content one or more given fields are not valid.
  */
 abstract class ContentFieldValidationException extends ForbiddenException
 {
     /**
-     * Returns an array of field validation error messages
+     * Returns an array of field validation error messages.
      *
      * @return array
      */

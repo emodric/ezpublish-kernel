@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
@@ -22,14 +21,14 @@ class LegacyKernelListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            LegacyEvents::PRE_RESET_LEGACY_KERNEL => 'onKernelReset'
+            LegacyEvents::PRE_RESET_LEGACY_KERNEL => 'onKernelReset',
         );
     }
 
-    public function onKernelReset( PreResetLegacyKernelEvent $event )
+    public function onKernelReset(PreResetLegacyKernelEvent $event)
     {
         $event->getLegacyKernel()->runCallback(
-            function() {
+            function () {
                 eZINI::resetAllInstances();
             },
             true,

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache\Http\SymfonyCache;
 
 use FOS\HttpCache\SymfonyCache\UserContextSubscriber as BaseUserContextSubscriber;
@@ -19,10 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserContextSubscriber extends BaseUserContextSubscriber
 {
-    protected function cleanupHashLookupRequest( Request $hashLookupRequest, Request $originalRequest )
+    protected function cleanupHashLookupRequest(Request $hashLookupRequest, Request $originalRequest)
     {
-        parent::cleanupHashLookupRequest( $hashLookupRequest, $originalRequest );
+        parent::cleanupHashLookupRequest($hashLookupRequest, $originalRequest);
         // Embed the original request as we need it to match the SiteAccess.
-        $hashLookupRequest->attributes->set( '_ez_original_request', $originalRequest );
+        $hashLookupRequest->attributes->set('_ez_original_request', $originalRequest);
     }
 }

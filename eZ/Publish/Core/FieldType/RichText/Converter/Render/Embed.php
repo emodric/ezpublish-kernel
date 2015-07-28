@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\RichText\Converter\Render;
 
 use eZ\Publish\Core\FieldType\RichText\RendererInterface;
@@ -26,85 +25,72 @@ class Embed extends Render implements Converter
     protected $logger;
 
     /**
-     * Maps embed tag names to their default views
+     * Maps embed tag names to their default views.
      *
      * @var array
      */
     protected $tagDefaultViewMap = array(
-        "ezembed" => "embed",
-        "ezembedinline" => "embed-inline"
+        'ezembed' => 'embed',
+        'ezembedinline' => 'embed-inline',
     );
 
-    public function __construct( RendererInterface $renderer, LoggerInterface $logger = null )
+    public function __construct(RendererInterface $renderer, LoggerInterface $logger = null)
     {
-        parent::__construct( $renderer );
+        parent::__construct($renderer);
         $this->logger = $logger;
     }
 
     /**
-     * Processes single embed element type (ezembed or ezembedinline)
+     * Processes single embed element type (ezembed or ezembedinline).
      *
      * @param \DOMDocument $document
      * @param $tagName string name of the tag to extract
-     * @param boolean $isInline
+     * @param bool $isInline
      */
-    protected function processTag( DOMDocument $document, $tagName, $isInline )
+    protected function processTag(DOMDocument $document, $tagName, $isInline)
     {
         /** @var $embed \DOMElement */
-        foreach ( $document->getElementsByTagName( $tagName ) as $embed )
-        {
-            if ( !$viewType = $embed->getAttribute( "view" ) )
-            {
+        foreach ($document->getElementsByTagName($tagName) as $embed) {
+            if (!$viewType = $embed->getAttribute('view')) {
                 $viewType = $this->tagDefaultViewMap[$tagName];
             }
 
             $embedContent = null;
             $parameters = array(
-                "params" => $this->extractConfiguration( $embed ),
-                "view" => $viewType,
+                'params' => $this->extractConfiguration($embed),
+                'view' => $viewType,
             );
 
-            if ( $embed->hasAttribute( "ezxhtml:class" ) )
-            {
-                $parameters["class"] = $embed->getAttribute( "ezxhtml:class" );
+            if ($embed->hasAttribute('ezxhtml:class')) {
+                $parameters['class'] = $embed->getAttribute('ezxhtml:class');
             }
 
-            if ( $embed->hasAttribute( "ezxhtml:align" ) )
-            {
-                $parameters["align"] = $embed->getAttribute( "ezxhtml:align" );
+            if ($embed->hasAttribute('ezxhtml:align')) {
+                $parameters['align'] = $embed->getAttribute('ezxhtml:align');
             }
 
-            $resourceReference = $embed->getAttribute( "xlink:href" );
+            $resourceReference = $embed->getAttribute('xlink:href');
 
-            if ( empty( $resourceReference ) )
-            {
-                if ( isset( $this->logger ) )
-                {
-                    $this->logger->error( "Could not embed resource: empty 'xlink:href' attribute" );
+            if (empty($resourceReference)) {
+                if (isset($this->logger)) {
+                    $this->logger->error("Could not embed resource: empty 'xlink:href' attribute");
                 }
-            }
-            else if ( 0 === preg_match( "~^(ezcontent|ezlocation)://(.*)$~", $resourceReference, $matches ) )
-            {
-                if ( isset( $this->logger ) )
-                {
+            } elseif (0 === preg_match('~^(ezcontent|ezlocation)://(.*)$~', $resourceReference, $matches)) {
+                if (isset($this->logger)) {
                     $this->logger->error(
                         "Could not embed resource: unhandled resource reference '{$resourceReference}'"
                     );
                 }
-            }
-            else if ( $matches[1] === "ezcontent" )
-            {
-                $parameters["id"] = $matches[2];
+            } elseif ($matches[1] === 'ezcontent') {
+                $parameters['id'] = $matches[2];
                 $embedContent = $this->renderer->renderContentEmbed(
                     $matches[2],
                     $viewType,
                     $parameters,
                     $isInline
                 );
-            }
-            else if ( $matches[1] === "ezlocation" )
-            {
-                $parameters["id"] = $matches[2];
+            } elseif ($matches[1] === 'ezlocation') {
+                $parameters['id'] = $matches[2];
                 $embedContent = $this->renderer->renderLocationEmbed(
                     $matches[2],
                     $viewType,
@@ -113,26 +99,25 @@ class Embed extends Render implements Converter
                 );
             }
 
-            if ( isset( $embedContent ) )
-            {
-                $payload = $document->createElement( "ezpayload" );
-                $payload->appendChild( $document->createCDATASection( $embedContent ) );
-                $embed->appendChild( $payload );
+            if (isset($embedContent)) {
+                $payload = $document->createElement('ezpayload');
+                $payload->appendChild($document->createCDATASection($embedContent));
+                $embed->appendChild($payload);
             }
         }
     }
 
     /**
-     * Injects rendered payloads into embed elements
+     * Injects rendered payloads into embed elements.
      *
      * @param \DOMDocument $document
      *
      * @return \DOMDocument
      */
-    public function convert( DOMDocument $document )
+    public function convert(DOMDocument $document)
     {
-        $this->processTag( $document, 'ezembed', false );
-        $this->processTag( $document, 'ezembedinline', true );
+        $this->processTag($document, 'ezembed', false);
+        $this->processTag($document, 'ezembedinline', true);
 
         return $document;
     }

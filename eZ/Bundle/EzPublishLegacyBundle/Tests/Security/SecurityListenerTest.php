@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishLegacyBundle\Tests\Security;
 
 use eZ\Bundle\EzPublishLegacyBundle\Security\SecurityListener;
@@ -30,56 +29,56 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestLegacyMode()
     {
         $event = new GetResponseEvent(
-            $this->getMock( 'Symfony\Component\HttpKernel\HttpKernelInterface' ),
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             new Request(),
             HttpKernelInterface::MASTER_REQUEST
         );
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( true ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(true));
 
         $this->securityContext
-            ->expects( $this->never() )
-            ->method( 'getToken' );
+            ->expects($this->never())
+            ->method('getToken');
         $this->securityContext
-            ->expects( $this->never() )
-            ->method( 'isGranted' );
+            ->expects($this->never())
+            ->method('isGranted');
 
-        $this->listener->onKernelRequest( $event );
+        $this->listener->onKernelRequest($event);
     }
 
     public function testOnKernelRequestSubRequestFragment()
     {
         $event = new GetResponseEvent(
-            $this->getMock( 'Symfony\Component\HttpKernel\HttpKernelInterface' ),
-            Request::create( '/_fragment' ),
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            Request::create('/_fragment'),
             HttpKernelInterface::MASTER_REQUEST
         );
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         $this->securityContext
-            ->expects( $this->never() )
-            ->method( 'getToken' );
+            ->expects($this->never())
+            ->method('getToken');
         $this->securityContext
-            ->expects( $this->never() )
-            ->method( 'isGranted' );
+            ->expects($this->never())
+            ->method('isGranted');
 
-        $this->listener->onKernelRequest( $event );
+        $this->listener->onKernelRequest($event);
     }
 
     public function testOnKernelRequestSubRequest()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestSubRequest();
     }
@@ -87,10 +86,10 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestNoSiteAccess()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestNoSiteAccess();
     }
@@ -98,10 +97,10 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestNullToken()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestNullToken();
     }
@@ -109,10 +108,10 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestLoginRoute()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestLoginRoute();
     }
@@ -120,10 +119,10 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestAccessDenied()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestAccessDenied();
     }
@@ -131,10 +130,10 @@ class SecurityListenerTest extends BaseTest
     public function testOnKernelRequestAccessGranted()
     {
         $this->configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'legacy_mode' )
-            ->will( $this->returnValue( false ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(false));
 
         parent::testOnKernelRequestAccessGranted();
     }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\Matcher\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\ParentContentType as ParentContentTypeMatcher;
@@ -23,7 +22,7 @@ class ParentContentTypeTest extends BaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->matcher = new ParentContentTypeMatcher;
+        $this->matcher = new ParentContentTypeMatcher();
     }
 
     /**
@@ -33,37 +32,37 @@ class ParentContentTypeTest extends BaseTest
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function generateRepositoryMockForContentTypeId( $contentTypeId )
+    private function generateRepositoryMockForContentTypeId($contentTypeId)
     {
-        $parentContentInfo = $this->getContentInfoMock( array( "contentTypeId" => $contentTypeId ) );
+        $parentContentInfo = $this->getContentInfoMock(array('contentTypeId' => $contentTypeId));
         $parentLocation = $this->getLocationMock();
-        $parentLocation->expects( $this->once() )
-            ->method( 'getContentInfo' )
+        $parentLocation->expects($this->once())
+            ->method('getContentInfo')
             ->will(
-                $this->returnValue( $parentContentInfo )
+                $this->returnValue($parentContentInfo)
             );
 
         $locationServiceMock = $this
-            ->getMockBuilder( 'eZ\\Publish\\API\\Repository\\LocationService' )
+            ->getMockBuilder('eZ\\Publish\\API\\Repository\\LocationService')
             ->disableOriginalConstructor()
             ->getMock();
-        $locationServiceMock->expects( $this->atLeastOnce() )
-            ->method( 'loadLocation' )
+        $locationServiceMock->expects($this->atLeastOnce())
+            ->method('loadLocation')
             ->will(
-                $this->returnValue( $parentLocation )
+                $this->returnValue($parentLocation)
             );
         // The following is used in the case of a match by contentInfo
-        $locationServiceMock->expects( $this->any() )
-            ->method( 'loadLocation' )
+        $locationServiceMock->expects($this->any())
+            ->method('loadLocation')
             ->will(
-                $this->returnValue( $this->getLocationMock() )
+                $this->returnValue($this->getLocationMock())
             );
 
         $repository = $this->getRepositoryMock();
         $repository
-            ->expects( $this->any() )
-            ->method( 'getLocationService' )
-            ->will( $this->returnValue( $locationServiceMock ) );
+            ->expects($this->any())
+            ->method('getLocationService')
+            ->will($this->returnValue($locationServiceMock));
 
         return $repository;
     }
@@ -76,17 +75,15 @@ class ParentContentTypeTest extends BaseTest
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param boolean $expectedResult
-     *
-     * @return void
+     * @param bool $expectedResult
      */
-    public function testMatchLocation( $matchingConfig, Repository $repository, $expectedResult )
+    public function testMatchLocation($matchingConfig, Repository $repository, $expectedResult)
     {
-        $this->matcher->setRepository( $repository );
-        $this->matcher->setMatchingConfig( $matchingConfig );
+        $this->matcher->setRepository($repository);
+        $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchLocation( $this->getLocationMock() )
+            $this->matcher->matchLocation($this->getLocationMock())
         );
     }
 
@@ -95,24 +92,24 @@ class ParentContentTypeTest extends BaseTest
         return array(
             array(
                 123,
-                $this->generateRepositoryMockForContentTypeId( 123 ),
-                true
+                $this->generateRepositoryMockForContentTypeId(123),
+                true,
             ),
             array(
                 123,
-                $this->generateRepositoryMockForContentTypeId( 456 ),
-                false
+                $this->generateRepositoryMockForContentTypeId(456),
+                false,
             ),
             array(
-                array( 123, 789 ),
-                $this->generateRepositoryMockForContentTypeId( 456 ),
-                false
+                array(123, 789),
+                $this->generateRepositoryMockForContentTypeId(456),
+                false,
             ),
             array(
-                array( 123, 789 ),
-                $this->generateRepositoryMockForContentTypeId( 789 ),
-                true
-            )
+                array(123, 789),
+                $this->generateRepositoryMockForContentTypeId(789),
+                true,
+            ),
         );
     }
 
@@ -124,17 +121,15 @@ class ParentContentTypeTest extends BaseTest
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param boolean $expectedResult
-     *
-     * @return void
+     * @param bool $expectedResult
      */
-    public function testMatchContentInfo( $matchingConfig, Repository $repository, $expectedResult )
+    public function testMatchContentInfo($matchingConfig, Repository $repository, $expectedResult)
     {
-        $this->matcher->setRepository( $repository );
-        $this->matcher->setMatchingConfig( $matchingConfig );
+        $this->matcher->setRepository($repository);
+        $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo( $this->getContentInfoMock() )
+            $this->matcher->matchContentInfo($this->getContentInfoMock())
         );
     }
 }

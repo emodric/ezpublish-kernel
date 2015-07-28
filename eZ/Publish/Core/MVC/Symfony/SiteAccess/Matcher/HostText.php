@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest;
@@ -23,12 +22,12 @@ class HostText extends Regex implements VersatileMatcher
      *
      * @param array $siteAccessesConfiguration SiteAccesses configuration.
      */
-    public function __construct( array $siteAccessesConfiguration )
+    public function __construct(array $siteAccessesConfiguration)
     {
-        $this->prefix = isset( $siteAccessesConfiguration['prefix'] ) ? $siteAccessesConfiguration['prefix'] : '';
-        $this->suffix = isset( $siteAccessesConfiguration['suffix'] ) ? $siteAccessesConfiguration['suffix'] : '';
+        $this->prefix = isset($siteAccessesConfiguration['prefix']) ? $siteAccessesConfiguration['prefix'] : '';
+        $this->suffix = isset($siteAccessesConfiguration['suffix']) ? $siteAccessesConfiguration['suffix'] : '';
         parent::__construct(
-            "^" . preg_quote( $this->prefix, "@" ) . "(\w+)" . preg_quote( $this->suffix, "@" ) . '$',
+            '^' . preg_quote($this->prefix, '@') . "(\w+)" . preg_quote($this->suffix, '@') . '$',
             1
         );
     }
@@ -43,19 +42,19 @@ class HostText extends Regex implements VersatileMatcher
      *
      * @param \eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest $request
      */
-    public function setRequest( SimplifiedRequest $request )
+    public function setRequest(SimplifiedRequest $request)
     {
-        if ( !$this->element )
-        {
-            $this->setMatchElement( $request->host );
+        if (!$this->element) {
+            $this->setMatchElement($request->host);
         }
 
-        parent::setRequest( $request );
+        parent::setRequest($request);
     }
 
-    public function reverseMatch( $siteAccessName )
+    public function reverseMatch($siteAccessName)
     {
-        $this->request->setHost( $this->prefix . $siteAccessName . $this->suffix );
+        $this->request->setHost($this->prefix . $siteAccessName . $this->suffix);
+
         return $this;
     }
 

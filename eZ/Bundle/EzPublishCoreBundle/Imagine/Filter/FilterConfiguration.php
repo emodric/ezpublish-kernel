@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine\Filter;
 
 use eZ\Publish\API\Repository\Exceptions\InvalidVariationException;
@@ -23,32 +22,32 @@ class FilterConfiguration extends BaseFilterConfiguration
     /**
      * @param ConfigResolverInterface $configResolver
      */
-    public function setConfigResolver( ConfigResolverInterface $configResolver )
+    public function setConfigResolver(ConfigResolverInterface $configResolver)
     {
         $this->configResolver = $configResolver;
     }
 
-    public function get( $filter )
+    public function get($filter)
     {
-        $configuredVariations = $this->configResolver->getParameter( 'image_variations' );
-        if ( !isset( $configuredVariations[$filter] ) )
-        {
-            return parent::get( $filter );
+        $configuredVariations = $this->configResolver->getParameter('image_variations');
+        if (!isset($configuredVariations[$filter])) {
+            return parent::get($filter);
         }
 
-        $filterConfig = isset( $this->filters[$filter] ) ? parent::get( $filter ) : array();
+        $filterConfig = isset($this->filters[$filter]) ? parent::get($filter) : array();
+
         return array(
             'cache' => 'ezpublish',
             'data_loader' => 'ezpublish',
-            'reference' => isset( $configuredVariations[$filter]['reference'] ) ? $configuredVariations[$filter]['reference'] : null,
-            'filters' => $this->getVariationFilters( $filter, $configuredVariations ),
-            'post_processors' => $this->getVariationPostProcessors( $filter, $configuredVariations )
+            'reference' => isset($configuredVariations[$filter]['reference']) ? $configuredVariations[$filter]['reference'] : null,
+            'filters' => $this->getVariationFilters($filter, $configuredVariations),
+            'post_processors' => $this->getVariationPostProcessors($filter, $configuredVariations),
         ) + $filterConfig;
     }
 
     public function all()
     {
-        return $this->configResolver->getParameter( 'image_variations' ) + parent::all();
+        return $this->configResolver->getParameter('image_variations') + parent::all();
     }
 
     /**
@@ -64,21 +63,18 @@ class FilterConfiguration extends BaseFilterConfiguration
      *
      * @return array
      */
-    private function getVariationFilters( $variationName, array $configuredVariations )
+    private function getVariationFilters($variationName, array $configuredVariations)
     {
-        if ( !isset( $configuredVariations[$variationName]['filters'] ) && !isset( $this->filters[$variationName]['filters'] ) )
-        {
-            throw new InvalidVariationException( $variationName, 'image' );
+        if (!isset($configuredVariations[$variationName]['filters']) && !isset($this->filters[$variationName]['filters'])) {
+            throw new InvalidVariationException($variationName, 'image');
         }
 
         // Check variations configured in eZ config first.
-        if ( isset( $configuredVariations[$variationName]['filters'] ) )
-        {
+        if (isset($configuredVariations[$variationName]['filters'])) {
             $filters = $configuredVariations[$variationName]['filters'];
         }
         // Falback to variations configured in LiipImagineBundle.
-        else
-        {
+        else {
             $filters = $this->filters[$variationName]['filters'];
         }
 
@@ -96,14 +92,11 @@ class FilterConfiguration extends BaseFilterConfiguration
      *
      * @return array
      */
-    private function getVariationPostProcessors( $variationName, array $configuredVariations )
+    private function getVariationPostProcessors($variationName, array $configuredVariations)
     {
-        if ( isset( $configuredVariations[$variationName]['post_processors'] ) )
-        {
+        if (isset($configuredVariations[$variationName]['post_processors'])) {
             return $configuredVariations[$variationName]['post_processors'];
-        }
-        else if ( isset( $this->filters[$variationName]['post_processors'] ) )
-        {
+        } elseif (isset($this->filters[$variationName]['post_processors'])) {
             return $this->filters[$variationName]['post_processors'];
         }
 

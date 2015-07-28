@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Identifier document field
+ * Identifier document field.
  */
 class MultipleIdentifierField extends FieldType
 {
@@ -22,4 +22,3 @@ class MultipleIdentifierField extends FieldType
      */
     protected $type = 'ez_mid';
 }
-

@@ -20,7 +20,7 @@ class IOVariationPurger implements VariationPurger
     /** @var \Psr\Log\LoggerInterface */
     private $logger;
 
-    public function __construct( IOServiceInterface $io )
+    public function __construct(IOServiceInterface $io)
     {
         $this->io = $io;
     }
@@ -28,21 +28,19 @@ class IOVariationPurger implements VariationPurger
     /**
      * @param \Psr\Log\LoggerInterface $logger
      */
-    public function setLogger( $logger )
+    public function setLogger($logger)
     {
         $this->logger = $logger;
     }
 
-    public function purge( array $aliasNames )
+    public function purge(array $aliasNames)
     {
-        foreach ( $aliasNames as $aliasName )
-        {
+        foreach ($aliasNames as $aliasName) {
             $directory = "_aliases/$aliasName";
-            $this->io->deleteDirectory( $directory );
+            $this->io->deleteDirectory($directory);
 
-            if ( isset( $this->logger ) )
-            {
-                $this->logger->info( "Purging alias directory $directory" );
+            if (isset($this->logger)) {
+                $this->logger->info("Purging alias directory $directory");
             }
         }
     }

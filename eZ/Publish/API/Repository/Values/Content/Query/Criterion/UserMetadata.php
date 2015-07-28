@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -16,7 +15,7 @@ use InvalidArgumentException;
 
 /**
  * A criterion that matches content based on one of the user metadata (owner,
- * group, modifier)
+ * group, modifier).
  *
  * Supported Operators:
  * EQ, IN: Matches the provided user ID(s) against the user IDs in the database
@@ -33,22 +32,22 @@ use InvalidArgumentException;
 class UserMetadata extends Criterion implements CriterionInterface
 {
     /**
-     * UserMetadata target: Owner user
+     * UserMetadata target: Owner user.
      */
     const OWNER = 'owner';
 
     /**
-     * UserMetadata target: Owner user group
+     * UserMetadata target: Owner user group.
      */
     const GROUP = 'group';
 
     /**
-     * UserMetadata target: Modifier
+     * UserMetadata target: Modifier.
      */
     const MODIFIER = 'modifier';
 
     /**
-     * Creates a new UserMetadata criterion on $metadata
+     * Creates a new UserMetadata criterion on $metadata.
      *
      * @throws \InvalidArgumentException If target is unknown
      *
@@ -56,18 +55,18 @@ class UserMetadata extends Criterion implements CriterionInterface
      * @param string $operator One of the Operator constants
      * @param mixed $value The match value, either as an array of as a single value, depending on the operator
      */
-    public function __construct( $target, $operator, $value )
+    public function __construct($target, $operator, $value)
     {
-        switch ( $target )
-        {
+        switch ($target) {
             case self::OWNER:
             case self::GROUP:
             case self::MODIFIER:
-                parent::__construct( $target, $operator, $value );
+                parent::__construct($target, $operator, $value);
+
                 return;
         }
 
-        throw new InvalidArgumentException( "Unknown UserMetadata $target" );
+        throw new InvalidArgumentException("Unknown UserMetadata $target");
     }
 
     public function getSpecifications()

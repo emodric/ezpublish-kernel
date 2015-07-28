@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Block;
 
 use eZ\Publish\Core\FieldType\Page\Parts\Block;
@@ -22,7 +21,7 @@ interface MatcherInterface extends BaseMatcherInterface
      *
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchBlock( Block $block );
+    public function matchBlock(Block $block);
 }

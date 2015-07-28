@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Search handler class
+ * File containing the Content Search handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Solr\Content;
 
 use eZ\Publish\SPI\Persistence\Content;
@@ -59,49 +58,49 @@ class Handler implements SearchHandlerInterface
     protected $gateway;
 
     /**
-     * Field registry
+     * Field registry.
      *
      * @var \eZ\Publish\Core\Search\Common\FieldRegistry
      */
     protected $fieldRegistry;
 
     /**
-     * Content handler
+     * Content handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\Handler
      */
     protected $contentHandler;
 
     /**
-     * Location handler
+     * Location handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\Location\Handler
      */
     protected $locationHandler;
 
     /**
-     * Content type handler
+     * Content type handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\Type\Handler
      */
     protected $contentTypeHandler;
 
     /**
-     * Object state handler
+     * Object state handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\ObjectState\Handler
      */
     protected $objectStateHandler;
 
     /**
-     * Section handler
+     * Section handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\Section\Handler
      */
     protected $sectionHandler;
 
     /**
-     * Field name generator
+     * Field name generator.
      *
      * @var \eZ\Publish\Core\Search\Common\FieldNameGenerator
      */
@@ -128,15 +127,14 @@ class Handler implements SearchHandlerInterface
         ObjectStateHandler $objectStateHandler,
         SectionHandler $sectionHandler,
         FieldNameGenerator $fieldNameGenerator
-    )
-    {
-        $this->gateway            = $gateway;
-        $this->fieldRegistry      = $fieldRegistry;
+    ) {
+        $this->gateway = $gateway;
+        $this->fieldRegistry = $fieldRegistry;
         $this->contentHandler = $contentHandler;
-        $this->locationHandler    = $locationHandler;
+        $this->locationHandler = $locationHandler;
         $this->contentTypeHandler = $contentTypeHandler;
         $this->objectStateHandler = $objectStateHandler;
-        $this->sectionHandler     = $sectionHandler;
+        $this->sectionHandler = $sectionHandler;
         $this->fieldNameGenerator = $fieldNameGenerator;
     }
 
@@ -153,16 +151,16 @@ class Handler implements SearchHandlerInterface
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
      */
-    public function findContent( Query $query, array $fieldFilters = array() )
+    public function findContent(Query $query, array $fieldFilters = array())
     {
         $query->filter = $query->filter ?: new Criterion\MatchAll();
         $query->query = $query->query ?: new Criterion\MatchAll();
 
-        return $this->gateway->findContent( $query, $fieldFilters );
+        return $this->gateway->findContent($query, $fieldFilters);
     }
 
     /**
-     * Performs a query for a single content object
+     * Performs a query for a single content object.
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException if the object was not found by the query or due to permissions
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if Criterion is not applicable to its target
@@ -175,112 +173,107 @@ class Handler implements SearchHandlerInterface
      *
      * @return \eZ\Publish\SPI\Persistence\Content
      */
-    public function findSingle( Criterion $filter, array $fieldFilters = array() )
+    public function findSingle(Criterion $filter, array $fieldFilters = array())
     {
         $searchQuery = new Query();
         $searchQuery->filter = $filter;
-        $searchQuery->query  = new Criterion\MatchAll();
+        $searchQuery->query = new Criterion\MatchAll();
         $searchQuery->offset = 0;
-        $searchQuery->limit  = 1;
-        $result = $this->findContent( $searchQuery, $fieldFilters );
+        $searchQuery->limit = 1;
+        $result = $this->findContent($searchQuery, $fieldFilters);
 
-        if ( !$result->totalCount )
-            throw new NotFoundException( 'Content', "findSingle() found no content for given \$filter" );
-        else if ( $result->totalCount > 1 )
-            throw new InvalidArgumentException( "totalCount", "findSingle() found more then one item for given \$filter" );
+        if (!$result->totalCount) {
+            throw new NotFoundException('Content', 'findSingle() found no content for given $filter');
+        } elseif ($result->totalCount > 1) {
+            throw new InvalidArgumentException('totalCount', 'findSingle() found more then one item for given $filter');
+        }
 
-        $first = reset( $result->searchHits );
+        $first = reset($result->searchHits);
+
         return $first->valueObject;
     }
 
     /**
-     * Suggests a list of values for the given prefix
+     * Suggests a list of values for the given prefix.
      *
      * @param string $prefix
      * @param string[] $fieldPaths
      * @param int $limit
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $filter
      */
-    public function suggest( $prefix, $fieldPaths = array(), $limit = 10, Criterion $filter = null )
+    public function suggest($prefix, $fieldPaths = array(), $limit = 10, Criterion $filter = null)
     {
-        throw new \Exception( "@todo: Not implemented yet." );
+        throw new \Exception('@todo: Not implemented yet.');
     }
 
     /**
-     * Indexes a content object
+     * Indexes a content object.
      *
      * @param \eZ\Publish\SPI\Persistence\Content $content
-     *
-     * @return void
      */
-    public function indexContent( Content $content )
+    public function indexContent(Content $content)
     {
         // TODO: maybe not really necessary
         $blockId = "content{$content->versionInfo->contentInfo->id}";
-        $this->gateway->deleteBlock( $blockId );
+        $this->gateway->deleteBlock($blockId);
 
-        $document = $this->mapContent( $content );
+        $document = $this->mapContent($content);
 
-        $this->gateway->bulkIndexDocuments( array( $document ) );
+        $this->gateway->bulkIndexDocuments(array($document));
     }
 
     /**
-     * Indexes several content objects
+     * Indexes several content objects.
      *
      * @todo: This function and setCommit() is needed for Persistence\Solr for test speed but not part
      *       of interface for the reason described in Solr\Content\Search\Gateway\Native::bulkIndexContent
      *       Short: Bulk handling should be properly designed before added to the interface.
      *
      * @param \eZ\Publish\SPI\Persistence\Content[] $contentObjects
-     *
-     * @return void
      */
-    public function bulkIndexContent( array $contentObjects)
+    public function bulkIndexContent(array $contentObjects)
     {
-        foreach ( $contentObjects as $content )
-            $documents[] = $this->mapContent( $content );
+        foreach ($contentObjects as $content) {
+            $documents[] = $this->mapContent($content);
+        }
 
-        if ( !empty( $documents ) )
-            $this->gateway->bulkIndexDocuments( $documents );
+        if (!empty($documents)) {
+            $this->gateway->bulkIndexDocuments($documents);
+        }
     }
 
     /**
-     * Deletes a content object from the index
+     * Deletes a content object from the index.
      *
      * @param int $contentId
      * @param int|null $versionId
-     *
-     * @return void
      */
-    public function deleteContent( $contentId, $versionId = null )
+    public function deleteContent($contentId, $versionId = null)
     {
         $blockId = "content{$contentId}";
-        $this->gateway->deleteBlock( $blockId );
+        $this->gateway->deleteBlock($blockId);
     }
 
     /**
-     * Deletes a location from the index
+     * Deletes a location from the index.
      *
      * @param mixed $locationId
      * @param mixed $contentId
      */
-    public function deleteLocation( $locationId, $contentId )
+    public function deleteLocation($locationId, $contentId)
     {
         $blockId = "content{$contentId}";
-        $this->gateway->deleteBlock( $blockId );
+        $this->gateway->deleteBlock($blockId);
 
         // TODO it seems this part of location deletion (not last location) misses integration tests
-        try
-        {
-            $contentInfo = $this->contentHandler->loadContentInfo( $contentId );
-        }
-        catch ( NotFoundException $e )
-        {
+        try {
+            $contentInfo = $this->contentHandler->loadContentInfo($contentId);
+        } catch (NotFoundException $e) {
             return;
         }
 
-        $content = $this->contentHandler->load( $contentId, $contentInfo->currentVersionNo );
-        $this->bulkIndexContent( array( $content ) );
+        $content = $this->contentHandler->load($contentId, $contentInfo->currentVersionNo);
+        $this->bulkIndexContent(array($content));
     }
 
     /**
@@ -292,24 +285,21 @@ class Handler implements SearchHandlerInterface
      *
      * @return array
      */
-    protected function mapContent( Content $content )
+    protected function mapContent(Content $content)
     {
-        $locations = $this->locationHandler->loadLocationsByContent( $content->versionInfo->contentInfo->id );
-        $section = $this->sectionHandler->load( $content->versionInfo->contentInfo->sectionId );
+        $locations = $this->locationHandler->loadLocationsByContent($content->versionInfo->contentInfo->id);
+        $section = $this->sectionHandler->load($content->versionInfo->contentInfo->sectionId);
         $mainLocation = null;
         $isSomeLocationVisible = false;
         $locationDocuments = array();
-        foreach ( $locations as $location )
-        {
-            $locationDocuments[] = $this->mapLocation( $location, $content, $section );
+        foreach ($locations as $location) {
+            $locationDocuments[] = $this->mapLocation($location, $content, $section);
 
-            if ( $location->id == $content->versionInfo->contentInfo->mainLocationId )
-            {
+            if ($location->id == $content->versionInfo->contentInfo->mainLocationId) {
                 $mainLocation = $location;
             }
 
-            if ( !$location->hidden && !$location->invisible )
-            {
+            if (!$location->hidden && !$location->invisible) {
                 $isSomeLocationVisible = true;
             }
         }
@@ -321,7 +311,7 @@ class Handler implements SearchHandlerInterface
             $content->versionInfo->contentInfo->ownerId
         );
         // Add owner user id as it can also be considered as user group.
-        $ancestorLocationsContentIds[] = $content->versionInfo->contentInfo->ownerId ;
+        $ancestorLocationsContentIds[] = $content->versionInfo->contentInfo->ownerId;
 
         $fields = array(
             new Field(
@@ -401,7 +391,7 @@ class Handler implements SearchHandlerInterface
             ),
             new Field(
                 'language_code',
-                array_keys( $content->versionInfo->names ),
+                array_keys($content->versionInfo->names),
                 new FieldType\MultipleStringField()
             ),
             new Field(
@@ -421,8 +411,7 @@ class Handler implements SearchHandlerInterface
             ),
         );
 
-        if ( $mainLocation !== null )
-        {
+        if ($mainLocation !== null) {
             $fields[] = new Field(
                 'main_location',
                 $mainLocation->id,
@@ -460,27 +449,24 @@ class Handler implements SearchHandlerInterface
             );
         }
 
-        $contentType = $this->contentTypeHandler->load( $content->versionInfo->contentInfo->contentTypeId );
+        $contentType = $this->contentTypeHandler->load($content->versionInfo->contentInfo->contentTypeId);
         $fields[] = new Field(
             'group',
             $contentType->groupIds,
             new FieldType\MultipleIdentifierField()
         );
 
-        foreach ( $content->fields as $field )
-        {
-            foreach ( $contentType->fieldDefinitions as $fieldDefinition )
-            {
-                if ( $fieldDefinition->id !== $field->fieldDefinitionId )
-                {
+        foreach ($content->fields as $field) {
+            foreach ($contentType->fieldDefinitions as $fieldDefinition) {
+                if ($fieldDefinition->id !== $field->fieldDefinitionId) {
                     continue;
                 }
 
-                $fieldType = $this->fieldRegistry->getType( $field->type );
-                foreach ( $fieldType->getIndexData( $field ) as $indexField )
-                {
-                    if ( $indexField->value === null )
+                $fieldType = $this->fieldRegistry->getType($field->type);
+                foreach ($fieldType->getIndexData($field) as $indexField) {
+                    if ($indexField->value === null) {
                         continue;
+                    }
 
                     $fields[] = new Field(
                         $this->fieldNameGenerator->getName(
@@ -496,8 +482,7 @@ class Handler implements SearchHandlerInterface
         }
 
         $objectStateIds = array();
-        foreach ( $this->objectStateHandler->loadAllGroups() as $objectStateGroup )
-        {
+        foreach ($this->objectStateHandler->loadAllGroups() as $objectStateGroup) {
             $objectStateIds[] = $this->objectStateHandler->getContentState(
                 $content->versionInfo->contentInfo->id,
                 $objectStateGroup->id
@@ -512,8 +497,8 @@ class Handler implements SearchHandlerInterface
 
         $document = new Document(
             array(
-                "fields" => $fields,
-                "documents" => $locationDocuments,
+                'fields' => $fields,
+                'documents' => $locationDocuments,
             )
         );
 
@@ -530,31 +515,29 @@ class Handler implements SearchHandlerInterface
      *
      * @return array
      */
-    protected function getAncestorLocationsContentIds( $contentId )
+    protected function getAncestorLocationsContentIds($contentId)
     {
-        $locations = $this->locationHandler->loadLocationsByContent( $contentId );
+        $locations = $this->locationHandler->loadLocationsByContent($contentId);
         $ancestorLocationContentIds = array();
         $ancestorLocationIds = array();
 
-        foreach ( $locations as $location )
-        {
-            $locationIds = explode( "/", trim( $location->pathString, "/" ) );
+        foreach ($locations as $location) {
+            $locationIds = explode('/', trim($location->pathString, '/'));
             // Remove Location of Content with $contentId
-            array_pop( $locationIds );
+            array_pop($locationIds);
             // Remove Root Location id (id==1 in legacy DB)
-            array_shift( $locationIds );
+            array_shift($locationIds);
 
-            $ancestorLocationIds = array_merge( $ancestorLocationIds, $locationIds );
+            $ancestorLocationIds = array_merge($ancestorLocationIds, $locationIds);
         }
 
-        foreach ( array_unique( $ancestorLocationIds ) as $locationId )
-        {
-            $location = $this->locationHandler->load( $locationId );
+        foreach (array_unique($ancestorLocationIds) as $locationId) {
+            $location = $this->locationHandler->load($locationId);
 
             $ancestorLocationContentIds[$location->contentId] = true;
         }
 
-        return array_keys( $ancestorLocationContentIds );
+        return array_keys($ancestorLocationContentIds);
     }
 
     /**
@@ -568,7 +551,7 @@ class Handler implements SearchHandlerInterface
      *
      * @return array
      */
-    protected function mapLocation( Location $location, Content $content, Section $section )
+    protected function mapLocation(Location $location, Content $content, Section $section)
     {
         $fields = array(
             new Field(
@@ -633,7 +616,7 @@ class Handler implements SearchHandlerInterface
             ),
             new Field(
                 'is_main_location',
-                ( $location->id == $content->versionInfo->contentInfo->mainLocationId ),
+                ($location->id == $content->versionInfo->contentInfo->mainLocationId),
                 new FieldType\BooleanField()
             ),
             // Note: denormalized Content data is prefixed with 'content_' to avoid
@@ -667,17 +650,15 @@ class Handler implements SearchHandlerInterface
 
         return new Document(
             array(
-                "fields" => $fields
+                'fields' => $fields,
             )
         );
     }
 
     /**
-     * Purges all contents from the index
+     * Purges all contents from the index.
      *
      * @todo: Make this public API?
-     *
-     * @return void
      */
     public function purgeIndex()
     {
@@ -685,15 +666,14 @@ class Handler implements SearchHandlerInterface
     }
 
     /**
-     * Set if index/delete actions should commit or if several actions is to be expected
+     * Set if index/delete actions should commit or if several actions is to be expected.
      *
      * This should be set to false before group of actions and true before the last one
      *
      * @param bool $commit
      */
-    public function setCommit( $commit )
+    public function setCommit($commit)
     {
-        $this->gateway->setCommit( $commit );
+        $this->gateway->setCommit($commit);
     }
 }
-

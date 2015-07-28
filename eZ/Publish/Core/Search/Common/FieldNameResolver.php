@@ -1,12 +1,11 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Common;
 
 use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
@@ -22,28 +21,28 @@ use RuntimeException;
 class FieldNameResolver
 {
     /**
-     * Field registry
+     * Field registry.
      *
      * @var \eZ\Publish\Core\Search\Common\FieldRegistry
      */
     protected $fieldRegistry;
 
     /**
-     * Content type handler
+     * Content type handler.
      *
      * @var \eZ\Publish\SPI\Persistence\Content\Type\Handler
      */
     protected $contentTypeHandler;
 
     /**
-     * Field name generator
+     * Field name generator.
      *
      * @var \eZ\Publish\Core\Search\Common\FieldNameGenerator
      */
     protected $nameGenerator;
 
     /**
-     * Create from search field registry, content type handler and field name generator
+     * Create from search field registry, content type handler and field name generator.
      *
      * @param \eZ\Publish\Core\Search\Common\FieldRegistry $fieldRegistry
      * @param \eZ\Publish\SPI\Persistence\Content\Type\Handler $contentTypeHandler
@@ -53,15 +52,14 @@ class FieldNameResolver
         FieldRegistry $fieldRegistry,
         ContentTypeHandler $contentTypeHandler,
         FieldNameGenerator $nameGenerator
-    )
-    {
+    ) {
         $this->fieldRegistry = $fieldRegistry;
         $this->contentTypeHandler = $contentTypeHandler;
         $this->nameGenerator = $nameGenerator;
     }
 
     /**
-     * Get content type, field definition and field type mapping information
+     * Get content type, field definition and field type mapping information.
      *
      * Returns an array in the form:
      *
@@ -108,25 +106,21 @@ class FieldNameResolver
         $fieldDefinitionIdentifier,
         $fieldTypeIdentifier = null,
         $name = null
-    )
-    {
+    ) {
         $fieldMap = $this->getSearchableFieldMap();
         $fieldNames = [];
 
-        foreach ( $fieldMap as $contentTypeIdentifier => $fieldIdentifierMap )
-        {
+        foreach ($fieldMap as $contentTypeIdentifier => $fieldIdentifierMap) {
             // First check if field exists in the current ContentType, there is nothing to do if it doesn't
-            if ( !isset( $fieldIdentifierMap[$fieldDefinitionIdentifier] ) )
-            {
+            if (!isset($fieldIdentifierMap[$fieldDefinitionIdentifier])) {
                 continue;
             }
 
             // If $fieldTypeIdentifier is given it must match current field definition
             if (
                 $fieldTypeIdentifier !== null &&
-                $fieldTypeIdentifier !== $fieldIdentifierMap[$fieldDefinitionIdentifier]["field_type_identifier"]
-            )
-            {
+                $fieldTypeIdentifier !== $fieldIdentifierMap[$fieldDefinitionIdentifier]['field_type_identifier']
+            ) {
                 continue;
             }
 
@@ -134,7 +128,7 @@ class FieldNameResolver
                 $criterion,
                 $contentTypeIdentifier,
                 $fieldDefinitionIdentifier,
-                $fieldIdentifierMap[$fieldDefinitionIdentifier]["field_type_identifier"],
+                $fieldIdentifierMap[$fieldDefinitionIdentifier]['field_type_identifier'],
                 $name
             );
         }
@@ -167,13 +161,11 @@ class FieldNameResolver
         $contentTypeIdentifier,
         $fieldDefinitionIdentifier,
         $name = null
-    )
-    {
+    ) {
         $fieldMap = $this->getSearchableFieldMap();
 
         // First check if field exists in type, there is nothing to do if it doesn't
-        if ( !isset( $fieldMap[$contentTypeIdentifier][$fieldDefinitionIdentifier] ) )
-        {
+        if (!isset($fieldMap[$contentTypeIdentifier][$fieldDefinitionIdentifier])) {
             return null;
         }
 
@@ -181,7 +173,7 @@ class FieldNameResolver
             $sortClause,
             $contentTypeIdentifier,
             $fieldDefinitionIdentifier,
-            $fieldMap[$contentTypeIdentifier][$fieldDefinitionIdentifier]["field_type_identifier"],
+            $fieldMap[$contentTypeIdentifier][$fieldDefinitionIdentifier]['field_type_identifier'],
             $name
         );
     }
@@ -203,8 +195,7 @@ class FieldNameResolver
         $fieldDefinitionIdentifier,
         $fieldTypeIdentifier,
         $name
-    )
-    {
+    ) {
         // If criterion or sort clause implements CustomFieldInterface and custom field is set for
         // ContentType/FieldDefinition, return it
         if (
@@ -213,26 +204,23 @@ class FieldNameResolver
                 $contentTypeIdentifier,
                 $fieldDefinitionIdentifier
             )
-        )
-        {
+        ) {
             return $customFieldName;
         }
 
         // Else, generate field name from field type's index definition
 
-        $indexFieldType = $this->fieldRegistry->getType( $fieldTypeIdentifier );
+        $indexFieldType = $this->fieldRegistry->getType($fieldTypeIdentifier);
 
         // If $name is not given use default search field name
-        if ( $name === null )
-        {
+        if ($name === null) {
             $name = $indexFieldType->getDefaultField();
         }
 
         $indexDefinition = $indexFieldType->getIndexDefinition();
 
         // Should only happen by mistake, so let's throw if it does
-        if ( !isset( $indexDefinition[$name] ) )
-        {
+        if (!isset($indexDefinition[$name])) {
             throw new RuntimeException(
                 "Could not find '{$name}' field in '{$fieldTypeIdentifier}' field type's index definition"
             );

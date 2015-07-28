@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\FieldType\View\ParameterProvider;
 
 use eZ\Publish\Core\MVC\Symfony\FieldType\View\ParameterProviderInterface;
@@ -29,7 +28,7 @@ class LocaleParameterProvider implements ParameterProviderInterface
      */
     protected $localeConverter;
 
-    public function __construct( LocaleConverterInterface $localeConverter )
+    public function __construct(LocaleConverterInterface $localeConverter)
     {
         $this->localeConverter = $localeConverter;
     }
@@ -37,7 +36,7 @@ class LocaleParameterProvider implements ParameterProviderInterface
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
@@ -52,17 +51,14 @@ class LocaleParameterProvider implements ParameterProviderInterface
      *
      * @return array
      */
-    public function getViewParameters( Field $field )
+    public function getViewParameters(Field $field)
     {
         $parameters = array();
 
-        if ( $this->request && $this->request->attributes->has( '_locale' ) )
-        {
-            $parameters['locale'] = $this->request->attributes->get( '_locale' );
-        }
-        else
-        {
-            $parameters['locale'] = $this->localeConverter->convertToPOSIX( $field->languageCode );
+        if ($this->request && $this->request->attributes->has('_locale')) {
+            $parameters['locale'] = $this->request->attributes->get('_locale');
+        } else {
+            $parameters['locale'] = $this->localeConverter->convertToPOSIX($field->languageCode);
         }
 
         return $parameters;

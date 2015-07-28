@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security;
 
 use eZ\Publish\API\Repository\Values\User\User as APIUser;
@@ -25,5 +24,5 @@ interface UserInterface extends AdvancedUserInterface
     /**
      * @param \eZ\Publish\API\Repository\Values\User\User $apiUser
      */
-    public function setAPIUser( APIUser $apiUser );
+    public function setAPIUser(APIUser $apiUser);
 }

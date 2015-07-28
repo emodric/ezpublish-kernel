@@ -1,19 +1,18 @@
 <?php
 /**
- * File containing the EZP21089Test class
+ * File containing the EZP21089Test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\Regression;
 
 use eZ\Publish\API\Repository\Tests\BaseTest;
 use DateTime;
 
 /**
- * Test case for issue EZP-21089
+ * Test case for issue EZP-21089.
  *
  * @issue EZP-21089
  *
@@ -38,23 +37,23 @@ class EZP21089Test extends BaseTest
         $contentTypeService = $repository->getContentTypeService();
 
         $creatorId = $repository->getCurrentUser()->id;
-        $creationDate = new DateTime;
+        $creationDate = new DateTime();
 
         $typeCreateStruct = $contentTypeService->newContentTypeCreateStruct(
             'new-type'
         );
         $typeCreateStruct->names = array(
-            'eng-GB' => 'title'
+            'eng-GB' => 'title',
         );
         $typeCreateStruct->descriptions = array(
-            'eng-GB' => 'description'
+            'eng-GB' => 'description',
         );
-        $typeCreateStruct->remoteId = "new-remoteid";
+        $typeCreateStruct->remoteId = 'new-remoteid';
         $typeCreateStruct->creatorId = $creatorId;
         $typeCreateStruct->creationDate = $creationDate;
         $typeCreateStruct->mainLanguageCode = 'eng-GB';
-        $typeCreateStruct->nameSchema = "<title>";
-        $typeCreateStruct->urlAliasSchema = "<title>";
+        $typeCreateStruct->nameSchema = '<title>';
+        $typeCreateStruct->urlAliasSchema = '<title>';
 
         $titleFieldCreate = $contentTypeService->newFieldDefinitionCreateStruct(
             'title',
@@ -72,8 +71,8 @@ class EZP21089Test extends BaseTest
         $titleFieldCreate->isRequired = true;
         $titleFieldCreate->isInfoCollector = false;
         $titleFieldCreate->isSearchable = true;
-        $titleFieldCreate->defaultValue = "New text line";
-        $typeCreateStruct->addFieldDefinition( $titleFieldCreate );
+        $titleFieldCreate->defaultValue = 'New text line';
+        $typeCreateStruct->addFieldDefinition($titleFieldCreate);
 
         $objectRelationFieldCreate = $contentTypeService->newFieldDefinitionCreateStruct(
             'body',
@@ -91,8 +90,8 @@ class EZP21089Test extends BaseTest
         $objectRelationFieldCreate->isRequired = false;
         $objectRelationFieldCreate->isInfoCollector = false;
         $objectRelationFieldCreate->isSearchable = false;
-        $objectRelationFieldCreate->defaultValue = "";
-        $typeCreateStruct->addFieldDefinition( $objectRelationFieldCreate );
+        $objectRelationFieldCreate->defaultValue = '';
+        $typeCreateStruct->addFieldDefinition($objectRelationFieldCreate);
 
         $groupCreate = $contentTypeService->newContentTypeGroupCreateStruct(
             'first-group'
@@ -102,12 +101,12 @@ class EZP21089Test extends BaseTest
 
         $type = $contentTypeService->createContentType(
             $typeCreateStruct,
-            array( $contentTypeService->createContentTypeGroup( $groupCreate ) )
+            array($contentTypeService->createContentTypeGroup($groupCreate))
         );
 
-        $contentTypeService->publishContentTypeDraft( $type );
+        $contentTypeService->publishContentTypeDraft($type);
 
-        $this->contentType = $contentTypeService->loadContentType( $type->id );
+        $this->contentType = $contentTypeService->loadContentType($type->id);
     }
 
     public function testCreateContent()
@@ -120,9 +119,9 @@ class EZP21089Test extends BaseTest
             $this->contentType,
             'eng-GB'
         );
-        $contentCreateStruct->setField( 'title', 'Test' );
+        $contentCreateStruct->setField('title', 'Test');
         $contentService->createContent(
-            $contentCreateStruct, array( $repository->getLocationService()->newLocationCreateStruct( 2 ) )
+            $contentCreateStruct, array($repository->getLocationService()->newLocationCreateStruct(2))
         );
     }
 }

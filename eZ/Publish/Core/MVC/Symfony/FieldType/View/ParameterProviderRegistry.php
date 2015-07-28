@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\FieldType\View;
 
 use InvalidArgumentException;
@@ -22,9 +21,9 @@ class ParameterProviderRegistry implements ParameterProviderRegistryInterface
      *
      * @return bool
      */
-    public function hasParameterProvider( $fieldTypeIdentifier )
+    public function hasParameterProvider($fieldTypeIdentifier)
     {
-        return isset( $this->providers[$fieldTypeIdentifier] );
+        return isset($this->providers[$fieldTypeIdentifier]);
     }
 
     /**
@@ -36,10 +35,11 @@ class ParameterProviderRegistry implements ParameterProviderRegistryInterface
      *
      * @return \eZ\Publish\Core\MVC\Symfony\FieldType\View\ParameterProviderInterface
      */
-    public function getParameterProvider( $fieldTypeIdentifier )
+    public function getParameterProvider($fieldTypeIdentifier)
     {
-        if ( !isset( $this->providers[$fieldTypeIdentifier] ) )
-            throw new InvalidArgumentException( "No parameter provider found for '$fieldTypeIdentifier' field type." );
+        if (!isset($this->providers[$fieldTypeIdentifier])) {
+            throw new InvalidArgumentException("No parameter provider found for '$fieldTypeIdentifier' field type.");
+        }
 
         return $this->providers[$fieldTypeIdentifier];
     }
@@ -50,7 +50,7 @@ class ParameterProviderRegistry implements ParameterProviderRegistryInterface
      * @param \eZ\Publish\Core\MVC\Symfony\FieldType\View\ParameterProviderInterface $parameterProvider
      * @param string $fieldTypeIdentifier
      */
-    public function setParameterProvider( ParameterProviderInterface $parameterProvider, $fieldTypeIdentifier )
+    public function setParameterProvider(ParameterProviderInterface $parameterProvider, $fieldTypeIdentifier)
     {
         $this->providers[$fieldTypeIdentifier] = $parameterProvider;
     }

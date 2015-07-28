@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued;
@@ -20,21 +19,21 @@ class ParentContentType extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchLocation( APILocation $location )
+    public function matchLocation(APILocation $location)
     {
         $parentContentType = $this->repository->sudo(
-            function ( $repository ) use ( $location )
-            {
-                $parent = $repository->getLocationService()->loadLocation( $location->parentLocationId );
+            function ($repository) use ($location) {
+                $parent = $repository->getLocationService()->loadLocation($location->parentLocationId);
+
                 return $repository
                     ->getContentTypeService()
-                    ->loadContentType( $parent->getContentInfo()->contentTypeId );
+                    ->loadContentType($parent->getContentInfo()->contentTypeId);
             }
         );
 
-        return isset( $this->values[$parentContentType->identifier] );
+        return isset($this->values[$parentContentType->identifier]);
     }
 
     /**
@@ -42,16 +41,16 @@ class ParentContentType extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchContentInfo( ContentInfo $contentInfo )
+    public function matchContentInfo(ContentInfo $contentInfo)
     {
         $location = $this->repository->sudo(
-            function ( $repository ) use ( $contentInfo )
-            {
-                return $repository->getLocationService()->loadLocation( $contentInfo->mainLocationId );
+            function ($repository) use ($contentInfo) {
+                return $repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
             }
         );
-        return $this->matchLocation( $location );
+
+        return $this->matchLocation($location);
     }
 }

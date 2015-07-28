@@ -16,7 +16,7 @@ use eZ\Publish\API\Repository\Values\Content\Search\Facet;
 class DateRangeFacet extends Facet
 {
     /**
-     * The date intervals with statistical data
+     * The date intervals with statistical data.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\Search\Facet\RangeFacetEntry
      */

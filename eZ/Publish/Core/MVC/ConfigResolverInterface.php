@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC;
 
 /**
@@ -29,25 +28,25 @@ interface ConfigResolverInterface
      *
      * @return mixed
      */
-    public function getParameter( $paramName, $namespace = null, $scope = null );
+    public function getParameter($paramName, $namespace = null, $scope = null);
 
     /**
-     * Checks if $paramName exists in $namespace
+     * Checks if $paramName exists in $namespace.
      *
      * @param string $paramName
      * @param string $namespace If null, the default namespace should be used.
      * @param string $scope The scope you need $paramName value for.
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasParameter( $paramName, $namespace = null, $scope = null );
+    public function hasParameter($paramName, $namespace = null, $scope = null);
 
     /**
      * Changes the default namespace to look parameter into.
      *
      * @param string $defaultNamespace
      */
-    public function setDefaultNamespace( $defaultNamespace );
+    public function setDefaultNamespace($defaultNamespace);
 
     /**
      * Returns the current default namespace.

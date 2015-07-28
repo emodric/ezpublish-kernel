@@ -26,7 +26,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
     public function testParse()
     {
         $uri = self::$routePrefix . '/';
-        $request = Request::create( $uri, 'GET' );
+        $request = Request::create($uri, 'GET');
 
         $expectedMatchResult = array(
             '_route' => 'ezpublish_rest_testRoute',
@@ -34,14 +34,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
         );
 
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'matchRequest' )
-            ->with( $this->attributeEqualTo( 'pathInfo', '/api/test/v1/' ) )
-            ->will( $this->returnValue( $expectedMatchResult ) );
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with($this->attributeEqualTo('pathInfo', '/api/test/v1/'))
+            ->will($this->returnValue($expectedMatchResult));
 
         self::assertEquals(
             $expectedMatchResult,
-            $this->getRequestParser()->parse( $uri )
+            $this->getRequestParser()->parse($uri)
         );
     }
 
@@ -54,12 +54,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $uri = self::$routePrefix . '/nomatch';
 
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'matchRequest' )
-            ->with( $this->attributeEqualTo( 'pathInfo', $uri ) )
-            ->will( $this->throwException( new ResourceNotFoundException ) );
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with($this->attributeEqualTo('pathInfo', $uri))
+            ->will($this->throwException(new ResourceNotFoundException()));
 
-        $this->getRequestParser()->parse( $uri );
+        $this->getRequestParser()->parse($uri);
     }
 
     /**
@@ -71,30 +71,30 @@ class RouterTest extends PHPUnit_Framework_TestCase
         $uri = '/no/prefix';
 
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'matchRequest' )
-            ->with( $this->attributeEqualTo( 'pathInfo', $uri ) )
-            ->will( $this->throwException( new ResourceNotFoundException ) );
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with($this->attributeEqualTo('pathInfo', $uri))
+            ->will($this->throwException(new ResourceNotFoundException()));
 
-        $this->getRequestParser()->parse( $uri );
+        $this->getRequestParser()->parse($uri);
     }
 
     public function testParseHref()
     {
-        $href = "/api/test/v1/content/objects/1";
+        $href = '/api/test/v1/content/objects/1';
 
         $expectedMatchResult = array(
             '_route' => 'ezpublish_rest_testParseHref',
-            'contentId' => 1
+            'contentId' => 1,
         );
 
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'matchRequest' )
-            ->with( $this->attributeEqualTo( 'pathInfo', $href ) )
-            ->will( $this->returnValue( $expectedMatchResult ) );
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with($this->attributeEqualTo('pathInfo', $href))
+            ->will($this->returnValue($expectedMatchResult));
 
-        self::assertEquals( 1, $this->getRequestParser()->parseHref( $href, 'contentId' ) );
+        self::assertEquals(1, $this->getRequestParser()->parseHref($href, 'contentId'));
     }
 
     /**
@@ -103,36 +103,36 @@ class RouterTest extends PHPUnit_Framework_TestCase
      */
     public function testParseHrefAttributeNotFound()
     {
-        $href = "/api/test/v1/content/no-attribute";
+        $href = '/api/test/v1/content/no-attribute';
 
         $matchResult = array(
             '_route' => 'ezpublish_rest_testParseHrefAttributeNotFound',
         );
 
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'matchRequest' )
-            ->with( $this->attributeEqualTo( 'pathInfo', $href ) )
-            ->will( $this->returnValue( $matchResult ) );
+            ->expects($this->once())
+            ->method('matchRequest')
+            ->with($this->attributeEqualTo('pathInfo', $href))
+            ->will($this->returnValue($matchResult));
 
-        self::assertEquals( 1, $this->getRequestParser()->parseHref( $href, 'badAttribute' ) );
+        self::assertEquals(1, $this->getRequestParser()->parseHref($href, 'badAttribute'));
     }
 
     public function testGenerate()
     {
         $routeName = 'ezpublish_rest_testGenerate';
-        $arguments = array( 'arg1' => 1 );
+        $arguments = array('arg1' => 1);
 
         $expectedResult = self::$routePrefix . '/generate/' . $arguments['arg1'];
         $this->getRouterMock()
-            ->expects( $this->once() )
-            ->method( 'generate' )
-            ->with( $routeName, $arguments )
-            ->will( $this->returnValue( $expectedResult ) );
+            ->expects($this->once())
+            ->method('generate')
+            ->with($routeName, $arguments)
+            ->will($this->returnValue($expectedResult));
 
         self::assertEquals(
             $expectedResult,
-            $this->getRequestParser()->generate( $routeName, $arguments )
+            $this->getRequestParser()->generate($routeName, $arguments)
         );
     }
 
@@ -152,15 +152,15 @@ class RouterTest extends PHPUnit_Framework_TestCase
      */
     private function getRouterMock()
     {
-        if ( !isset( $this->router ) )
-        {
-            $this->router = $this->getMock( 'Symfony\\Cmf\\Component\\Routing\\ChainRouter' );
+        if (!isset($this->router)) {
+            $this->router = $this->getMock('Symfony\\Cmf\\Component\\Routing\\ChainRouter');
 
             $this->router
-                ->expects( $this->any() )
-                ->method( 'getContext' )
-                ->will( $this->returnValue( new RequestContext() ) );
+                ->expects($this->any())
+                ->method('getContext')
+                ->will($this->returnValue(new RequestContext()));
         }
+
         return $this->router;
     }
 }

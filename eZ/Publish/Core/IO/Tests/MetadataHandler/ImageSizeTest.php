@@ -8,7 +8,6 @@
  */
 namespace eZ\Publish\Core\FieldType\Tests\MetadataHandler;
 
-use eZ\Publish\Core\IO\FileService;
 use eZ\Publish\Core\IO\MetadataHandler\ImageSize as ImageSizeMetadataHandler;
 use PHPUnit_Framework_TestCase;
 
@@ -20,11 +19,11 @@ class ImageSizeTest extends PHPUnit_Framework_TestCase
 {
     public function testExtract()
     {
-        $metadataHandler = new ImageSizeMetadataHandler;
+        $metadataHandler = new ImageSizeMetadataHandler();
         $file = 'eZ/Publish/Core/Repository/Tests/Service/Integration/ezplogo.png';
         self::assertEquals(
-            array( 'width' => 189, 'height' => 200, 'mime' => 'image/png' ),
-            $metadataHandler->extract( $file )
+            array('width' => 189, 'height' => 200, 'mime' => 'image/png'),
+            $metadataHandler->extract($file)
         );
     }
 }

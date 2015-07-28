@@ -11,7 +11,6 @@ namespace eZ\Publish\Core\SignalSlot\Tests;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Visibility;
-
 use eZ\Publish\Core\SignalSlot\SignalDispatcher;
 use eZ\Publish\Core\SignalSlot\SearchService;
 
@@ -24,31 +23,31 @@ class SearchServiceTest extends ServiceTest
         );
     }
 
-    protected function getSignalSlotService( $coreService, SignalDispatcher $dispatcher )
+    protected function getSignalSlotService($coreService, SignalDispatcher $dispatcher)
     {
-        return new SearchService( $coreService, $dispatcher );
+        return new SearchService($coreService, $dispatcher);
     }
 
     public function serviceProvider()
     {
-        $fieldFilters = array( 'languages' => array( 'fre-FR' ) );
+        $fieldFilters = array('languages' => array('fre-FR'));
         $content = $this->getContent(
             $this->getVersionInfo(
-                $this->getContentInfo( 42, md5( __METHOD__ ) ),
+                $this->getContentInfo(42, md5(__METHOD__)),
                 4
             )
         );
-        $criterion = new Visibility( Visibility::VISIBLE );
+        $criterion = new Visibility(Visibility::VISIBLE);
 
         return array(
             array(
                 'findContent',
                 array(
-                    new Query,
+                    new Query(),
                     $fieldFilters,
-                    false
+                    false,
                 ),
-                new SearchResult( array( 'totalCount' => 0 ) ),
+                new SearchResult(array('totalCount' => 0)),
                 0,
             ),
             array(
@@ -56,7 +55,7 @@ class SearchServiceTest extends ServiceTest
                 array(
                     $criterion,
                     $fieldFilters,
-                    false
+                    false,
                 ),
                 $content,
                 0,
@@ -67,10 +66,10 @@ class SearchServiceTest extends ServiceTest
                     'awesome',
                     array(),
                     20,
-                    $criterion
+                    $criterion,
                 ),
                 null,
-                0
+                0,
             ),
         );
     }

@@ -1,50 +1,47 @@
 <?php
 /**
- * File containing the Keyword Value class
+ * File containing the Keyword Value class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Keyword;
 
 use eZ\Publish\Core\FieldType\Value as BaseValue;
 
 /**
- * Value for Keyword field type
+ * Value for Keyword field type.
  */
 class Value extends BaseValue
 {
     /**
-     * Content of the value
+     * Content of the value.
      *
      * @var string[]
      */
     public $values = array();
 
     /**
-     * Construct a new Value object and initialize with $values
+     * Construct a new Value object and initialize with $values.
      *
      * @param string[]|string $values
      */
-    public function __construct( $values = null )
+    public function __construct($values = null)
     {
-        if ( $values !== null )
-        {
-            if ( !is_array( $values ) )
-            {
+        if ($values !== null) {
+            if (!is_array($values)) {
                 $tags = array();
-                foreach ( explode( ',', $values ) as $tag )
-                {
-                    $tag = trim( $tag );
-                    if ( $tag )
+                foreach (explode(',', $values) as $tag) {
+                    $tag = trim($tag);
+                    if ($tag) {
                         $tags[] = $tag;
+                    }
                 }
                 $values = $tags;
             }
 
-            $this->values = array_unique( $values );
+            $this->values = array_unique($values);
         }
     }
 
@@ -55,6 +52,6 @@ class Value extends BaseValue
      */
     public function __toString()
     {
-        return implode( ', ', $this->values );
+        return implode(', ', $this->values);
     }
 }

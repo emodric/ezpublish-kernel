@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Location class
+ * File containing the Location class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Persistence\Content;
 
 use eZ\Publish\SPI\Persistence\ValueObject;
@@ -42,7 +41,7 @@ class Location extends ValueObject
     public $id;
 
     /**
-     * Location priority
+     * Location priority.
      *
      * Position of the Location among its siblings when sorted using priority
      * sort order.
@@ -54,7 +53,7 @@ class Location extends ValueObject
     /**
      * Indicates that the Location entity has been explicitly marked as hidden.
      *
-     * @var boolean
+     * @var bool
      */
     public $hidden;
 
@@ -62,7 +61,7 @@ class Location extends ValueObject
      * Indicates that the Location is implicitly marked as hidden by a parent
      * location.
      *
-     * @var boolean
+     * @var bool
      */
     public $invisible;
 
@@ -100,7 +99,7 @@ class Location extends ValueObject
     public $pathIdentificationString;
 
     /**
-     * The materialized path of the location entry, eg: /1/2/
+     * The materialized path of the location entry, eg: /1/2/.
      *
      * @var string
      */

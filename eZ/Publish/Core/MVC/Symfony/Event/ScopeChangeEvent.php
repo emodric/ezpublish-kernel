@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Event;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
@@ -22,7 +21,7 @@ class ScopeChangeEvent extends Event
      */
     private $siteAccess;
 
-    public function __construct( SiteAccess $siteAccess )
+    public function __construct(SiteAccess $siteAccess)
     {
         $this->siteAccess = $siteAccess;
     }

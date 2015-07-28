@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony;
 
 /**
@@ -23,8 +22,6 @@ interface ConfigDumperInterface
      *
      * @param array $configArray Hash of settings.
      * @param int $options A binary combination of options. See class OPT_* class constants in {@link \eZ\Publish\Core\MVC\Symfony\ConfigDumperInterface}
-     *
-     * @return void
      */
-    public function dump( array $configArray, $options = ConfigDumperInterface::OPT_DEFAULT );
+    public function dump(array $configArray, $options = self::OPT_DEFAULT);
 }

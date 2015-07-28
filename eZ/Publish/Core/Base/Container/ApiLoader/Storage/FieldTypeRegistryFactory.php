@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Container\ApiLoader\Storage;
 
 use eZ\Publish\Core\Base\Container\ApiLoader\FieldTypeCollectionFactory;
@@ -14,14 +13,14 @@ use eZ\Publish\Core\Base\Container\ApiLoader\FieldTypeCollectionFactory;
 class FieldTypeRegistryFactory
 {
     /**
-     * Returns storage field type registry
+     * Returns storage field type registry.
      *
      * @param string $fieldTypeRegistryClass
      * @param \eZ\Publish\Core\Base\Container\ApiLoader\FieldTypeCollectionFactory $fieldTypeCollectionFactory
      *
      * @return \eZ\Publish\Core\Persistence\FieldTypeRegistry
      */
-    public function buildFieldTypeRegistry( $fieldTypeRegistryClass, FieldTypeCollectionFactory $fieldTypeCollectionFactory )
+    public function buildFieldTypeRegistry($fieldTypeRegistryClass, FieldTypeCollectionFactory $fieldTypeCollectionFactory)
     {
         return new $fieldTypeRegistryClass(
             $fieldTypeCollectionFactory->getFieldTypes()

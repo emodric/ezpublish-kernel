@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the BaseLimitationTest class
+ * File containing the BaseLimitationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\Values\User\Limitation;
 
 use eZ\Publish\API\Repository\Tests\BaseTest;
@@ -33,7 +32,7 @@ abstract class BaseLimitationTest extends BaseTest
         /* BEGIN: Inline */
         $draft = $this->createWikiPageDraft();
 
-        $content = $contentService->publishVersion( $draft->versionInfo );
+        $content = $contentService->publishVersion($draft->versionInfo);
         /* END: Inline */
 
         return $content;
@@ -48,8 +47,8 @@ abstract class BaseLimitationTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $parentLocationId = $this->generateId( 'location', 60 );
-        $sectionId = $this->generateId( 'section', 1 );
+        $parentLocationId = $this->generateId('location', 60);
+        $sectionId = $this->generateId('section', 1);
         /* BEGIN: Inline */
         $contentTypeService = $repository->getContentTypeService();
         $locationService = $repository->getLocationService();
@@ -57,7 +56,7 @@ abstract class BaseLimitationTest extends BaseTest
 
         // Configure new location
         // $parentLocationId is the id of the /Home/Contact-Us node
-        $locationCreate = $locationService->newLocationCreateStruct( $parentLocationId );
+        $locationCreate = $locationService->newLocationCreateStruct($parentLocationId);
 
         $locationCreate->priority = 23;
         $locationCreate->hidden = true;
@@ -66,12 +65,12 @@ abstract class BaseLimitationTest extends BaseTest
         $locationCreate->sortOrder = Location::SORT_ORDER_DESC;
 
         // Load content type
-        $wikiPageType = $contentTypeService->loadContentTypeByIdentifier( 'wiki_page' );
+        $wikiPageType = $contentTypeService->loadContentTypeByIdentifier('wiki_page');
 
         // Configure new content object
-        $wikiPageCreate = $contentService->newContentCreateStruct( $wikiPageType, 'eng-US' );
+        $wikiPageCreate = $contentService->newContentCreateStruct($wikiPageType, 'eng-US');
 
-        $wikiPageCreate->setField( 'title', 'An awesome wiki page' );
+        $wikiPageCreate->setField('title', 'An awesome wiki page');
         $wikiPageCreate->remoteId = 'abcdef0123456789abcdef0123456789';
         // $sectionId is the ID of section 1
         $wikiPageCreate->sectionId = $sectionId;
@@ -80,7 +79,7 @@ abstract class BaseLimitationTest extends BaseTest
         // Create a draft
         $draft = $contentService->createContent(
             $wikiPageCreate,
-            array( $locationCreate )
+            array($locationCreate)
         );
         /* END: Inline */
 

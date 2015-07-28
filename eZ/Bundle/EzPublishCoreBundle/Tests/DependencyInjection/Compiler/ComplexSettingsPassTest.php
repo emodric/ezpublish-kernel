@@ -20,9 +20,9 @@ class ComplexSettingsPassTest extends AbstractCompilerPassTestCase
     /** @var \eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ComplexSettings\ComplexSettingParserInterface|\PHPUnit_Framework_MockObject_MockObject */
     private $parserMock;
 
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new ComplexSettingsPass( new ComplexSettingParser() ) );
+        $container->addCompilerPass(new ComplexSettingsPass(new ComplexSettingParser()));
     }
 
     public function testProcess()
@@ -30,7 +30,7 @@ class ComplexSettingsPassTest extends AbstractCompilerPassTestCase
         $this->setDefinition(
             'service1',
             new Definition(
-                'stdClass', array( '/mnt/nfs/$var_dir$/$storage_dir$' )
+                'stdClass', array('/mnt/nfs/$var_dir$/$storage_dir$')
             )
         );
 
@@ -69,7 +69,7 @@ class ComplexSettingsPassTest extends AbstractCompilerPassTestCase
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'service1',
             0,
-            new Reference( 'service1.__complex_setting_factory_0' )
+            new Reference('service1.__complex_setting_factory_0')
         );
     }
 }

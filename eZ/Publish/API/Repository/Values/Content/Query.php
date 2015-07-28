@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class is used to perform a Content query
+ * This class is used to perform a Content query.
  *
  * @property $criterion Deprecated alias for $query
  */
@@ -23,7 +22,7 @@ class Query extends ValueObject
     const SORT_DESC = 'descending';
 
     /**
-     * The Query filter
+     * The Query filter.
      *
      * For the storage backend that supports it (Solr) filters the result set
      * without influencing score. It also offers better performance as filter
@@ -41,7 +40,7 @@ class Query extends ValueObject
     public $filter;
 
     /**
-     * The Query query
+     * The Query query.
      *
      * For the storage backend that supports it (Solr Storage) query will influence
      * score of the search results.
@@ -54,94 +53,91 @@ class Query extends ValueObject
     public $query;
 
     /**
-     * Query sorting clauses
+     * Query sorting clauses.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\Query\SortClause[]
      */
     public $sortClauses = array();
 
     /**
-     * An array of facet builders
+     * An array of facet builders.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\Query\FacetBuilder[]
      */
     public $facetBuilders = array();
 
     /**
-     * Query offset
+     * Query offset.
      *
      * @var int
      */
     public $offset = 0;
 
     /**
-     * Query limit
+     * Query limit.
      *
      * @var int
      */
     public $limit;
 
     /**
-     * If true spellcheck suggestions are returned
+     * If true spellcheck suggestions are returned.
      *
-     * @var boolean
+     * @var bool
      */
     public $spellcheck;
 
     /**
      * If true, search engine should perform count even if that means extra lookup.
      *
-     * @var boolean
+     * @var bool
      */
     public $performCount = true;
 
     /**
-     * Wrapper for deprecated $criterion property
+     * Wrapper for deprecated $criterion property.
      *
      * @param string $property
      * @return mixed
      */
-    public function __get( $property)
+    public function __get($property)
     {
-        if ( $property === 'criterion' )
-        {
+        if ($property === 'criterion') {
             return $this->query;
         }
 
-        return parent::__get( $property );
+        return parent::__get($property);
     }
 
     /**
-     * Wrapper for deprecated $criterion property
+     * Wrapper for deprecated $criterion property.
      *
      * @param string $property
      * @param mixed $value
-     * @return void
      */
-    public function __set( $property, $value )
+    public function __set($property, $value)
     {
-        if ( $property === 'criterion' )
-        {
+        if ($property === 'criterion') {
             $this->query = $value;
+
             return;
         }
 
-        return parent::__set( $property, $value );
+        return parent::__set($property, $value);
     }
 
     /**
-     * Wrapper for deprecated $criterion property
+     * Wrapper for deprecated $criterion property.
      *
      * @param string $property
      * @return bool
      */
-    public function __isset( $property )
+    public function __isset($property)
     {
-        if ( $property === 'criterion' )
-        {
+        if ($property === 'criterion') {
             return true;
         }
 
-        return parent::__isset( $property );
+        return parent::__isset($property);
     }
 }

@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class is used for updating the fields of a content object draft
+ * This class is used for updating the fields of a content object draft.
  *
  * @property-write array $fields
  */
@@ -48,7 +47,7 @@ abstract class ContentUpdateStruct extends ValueObject
      *
      * @param string $fieldDefIdentifier the identifier of the field definition
      * @param mixed $value Either a plain value which is understandable by the field type or an instance of a Value class provided by the field type
-     * @param boolean|string $languageCode If not given on a translatable field the initial language is used,
+     * @param bool|string $languageCode If not given on a translatable field the initial language is used,
      */
-    abstract public function setField( $fieldDefIdentifier, $value, $languageCode = null );
+    abstract public function setField($fieldDefIdentifier, $value, $languageCode = null);
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Templating\Twig\Extension;
 
 use Twig_Extension;
@@ -19,7 +18,7 @@ class CoreExtension extends Twig_Extension
      */
     private $globalHelper;
 
-    public function __construct( GlobalHelper $globalHelper )
+    public function __construct(GlobalHelper $globalHelper)
     {
         $this->globalHelper = $globalHelper;
     }
@@ -39,6 +38,6 @@ class CoreExtension extends Twig_Extension
      */
     public function getGlobals()
     {
-        return array( 'ezpublish' => $this->globalHelper );
+        return array('ezpublish' => $this->globalHelper);
     }
 }

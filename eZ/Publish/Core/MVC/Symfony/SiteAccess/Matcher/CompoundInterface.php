@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher;
@@ -20,7 +19,7 @@ interface CompoundInterface extends VersatileMatcher
      *
      * @param \eZ\Publish\Core\MVC\Symfony\SiteAccess\MatcherBuilderInterface $matcherBuilder
      */
-    public function setMatcherBuilder( MatcherBuilderInterface $matcherBuilder );
+    public function setMatcherBuilder(MatcherBuilderInterface $matcherBuilder);
 
     /**
      * Returns all used sub-matchers.
@@ -30,9 +29,9 @@ interface CompoundInterface extends VersatileMatcher
     public function getSubMatchers();
 
     /**
-     * Replaces sub-matchers
+     * Replaces sub-matchers.
      *
      * @param \eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher[] $subMatchers
      */
-    public function setSubMatchers( array $subMatchers );
+    public function setSubMatchers(array $subMatchers);
 }

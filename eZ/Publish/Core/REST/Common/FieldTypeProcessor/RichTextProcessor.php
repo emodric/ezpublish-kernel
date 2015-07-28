@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Common\FieldTypeProcessor;
 
 use eZ\Publish\Core\REST\Common\FieldTypeProcessor;
@@ -15,38 +14,35 @@ use eZ\Publish\Core\FieldType\RichText\Type;
 class RichTextProcessor extends FieldTypeProcessor
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function preProcessFieldSettingsHash( $incomingSettingsHash )
+    public function preProcessFieldSettingsHash($incomingSettingsHash)
     {
-        if ( isset( $incomingSettingsHash["tagPreset"] ) )
-        {
-            switch ( $incomingSettingsHash["tagPreset"] )
-            {
+        if (isset($incomingSettingsHash['tagPreset'])) {
+            switch ($incomingSettingsHash['tagPreset']) {
                 case 'TAG_PRESET_DEFAULT':
-                    $incomingSettingsHash["tagPreset"] = Type::TAG_PRESET_DEFAULT;
+                    $incomingSettingsHash['tagPreset'] = Type::TAG_PRESET_DEFAULT;
                     break;
                 case 'TAG_PRESET_SIMPLE_FORMATTING':
-                    $incomingSettingsHash["tagPreset"] = Type::TAG_PRESET_SIMPLE_FORMATTING;
+                    $incomingSettingsHash['tagPreset'] = Type::TAG_PRESET_SIMPLE_FORMATTING;
             }
         }
+
         return $incomingSettingsHash;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function postProcessFieldSettingsHash( $outgoingSettingsHash )
+    public function postProcessFieldSettingsHash($outgoingSettingsHash)
     {
-        if ( isset( $outgoingSettingsHash["tagPreset"] ) )
-        {
-            switch ( $outgoingSettingsHash["tagPreset"] )
-            {
+        if (isset($outgoingSettingsHash['tagPreset'])) {
+            switch ($outgoingSettingsHash['tagPreset']) {
                 case Type::TAG_PRESET_DEFAULT:
-                    $outgoingSettingsHash["tagPreset"] = 'TAG_PRESET_DEFAULT';
+                    $outgoingSettingsHash['tagPreset'] = 'TAG_PRESET_DEFAULT';
                     break;
                 case Type::TAG_PRESET_SIMPLE_FORMATTING:
-                    $outgoingSettingsHash["tagPreset"] = 'TAG_PRESET_SIMPLE_FORMATTING';
+                    $outgoingSettingsHash['tagPreset'] = 'TAG_PRESET_SIMPLE_FORMATTING';
             }
         }
 

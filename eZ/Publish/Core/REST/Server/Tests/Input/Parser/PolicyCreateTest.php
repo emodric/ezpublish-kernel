@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing a test class
+ * File containing a test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Tests\Input\Parser;
 
 use eZ\Publish\Core\REST\Server\Input\Parser\PolicyCreate;
@@ -15,7 +14,7 @@ use eZ\Publish\Core\Repository\Values\User\PolicyCreateStruct;
 class PolicyCreateTest extends BaseTest
 {
     /**
-     * Tests the PolicyCreate parser
+     * Tests the PolicyCreate parser.
      */
     public function testParse()
     {
@@ -29,23 +28,23 @@ class PolicyCreateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyCreate = $this->getParser();
-        $result = $policyCreate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $result = $policyCreate->parse($inputArray, $this->getParsingDispatcherMock());
 
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\PolicyCreateStruct',
@@ -92,14 +91,14 @@ class PolicyCreateTest extends BaseTest
         );
 
         $this->assertEquals(
-            array( 1, 2, 3 ),
+            array(1, 2, 3),
             $parsedLimitations['Class']->limitationValues,
             'Limitation values not created correctly.'
         );
     }
 
     /**
-     * Test PolicyCreate parser throwing exception on missing module
+     * Test PolicyCreate parser throwing exception on missing module.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Missing 'module' attribute for PolicyCreate.
@@ -115,27 +114,27 @@ class PolicyCreateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyCreate = $this->getParser();
-        $policyCreate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyCreate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Test PolicyCreate parser throwing exception on missing function
+     * Test PolicyCreate parser throwing exception on missing function.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Missing 'function' attribute for PolicyCreate.
@@ -151,27 +150,27 @@ class PolicyCreateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyCreate = $this->getParser();
-        $policyCreate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyCreate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Test PolicyCreate parser throwing exception on missing identifier
+     * Test PolicyCreate parser throwing exception on missing identifier.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Missing '_identifier' attribute for Limitation.
@@ -187,27 +186,27 @@ class PolicyCreateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyCreate = $this->getParser();
-        $policyCreate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyCreate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Test PolicyCreate parser throwing exception on missing values
+     * Test PolicyCreate parser throwing exception on missing values.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Invalid format for limitation values in Limitation.
@@ -220,18 +219,18 @@ class PolicyCreateTest extends BaseTest
             'limitations' => array(
                 'limitation' => array(
                     array(
-                        '_identifier' => 'Class'
-                    )
-                )
-            )
+                        '_identifier' => 'Class',
+                    ),
+                ),
+            ),
         );
 
         $policyCreate = $this->getParser();
-        $policyCreate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyCreate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Returns the PolicyCreateStruct parser
+     * Returns the PolicyCreateStruct parser.
      *
      * @return \eZ\Publish\Core\REST\Server\Input\Parser\PolicyCreate
      */
@@ -244,7 +243,7 @@ class PolicyCreateTest extends BaseTest
     }
 
     /**
-     * Get the role service mock object
+     * Get the role service mock object.
      *
      * @return \eZ\Publish\API\Repository\RoleService
      */
@@ -258,18 +257,18 @@ class PolicyCreateTest extends BaseTest
             false
         );
 
-        $roleServiceMock->expects( $this->any() )
-            ->method( 'newPolicyCreateStruct' )
+        $roleServiceMock->expects($this->any())
+            ->method('newPolicyCreateStruct')
             ->with(
-                $this->equalTo( 'content' ),
-                $this->equalTo( 'delete' )
+                $this->equalTo('content'),
+                $this->equalTo('delete')
             )
             ->will(
                 $this->returnValue(
                     new PolicyCreateStruct(
                         array(
                             'module' => 'content',
-                            'function' => 'delete'
+                            'function' => 'delete',
                         )
                     )
                 )

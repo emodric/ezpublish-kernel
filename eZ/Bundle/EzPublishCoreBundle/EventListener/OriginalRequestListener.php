@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,30 +23,28 @@ class OriginalRequestListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::REQUEST => array( 'onKernelRequest', 200 )
+            KernelEvents::REQUEST => array('onKernelRequest', 200),
         );
     }
 
-    public function onKernelRequest( GetResponseEvent $event )
+    public function onKernelRequest(GetResponseEvent $event)
     {
-        if ( $event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST )
-        {
+        if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
             return;
         }
 
         $request = $event->getRequest();
-        if ( !$request->headers->has( 'x-fos-original-url' ) )
-        {
+        if (!$request->headers->has('x-fos-original-url')) {
             return;
         }
 
         $originalRequest = Request::create(
-            $request->getSchemeAndHttpHost() . $request->headers->get( 'x-fos-original-url' ),
+            $request->getSchemeAndHttpHost() . $request->headers->get('x-fos-original-url'),
             'GET', array(), array(), array(),
-            array( 'HTTP_ACCEPT' => $request->headers->get( 'x-fos-original-accept' ) )
+            array('HTTP_ACCEPT' => $request->headers->get('x-fos-original-accept'))
         );
-        $originalRequest->headers->set( 'user-agent', $request->headers->get( 'user-agent' ) );
-        $originalRequest->headers->set( 'accept-language', $request->headers->get( 'accept-language' ) );
-        $request->attributes->set( '_ez_original_request', $originalRequest );
+        $originalRequest->headers->set('user-agent', $request->headers->get('user-agent'));
+        $originalRequest->headers->set('accept-language', $request->headers->get('accept-language'));
+        $request->attributes->set('_ez_original_request', $originalRequest);
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishElasticsearchBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -26,14 +25,14 @@ class EzPublishElasticsearchExtension extends Extension
      *
      * @api
      */
-    public function load( array $configs, ContainerBuilder $container )
+    public function load(array $configs, ContainerBuilder $container)
     {
         // Loading configuration from Core/settings
         $loader = new YamlFileLoader(
             $container,
-            new FileLocator( __DIR__ . '/../../../Publish/Core/settings' )
+            new FileLocator(__DIR__ . '/../../../Publish/Core/settings')
         );
-        $loader->load( 'indexable_fieldtypes.yml' );
-        $loader->load( "search_engines/elasticsearch.yml" );
+        $loader->load('indexable_fieldtypes.yml');
+        $loader->load('search_engines/elasticsearch.yml');
     }
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Handler interface
+ * File containing the Handler interface.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType;
 
 /**
@@ -21,10 +20,8 @@ interface Handler
      * Populates the field type handler with data from a field type.
      *
      * @param mixed $value
-     *
-     * @return void
      */
-    public function initWithFieldTypeValue( $value );
+    public function initWithFieldTypeValue($value);
 
     /**
      * Returns a compatible value to store in a field type after manipulation

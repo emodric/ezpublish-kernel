@@ -6,18 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Exceptions;
 
 use eZ\Publish\API\Repository\Exceptions\ContentFieldValidationException as APIContentFieldValidationException;
 
 /**
- * This Exception is thrown on create or update content one or more given fields are not valid
+ * This Exception is thrown on create or update content one or more given fields are not valid.
  */
 class ContentFieldValidationException extends APIContentFieldValidationException
 {
     /**
-     * Contains an array of field ValidationError objects indexed with FieldDefinition id and language code
+     * Contains an array of field ValidationError objects indexed with FieldDefinition id and language code.
      *
      * Example:
      * <code>
@@ -30,20 +29,20 @@ class ContentFieldValidationException extends APIContentFieldValidationException
     protected $errors;
 
     /**
-     * Generates: Content fields did not validate
+     * Generates: Content fields did not validate.
      *
      * Also sets the given $fieldErrors to the internal property, retrievable by getFieldErrors()
      *
      * @param \eZ\Publish\Core\FieldType\ValidationError[] $errors
      */
-    public function __construct( array $errors )
+    public function __construct(array $errors)
     {
         $this->errors = $errors;
-        parent::__construct( "Content fields did not validate" );
+        parent::__construct('Content fields did not validate');
     }
 
     /**
-     * Returns an array of field validation error messages
+     * Returns an array of field validation error messages.
      *
      * @return \eZ\Publish\Core\FieldType\ValidationError[]
      */

@@ -1,15 +1,13 @@
 <?php
 /**
- * File containing the DoctrineDatabase FieldRelation criterion handler class
+ * File containing the DoctrineDatabase FieldRelation criterion handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
 
-use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriteriaConverter;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\Core\Persistence\Database\SelectQuery;
@@ -17,7 +15,7 @@ use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 use RuntimeException;
 
 /**
- * FieldRelation criterion handler
+ * FieldRelation criterion handler.
  */
 class FieldRelation extends FieldBase
 {
@@ -26,9 +24,9 @@ class FieldRelation extends FieldBase
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept( Criterion $criterion )
+    public function accept(Criterion $criterion)
     {
         return $criterion instanceof Criterion\FieldRelation;
     }
@@ -42,26 +40,23 @@ class FieldRelation extends FieldBase
      *
      * @return array
      */
-    protected function getFieldDefinitionsIds( $fieldDefinitionIdentifier )
+    protected function getFieldDefinitionsIds($fieldDefinitionIdentifier)
     {
         $fieldDefinitionIdList = array();
         $fieldMap = $this->contentTypeHandler->getSearchableFieldMap();
 
-        foreach ( $fieldMap as $contentTypeIdentifier => $fieldIdentifierMap )
-        {
+        foreach ($fieldMap as $contentTypeIdentifier => $fieldIdentifierMap) {
             // First check if field exists in the current ContentType, there is nothing to do if it doesn't
-            if ( !isset( $fieldIdentifierMap[$fieldDefinitionIdentifier] ) )
-            {
+            if (!isset($fieldIdentifierMap[$fieldDefinitionIdentifier])) {
                 continue;
             }
 
-            $fieldDefinitionIdList[] = $fieldIdentifierMap[$fieldDefinitionIdentifier]["field_definition_id"];
+            $fieldDefinitionIdList[] = $fieldIdentifierMap[$fieldDefinitionIdentifier]['field_definition_id'];
         }
 
-        if ( empty( $fieldDefinitionIdList ) )
-        {
+        if (empty($fieldDefinitionIdList)) {
             throw new InvalidArgumentException(
-                "\$criterion->target",
+                '$criterion->target',
                 "No searchable fields found for the given criterion target '{$fieldDefinitionIdentifier}'."
             );
         }
@@ -70,7 +65,7 @@ class FieldRelation extends FieldBase
     }
 
     /**
-     * Generate query expression for a Criterion this handler accepts
+     * Generate query expression for a Criterion this handler accepts.
      *
      * accept() must be called before calling this method.
      *
@@ -81,36 +76,33 @@ class FieldRelation extends FieldBase
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      * @throws RuntimeException
      */
-    public function handle( CriteriaConverter $converter, SelectQuery $query, Criterion $criterion )
+    public function handle(CriteriaConverter $converter, SelectQuery $query, Criterion $criterion)
     {
-        $column = $this->dbHandler->quoteColumn( 'to_contentobject_id', 'ezcontentobject_link' );
-        $fieldDefinitionIds = $this->getFieldDefinitionsIds( $criterion->target );
+        $column = $this->dbHandler->quoteColumn('to_contentobject_id', 'ezcontentobject_link');
+        $fieldDefinitionIds = $this->getFieldDefinitionsIds($criterion->target);
 
-        switch ( $criterion->operator )
-        {
+        switch ($criterion->operator) {
             case Criterion\Operator::CONTAINS:
-                if ( count( $criterion->value ) > 1 )
-                {
+                if (count($criterion->value) > 1) {
                     $subRequest = array();
 
-                    foreach ( $criterion->value as $value )
-                    {
+                    foreach ($criterion->value as $value) {
                         $subSelect = $query->subSelect();
 
                         $subSelect->select(
-                            $this->dbHandler->quoteColumn( 'from_contentobject_id' )
+                            $this->dbHandler->quoteColumn('from_contentobject_id')
                         )->from(
-                            $this->dbHandler->quoteTable( 'ezcontentobject_link' )
+                            $this->dbHandler->quoteTable('ezcontentobject_link')
                         );
 
                         $subSelect->where(
                             $subSelect->expr->lAnd(
                                 $subSelect->expr->eq(
-                                    $this->dbHandler->quoteColumn( 'from_contentobject_version', 'ezcontentobject_link' ),
-                                    $this->dbHandler->quoteColumn( 'current_version', 'ezcontentobject' )
+                                    $this->dbHandler->quoteColumn('from_contentobject_version', 'ezcontentobject_link'),
+                                    $this->dbHandler->quoteColumn('current_version', 'ezcontentobject')
                                 ),
                                 $subSelect->expr->in(
-                                    $this->dbHandler->quoteColumn( 'contentclassattribute_id', 'ezcontentobject_link' ),
+                                    $this->dbHandler->quoteColumn('contentclassattribute_id', 'ezcontentobject_link'),
                                     $fieldDefinitionIds
                                 ),
                                 $subSelect->expr->eq(
@@ -121,7 +113,7 @@ class FieldRelation extends FieldBase
                         );
 
                         $subRequest[] = $subSelect->expr->in(
-                            $this->dbHandler->quoteColumn( 'id', 'ezcontentobject' ),
+                            $this->dbHandler->quoteColumn('id', 'ezcontentobject'),
                             $subSelect
                         );
                     }
@@ -135,21 +127,21 @@ class FieldRelation extends FieldBase
                 $subSelect = $query->subSelect();
 
                 $subSelect->select(
-                    $this->dbHandler->quoteColumn( 'from_contentobject_id' )
+                    $this->dbHandler->quoteColumn('from_contentobject_id')
                 )->from(
-                    $this->dbHandler->quoteTable( 'ezcontentobject_link' )
+                    $this->dbHandler->quoteTable('ezcontentobject_link')
                 );
 
                 return $query->expr->in(
-                    $this->dbHandler->quoteColumn( 'id', 'ezcontentobject' ),
+                    $this->dbHandler->quoteColumn('id', 'ezcontentobject'),
                     $subSelect->where(
                         $subSelect->expr->lAnd(
                             $subSelect->expr->eq(
-                                $this->dbHandler->quoteColumn( 'from_contentobject_version', 'ezcontentobject_link' ),
-                                $this->dbHandler->quoteColumn( 'current_version', 'ezcontentobject' )
+                                $this->dbHandler->quoteColumn('from_contentobject_version', 'ezcontentobject_link'),
+                                $this->dbHandler->quoteColumn('current_version', 'ezcontentobject')
                             ),
                             $subSelect->expr->in(
-                                $this->dbHandler->quoteColumn( 'contentclassattribute_id', 'ezcontentobject_link' ),
+                                $this->dbHandler->quoteColumn('contentclassattribute_id', 'ezcontentobject_link'),
                                 $fieldDefinitionIds
                             ),
                             $subSelect->expr->in(
@@ -161,8 +153,7 @@ class FieldRelation extends FieldBase
                 );
 
             default:
-                throw new RuntimeException( "Unknown operator '{$criterion->operator}' for RelationList criterion handler." );
+                throw new RuntimeException("Unknown operator '{$criterion->operator}' for RelationList criterion handler.");
         }
     }
 }
-

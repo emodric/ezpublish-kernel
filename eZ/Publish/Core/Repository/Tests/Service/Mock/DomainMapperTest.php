@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Repository\Tests\Service\Mock\DomainMapperTest class
+ * File contains: eZ\Publish\Core\Repository\Tests\Service\Mock\DomainMapperTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Tests\Service\Mock;
 
 use eZ\Publish\API\Repository\Values\Content\VersionInfo as APIVersionInfo;
@@ -17,7 +16,7 @@ use eZ\Publish\SPI\Persistence\Content\VersionInfo as SPIVersionInfo;
 use eZ\Publish\SPI\Persistence\Content\ContentInfo as SPIContentInfo;
 
 /**
- * Mock test case for internal DomainMapper
+ * Mock test case for internal DomainMapper.
  */
 class DomainMapperTest extends BaseServiceMockTest
 {
@@ -25,34 +24,31 @@ class DomainMapperTest extends BaseServiceMockTest
      * @covers \eZ\Publish\Core\Repository\DomainMapper::buildVersionInfoDomainObject
      * @dataProvider providerForBuildVersionInfo
      */
-    public function testBuildVersionInfo( SPIVersionInfo $spiVersionInfo, array $languages, array $expected )
+    public function testBuildVersionInfo(SPIVersionInfo $spiVersionInfo, array $languages, array $expected)
     {
         $i = 0;
         $languageHandlerMock = $this->getLanguageHandlerMock();
-        foreach ( $languages as $languageId => $languageCode )
-        {
-            $languageHandlerMock->expects( $this->at( $i++ ) )
-                ->method( "load" )
-                ->with( $languageId )
+        foreach ($languages as $languageId => $languageCode) {
+            $languageHandlerMock->expects($this->at($i++))
+                ->method('load')
+                ->with($languageId)
                 ->will(
                     $this->returnValue(
                         new SPILanguage(
-                            array( 'id' => $languageId, 'languageCode' => $languageCode )
+                            array('id' => $languageId, 'languageCode' => $languageCode)
                         )
                     )
                 );
         }
 
-        if ( empty( $languages ) )
-        {
-            $languageHandlerMock->expects( $this->never() )->method( "load" );
+        if (empty($languages)) {
+            $languageHandlerMock->expects($this->never())->method('load');
         }
 
-        $versionInfo = $this->getDomainMapper()->buildVersionInfoDomainObject( $spiVersionInfo );
-        $this->assertInstanceOf( 'eZ\\Publish\\Core\\Repository\\Values\\Content\\VersionInfo', $versionInfo );
+        $versionInfo = $this->getDomainMapper()->buildVersionInfoDomainObject($spiVersionInfo);
+        $this->assertInstanceOf('eZ\\Publish\\Core\\Repository\\Values\\Content\\VersionInfo', $versionInfo);
 
-        foreach ( $expected as $expectedProperty => $expectedValue )
-        {
+        foreach ($expected as $expectedProperty => $expectedValue) {
             $this->assertAttributeSame(
                 $expectedValue,
                 $expectedProperty,
@@ -68,61 +64,61 @@ class DomainMapperTest extends BaseServiceMockTest
                 new SPIVersionInfo(
                     array(
                         'status' => 44,
-                        'contentInfo' => new SPIContentInfo
+                        'contentInfo' => new SPIContentInfo(),
                     )
                 ),
                 array(),
-                array( 'status' => APIVersionInfo::STATUS_DRAFT )
+                array('status' => APIVersionInfo::STATUS_DRAFT),
             ),
             array(
                 new SPIVersionInfo(
                     array(
                         'status' => SPIVersionInfo::STATUS_DRAFT,
-                        'contentInfo' => new SPIContentInfo
+                        'contentInfo' => new SPIContentInfo(),
                     )
                 ),
                 array(),
-                array( 'status' => APIVersionInfo::STATUS_DRAFT )
+                array('status' => APIVersionInfo::STATUS_DRAFT),
             ),
             array(
                 new SPIVersionInfo(
                     array(
                         'status' => SPIVersionInfo::STATUS_PENDING,
-                        'contentInfo' => new SPIContentInfo
+                        'contentInfo' => new SPIContentInfo(),
                     )
                 ),
                 array(),
-                array( 'status' => APIVersionInfo::STATUS_DRAFT )
+                array('status' => APIVersionInfo::STATUS_DRAFT),
             ),
             array(
                 new SPIVersionInfo(
                     array(
                         'status' => SPIVersionInfo::STATUS_ARCHIVED,
-                        'contentInfo' => new SPIContentInfo,
-                        'languageIds' => array( 1, 3, 5 )
+                        'contentInfo' => new SPIContentInfo(),
+                        'languageIds' => array(1, 3, 5),
                     )
                 ),
-                array( 1 => 'eng-GB', 3 => 'nor-NB', 5 => 'fre-FR' ),
+                array(1 => 'eng-GB', 3 => 'nor-NB', 5 => 'fre-FR'),
                 array(
                     'status' => APIVersionInfo::STATUS_ARCHIVED,
-                    'languageCodes' => array( 'eng-GB', 'nor-NB', 'fre-FR' )
-                )
+                    'languageCodes' => array('eng-GB', 'nor-NB', 'fre-FR'),
+                ),
             ),
             array(
                 new SPIVersionInfo(
                     array(
                         'status' => SPIVersionInfo::STATUS_PUBLISHED,
-                        'contentInfo' => new SPIContentInfo
+                        'contentInfo' => new SPIContentInfo(),
                     )
                 ),
                 array(),
-                array( 'status' => APIVersionInfo::STATUS_PUBLISHED )
+                array('status' => APIVersionInfo::STATUS_PUBLISHED),
             ),
         );
     }
 
     /**
-     * Returns DomainMapper
+     * Returns DomainMapper.
      *
      * @return \eZ\Publish\Core\Repository\DomainMapper
      */
@@ -140,7 +136,7 @@ class DomainMapperTest extends BaseServiceMockTest
      */
     protected function getLanguageHandlerMock()
     {
-        return $this->getPersistenceMockHandler( 'Content\\Language\\Handler' );
+        return $this->getPersistenceMockHandler('Content\\Language\\Handler');
     }
 
     /**
@@ -148,6 +144,6 @@ class DomainMapperTest extends BaseServiceMockTest
      */
     protected function getTypeHandlerMock()
     {
-        return $this->getPersistenceMockHandler( 'Content\\Type\\Handler' );
+        return $this->getPersistenceMockHandler('Content\\Type\\Handler');
     }
 }

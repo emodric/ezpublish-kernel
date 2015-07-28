@@ -27,46 +27,40 @@ class RestProvider implements ProviderInterface
     /**
      * @param RequestMatcherInterface $requestMatcher
      */
-    public function __construct( RequestMatcherInterface $requestMatcher )
+    public function __construct(RequestMatcherInterface $requestMatcher)
     {
         $this->requestMatcher = $requestMatcher;
     }
 
     /**
-     * Returns allowed CORS methods for a REST route
+     * Returns allowed CORS methods for a REST route.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return array
      */
-    public function getOptions( Request $request )
+    public function getOptions(Request $request)
     {
         $return = array();
-        if ( $request->attributes->has( 'is_rest_request' ) && $request->attributes->get( 'is_rest_request' ) === true )
-        {
-            $return['allow_methods'] = $this->getAllowedMethods( $request->getPathInfo() );
+        if ($request->attributes->has('is_rest_request') && $request->attributes->get('is_rest_request') === true) {
+            $return['allow_methods'] = $this->getAllowedMethods($request->getPathInfo());
         }
+
         return $return;
     }
 
-    protected function getAllowedMethods( $uri )
+    protected function getAllowedMethods($uri)
     {
-        try
-        {
+        try {
             $route = $this->requestMatcher->matchRequest(
-                Request::create( $uri, 'OPTIONS' )
+                Request::create($uri, 'OPTIONS')
             );
-            if ( isset( $route['allowedMethods'] ) )
-            {
-                return explode( ',', $route['allowedMethods'] );
+            if (isset($route['allowedMethods'])) {
+                return explode(',', $route['allowedMethods']);
             }
-        }
-        catch ( ResourceNotFoundException $e )
-        {
+        } catch (ResourceNotFoundException $e) {
             // the provider doesn't care about a not found
-        }
-        catch ( MethodNotAllowedException $e )
-        {
+        } catch (MethodNotAllowedException $e) {
             // neither does it care about a method not allowed
         }
 

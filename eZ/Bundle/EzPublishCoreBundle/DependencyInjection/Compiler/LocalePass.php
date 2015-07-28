@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -23,14 +22,15 @@ class LocalePass implements CompilerPassInterface
      *
      * @throws \LogicException
      */
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'locale_listener' ) )
+        if (!$container->hasDefinition('locale_listener')) {
             return;
+        }
 
-        $localeListenerDef = $container->getDefinition( 'locale_listener' );
+        $localeListenerDef = $container->getDefinition('locale_listener');
         // Injecting the service container for lazy loading purpose, since all event listeners are instantiated before events are triggered
-        $localeListenerDef->addMethodCall( 'setConfigResolver', array( new Reference( 'ezpublish.config.resolver' ) ) );
-        $localeListenerDef->addMethodCall( 'setLocaleConverter', array( new Reference( 'ezpublish.locale.converter' ) ) );
+        $localeListenerDef->addMethodCall('setConfigResolver', array(new Reference('ezpublish.config.resolver')));
+        $localeListenerDef->addMethodCall('setLocaleConverter', array(new Reference('ezpublish.locale.converter')));
     }
 }

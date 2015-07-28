@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the BaseTrashServiceTest class
+ * File containing the BaseTrashServiceTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests;
 
 /**
@@ -37,7 +36,7 @@ abstract class BaseTrashServiceTest extends BaseTest
         );
 
         // Trash the "Community" page location
-        $trashItem = $trashService->trash( $mediaLocation );
+        $trashItem = $trashService->trash($mediaLocation);
         /* END: Inline */
 
         return $trashItem;

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\User;
 
 /**
@@ -14,5 +13,5 @@ namespace eZ\Publish\SPI\User;
  */
 interface IdentityAware
 {
-    public function setIdentity( Identity $identity );
+    public function setIdentity(Identity $identity);
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache\Http;
 
 /**
@@ -17,9 +16,9 @@ namespace eZ\Publish\Core\MVC\Symfony\Cache\Http;
 interface ContentPurger extends RequestAwarePurger
 {
     /**
-     * Purges all cached content
+     * Purges all cached content.
      *
-     * @return boolean
+     * @return bool
      */
     public function purgeAllContent();
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing an interface for the database abstractions
+ * File containing an interface for the database abstractions.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Database;
 
 /**
@@ -51,7 +50,7 @@ interface SelectQuery extends Query
     public function select();
 
     /**
-     * Returns SQL to create an alias
+     * Returns SQL to create an alias.
      *
      * This method can be used to create an alias for either a
      * table or a column.
@@ -67,7 +66,7 @@ interface SelectQuery extends Query
      * @param string $alias
      * @return string the query string "columnname as targetname"
      */
-    public function alias( $name, $alias );
+    public function alias($name, $alias);
 
     /**
      * Opens the query and uses a distinct select on the columns you want to
@@ -328,7 +327,7 @@ interface SelectQuery extends Query
      * @param string $offset integer expression
      * @return \eZ\Publish\Core\Persistence\Database\SelectQuery
      */
-    public function limit( $limit, $offset = '' );
+    public function limit($limit, $offset = '');
 
     /**
      * Returns SQL that orders the result set by a given column.
@@ -347,7 +346,7 @@ interface SelectQuery extends Query
      *        you can specify this using \eZ\Publish\Core\Persistence\Database\SelectQuerySelect::ASC or \eZ\Publish\Core\Persistence\Database\SelectQuerySelect::DESC
      * @return \eZ\Publish\Core\Persistence\Database\SelectQuery a pointer to $this
      */
-    public function orderBy( $column, $type = self::ASC );
+    public function orderBy($column, $type = self::ASC);
 
     /**
      * Returns SQL that groups the result set by a given column.

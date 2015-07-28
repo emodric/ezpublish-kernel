@@ -17,14 +17,14 @@ interface ImageFileRowReader
     public function init();
 
     /**
-     * Returns the next row from the data source
+     * Returns the next row from the data source.
      *
      * @return mixed|null The row's value, or null if none.
      */
     public function getRow();
 
     /**
-     * Returns the total row count
+     * Returns the total row count.
      *
      * @return int
      */

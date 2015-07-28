@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\Suggestion;
 
 /**
@@ -36,7 +35,7 @@ class ConfigSuggestion
      */
     private $mandatory;
 
-    public function __construct( $message = null, array $suggestion = array(), $mandatory = false )
+    public function __construct($message = null, array $suggestion = array(), $mandatory = false)
     {
         $this->message = $message;
         $this->suggestion = $suggestion;
@@ -46,7 +45,7 @@ class ConfigSuggestion
     /**
      * @param string $message
      */
-    public function setMessage( $message )
+    public function setMessage($message)
     {
         $this->message = $message;
     }
@@ -62,7 +61,7 @@ class ConfigSuggestion
     /**
      * @param array $suggestion
      */
-    public function setSuggestion( array $suggestion )
+    public function setSuggestion(array $suggestion)
     {
         $this->suggestion = $suggestion;
     }
@@ -76,15 +75,15 @@ class ConfigSuggestion
     }
 
     /**
-     * @param boolean $mandatory
+     * @param bool $mandatory
      */
-    public function setMandatory( $mandatory )
+    public function setMandatory($mandatory)
     {
         $this->mandatory = $mandatory;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isMandatory()
     {

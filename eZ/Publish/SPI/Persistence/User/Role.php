@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Role class
+ * File containing the Role class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Persistence\User;
 
 use eZ\Publish\SPI\Persistence\ValueObject;
@@ -16,14 +15,14 @@ use eZ\Publish\SPI\Persistence\ValueObject;
 class Role extends ValueObject
 {
     /**
-     * ID of the user rule
+     * ID of the user rule.
      *
      * @var mixed
      */
     public $id;
 
     /**
-     * Identifier of the role
+     * Identifier of the role.
      *
      * Legacy note: Maps to name in 4.x.
      *
@@ -32,7 +31,7 @@ class Role extends ValueObject
     public $identifier;
 
     /**
-     * Name of the role
+     * Name of the role.
      *
      * @since 5.0
      * @var string[]
@@ -40,7 +39,7 @@ class Role extends ValueObject
     public $name;
 
     /**
-     * Name of the role
+     * Name of the role.
      *
      * @since 5.0
      * @var string[]
@@ -48,7 +47,7 @@ class Role extends ValueObject
     public $description = array();
 
     /**
-     * Policies associated with the role
+     * Policies associated with the role.
      *
      * @var \eZ\Publish\SPI\Persistence\User\Policy[]
      */

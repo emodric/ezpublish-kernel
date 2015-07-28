@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Values\ContentType;
 
 use eZ\Publish\API\Repository\Values\ContentType\ContentType as APIContentType;
 
 /**
- * this class represents a content type value
+ * this class represents a content type value.
  *
  * @property-read \eZ\Publish\API\Repository\Values\ContentType\ContentTypeGroup[] $contentTypeGroups calls getContentTypeGroups
  * @property-read \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition[] $fieldDefinitions calls getFieldDefinitions() or on access getFieldDefinition($fieldDefIdentifier)
@@ -35,55 +34,53 @@ use eZ\Publish\API\Repository\Values\ContentType\ContentType as APIContentType;
 class ContentType extends APIContentType
 {
     /**
-     * Holds the collection of names with languageCode keys
+     * Holds the collection of names with languageCode keys.
      *
      * @var string[]
      */
     protected $names;
 
     /**
-     * Holds the collection of descriptions with languageCode keys
+     * Holds the collection of descriptions with languageCode keys.
      *
      * @var string[]
      */
     protected $descriptions;
 
     /**
-     * Holds the collection of contenttypegroups the contenttype is assigned to
+     * Holds the collection of contenttypegroups the contenttype is assigned to.
      *
      * @var \eZ\Publish\API\Repository\Values\ContentType\ContentTypeGroup[]
      */
     protected $contentTypeGroups;
 
     /**
-     * Contains the content type field definitions from this type
+     * Contains the content type field definitions from this type.
      *
      * @var \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition[]
      */
     protected $fieldDefinitions;
 
     /**
-     * Field definitions indexed by identifier
+     * Field definitions indexed by identifier.
      *
      * @var \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition[]
      */
     protected $fieldDefinitionsByIdentifier;
 
     /**
-     * Field definitions indexed by id
+     * Field definitions indexed by id.
      *
      * @var \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition[]
      */
     protected $fieldDefinitionsById;
 
-    function __construct( array $data = array() )
+    public function __construct(array $data = array())
     {
-        foreach ( $data as $propertyName => $propertyValue )
-        {
+        foreach ($data as $propertyName => $propertyValue) {
             $this->$propertyName = $propertyValue;
         }
-        foreach ( $this->fieldDefinitions as $fieldDefinition )
-        {
+        foreach ($this->fieldDefinitions as $fieldDefinition) {
             $this->fieldDefinitionsByIdentifier[$fieldDefinition->identifier] = $fieldDefinition;
             $this->fieldDefinitionsById[$fieldDefinition->id] = $fieldDefinition;
         }
@@ -91,7 +88,7 @@ class ContentType extends APIContentType
 
     /**
      * This method returns the human readable name in all provided languages
-     * of the content type
+     * of the content type.
      *
      * The structure of the return value is:
      * <code>
@@ -106,16 +103,15 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the name of the content type in the given language
+     * This method returns the name of the content type in the given language.
      *
      * @param string $languageCode
      *
      * @return string the name for the given language or null if none exists.
      */
-    public function getName( $languageCode )
+    public function getName($languageCode)
     {
-        if ( isset( $this->names[$languageCode] ) )
-        {
+        if (isset($this->names[$languageCode])) {
             return $this->names[$languageCode];
         }
 
@@ -123,7 +119,7 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the human readable description of the content type
+     * This method returns the human readable description of the content type.
      *
      * The structure of this field is:
      * <code>
@@ -138,16 +134,15 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the name of the content type in the given language
+     * This method returns the name of the content type in the given language.
      *
      * @param string $languageCode
      *
      * @return string the description for the given language or null if none exists.
      */
-    public function getDescription( $languageCode )
+    public function getDescription($languageCode)
     {
-        if ( isset( $languageCode, $this->descriptions ) )
-        {
+        if (isset($languageCode, $this->descriptions)) {
             return $this->descriptions[$languageCode];
         }
 
@@ -155,7 +150,7 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the content type groups this content type is assigned to
+     * This method returns the content type groups this content type is assigned to.
      *
      * @return \eZ\Publish\API\Repository\Values\ContentType\ContentTypeGroup[]
      */
@@ -165,7 +160,7 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the content type field definitions from this type
+     * This method returns the content type field definitions from this type.
      *
      * @return \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition[]
      */
@@ -175,16 +170,15 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the field definition for the given identifier
+     * This method returns the field definition for the given identifier.
      *
      * @param string $fieldDefinitionIdentifier
      *
      * @return \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition
      */
-    public function getFieldDefinition( $fieldDefinitionIdentifier )
+    public function getFieldDefinition($fieldDefinitionIdentifier)
     {
-        if ( isset( $this->fieldDefinitionsByIdentifier[$fieldDefinitionIdentifier] ) )
-        {
+        if (isset($this->fieldDefinitionsByIdentifier[$fieldDefinitionIdentifier])) {
             return $this->fieldDefinitionsByIdentifier[$fieldDefinitionIdentifier];
         }
 
@@ -192,16 +186,15 @@ class ContentType extends APIContentType
     }
 
     /**
-     * This method returns the field definition for the given id
+     * This method returns the field definition for the given id.
      *
      * @param mixed $fieldDefinitionId
      *
      * @return \eZ\Publish\API\Repository\Values\ContentType\FieldDefinition
      */
-    public function getFieldDefinitionById( $fieldDefinitionId )
+    public function getFieldDefinitionById($fieldDefinitionId)
     {
-        if ( isset( $this->fieldDefinitionsById[$fieldDefinitionId] ) )
-        {
+        if (isset($this->fieldDefinitionsById[$fieldDefinitionId])) {
             return $this->fieldDefinitionsById[$fieldDefinitionId];
         }
 

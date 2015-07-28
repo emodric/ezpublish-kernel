@@ -1,38 +1,36 @@
 <?php
 /**
- * AssignRoleToUserGroupSignal class
+ * AssignRoleToUserGroupSignal class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\SignalSlot\Signal\RoleService;
 
 use eZ\Publish\Core\SignalSlot\Signal;
 
 /**
- * AssignRoleToUserGroupSignal class
- * @package eZ\Publish\Core\SignalSlot\Signal\RoleService
+ * AssignRoleToUserGroupSignal class.
  */
 class AssignRoleToUserGroupSignal extends Signal
 {
     /**
-     * RoleId
+     * RoleId.
      *
      * @var mixed
      */
     public $roleId;
 
     /**
-     * UserGroupId
+     * UserGroupId.
      *
      * @var mixed
      */
     public $userGroupId;
 
     /**
-     * RoleLimitation
+     * RoleLimitation.
      *
      * @var \eZ\Publish\API\Repository\Values\User\Limitation\RoleLimitation
      */

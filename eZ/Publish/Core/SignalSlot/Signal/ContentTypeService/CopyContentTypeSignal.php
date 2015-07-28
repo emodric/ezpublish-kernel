@@ -1,31 +1,29 @@
 <?php
 /**
- * CopyContentTypeSignal class
+ * CopyContentTypeSignal class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\SignalSlot\Signal\ContentTypeService;
 
 use eZ\Publish\Core\SignalSlot\Signal;
 
 /**
- * CopyContentTypeSignal class
- * @package eZ\Publish\Core\SignalSlot\Signal\ContentTypeService
+ * CopyContentTypeSignal class.
  */
 class CopyContentTypeSignal extends Signal
 {
     /**
-     * ContentTypeId
+     * ContentTypeId.
      *
      * @var mixed
      */
     public $contentTypeId;
 
     /**
-     * UserId
+     * UserId.
      *
      * @var mixed
      */

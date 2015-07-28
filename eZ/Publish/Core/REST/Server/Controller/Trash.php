@@ -1,66 +1,62 @@
 <?php
 /**
- * File containing the Trash controller class
+ * File containing the Trash controller class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Controller;
 
 use eZ\Publish\Core\REST\Server\Values;
 use eZ\Publish\Core\REST\Server\Controller as RestController;
-
 use eZ\Publish\API\Repository\TrashService;
 use eZ\Publish\API\Repository\LocationService;
-
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\Core\REST\Server\Exceptions\ForbiddenException;
-
 use InvalidArgumentException;
 
 /**
- * Trash controller
+ * Trash controller.
  */
 class Trash extends RestController
 {
     /**
-     * Trash service
+     * Trash service.
      *
      * @var \eZ\Publish\API\Repository\TrashService
      */
     protected $trashService;
 
     /**
-     * Location service
+     * Location service.
      *
      * @var \eZ\Publish\API\Repository\LocationService
      */
     protected $locationService;
 
     /**
-     * Construct controller
+     * Construct controller.
      *
      * @param \eZ\Publish\API\Repository\TrashService $trashService
      * @param \eZ\Publish\API\Repository\LocationService $locationService
      */
-    public function __construct( TrashService $trashService, LocationService $locationService )
+    public function __construct(TrashService $trashService, LocationService $locationService)
     {
         $this->trashService = $trashService;
         $this->locationService = $locationService;
     }
 
     /**
-     * Returns a list of all trash items
+     * Returns a list of all trash items.
      *
      * @return \eZ\Publish\Core\REST\Server\Values\Trash
      */
     public function loadTrashItems()
     {
-        $offset = $this->request->query->has( 'offset' ) ? (int)$this->request->query->get( 'offset' ) : 0;
-        $limit = $this->request->query->has( 'limit' ) ? (int)$this->request->query->get( 'limit' ) : -1;
+        $offset = $this->request->query->has('offset') ? (int)$this->request->query->get('offset') : 0;
+        $limit = $this->request->query->has('limit') ? (int)$this->request->query->get('limit') : -1;
 
         $query = new Query();
         $query->offset = $offset >= 0 ? $offset : null;
@@ -72,11 +68,10 @@ class Trash extends RestController
             $this->trashService->findTrashItems(
                 $query
             )->items as $trashItem
-        )
-        {
+        ) {
             $trashItems[] = new Values\RestTrashItem(
                 $trashItem,
-                $this->locationService->getLocationChildCount( $trashItem )
+                $this->locationService->getLocationChildCount($trashItem)
             );
         }
 
@@ -87,22 +82,22 @@ class Trash extends RestController
     }
 
     /**
-     * Returns the trash item given by id
+     * Returns the trash item given by id.
      *
      * @param $trashItemId
      *
      * @return \eZ\Publish\Core\REST\Server\Values\RestTrashItem
      */
-    public function loadTrashItem( $trashItemId )
+    public function loadTrashItem($trashItemId)
     {
         return new Values\RestTrashItem(
-            $trashItem = $this->trashService->loadTrashItem( $trashItemId ),
-            $this->locationService->getLocationChildCount( $trashItem )
+            $trashItem = $this->trashService->loadTrashItem($trashItemId),
+            $this->locationService->getLocationChildCount($trashItem)
         );
     }
 
     /**
-     * Empties the trash
+     * Empties the trash.
      *
      * @return \eZ\Publish\Core\REST\Server\Values\NoContent
      */
@@ -114,83 +109,73 @@ class Trash extends RestController
     }
 
     /**
-     * Deletes the given trash item
+     * Deletes the given trash item.
      *
      * @param $trashItemId
      *
      * @return \eZ\Publish\Core\REST\Server\Values\NoContent
      */
-    public function deleteTrashItem( $trashItemId )
+    public function deleteTrashItem($trashItemId)
     {
         $this->trashService->deleteTrashItem(
-            $this->trashService->loadTrashItem( $trashItemId )
+            $this->trashService->loadTrashItem($trashItemId)
         );
 
         return new Values\NoContent();
     }
 
     /**
-     * Restores a trashItem
+     * Restores a trashItem.
      *
      * @param $trashItemId
      *
      * @throws \eZ\Publish\Core\REST\Server\Exceptions\ForbiddenException
      * @return \eZ\Publish\Core\REST\Server\Values\ResourceCreated
      */
-    public function restoreTrashItem( $trashItemId )
+    public function restoreTrashItem($trashItemId)
     {
         $requestDestination = null;
-        try
-        {
-            $requestDestination = $this->request->headers->get( 'Destination' );
-        }
-        catch ( InvalidArgumentException $e )
-        {
+        try {
+            $requestDestination = $this->request->headers->get('Destination');
+        } catch (InvalidArgumentException $e) {
             // No Destination header
         }
 
         $parentLocation = null;
-        if ( $this->request->headers->has( 'Destination' ) )
-        {
+        if ($this->request->headers->has('Destination')) {
             $locationPathParts = explode(
                 '/',
                 $this->requestParser->parseHref(
-                    $this->request->headers->get( 'Destination' ), 'locationPath'
+                    $this->request->headers->get('Destination'), 'locationPath'
                 )
             );
 
-            try
-            {
-                $parentLocation = $this->locationService->loadLocation( array_pop( $locationPathParts ) );
-            }
-            catch ( NotFoundException $e )
-            {
-                throw new ForbiddenException( $e->getMessage() );
+            try {
+                $parentLocation = $this->locationService->loadLocation(array_pop($locationPathParts));
+            } catch (NotFoundException $e) {
+                throw new ForbiddenException($e->getMessage());
             }
         }
 
-        $trashItem = $this->trashService->loadTrashItem( $trashItemId );
+        $trashItem = $this->trashService->loadTrashItem($trashItemId);
 
-        if ( $requestDestination === null )
-        {
+        if ($requestDestination === null) {
             // If we're recovering under the original location
             // check if it exists, to return "403 Forbidden" in case it does not
-            try
-            {
-                $this->locationService->loadLocation( $trashItem->parentLocationId );
-            }
-            catch ( NotFoundException $e )
-            {
-                throw new ForbiddenException( $e->getMessage() );
+            try {
+                $this->locationService->loadLocation($trashItem->parentLocationId);
+            } catch (NotFoundException $e) {
+                throw new ForbiddenException($e->getMessage());
             }
         }
 
-        $location = $this->trashService->recover( $trashItem, $parentLocation );
+        $location = $this->trashService->recover($trashItem, $parentLocation);
+
         return new Values\ResourceCreated(
             $this->router->generate(
                 'ezpublish_rest_loadLocation',
                 array(
-                    'locationPath' => trim( $location->pathString, '/' ),
+                    'locationPath' => trim($location->pathString, '/'),
                 )
             )
         );

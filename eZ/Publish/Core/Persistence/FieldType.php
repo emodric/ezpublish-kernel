@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence;
 
 use eZ\Publish\SPI\Persistence\FieldType as FieldTypeInterface;
@@ -16,7 +15,6 @@ use eZ\Publish\SPI\FieldType\FieldType as SPIFieldType;
  * This class represents a FieldType available to SPI users.
  *
  * @see \eZ\Publish\SPI\FieldType\FieldType
- * @package \eZ\Publish\Core\Persistence\FieldType
  */
 class FieldType implements FieldTypeInterface
 {
@@ -32,7 +30,7 @@ class FieldType implements FieldTypeInterface
      *
      * @param \eZ\Publish\SPI\FieldType\FieldType $fieldType
      */
-    public function __construct( SPIFieldType $fieldType )
+    public function __construct(SPIFieldType $fieldType)
     {
         $this->internalFieldType = $fieldType;
     }

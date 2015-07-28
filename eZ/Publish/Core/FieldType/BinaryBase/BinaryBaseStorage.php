@@ -1,30 +1,27 @@
 <?php
 /**
- * File containing the BinaryBaseStorage class
+ * File containing the BinaryBaseStorage class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\BinaryBase;
 
-use eZ\Publish\Core\Base\Exceptions\NotFoundException;
 use eZ\Publish\Core\FieldType\GatewayBasedStorage;
 use eZ\Publish\Core\IO\IOServiceInterface;
 use eZ\Publish\SPI\FieldType\BinaryBase\PathGenerator;
 use eZ\Publish\SPI\Persistence\Content\VersionInfo;
 use eZ\Publish\SPI\Persistence\Content\Field;
 use eZ\Publish\SPI\IO\MimeTypeDetector;
-use Psr\Log\LoggerInterface;
 
 /**
- * Storage for binary files
+ * Storage for binary files.
  */
 class BinaryBaseStorage extends GatewayBasedStorage
 {
     /**
-     * An instance of IOService configured to store to the images folder
+     * An instance of IOService configured to store to the images folder.
      *
      * @var IOServiceInterface
      */
@@ -39,16 +36,16 @@ class BinaryBaseStorage extends GatewayBasedStorage
     protected $mimeTypeDetector;
 
     /**
-     * Construct from gateways
+     * Construct from gateways.
      *
      * @param \eZ\Publish\Core\FieldType\StorageGateway[] $gateways
      * @param IOServiceInterface $IOService
      * @param PathGenerator $pathGenerator
      * @param MimeTypeDetector $mimeTypeDetector
      */
-    public function __construct( array $gateways, IOServiceInterface $IOService, PathGenerator $pathGenerator, MimeTypeDetector $mimeTypeDetector )
+    public function __construct(array $gateways, IOServiceInterface $IOService, PathGenerator $pathGenerator, MimeTypeDetector $mimeTypeDetector)
     {
-        parent::__construct( $gateways );
+        parent::__construct($gateways);
         $this->IOService = $IOService;
         $this->pathGenerator = $pathGenerator;
         $this->mimeTypeDetector = $mimeTypeDetector;
@@ -81,35 +78,30 @@ class BinaryBaseStorage extends GatewayBasedStorage
      * @param \eZ\Publish\SPI\Persistence\Content\VersionInfo $versionInfo
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
      * @param array $context
-     *
-     * @return void
      */
-    public function storeFieldData( VersionInfo $versionInfo, Field $field, array $context )
+    public function storeFieldData(VersionInfo $versionInfo, Field $field, array $context)
     {
-        if ( $field->value->externalData === null )
-        {
+        if ($field->value->externalData === null) {
             // Nothing to store
             return false;
         }
 
         // no mimeType means we are dealing with an input, local file
-        if ( !isset( $field->value->externalData['mimeType'] ) )
-        {
+        if (!isset($field->value->externalData['mimeType'])) {
             $field->value->externalData['mimeType'] =
-                $this->mimeTypeDetector->getFromPath( $field->value->externalData['inputUri'] );
+                $this->mimeTypeDetector->getFromPath($field->value->externalData['inputUri']);
         }
 
         $storedValue = $field->value->externalData;
 
         // The file referenced in externalData MAY be an existing IOService file which we can use
-        if ( $storedValue['id'] === null )
-        {
+        if ($storedValue['id'] === null) {
             $createStruct = $this->IOService->newBinaryCreateStructFromLocalFile(
                 $storedValue['inputUri']
             );
-            $storagePath = $this->pathGenerator->getStoragePathForField( $field, $versionInfo );
+            $storagePath = $this->pathGenerator->getStoragePathForField($field, $versionInfo);
             $createStruct->id = $storagePath;
-            $binaryFile = $this->IOService->createBinaryFile( $createStruct );
+            $binaryFile = $this->IOService->createBinaryFile($createStruct);
             $storedValue['id'] = $binaryFile->id;
             $storedValue['mimeType'] = $createStruct->mimeType;
             $storedValue['uri'] = $binaryFile->uri;
@@ -117,51 +109,48 @@ class BinaryBaseStorage extends GatewayBasedStorage
 
         $field->value->externalData = $storedValue;
 
-        $this->removeOldFile( $field->id, $versionInfo->versionNo, $context );
+        $this->removeOldFile($field->id, $versionInfo->versionNo, $context);
 
-        $this->getGateway( $context )->storeFileReference( $versionInfo, $field );
+        $this->getGateway($context)->storeFileReference($versionInfo, $field);
     }
 
-    public function copyLegacyField( VersionInfo $versionInfo, Field $field, Field $originalField, array $context )
+    public function copyLegacyField(VersionInfo $versionInfo, Field $field, Field $originalField, array $context)
     {
-        if ( $originalField->value->externalData === null )
+        if ($originalField->value->externalData === null) {
             return false;
+        }
 
         // field translations have their own file reference, but to the original file
         $originalField->value->externalData['id'];
 
-        return $this->getGateway( $context )->storeFileReference( $versionInfo, $field );
+        return $this->getGateway($context)->storeFileReference($versionInfo, $field);
     }
 
     /**
      * Removes the old file referenced by $fieldId in $versionNo, if not
-     * referenced else where
+     * referenced else where.
      *
      * @param mixed $fieldId
      * @param string $versionNo
      * @param array $context
-     *
-     * @return void
      */
-    protected function removeOldFile( $fieldId, $versionNo, array $context )
+    protected function removeOldFile($fieldId, $versionNo, array $context)
     {
-        $gateway = $this->getGateway( $context );
+        $gateway = $this->getGateway($context);
 
-        $fileReference = $gateway->getFileReferenceData( $fieldId, $versionNo );
-        if ( $fileReference === null )
-        {
+        $fileReference = $gateway->getFileReferenceData($fieldId, $versionNo);
+        if ($fileReference === null) {
             // No previous file
             return;
         }
 
-        $gateway->removeFileReference( $fieldId, $versionNo );
+        $gateway->removeFileReference($fieldId, $versionNo);
 
-        $fileCounts = $gateway->countFileReferences( array( $fileReference['id'] ) );
+        $fileCounts = $gateway->countFileReferences(array($fileReference['id']));
 
-        if ( $fileCounts[$fileReference['id']] === 0 )
-        {
-            $binaryFile = $this->IOService->loadBinaryFile( $fileReference['id'] );
-            $this->IOService->deleteBinaryFile( $binaryFile );
+        if ($fileCounts[$fileReference['id']] === 0) {
+            $binaryFile = $this->IOService->loadBinaryFile($fileReference['id']);
+            $this->IOService->deleteBinaryFile($binaryFile);
         }
     }
 
@@ -174,58 +163,52 @@ class BinaryBaseStorage extends GatewayBasedStorage
      * @param \eZ\Publish\SPI\Persistence\Content\VersionInfo $versionInfo
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
      * @param array $context
-     *
-     * @return void
      */
-    public function getFieldData( VersionInfo $versionInfo, Field $field, array $context )
+    public function getFieldData(VersionInfo $versionInfo, Field $field, array $context)
     {
-        $field->value->externalData = $this->getGateway( $context )->getFileReferenceData( $field->id, $versionInfo->versionNo );
-        if ( $field->value->externalData !== null )
-        {
-            $binaryFile = $this->IOService->loadBinaryFile( $field->value->externalData['id'] );
+        $field->value->externalData = $this->getGateway($context)->getFileReferenceData($field->id, $versionInfo->versionNo);
+        if ($field->value->externalData !== null) {
+            $binaryFile = $this->IOService->loadBinaryFile($field->value->externalData['id']);
             $field->value->externalData['fileSize'] = $binaryFile->size;
             $field->value->externalData['uri'] = $binaryFile->uri;
         }
     }
 
     /**
-     * Deletes all referenced external data
+     * Deletes all referenced external data.
      *
      * @param VersionInfo $versionInfo
      * @param array $fieldIds
      * @param array $context
      *
-     * @return boolean
+     * @return bool
      */
-    public function deleteFieldData( VersionInfo $versionInfo, array $fieldIds, array $context )
+    public function deleteFieldData(VersionInfo $versionInfo, array $fieldIds, array $context)
     {
-        if ( empty( $fieldIds ) )
-        {
+        if (empty($fieldIds)) {
             return;
         }
 
-        $gateway = $this->getGateway( $context );
+        $gateway = $this->getGateway($context);
 
-        $referencedFiles = $gateway->getReferencedFiles( $fieldIds, $versionInfo->versionNo );
+        $referencedFiles = $gateway->getReferencedFiles($fieldIds, $versionInfo->versionNo);
 
-        $gateway->removeFileReferences( $fieldIds, $versionInfo->versionNo );
+        $gateway->removeFileReferences($fieldIds, $versionInfo->versionNo);
 
-        $referenceCountMap = $gateway->countFileReferences( $referencedFiles );
+        $referenceCountMap = $gateway->countFileReferences($referencedFiles);
 
-        foreach ( $referenceCountMap as $filePath => $count )
-        {
-            if ( $count === 0 )
-            {
-                $binaryFile = $this->IOService->loadBinaryFile( $filePath );
-                $this->IOService->deleteBinaryFile( $binaryFile );
+        foreach ($referenceCountMap as $filePath => $count) {
+            if ($count === 0) {
+                $binaryFile = $this->IOService->loadBinaryFile($filePath);
+                $this->IOService->deleteBinaryFile($binaryFile);
             }
         }
     }
 
     /**
-     * Checks if field type has external data to deal with
+     * Checks if field type has external data to deal with.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFieldData()
     {
@@ -236,10 +219,8 @@ class BinaryBaseStorage extends GatewayBasedStorage
      * @param \eZ\Publish\SPI\Persistence\Content\VersionInfo $versionInfo
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
      * @param array $context
-     *
-     * @return void
      */
-    public function getIndexData( VersionInfo $versionInfo, Field $field, array $context )
+    public function getIndexData(VersionInfo $versionInfo, Field $field, array $context)
     {
     }
 }

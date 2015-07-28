@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\Matcher\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\ContentType as ContentTypeIdMatcher;
@@ -24,7 +23,7 @@ class ContentTypeTest extends BaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->matcher = new ContentTypeIdMatcher;
+        $this->matcher = new ContentTypeIdMatcher();
     }
 
     /**
@@ -34,12 +33,12 @@ class ContentTypeTest extends BaseTest
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
-     * @param boolean $expectedResult
+     * @param bool $expectedResult
      */
-    public function testMatchLocation( $matchingConfig, Location $location, $expectedResult )
+    public function testMatchLocation($matchingConfig, Location $location, $expectedResult)
     {
-        $this->matcher->setMatchingConfig( $matchingConfig );
-        $this->assertSame( $expectedResult, $this->matcher->matchLocation( $location ) );
+        $this->matcher->setMatchingConfig($matchingConfig);
+        $this->assertSame($expectedResult, $this->matcher->matchLocation($location));
     }
 
     public function matchLocationProvider()
@@ -48,47 +47,47 @@ class ContentTypeTest extends BaseTest
 
         $data[] = array(
             123,
-            $this->generateLocationForContentType( 123 ),
-            true
+            $this->generateLocationForContentType(123),
+            true,
         );
 
         $data[] = array(
             123,
-            $this->generateLocationForContentType( 456 ),
-            false
+            $this->generateLocationForContentType(456),
+            false,
         );
 
         $data[] = array(
-            array( 123, 789 ),
-            $this->generateLocationForContentType( 456 ),
-            false
+            array(123, 789),
+            $this->generateLocationForContentType(456),
+            false,
         );
 
         $data[] = array(
-            array( 123, 789 ),
-            $this->generateLocationForContentType( 789 ),
-            true
+            array(123, 789),
+            $this->generateLocationForContentType(789),
+            true,
         );
 
         return $data;
     }
 
     /**
-     * Generates a Location object in respect of a given content type identifier
+     * Generates a Location object in respect of a given content type identifier.
      *
      * @param int $contentTypeId
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function generateLocationForContentType( $contentTypeId )
+    private function generateLocationForContentType($contentTypeId)
     {
         $location = $this->getLocationMock();
         $location
-            ->expects( $this->any() )
-            ->method( 'getContentInfo' )
+            ->expects($this->any())
+            ->method('getContentInfo')
             ->will(
                 $this->returnValue(
-                    $this->generateContentInfoForContentType( $contentTypeId )
+                    $this->generateContentInfoForContentType($contentTypeId)
                 )
             );
 
@@ -96,15 +95,15 @@ class ContentTypeTest extends BaseTest
     }
 
     /**
-     * Generates a ContentInfo object in respect of a given content type identifier
+     * Generates a ContentInfo object in respect of a given content type identifier.
      *
      * @param int $contentTypeId
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function generateContentInfoForContentType( $contentTypeId )
+    private function generateContentInfoForContentType($contentTypeId)
     {
-        return $this->getContentInfoMock( array( "contentTypeId" => $contentTypeId ) );
+        return $this->getContentInfoMock(array('contentTypeId' => $contentTypeId));
     }
 
     /**
@@ -114,12 +113,12 @@ class ContentTypeTest extends BaseTest
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
-     * @param boolean $expectedResult
+     * @param bool $expectedResult
      */
-    public function testMatchContentInfo( $matchingConfig, ContentInfo $contentInfo, $expectedResult )
+    public function testMatchContentInfo($matchingConfig, ContentInfo $contentInfo, $expectedResult)
     {
-        $this->matcher->setMatchingConfig( $matchingConfig );
-        $this->assertSame( $expectedResult, $this->matcher->matchContentInfo( $contentInfo ) );
+        $this->matcher->setMatchingConfig($matchingConfig);
+        $this->assertSame($expectedResult, $this->matcher->matchContentInfo($contentInfo));
     }
 
     public function matchContentInfoProvider()
@@ -128,26 +127,26 @@ class ContentTypeTest extends BaseTest
 
         $data[] = array(
             123,
-            $this->generateContentInfoForContentType( 123 ),
-            true
+            $this->generateContentInfoForContentType(123),
+            true,
         );
 
         $data[] = array(
             123,
-            $this->generateContentInfoForContentType( 456 ),
-            false
+            $this->generateContentInfoForContentType(456),
+            false,
         );
 
         $data[] = array(
-            array( 123, 789 ),
-            $this->generateContentInfoForContentType( 456 ),
-            false
+            array(123, 789),
+            $this->generateContentInfoForContentType(456),
+            false,
         );
 
         $data[] = array(
-            array( 123, 789 ),
-            $this->generateContentInfoForContentType( 789 ),
-            true
+            array(123, 789),
+            $this->generateContentInfoForContentType(789),
+            true,
         );
 
         return $data;

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC;
 
 use eZ\Publish\API\Repository\Repository;
@@ -21,7 +20,7 @@ abstract class RepositoryAware implements RepositoryAwareInterface
     /**
      * @param \eZ\Publish\API\Repository\Repository $repository
      */
-    public function setRepository( Repository $repository )
+    public function setRepository(Repository $repository)
     {
         $this->repository = $repository;
     }

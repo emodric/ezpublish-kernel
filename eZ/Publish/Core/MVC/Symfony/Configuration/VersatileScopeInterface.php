@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Configuration;
 
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
@@ -28,5 +27,5 @@ interface VersatileScopeInterface extends ConfigResolverInterface
      *
      * @param string $scope
      */
-    public function setDefaultScope( $scope );
+    public function setDefaultScope($scope);
 }

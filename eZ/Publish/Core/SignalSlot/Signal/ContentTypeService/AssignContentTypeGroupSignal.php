@@ -1,31 +1,29 @@
 <?php
 /**
- * AssignContentTypeGroupSignal class
+ * AssignContentTypeGroupSignal class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\SignalSlot\Signal\ContentTypeService;
 
 use eZ\Publish\Core\SignalSlot\Signal;
 
 /**
- * AssignContentTypeGroupSignal class
- * @package eZ\Publish\Core\SignalSlot\Signal\ContentTypeService
+ * AssignContentTypeGroupSignal class.
  */
 class AssignContentTypeGroupSignal extends Signal
 {
     /**
-     * ContentTypeId
+     * ContentTypeId.
      *
      * @var mixed
      */
     public $contentTypeId;
 
     /**
-     * ContentTypeGroupId
+     * ContentTypeGroupId.
      *
      * @var mixed
      */

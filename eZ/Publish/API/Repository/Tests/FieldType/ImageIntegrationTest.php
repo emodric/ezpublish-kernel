@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\API\Repository\Tests\FieldType\ImageIntegrationTest class
+ * File contains: eZ\Publish\API\Repository\Tests\FieldType\ImageIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\Image\Value as ImageValue;
@@ -15,7 +14,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 
 /**
- * Integration test for use field type
+ * Integration test for use field type.
  *
  * @group integration
  * @group field-type
@@ -28,14 +27,14 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     protected static $loadedImagePath;
 
     /**
-     * IOService storage prefix for the tested Type's files
+     * IOService storage prefix for the tested Type's files.
      * @var string
      */
     protected static $storagePrefixConfigKey = 'image_storage_prefix';
 
     protected function getStoragePrefix()
     {
-        return $this->getConfigValue( self::$storagePrefixConfigKey );
+        return $this->getConfigValue(self::$storagePrefixConfigKey);
     }
 
     /**
@@ -48,21 +47,21 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         return array(
             'create' => array(
                 'fileName' => 'Icy-Night-Flower.jpg',
-                'inputUri' => ( $path = __DIR__ . '/_fixtures/image.jpg' ),
+                'inputUri' => ($path = __DIR__ . '/_fixtures/image.jpg'),
                 'alternativeText' => 'My icy flower at night',
-                'fileSize' => filesize( $path )
+                'fileSize' => filesize($path),
             ),
             'update' => array(
                 'fileName' => 'Blue-Blue-Blue.png',
-                'inputUri' => ( $path = __DIR__ . '/_fixtures/image.png' ),
+                'inputUri' => ($path = __DIR__ . '/_fixtures/image.png'),
                 'alternativeText' => 'Such a blue …',
-                'fileSize' => filesize( $path ),
+                'fileSize' => filesize($path),
             ),
         );
     }
 
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -72,7 +71,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get expected settings schema
+     * Get expected settings schema.
      *
      * @return array
      */
@@ -82,7 +81,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get a valid $fieldSettings value
+     * Get a valid $fieldSettings value.
      *
      * @return mixed
      */
@@ -92,7 +91,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get $fieldSettings value not accepted by the field type
+     * Get $fieldSettings value not accepted by the field type.
      *
      * @return mixed
      */
@@ -104,7 +103,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get expected validator schema
+     * Get expected validator schema.
      *
      * @return array
      */
@@ -113,15 +112,15 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         return array(
             'FileSizeValidator' => array(
                 'maxFileSize' => array(
-                    'type'    => 'int',
+                    'type' => 'int',
                     'default' => false,
                 ),
-            )
+            ),
         );
     }
 
     /**
-     * Get a valid $validatorConfiguration
+     * Get a valid $validatorConfiguration.
      *
      * @return mixed
      */
@@ -135,7 +134,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get $validatorConfiguration not accepted by the field type
+     * Get $validatorConfiguration not accepted by the field type.
      *
      * @return mixed
      */
@@ -144,19 +143,20 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         return array(
             'StringLengthValidator' => array(
                 'minStringLength' => new \stdClass(),
-            )
+            ),
         );
     }
 
     /**
-     * Get initial field data for valid object creation
+     * Get initial field data for valid object creation.
      *
      * @return mixed
      */
     public function getValidCreationFieldData()
     {
         $fixtureData = $this->getFixtureData();
-        return new ImageValue( $fixtureData['create'] );
+
+        return new ImageValue($fixtureData['create']);
     }
 
     /**
@@ -166,10 +166,8 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
      * was stored and loaded correctly.
      *
      * @param Field $field
-     *
-     * @return void
      */
-    public function assertFieldDataLoadedCorrect( Field $field )
+    public function assertFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\Image\\Value',
@@ -188,7 +186,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         );
 
         $this->assertTrue(
-            $this->uriExistsOnIO( $field->value->uri ),
+            $this->uriExistsOnIO($field->value->uri),
             "Asserting that {$field->value->uri} exists."
         );
 
@@ -196,7 +194,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during creation
+     * Get field data which will result in errors during creation.
      *
      * This is a PHPUnit data provider.
      *
@@ -227,29 +225,30 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
                     )
                 ),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException',
-            )
+            ),
         );
     }
 
     /**
-     * Get update field externals data
+     * Get update field externals data.
      *
      * @return array
      */
     public function getValidUpdateFieldData()
     {
         $fixtureData = $this->getFixtureData();
-        return new ImageValue( $fixtureData['update'] );
+
+        return new ImageValue($fixtureData['update']);
     }
 
     /**
-     * Get externals updated field data values
+     * Get externals updated field data values.
      *
      * This is a PHPUnit data provider
      *
      * @return array
      */
-    public function assertUpdatedFieldDataLoadedCorrect( Field $field )
+    public function assertUpdatedFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\Image\\Value',
@@ -270,13 +269,13 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         );
 
         $this->assertTrue(
-            $this->uriExistsOnIO( $field->value->uri ),
+            $this->uriExistsOnIO($field->value->uri),
             "Asserting that file {$field->value->uri} exists"
         );
     }
 
     /**
-     * Get field data which will result in errors during update
+     * Get field data which will result in errors during update.
      *
      * This is a PHPUnit data provider.
      *
@@ -309,9 +308,9 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
      *
      * @param Field $field
      */
-    public function assertCopiedFieldDataLoadedCorrectly( Field $field )
+    public function assertCopiedFieldDataLoadedCorrectly(Field $field)
     {
-        $this->assertFieldDataLoadedCorrect( $field );
+        $this->assertFieldDataLoadedCorrect($field);
 
         $this->assertEquals(
             self::$loadedImagePath,
@@ -320,7 +319,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     }
 
     /**
-     * Get data to test to hash method
+     * Get data to test to hash method.
      *
      * This is a PHPUnit data provider
      *
@@ -345,7 +344,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
             array(
                 new ImageValue(
                     array(
-                        'inputUri' => ( $path = __DIR__ . '/_fixtures/image.jpg' ),
+                        'inputUri' => ($path = __DIR__ . '/_fixtures/image.jpg'),
                         'fileName' => 'Icy-Night-Flower.jpg',
                         'alternativeText' => 'My icy flower at night',
                     )
@@ -360,7 +359,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
                     'imageId' => null,
                     'uri' => null,
                     'width' => null,
-                    'height' => null
+                    'height' => null,
                 ),
             ),
             array(
@@ -373,7 +372,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
                         'imageId' => '1-2',
                         'uri' => "/$path",
                         'width' => 123,
-                        'height' => 456
+                        'height' => 456,
                     )
                 ),
                 array(
@@ -386,14 +385,14 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
                     'imageId' => '1-2',
                     'uri' => "/$path",
                     'width' => 123,
-                    'height' => 456
+                    'height' => 456,
                 ),
             ),
         );
     }
 
     /**
-     * Get expectations for the fromHash call on our field value
+     * Get expectations for the fromHash call on our field value.
      *
      * This is a PHPUnit data provider
      *
@@ -402,10 +401,11 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     public function provideFromHashData()
     {
         $fixture = $this->getFixtureData();
+
         return array(
             array(
                 $fixture['create'],
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
         );
     }
@@ -421,30 +421,28 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
             array(),
             // Causes a copy of the image value for each language in legacy
             // storage
-            array( 'isTranslatable' => false )
+            array('isTranslatable' => false)
         );
 
-        $draft = $this->createContent( $this->getValidCreationFieldData(), $type );
+        $draft = $this->createContent($this->getValidCreationFieldData(), $type);
 
         $updateStruct = $contentService->newContentUpdateStruct();
         $updateStruct->initialLanguageCode = 'ger-DE';
-        $updateStruct->setField( 'name', 'Sindelfingen' );
+        $updateStruct->setField('name', 'Sindelfingen');
 
         // Automatically creates a copy of the image field in the back ground
-        $updatedDraft = $contentService->updateContent( $draft->versionInfo, $updateStruct );
+        $updatedDraft = $contentService->updateContent($draft->versionInfo, $updateStruct);
 
         $paths = array();
-        foreach ( $updatedDraft->getFields() as $field )
-        {
-            if ( $field->fieldDefIdentifier === 'data' )
-            {
+        foreach ($updatedDraft->getFields() as $field) {
+            if ($field->fieldDefIdentifier === 'data') {
                 $paths[$field->languageCode] = $field->value->uri;
             }
         }
 
         $this->assertTrue(
-            isset( $paths['eng-US'] ) && isset( $paths['ger-DE'] ),
-            "Failed asserting that file path for all languages were found in draft"
+            isset($paths['eng-US']) && isset($paths['ger-DE']),
+            'Failed asserting that file path for all languages were found in draft'
         );
 
         $this->assertEquals(
@@ -452,12 +450,11 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
             $paths['ger-DE']
         );
 
-        $contentService->deleteContent( $updatedDraft->contentInfo );
+        $contentService->deleteContent($updatedDraft->contentInfo);
 
-        foreach ( $paths as $uri )
-        {
+        foreach ($paths as $uri) {
             self::assertFalse(
-                $this->uriExistsOnIO( $uri ),
+                $this->uriExistsOnIO($uri),
                 "$uri has not been removed"
             );
         }
@@ -466,7 +463,7 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     public function providerForTestIsEmptyValue()
     {
         return array(
-            array( new ImageValue ),
+            array(new ImageValue()),
         );
     }
 
@@ -474,13 +471,13 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     {
         return array(
             array(
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
         );
     }
 
     /**
-     * Covers EZP-23080
+     * Covers EZP-23080.
      */
     public function testUpdatingImageMetadataOnlyWorks()
     {
@@ -493,74 +490,74 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
             array()
         );
 
-        $draft = $this->createContent( $this->getValidCreationFieldData(), $type );
+        $draft = $this->createContent($this->getValidCreationFieldData(), $type);
 
         /** @var ImageValue $imageFieldValue */
-        $imageFieldValue = $draft->getFieldValue( 'data' );
+        $imageFieldValue = $draft->getFieldValue('data');
         $initialValueImageUri = $imageFieldValue->uri;
 
         // update alternative text
         $imageFieldValue->alternativeText = __METHOD__;
         $updateStruct = $contentService->newContentUpdateStruct();
-        $updateStruct->setField( 'data', $imageFieldValue );
-        $updatedDraft = $contentService->updateContent( $draft->versionInfo, $updateStruct );
+        $updateStruct->setField('data', $imageFieldValue);
+        $updatedDraft = $contentService->updateContent($draft->versionInfo, $updateStruct);
 
         /** @var ImageValue $updatedImageValue */
-        $updatedImageValue = $updatedDraft->getFieldValue( 'data' );
+        $updatedImageValue = $updatedDraft->getFieldValue('data');
 
-        self::assertEquals( $initialValueImageUri, $updatedImageValue->uri );
-        self::assertEquals( __METHOD__, $updatedImageValue->alternativeText );
+        self::assertEquals($initialValueImageUri, $updatedImageValue->uri);
+        self::assertEquals(__METHOD__, $updatedImageValue->alternativeText);
     }
 
     /**
-     * covers EZP-23152
+     * covers EZP-23152.
      */
     public function testThatRemovingDraftDoesntRemovePublishedImages()
     {
         $repository = $this->getRepository();
 
         // Load services
-        $contentService  = $repository->getContentService();
+        $contentService = $repository->getContentService();
         $contentTypeService = $repository->getContentTypeService();
         $locationService = $repository->getLocationService();
 
         // create content and publish image
         $contentCreateStruct = $contentService->newContentCreateStruct(
-            $contentTypeService->loadContentTypeByIdentifier( 'image' ),
+            $contentTypeService->loadContentTypeByIdentifier('image'),
             'eng-GB'
         );
-        $contentCreateStruct->setField( 'name', 'EZP23152_1' );
-        $contentCreateStruct->setField( 'image', $this->getValidCreationFieldData() );
+        $contentCreateStruct->setField('name', 'EZP23152_1');
+        $contentCreateStruct->setField('image', $this->getValidCreationFieldData());
 
-        $locationCreateStruct = $locationService->newLocationCreateStruct( 2 );
-        $content = $contentService->createContent( $contentCreateStruct, array( $locationCreateStruct ) );
-        $content = $contentService->publishVersion( $content->getVersionInfo() );
+        $locationCreateStruct = $locationService->newLocationCreateStruct(2);
+        $content = $contentService->createContent($contentCreateStruct, array($locationCreateStruct));
+        $content = $contentService->publishVersion($content->getVersionInfo());
 
         $originalFileUri = $content->fields['image']['eng-GB']->uri;
 
         $this->assertTrue(
-            $this->uriExistsOnIO( $originalFileUri ),
+            $this->uriExistsOnIO($originalFileUri),
             "Asserting image file $originalFileUri exists."
         );
 
         // Create a new draft and update it
-        $updatedDraft = $contentService->createContentDraft( $content->contentInfo );
+        $updatedDraft = $contentService->createContentDraft($content->contentInfo);
         $contentUpdateStruct = $contentService->newContentUpdateStruct();
         $contentUpdateStruct->initialLanguageCode = 'eng-GB';
-        $contentUpdateStruct->setField( 'name', 'EZP23152_2' );
-        $updatedDraft = $contentService->updateContent( $updatedDraft->versionInfo, $contentUpdateStruct );
+        $contentUpdateStruct->setField('name', 'EZP23152_2');
+        $updatedDraft = $contentService->updateContent($updatedDraft->versionInfo, $contentUpdateStruct);
 
         // remove the newly published content version, verify that the original file exists
-        $contentService->deleteVersion( $updatedDraft->versionInfo, 2 );
+        $contentService->deleteVersion($updatedDraft->versionInfo, 2);
         $this->assertTrue(
-            $this->uriExistsOnIO( $originalFileUri ),
+            $this->uriExistsOnIO($originalFileUri),
             "Asserting original image file $originalFileUri exists."
         );
 
         // delete content
-        $contentService->deleteContent( $content->contentInfo );
+        $contentService->deleteContent($content->contentInfo);
         $this->assertFalse(
-            $this->uriExistsOnIO( $originalFileUri ),
+            $this->uriExistsOnIO($originalFileUri),
             "Asserting image file $originalFileUri has been removed."
         );
     }
@@ -570,9 +567,9 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         return new ImageValue(
             array(
                 'fileName' => 'cafe-terrace-at-night.jpg',
-                'inputUri' => ( $path = __DIR__ . '/_fixtures/image.jpg' ),
+                'inputUri' => ($path = __DIR__ . '/_fixtures/image.jpg'),
                 'alternativeText' => 'café terrace at night, also known as the cafe terrace on the place du forum',
-                'fileSize' => filesize( $path ),
+                'fileSize' => filesize($path),
             )
         );
     }
@@ -582,9 +579,9 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         return new ImageValue(
             array(
                 'fileName' => 'thatched-cottages-at-cordeville.png',
-                'inputUri' => ( $path = __DIR__ . '/_fixtures/image.png' ),
+                'inputUri' => ($path = __DIR__ . '/_fixtures/image.png'),
                 'alternativeText' => 'chaumes de cordeville à auvers-sur-oise',
-                'fileSize' => filesize( $path ),
+                'fileSize' => filesize($path),
             )
         );
     }
@@ -592,12 +589,14 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
     protected function getSearchTargetValueOne()
     {
         $value = $this->getValidSearchValueOne();
+
         return $value->fileName;
     }
 
     protected function getSearchTargetValueTwo()
     {
         $value = $this->getValidSearchValueTwo();
+
         return $value->fileName;
     }
 
@@ -615,18 +614,18 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $valueOne = $this->getValidSearchValueOne();
         $valueTwo = $this->getValidSearchValueTwo();
 
-        return $this->provideCriteria( $valueOne->alternativeText, $valueTwo->alternativeText );
+        return $this->provideCriteria($valueOne->alternativeText, $valueTwo->alternativeText);
     }
 
     /**
-     * Tests Content Search filtering with Field criterion on the alternative text modified field
+     * Tests Content Search filtering with Field criterion on the alternative text modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldAlternativeText
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testFilterContentModifiedFieldAlternativeText(
@@ -634,27 +633,26 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             true,
-            "alternative_text"
+            'alternative_text'
         );
     }
 
     /**
-     * Tests Content Search querying with Field criterion on the alternative text modified field
+     * Tests Content Search querying with Field criterion on the alternative text modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldAlternativeText
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testQueryContentModifiedFieldAlternativeText(
@@ -662,15 +660,14 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             false,
-            "alternative_text"
+            'alternative_text'
         );
     }
 
@@ -679,18 +676,18 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $valueOne = $this->getValidSearchValueOne();
         $valueTwo = $this->getValidSearchValueTwo();
 
-        return $this->provideCriteria( $valueOne->fileSize, $valueTwo->fileSize );
+        return $this->provideCriteria($valueOne->fileSize, $valueTwo->fileSize);
     }
 
     /**
-     * Tests Content Search filtering with Field criterion on the file size modified field
+     * Tests Content Search filtering with Field criterion on the file size modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldFileSize
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testFilterContentModifiedFieldFileSize(
@@ -698,27 +695,26 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             true,
-            "file_size"
+            'file_size'
         );
     }
 
     /**
-     * Tests Content Search querying with Field criterion on the file size modified field
+     * Tests Content Search querying with Field criterion on the file size modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldFileSize
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testQueryContentModifiedFieldFileSize(
@@ -726,32 +722,31 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             false,
-            "file_size"
+            'file_size'
         );
     }
 
     public function criteriaProviderModifiedFieldMimeType()
     {
-        return $this->provideCriteria( "image/jpeg", "image/png" );
+        return $this->provideCriteria('image/jpeg', 'image/png');
     }
 
     /**
-     * Tests Content Search filtering with Field criterion on the MIME type modified field
+     * Tests Content Search filtering with Field criterion on the MIME type modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldMimeType
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testFilterContentModifiedFieldMimeType(
@@ -759,27 +754,26 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             true,
-            "mime_type"
+            'mime_type'
         );
     }
 
     /**
-     * Tests Content Search querying with Field criterion on the MIME type modified field
+     * Tests Content Search querying with Field criterion on the MIME type modified field.
      *
      * @dataProvider criteriaProviderModifiedFieldMimeType
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
-     * @param boolean $includesOne
-     * @param boolean $includesTwo
+     * @param bool $includesOne
+     * @param bool $includesTwo
      * @param array $context
      */
     public function testQueryContentModifiedFieldMimeType(
@@ -787,87 +781,83 @@ class ImageIntegrationTest extends FileSearchBaseIntegrationTest
         $includesOne,
         $includesTwo,
         array $context
-    )
-    {
+    ) {
         $this->assertFilterContentModifiedField(
             $criterion,
             $includesOne,
             $includesTwo,
             $context,
             false,
-            "mime_type"
+            'mime_type'
         );
     }
 
     /**
-     * Tests Content Search sort with Field sort clause on the alternative text modified field
+     * Tests Content Search sort with Field sort clause on the alternative text modified field.
      *
      * @dataProvider sortClauseProvider
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param boolean $ascending
+     * @param bool $ascending
      * @param array $context
      */
     public function testSortContentModifiedFieldAlternativeText(
         SortClause $sortClause,
         $ascending,
         array $context
-    )
-    {
+    ) {
         $this->assertSortContentModifiedField(
             $sortClause,
             $ascending,
             $context,
-            "alternative_text"
+            'alternative_text'
         );
     }
 
     /**
-     * Tests Content Search sort with Field sort clause on the file size modified field
+     * Tests Content Search sort with Field sort clause on the file size modified field.
      *
      * @dataProvider sortClauseProvider
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param boolean $ascending
+     * @param bool $ascending
      * @param array $context
      */
     public function testSortContentModifiedFieldFieldSize(
         SortClause $sortClause,
         $ascending,
         array $context
-    )
-    {
+    ) {
         $this->assertSortContentModifiedField(
             $sortClause,
             $ascending,
             $context,
-            "file_size"
+            'file_size'
         );
     }
 
     /**
-     * Tests Content Search sort with Field sort clause on the MIME type modified field
+     * Tests Content Search sort with Field sort clause on the MIME type modified field.
      *
      * @dataProvider sortClauseProvider
      * @depends testCreateTestContent
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause
-     * @param boolean $ascending
+     * @param bool $ascending
      * @param array $context
      */
     public function testSortContentModifiedFieldMimeType(
         SortClause $sortClause,
         $ascending,
         array $context
-    )
-    {
+    ) {
         $this->assertSortContentModifiedField(
             $sortClause,
             $ascending,
             $context,
-            "mime_type"
+            'mime_type'
         );
     }
 }

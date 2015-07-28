@@ -1,19 +1,18 @@
 <?php
 /**
- * File contains: eZ\Publish\API\Repository\Tests\FieldType\CountryIntegrationTest class
+ * File contains: eZ\Publish\API\Repository\Tests\FieldType\CountryIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\ISBN\Value as ISBNValue;
 use eZ\Publish\API\Repository\Values\Content\Field;
 
 /**
- * Integration test for use field type
+ * Integration test for use field type.
  *
  * @group integration
  * @group field-type
@@ -21,7 +20,7 @@ use eZ\Publish\API\Repository\Values\Content\Field;
 class ISBNIntegrationTest extends SearchBaseIntegrationTest
 {
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -31,34 +30,34 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get expected settings schema
+     * Get expected settings schema.
      *
      * @return array
      */
     public function getSettingsSchema()
     {
         return array(
-            "isISBN13" => array(
-                "type" => "boolean",
-                "default" => true
-            )
+            'isISBN13' => array(
+                'type' => 'boolean',
+                'default' => true,
+            ),
         );
     }
 
     /**
-     * Get a valid $fieldSettings value
+     * Get a valid $fieldSettings value.
      *
      * @return mixed
      */
     public function getValidFieldSettings()
     {
         return array(
-            "isISBN13" => true
+            'isISBN13' => true,
         );
     }
 
     /**
-     * Get $fieldSettings value not accepted by the field type
+     * Get $fieldSettings value not accepted by the field type.
      *
      * @return mixed
      */
@@ -70,7 +69,7 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get expected validator schema
+     * Get expected validator schema.
      *
      * @return array
      */
@@ -80,7 +79,7 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get a valid $validatorConfiguration
+     * Get a valid $validatorConfiguration.
      *
      * @return mixed
      */
@@ -90,25 +89,25 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get $validatorConfiguration not accepted by the field type
+     * Get $validatorConfiguration not accepted by the field type.
      *
      * @return mixed
      */
     public function getInvalidValidatorConfiguration()
     {
         return array(
-            "unknown" => array( "value" => 42 ),
+            'unknown' => array('value' => 42),
         );
     }
 
     /**
-     * Get initial field data for valid object creation
+     * Get initial field data for valid object creation.
      *
      * @return mixed
      */
     public function getValidCreationFieldData()
     {
-        return new ISBNValue( "9789722514095" );
+        return new ISBNValue('9789722514095');
     }
 
     /**
@@ -118,17 +117,15 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
      * was stored and loaded correctly.
      *
      * @param Field $field
-     *
-     * @return void
      */
-    public function assertFieldDataLoadedCorrect( Field $field )
+    public function assertFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\ISBN\\Value',
             $field->value
         );
 
-        $expectedData = "9789722514095";
+        $expectedData = '9789722514095';
 
         $this->assertEquals(
             $expectedData,
@@ -137,7 +134,7 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during creation
+     * Get field data which will result in errors during creation.
      *
      * This is a PHPUnit data provider.
      *
@@ -162,48 +159,48 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
         return array(
             array(
                 '9789722',
-                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException'
+                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
             array(
-                "NON_VALID_ISBN_CODE",
-                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException'
+                'NON_VALID_ISBN_CODE',
+                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
             array(
                 new \stdClass(),
-                'eZ\\Publish\\API\\Repository\\Exceptions\\InvalidArgumentException'
+                'eZ\\Publish\\API\\Repository\\Exceptions\\InvalidArgumentException',
             ),
             array(
-                new ISBNValue( "97897225" ),
-                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException'
+                new ISBNValue('97897225'),
+                'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
         );
     }
 
     /**
-     * Get update field externals data
+     * Get update field externals data.
      *
      * @return array
      */
     public function getValidUpdateFieldData()
     {
-        return new ISBNValue( "978-972-25-1409-5" );
+        return new ISBNValue('978-972-25-1409-5');
     }
 
     /**
-     * Get externals updated field data values
+     * Get externals updated field data values.
      *
      * This is a PHPUnit data provider
      *
      * @return array
      */
-    public function assertUpdatedFieldDataLoadedCorrect( Field $field )
+    public function assertUpdatedFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\ISBN\\Value',
             $field->value
         );
 
-        $expectedData = "978-972-25-1409-5";
+        $expectedData = '978-972-25-1409-5';
         $this->assertEquals(
             $expectedData,
             $field->value
@@ -211,7 +208,7 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during update
+     * Get field data which will result in errors during update.
      *
      * This is a PHPUnit data provider.
      *
@@ -244,14 +241,14 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
      *
      * @param Field $field
      */
-    public function assertCopiedFieldDataLoadedCorrectly( Field $field )
+    public function assertCopiedFieldDataLoadedCorrectly(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\ISBN\\Value',
             $field->value
         );
 
-        $expectedData = "9789722514095";
+        $expectedData = '9789722514095';
 
         $this->assertEquals(
             $expectedData,
@@ -260,7 +257,7 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get data to test to hash method
+     * Get data to test to hash method.
      *
      * This is a PHPUnit data provider
      *
@@ -283,22 +280,22 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     {
         return array(
             array(
-                new ISBNValue( "9789722514095" ),
-                "9789722514095",
+                new ISBNValue('9789722514095'),
+                '9789722514095',
             ),
             array(
-                new ISBNValue( "978-972-25-1409-5" ),
-                "978-972-25-1409-5",
+                new ISBNValue('978-972-25-1409-5'),
+                '978-972-25-1409-5',
             ),
             array(
-                new ISBNValue( "0-9752298-0-X" ),
-                "0-9752298-0-X",
+                new ISBNValue('0-9752298-0-X'),
+                '0-9752298-0-X',
             ),
         );
     }
 
     /**
-     * Get expectations for the fromHash call on our field value
+     * Get expectations for the fromHash call on our field value.
      *
      * This is a PHPUnit data provider
      *
@@ -308,20 +305,20 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     {
         return array(
             array(
-                "9789722514095",
-                new ISBNValue( "9789722514095" ),
+                '9789722514095',
+                new ISBNValue('9789722514095'),
             ),
             array(
-                "978-972-25-1409-5",
-                new ISBNValue( "978-972-25-1409-5" ),
+                '978-972-25-1409-5',
+                new ISBNValue('978-972-25-1409-5'),
             ),
             array(
-                "0-9752298-0-X",
-                new ISBNValue( "0-9752298-0-X" ),
+                '0-9752298-0-X',
+                new ISBNValue('0-9752298-0-X'),
             ),
             array(
-                "097522980X",
-                new ISBNValue( "097522980X" ),
+                '097522980X',
+                new ISBNValue('097522980X'),
             ),
         );
     }
@@ -329,9 +326,9 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     public function providerForTestIsEmptyValue()
     {
         return array(
-            array( new ISBNValue() ),
-            array( new ISBNValue( null ) ),
-            array( new ISBNValue( "" ) ),
+            array(new ISBNValue()),
+            array(new ISBNValue(null)),
+            array(new ISBNValue('')),
         );
     }
 
@@ -339,18 +336,18 @@ class ISBNIntegrationTest extends SearchBaseIntegrationTest
     {
         return array(
             array(
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
         );
     }
 
     protected function getValidSearchValueOne()
     {
-        return "9780099067504";
+        return '9780099067504';
     }
 
     protected function getValidSearchValueTwo()
     {
-        return "9780380448340";
+        return '9780380448340';
     }
 }

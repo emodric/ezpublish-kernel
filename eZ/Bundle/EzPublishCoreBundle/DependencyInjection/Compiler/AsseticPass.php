@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -18,19 +17,18 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class AsseticPass implements CompilerPassInterface
 {
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'assetic.asset_factory' ) )
-        {
+        if (!$container->hasDefinition('assetic.asset_factory')) {
             return;
         }
 
-        $assetFactoryDef = $container->findDefinition( 'assetic.asset_factory' );
+        $assetFactoryDef = $container->findDefinition('assetic.asset_factory');
         $assetFactoryDef
-            ->addMethodCall( 'setConfigResolver', array( new Reference( 'ezpublish.config.resolver' ) ) )
+            ->addMethodCall('setConfigResolver', array(new Reference('ezpublish.config.resolver')))
             ->addMethodCall(
                 'setDynamicSettingParser',
-                array( new Reference( 'ezpublish.config.dynamic_setting.parser' ) )
+                array(new Reference('ezpublish.config.dynamic_setting.parser'))
             );
     }
 }

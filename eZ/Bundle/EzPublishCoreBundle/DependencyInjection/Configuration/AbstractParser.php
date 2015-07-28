@@ -6,12 +6,9 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration;
 
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ParserInterface;
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class AbstractParser implements ParserInterface
 {
@@ -27,7 +24,7 @@ abstract class AbstractParser implements ParserInterface
      *
      * @return mixed
      */
-    public function preMap( array $config, ContextualizerInterface $contextualizer )
+    public function preMap(array $config, ContextualizerInterface $contextualizer)
     {
     }
 
@@ -43,8 +40,7 @@ abstract class AbstractParser implements ParserInterface
      *
      * @return mixed
      */
-    public function postMap( array $config, ContextualizerInterface $contextualizer )
+    public function postMap(array $config, ContextualizerInterface $contextualizer)
     {
     }
-
 }

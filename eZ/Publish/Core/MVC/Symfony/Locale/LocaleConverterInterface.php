@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the LocaleConverterInterface interface
+ * File containing the LocaleConverterInterface interface.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Locale;
 
 /**
@@ -25,7 +24,7 @@ interface LocaleConverterInterface
      * @param string $ezpLocale
      * @return string|null
      */
-    public function convertToPOSIX( $ezpLocale );
+    public function convertToPOSIX($ezpLocale);
 
     /**
      * Converts a locale in POSIX format to eZ Publish internal format.
@@ -34,5 +33,5 @@ interface LocaleConverterInterface
      * @param string $posixLocale
      * @return string|null
      */
-    public function convertToEz( $posixLocale );
+    public function convertToEz($posixLocale);
 }

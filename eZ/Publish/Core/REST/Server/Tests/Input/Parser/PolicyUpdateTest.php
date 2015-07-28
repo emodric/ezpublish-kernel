@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing a test class
+ * File containing a test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Tests\Input\Parser;
 
 use eZ\Publish\Core\REST\Server\Input\Parser\PolicyUpdate;
@@ -15,7 +14,7 @@ use eZ\Publish\Core\Repository\Values\User\PolicyUpdateStruct;
 class PolicyUpdateTest extends BaseTest
 {
     /**
-     * Tests the PolicyUpdate parser
+     * Tests the PolicyUpdate parser.
      */
     public function testParse()
     {
@@ -27,23 +26,23 @@ class PolicyUpdateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyUpdate = $this->getParser();
-        $result = $policyUpdate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $result = $policyUpdate->parse($inputArray, $this->getParsingDispatcherMock());
 
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\PolicyUpdateStruct',
@@ -78,14 +77,14 @@ class PolicyUpdateTest extends BaseTest
         );
 
         $this->assertEquals(
-            array( 1, 2, 3 ),
+            array(1, 2, 3),
             $parsedLimitations['Class']->limitationValues,
             'Limitation values not created correctly.'
         );
     }
 
     /**
-     * Test PolicyUpdate parser throwing exception on missing identifier
+     * Test PolicyUpdate parser throwing exception on missing identifier.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Missing '_identifier' attribute for Limitation.
@@ -99,27 +98,27 @@ class PolicyUpdateTest extends BaseTest
                         'values' => array(
                             'ref' => array(
                                 array(
-                                    '_href' => 1
+                                    '_href' => 1,
                                 ),
                                 array(
-                                    '_href' => 2
+                                    '_href' => 2,
                                 ),
                                 array(
-                                    '_href' => 3
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+                                    '_href' => 3,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         );
 
         $policyUpdate = $this->getParser();
-        $policyUpdate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyUpdate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Test PolicyUpdate parser throwing exception on missing values
+     * Test PolicyUpdate parser throwing exception on missing values.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Invalid format for limitation values in Limitation.
@@ -130,18 +129,18 @@ class PolicyUpdateTest extends BaseTest
             'limitations' => array(
                 'limitation' => array(
                     array(
-                        '_identifier' => 'Class'
-                    )
-                )
-            )
+                        '_identifier' => 'Class',
+                    ),
+                ),
+            ),
         );
 
         $policyUpdate = $this->getParser();
-        $policyUpdate->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $policyUpdate->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Returns the PolicyUpdateStruct parser
+     * Returns the PolicyUpdateStruct parser.
      *
      * @return \eZ\Publish\Core\REST\Server\Input\Parser\PolicyUpdate
      */
@@ -154,7 +153,7 @@ class PolicyUpdateTest extends BaseTest
     }
 
     /**
-     * Get the role service mock object
+     * Get the role service mock object.
      *
      * @return \eZ\Publish\API\Repository\RoleService
      */
@@ -168,10 +167,10 @@ class PolicyUpdateTest extends BaseTest
             false
         );
 
-        $roleServiceMock->expects( $this->any() )
-            ->method( 'newPolicyUpdateStruct' )
+        $roleServiceMock->expects($this->any())
+            ->method('newPolicyUpdateStruct')
             ->will(
-                $this->returnValue( new PolicyUpdateStruct() )
+                $this->returnValue(new PolicyUpdateStruct())
             );
 
         return $roleServiceMock;

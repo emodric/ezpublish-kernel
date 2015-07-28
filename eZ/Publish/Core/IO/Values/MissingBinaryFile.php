@@ -6,10 +6,7 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\IO\Values;
-
-use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
  * Override of BinaryFile that indicates a non existing file.

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -18,13 +18,13 @@ interface UrlDecorator
      * @param string $uri
      * @return string Decorated string
      */
-    public function decorate( $uri );
+    public function decorate($uri);
 
     /**
-     * Un-decorates decorated $uri
+     * Un-decorates decorated $uri.
      * @param $uri
      *
      * @return string Un-decorated string
      */
-    public function undecorate( $uri );
+    public function undecorate($uri);
 }

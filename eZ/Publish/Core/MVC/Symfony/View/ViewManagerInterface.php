@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\View;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
@@ -31,7 +30,7 @@ interface ViewManagerInterface
      *
      * @return string
      */
-    public function renderContent( Content $content, $viewType = ViewManagerInterface::VIEW_TYPE_FULL, $parameters = array() );
+    public function renderContent(Content $content, $viewType = self::VIEW_TYPE_FULL, $parameters = array());
 
     /**
      * Renders $location by selecting the right template for $viewType.
@@ -47,7 +46,7 @@ interface ViewManagerInterface
      *
      * @return string
      */
-    public function renderLocation( Location $location, $viewType = ViewManagerInterface::VIEW_TYPE_FULL, $parameters = array() );
+    public function renderLocation(Location $location, $viewType = self::VIEW_TYPE_FULL, $parameters = array());
 
     /**
      * Renders $block by selecting the right template.
@@ -61,7 +60,7 @@ interface ViewManagerInterface
      *
      * @return string
      */
-    public function renderBlock( Block $block, $parameters = array() );
+    public function renderBlock(Block $block, $parameters = array());
 
     /**
      * Renders passed ContentView object via the template engine.
@@ -72,5 +71,5 @@ interface ViewManagerInterface
      *
      * @return string
      */
-    public function renderContentView( ContentViewInterface $view, array $defaultParams = array() );
+    public function renderContentView(ContentViewInterface $view, array $defaultParams = array());
 }

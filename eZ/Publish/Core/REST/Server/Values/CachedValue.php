@@ -14,14 +14,14 @@ use eZ\Publish\Core\REST\Common\Value as RestValue;
 class CachedValue extends RestValue
 {
     /**
-     * Actual value object
+     * Actual value object.
      * @var mixed
      */
     public $value;
 
     /**
      * Associative array of cache tags.
-     * Example: array( 'locationId' => 59 )
+     * Example: array( 'locationId' => 59 ).
      * @var mixed[]
      */
     public $cacheTags;
@@ -31,22 +31,22 @@ class CachedValue extends RestValue
      * @param array $cacheTags Tags to add to the cache (supported: locationId)
      * @throw InvalidArgumentException If invalid cache tags are provided
      */
-    public function __construct( $value, array $cacheTags = array() )
+    public function __construct($value, array $cacheTags = array())
     {
         $this->value = $value;
-        $this->cacheTags = $this->checkCacheTags( $cacheTags );
+        $this->cacheTags = $this->checkCacheTags($cacheTags);
     }
 
-    protected function checkCacheTags( $tags )
+    protected function checkCacheTags($tags)
     {
-        $invalidTags = array_diff( array_keys( $tags ), array( 'locationId' ) );
-        if ( count( $invalidTags ) > 0 )
-        {
+        $invalidTags = array_diff(array_keys($tags), array('locationId'));
+        if (count($invalidTags) > 0) {
             throw new InvalidArgumentException(
                 'cacheTags',
-                "Unknown cache tag(s): " . implode( ', ', $invalidTags  )
+                'Unknown cache tag(s): ' . implode(', ', $invalidTags)
             );
         }
+
         return $tags;
     }
 }

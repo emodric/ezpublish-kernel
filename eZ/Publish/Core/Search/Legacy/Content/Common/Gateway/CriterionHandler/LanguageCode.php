@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase language code criterion handler class
+ * File containing the DoctrineDatabase language code criterion handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
 
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
@@ -17,7 +16,7 @@ use eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator;
 use eZ\Publish\Core\Persistence\Database\SelectQuery;
 
 /**
- * LanguageCode criterion handler
+ * LanguageCode criterion handler.
  */
 class LanguageCode extends CriterionHandler
 {
@@ -27,15 +26,15 @@ class LanguageCode extends CriterionHandler
     private $maskGenerator;
 
     /**
-     * Construct from language mask generator
+     * Construct from language mask generator.
      *
      * @param \eZ\Publish\Core\Persistence\Database\DatabaseHandler $dbHandler
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator $maskGenerator
      */
-    public function __construct( DatabaseHandler $dbHandler, MaskGenerator $maskGenerator )
+    public function __construct(DatabaseHandler $dbHandler, MaskGenerator $maskGenerator)
     {
         $this->maskGenerator = $maskGenerator;
-        parent::__construct( $dbHandler );
+        parent::__construct($dbHandler);
     }
 
     /**
@@ -43,15 +42,15 @@ class LanguageCode extends CriterionHandler
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept( Criterion $criterion )
+    public function accept(Criterion $criterion)
     {
         return $criterion instanceof Criterion\LanguageCode;
     }
 
     /**
-     * Generate query expression for a Criterion this handler accepts
+     * Generate query expression for a Criterion this handler accepts.
      *
      * accept() must be called before calling this method.
      *
@@ -61,17 +60,17 @@ class LanguageCode extends CriterionHandler
      *
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      */
-    public function handle( CriteriaConverter $converter, SelectQuery $query, Criterion $criterion )
+    public function handle(CriteriaConverter $converter, SelectQuery $query, Criterion $criterion)
     {
-        $languages = array_flip( $criterion->value );
+        $languages = array_flip($criterion->value);
         /** @var $criterion \eZ\Publish\API\Repository\Values\Content\Query\Criterion\LanguageCode */
         $languages['always-available'] = $criterion->matchAlwaysAvailable;
 
         return $query->expr->gt(
             $query->expr->bitAnd(
-                $this->dbHandler->quoteColumn( 'language_mask', 'ezcontentobject' ),
+                $this->dbHandler->quoteColumn('language_mask', 'ezcontentobject'),
                 // @todo: Use a cached version of mask generator when implemented
-                $this->maskGenerator->generateLanguageMask( $languages )
+                $this->maskGenerator->generateLanguageMask($languages)
             ),
             0
         );

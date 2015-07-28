@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued;
@@ -20,11 +19,11 @@ class ContentTypeGroup extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchLocation( APILocation $location )
+    public function matchLocation(APILocation $location)
     {
-        return $this->matchContentInfo( $location->getContentInfo() );
+        return $this->matchContentInfo($location->getContentInfo());
     }
 
     /**
@@ -32,19 +31,19 @@ class ContentTypeGroup extends MultipleValued
      *
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchContentInfo( ContentInfo $contentInfo )
+    public function matchContentInfo(ContentInfo $contentInfo)
     {
         $contentTypeGroups = $this->repository
             ->getContentTypeService()
-            ->loadContentType( $contentInfo->contentTypeId )
+            ->loadContentType($contentInfo->contentTypeId)
             ->getContentTypeGroups();
 
-        foreach ( $contentTypeGroups as $group )
-        {
-            if ( isset( $this->values[$group->id] ) )
+        foreach ($contentTypeGroups as $group) {
+            if (isset($this->values[$group->id])) {
                 return true;
+            }
         }
 
         return false;

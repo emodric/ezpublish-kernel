@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\User;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class represents a role
+ * This class represents a role.
  *
  * @property-read mixed $id the internal id of the role
  * @property-read string $identifier the identifier of the role
@@ -21,22 +20,22 @@ use eZ\Publish\API\Repository\Values\ValueObject;
 abstract class Role extends ValueObject
 {
     /**
-     * ID of the user rule
+     * ID of the user rule.
      *
      * @var mixed
      */
     protected $id;
 
-     /**
+    /**
      * Readable string identifier of a role
-     * in 4.x. this is mapped to the role name
+     * in 4.x. this is mapped to the role name.
      *
      * @var string
      */
     protected $identifier;
 
     /**
-     * Returns the list of policies of this role
+     * Returns the list of policies of this role.
      * @return \eZ\Publish\API\Repository\Values\User\Policy[]
      */
     abstract public function getPolicies();

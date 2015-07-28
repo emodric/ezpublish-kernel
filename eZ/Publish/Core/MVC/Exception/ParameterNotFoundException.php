@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Exception;
 
 use InvalidArgumentException;
@@ -16,10 +15,11 @@ use InvalidArgumentException;
  */
 class ParameterNotFoundException extends InvalidArgumentException
 {
-    public function __construct( $paramName, $namespace, array $triedScopes = array() )
+    public function __construct($paramName, $namespace, array $triedScopes = array())
     {
         $this->message = "Parameter '$paramName' with namespace '$namespace' could not be found.";
-        if ( !empty( $triedScopes ) )
-            $this->message .= " Tried scopes: " . implode( ', ', $triedScopes );
+        if (!empty($triedScopes)) {
+            $this->message .= ' Tried scopes: ' . implode(', ', $triedScopes);
+        }
     }
 }

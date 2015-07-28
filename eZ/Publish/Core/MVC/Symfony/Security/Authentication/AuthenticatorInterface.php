@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\Authentication;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -32,7 +31,7 @@ interface AuthenticatorInterface
      *
      * @throws \Symfony\Component\Security\Core\Exception\AuthenticationException If any authentication issue occured.
      */
-    public function authenticate( Request $request );
+    public function authenticate(Request $request);
 
     /**
      * Performs logout by running configured logout handlers.
@@ -41,5 +40,5 @@ interface AuthenticatorInterface
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function logout( Request $request );
+    public function logout(Request $request);
 }

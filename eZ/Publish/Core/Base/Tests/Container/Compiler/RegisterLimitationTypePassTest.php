@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler;
 
 use eZ\Publish\Core\Base\Container\Compiler\RegisterLimitationTypePass;
@@ -20,18 +19,18 @@ class RegisterLimitationTypePassTest extends AbstractCompilerPassTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->setDefinition( 'ezpublish.api.repository.factory', new Definition() );
+        $this->setDefinition('ezpublish.api.repository.factory', new Definition());
     }
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new RegisterLimitationTypePass() );
+        $container->addCompilerPass(new RegisterLimitationTypePass());
     }
 
     public function testRegisterLimitationType()
@@ -39,15 +38,15 @@ class RegisterLimitationTypePassTest extends AbstractCompilerPassTestCase
         $fieldTypeIdentifier = 'field_type_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.limitationType', array( 'alias' => $fieldTypeIdentifier ) );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.limitationType', array('alias' => $fieldTypeIdentifier));
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.api.repository.factory',
             'registerLimitationType',
-            array( $fieldTypeIdentifier, new Reference( $serviceId ) )
+            array($fieldTypeIdentifier, new Reference($serviceId))
         );
     }
 
@@ -59,15 +58,15 @@ class RegisterLimitationTypePassTest extends AbstractCompilerPassTestCase
         $fieldTypeIdentifier = 'field_type_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.limitationType' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.limitationType');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.api.repository.factory',
             'registerLimitationType',
-            array( $fieldTypeIdentifier, new Reference( $serviceId ) )
+            array($fieldTypeIdentifier, new Reference($serviceId))
         );
     }
 }

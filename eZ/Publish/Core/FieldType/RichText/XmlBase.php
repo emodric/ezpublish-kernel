@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\RichText;
 
 use DOMDocument;
@@ -22,7 +21,7 @@ abstract class XmlBase
      * When recording errors holds previous setting for libxml user error handling,
      * null otherwise.
      *
-     * @var null|boolean
+     * @var null|bool
      */
     protected $useInternalErrors;
 
@@ -44,10 +43,10 @@ abstract class XmlBase
      *
      * @return \DOMDocument
      */
-    protected function loadFile( $path )
+    protected function loadFile($path)
     {
-        $document = new DOMDocument;
-        $document->load( $path );
+        $document = new DOMDocument();
+        $document->load($path);
 
         return $document;
     }
@@ -61,14 +60,14 @@ abstract class XmlBase
      *
      * @return string
      */
-    protected function formatLibXmlError( LibXMLError $error )
+    protected function formatLibXmlError(LibXMLError $error)
     {
         return sprintf(
-            "%s in %d:%d: %s",
+            '%s in %d:%d: %s',
             $this->errorTypes[$error->level],
             $error->line,
             $error->column,
-            trim( $error->message )
+            trim($error->message)
         );
     }
 
@@ -80,7 +79,7 @@ abstract class XmlBase
      */
     protected function startRecordingErrors()
     {
-        $this->useInternalErrors = libxml_use_internal_errors( true );
+        $this->useInternalErrors = libxml_use_internal_errors(true);
         libxml_clear_errors();
     }
 
@@ -99,19 +98,17 @@ abstract class XmlBase
      */
     protected function collectErrors()
     {
-        if ( $this->useInternalErrors === null )
-        {
-            throw new RuntimeException( "Error recording not started" );
+        if ($this->useInternalErrors === null) {
+            throw new RuntimeException('Error recording not started');
         }
 
         $xmlErrors = libxml_get_errors();
         $errors = array();
-        foreach ( $xmlErrors as $error )
-        {
-            $errors[] = $this->formatLibXmlError( $error );
+        foreach ($xmlErrors as $error) {
+            $errors[] = $this->formatLibXmlError($error);
         }
         libxml_clear_errors();
-        libxml_use_internal_errors( $this->useInternalErrors );
+        libxml_use_internal_errors($this->useInternalErrors);
         $this->useInternalErrors = null;
 
         return $errors;

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\IO\Values;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -25,31 +24,31 @@ class BinaryFile extends ValueObject
 {
     /**
      * Unique ID
-     * Ex: media/images/ez-logo/209-1-eng-GB/eZ-Logo.gif, or application/2b042138835bb5f48beb9c9df6e86de4.pdf
+     * Ex: media/images/ez-logo/209-1-eng-GB/eZ-Logo.gif, or application/2b042138835bb5f48beb9c9df6e86de4.pdf.
      * @var mixed
      */
     protected $id;
 
     /**
-     * File size, in bytes
+     * File size, in bytes.
      * @var int
      */
     protected $size;
 
     /**
-     * File modification time
+     * File modification time.
      * @var \DateTime
      */
     protected $mtime;
 
     /**
-     * URI to the binary file
+     * URI to the binary file.
      * @var string
      */
     protected $uri;
 
     /**
-     * The file's mime type
+     * The file's mime type.
      *
      * Example: text/xml
      *

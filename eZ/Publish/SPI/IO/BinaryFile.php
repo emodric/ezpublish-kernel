@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\IO;
 
 /**
@@ -14,41 +13,40 @@ namespace eZ\Publish\SPI\IO;
  *
  * It allows reading & writing of files in a unified way
  */
-
 class BinaryFile
 {
     /**
      * Unique persistence layer identifier for this file
      * Ex: images/media/images/ez-logo/209-1-eng-GB/eZ-Logo.gif,
-     *     or original/application/2b042138835bb5f48beb9c9df6e86de4.pdf
-
+     *     or original/application/2b042138835bb5f48beb9c9df6e86de4.pdf.
+     
      * @var string
      */
     public $id;
 
     /**
-     * File size, in bytes
+     * File size, in bytes.
      *
      * @var int
      */
     public $size;
 
     /**
-     * File modification time
+     * File modification time.
      *
      * @var \DateTime
      */
     public $mtime;
 
     /**
-     * HTTP URI to the binary file
+     * HTTP URI to the binary file.
      *
      * @var string
      */
     public $uri;
 
     /**
-     * The file's mime type
+     * The file's mime type.
      *
      * Example: text/xml
      *

@@ -6,7 +6,6 @@
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Security;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -20,13 +19,12 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
  */
 class RestLogoutHandler implements LogoutHandlerInterface
 {
-    public function logout( Request $request, Response $response, TokenInterface $token )
+    public function logout(Request $request, Response $response, TokenInterface $token)
     {
-        if ( !$request->attributes->get( 'is_rest_request' ) )
-        {
+        if (!$request->attributes->get('is_rest_request')) {
             return;
         }
 
-        $response->headers->clearCookie( $request->getSession()->getName() );
+        $response->headers->clearCookie($request->getSession()->getName());
     }
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the IntegerTest class
+ * File containing the IntegerTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Tests;
 
 use eZ\Publish\Core\FieldType\Integer\Type as Integer;
@@ -33,7 +32,7 @@ class IntegerTest extends FieldTypeTest
     protected function createFieldTypeUnderTest()
     {
         $fieldType = new Integer();
-        $fieldType->setTransformationProcessor( $this->getTransformationProcessorMock() );
+        $fieldType->setTransformationProcessor($this->getTransformationProcessorMock());
 
         return $fieldType;
     }
@@ -46,16 +45,16 @@ class IntegerTest extends FieldTypeTest
     protected function getValidatorConfigurationSchemaExpectation()
     {
         return array(
-            "IntegerValueValidator" => array(
-                "minIntegerValue" => array(
-                    "type" => "int",
-                    "default" => null
+            'IntegerValueValidator' => array(
+                'minIntegerValue' => array(
+                    'type' => 'int',
+                    'default' => null,
                 ),
-                "maxIntegerValue" => array(
-                    "type" => "int",
-                    "default" => null
-                )
-            )
+                'maxIntegerValue' => array(
+                    'type' => 'int',
+                    'default' => null,
+                ),
+            ),
         );
     }
 
@@ -71,12 +70,10 @@ class IntegerTest extends FieldTypeTest
 
     /**
      * Returns the empty value expected from the field type.
-     *
-     * @return void
      */
     protected function getEmptyValueExpectation()
     {
-        return new IntegerValue;
+        return new IntegerValue();
     }
 
     /**
@@ -114,7 +111,7 @@ class IntegerTest extends FieldTypeTest
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException',
             ),
             array(
-                new IntegerValue( 'foo' ),
+                new IntegerValue('foo'),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentException',
             ),
         );
@@ -154,25 +151,25 @@ class IntegerTest extends FieldTypeTest
         return array(
             array(
                 null,
-                new IntegerValue,
+                new IntegerValue(),
             ),
             array(
                 42,
-                new IntegerValue( 42 ),
+                new IntegerValue(42),
             ),
             array(
                 23,
-                new IntegerValue( 23 ),
+                new IntegerValue(23),
             ),
             array(
-                new IntegerValue( 23 ),
-                new IntegerValue( 23 ),
+                new IntegerValue(23),
+                new IntegerValue(23),
             ),
         );
     }
 
     /**
-     * Provide input for the toHash() method
+     * Provide input for the toHash() method.
      *
      * Returns an array of data provider sets with 2 arguments: 1. The valid
      * input to toHash(), 2. The expected return value from toHash().
@@ -210,18 +207,18 @@ class IntegerTest extends FieldTypeTest
     {
         return array(
             array(
-                new IntegerValue,
+                new IntegerValue(),
                 null,
             ),
             array(
-                new IntegerValue( 42 ),
+                new IntegerValue(42),
                 42,
             ),
         );
     }
 
     /**
-     * Provide input to fromHash() method
+     * Provide input to fromHash() method.
      *
      * Returns an array of data provider sets with 2 arguments: 1. The valid
      * input to fromHash(), 2. The expected return value from fromHash().
@@ -260,11 +257,11 @@ class IntegerTest extends FieldTypeTest
         return array(
             array(
                 null,
-                new IntegerValue,
+                new IntegerValue(),
             ),
             array(
                 42,
-                new IntegerValue( 42 ),
+                new IntegerValue(42),
             ),
         );
     }
@@ -301,43 +298,43 @@ class IntegerTest extends FieldTypeTest
     {
         return array(
             array(
-                array()
+                array(),
             ),
             array(
                 array(
                     'IntegerValueValidator' => array(
                         'minIntegerValue' => false,
-                    )
-                )
+                    ),
+                ),
             ),
             array(
                 array(
                     'IntegerValueValidator' => array(
                         'minIntegerValue' => 23,
-                    )
-                )
+                    ),
+                ),
             ),
             array(
                 array(
                     'IntegerValueValidator' => array(
                         'maxIntegerValue' => false,
-                    )
-                )
+                    ),
+                ),
             ),
             array(
                 array(
                     'IntegerValueValidator' => array(
                         'maxIntegerValue' => 23,
-                    )
-                )
+                    ),
+                ),
             ),
             array(
                 array(
                     'IntegerValueValidator' => array(
                         'minIntegerValue' => 23,
                         'maxIntegerValue' => 42,
-                    )
-                )
+                    ),
+                ),
             ),
         );
     }
@@ -395,7 +392,7 @@ class IntegerTest extends FieldTypeTest
             array(
                 array(
                     'IntegerValueValidator' => array(
-                        'nonExistentValue' => 23
+                        'nonExistentValue' => 23,
                     ),
                 ),
             ),
@@ -411,7 +408,7 @@ class IntegerTest extends FieldTypeTest
                     'IntegerValueValidator' => array(
                         'maxIntegerValue' => .42,
                     ),
-                )
+                ),
             ),
         );
     }
@@ -424,8 +421,8 @@ class IntegerTest extends FieldTypeTest
     public function provideDataForGetName()
     {
         return array(
-            array( $this->getEmptyValueExpectation(), "" ),
-            array( new IntegerValue( 42 ), "42" )
+            array($this->getEmptyValueExpectation(), ''),
+            array(new IntegerValue(42), '42'),
         );
     }
 
@@ -479,14 +476,14 @@ class IntegerTest extends FieldTypeTest
         return array(
             array(
                 array(
-                    "validatorConfiguration" => array(
+                    'validatorConfiguration' => array(
                         'IntegerValueValidator' => array(
                             'minIntegerValue' => 5,
-                            'maxIntegerValue' => 10
+                            'maxIntegerValue' => 10,
                         ),
                     ),
                 ),
-                new IntegerValue( 7 ),
+                new IntegerValue(7),
             ),
         );
     }
@@ -560,67 +557,67 @@ class IntegerTest extends FieldTypeTest
         return array(
             array(
                 array(
-                    "validatorConfiguration" => array(
+                    'validatorConfiguration' => array(
                         'IntegerValueValidator' => array(
                             'minIntegerValue' => 5,
-                            'maxIntegerValue' => 10
+                            'maxIntegerValue' => 10,
                         ),
                     ),
                 ),
-                new IntegerValue( 3 ),
+                new IntegerValue(3),
                 array(
                     new ValidationError(
-                        "The value can not be lower than %size%.",
+                        'The value can not be lower than %size%.',
                         null,
                         array(
-                            "size" => 5
-                        )
-                    ),
-                )
-            ),
-            array(
-                array(
-                    "validatorConfiguration" => array(
-                        'IntegerValueValidator' => array(
-                            'minIntegerValue' => 5,
-                            'maxIntegerValue' => 10
-                        ),
-                    ),
-                ),
-                new IntegerValue( 13 ),
-                array(
-                    new ValidationError(
-                        "The value can not be higher than %size%.",
-                        null,
-                        array(
-                            "size" => 10
+                            'size' => 5,
                         )
                     ),
                 ),
             ),
             array(
                 array(
-                    "validatorConfiguration" => array(
+                    'validatorConfiguration' => array(
+                        'IntegerValueValidator' => array(
+                            'minIntegerValue' => 5,
+                            'maxIntegerValue' => 10,
+                        ),
+                    ),
+                ),
+                new IntegerValue(13),
+                array(
+                    new ValidationError(
+                        'The value can not be higher than %size%.',
+                        null,
+                        array(
+                            'size' => 10,
+                        )
+                    ),
+                ),
+            ),
+            array(
+                array(
+                    'validatorConfiguration' => array(
                         'IntegerValueValidator' => array(
                             'minIntegerValue' => 10,
-                            'maxIntegerValue' => 5
+                            'maxIntegerValue' => 5,
                         ),
                     ),
                 ),
-                new IntegerValue( 7 ),
+                new IntegerValue(7),
                 array(
                     new ValidationError(
-                        "The value can not be higher than %size%.",
+                        'The value can not be higher than %size%.',
                         null,
                         array(
-                            "size" => 5
+                            'size' => 5,
                         )
                     ),
                     new ValidationError(
-                        "The value can not be lower than %size%.",
+                        'The value can not be lower than %size%.',
                         null,
                         array(
-                            "size" => 10
+                            'size' => 10,
                         )
                     ),
                 ),

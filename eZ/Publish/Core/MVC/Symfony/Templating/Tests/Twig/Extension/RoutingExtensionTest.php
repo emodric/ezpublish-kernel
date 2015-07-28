@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Templating\Tests\Twig\Extension;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\Generator\RouteReferenceGenerator;
@@ -19,7 +18,7 @@ class RoutingExtensionTest extends Twig_Test_IntegrationTestCase
     protected function getExtensions()
     {
         return array(
-            new RoutingExtension( $this->getRouteReferenceGenerator() )
+            new RoutingExtension($this->getRouteReferenceGenerator()),
         );
     }
 
@@ -31,9 +30,9 @@ class RoutingExtensionTest extends Twig_Test_IntegrationTestCase
     protected function getRouteReferenceGenerator()
     {
         $generator = new RouteReferenceGenerator(
-            $this->getMock( 'Symfony\Component\EventDispatcher\EventDispatcherInterface' )
+            $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface')
         );
-        $generator->setRequest( new Request() );
+        $generator->setRequest(new Request());
 
         return $generator;
     }

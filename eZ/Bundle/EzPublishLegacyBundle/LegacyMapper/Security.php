@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishLegacyBundle\LegacyMapper;
 
 use eZ\Publish\API\Repository\Repository;
@@ -42,7 +41,7 @@ class Security implements EventSubscriberInterface
 
     private $enabled = true;
 
-    public function __construct( Repository $repository, ConfigResolverInterface $configResolver, SecurityContextInterface $securityContext )
+    public function __construct(Repository $repository, ConfigResolverInterface $configResolver, SecurityContextInterface $securityContext)
     {
         $this->repository = $repository;
         $this->configResolver = $configResolver;
@@ -50,11 +49,11 @@ class Security implements EventSubscriberInterface
     }
 
     /**
-     * Toggles the feature
+     * Toggles the feature.
      *
      * @param bool $enabled
      */
-    public function setEnabled( $enabled )
+    public function setEnabled($enabled)
     {
         $this->enabled = (bool)$enabled;
     }
@@ -72,25 +71,23 @@ class Security implements EventSubscriberInterface
      *
      * @param PostBuildKernelEvent $event
      */
-    public function onKernelBuilt( PostBuildKernelEvent $event )
+    public function onKernelBuilt(PostBuildKernelEvent $event)
     {
         // Ignore if not in web context, if legacy_mode is active or if user is not authenticated
         if (
             $this->enabled === false
             || !$event->getKernelHandler() instanceof ezpWebBasedKernelHandler
-            || $this->configResolver->getParameter( 'legacy_mode' ) === true
+            || $this->configResolver->getParameter('legacy_mode') === true
             || !$this->isUserAuthenticated()
-        )
-        {
+        ) {
             return;
         }
 
         $currentUser = $this->repository->getCurrentUser();
         $event->getLegacyKernel()->runCallback(
-            function () use ( $currentUser )
-            {
-                $legacyUser = eZUser::fetch( $currentUser->id );
-                eZUser::setCurrentlyLoggedInUser( $legacyUser, $legacyUser->attribute( 'contentobject_id' ), eZUser::NO_SESSION_REGENERATE );
+            function () use ($currentUser) {
+                $legacyUser = eZUser::fetch($currentUser->id);
+                eZUser::setCurrentlyLoggedInUser($legacyUser, $legacyUser->attribute('contentobject_id'), eZUser::NO_SESSION_REGENERATE);
             },
             false,
             false
@@ -107,7 +104,7 @@ class Security implements EventSubscriberInterface
         // or by "remember me" if available.
         return
             $this->securityContext->getToken() instanceof TokenInterface
-            && $this->securityContext->isGranted( 'IS_AUTHENTICATED_REMEMBERED' );
+            && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED');
     }
 
     /**
@@ -115,25 +112,23 @@ class Security implements EventSubscriberInterface
      *
      * @param PreBuildKernelWebHandlerEvent $event
      */
-    public function onLegacyKernelWebBuild( PreBuildKernelWebHandlerEvent $event )
+    public function onLegacyKernelWebBuild(PreBuildKernelWebHandlerEvent $event)
     {
-        if ( $this->configResolver->getParameter( 'legacy_mode' ) === true )
-        {
+        if ($this->configResolver->getParameter('legacy_mode') === true) {
             return;
         }
 
-        $injectedMergeSettings = $event->getParameters()->get( 'injected-merge-settings', array() );
+        $injectedMergeSettings = $event->getParameters()->get('injected-merge-settings', array());
         $accessRules = array(
             'access;disable',
             'module;user/login',
             'module;user/logout',
         );
         // Merge existing settings with the new ones if needed.
-        if ( isset( $injectedMergeSettings['site.ini/SiteAccessRules/Rules'] ) )
-        {
-            $accessRules = array_merge( $injectedMergeSettings['site.ini/SiteAccessRules/Rules'], $accessRules );
+        if (isset($injectedMergeSettings['site.ini/SiteAccessRules/Rules'])) {
+            $accessRules = array_merge($injectedMergeSettings['site.ini/SiteAccessRules/Rules'], $accessRules);
         }
         $injectedMergeSettings['site.ini/SiteAccessRules/Rules'] = $accessRules;
-        $event->getParameters()->set( 'injected-merge-settings', $injectedMergeSettings );
+        $event->getParameters()->set('injected-merge-settings', $injectedMergeSettings);
     }
 }

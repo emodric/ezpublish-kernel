@@ -6,19 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class represents a section
+ * This class represents a section.
  */
 class SectionCreateStruct extends ValueObject
 {
-
     /**
-     * Unique string identifier of the section
+     * Unique string identifier of the section.
      *
      * @required
      *
@@ -27,7 +25,7 @@ class SectionCreateStruct extends ValueObject
     public $identifier;
 
     /**
-     * Name of the section
+     * Name of the section.
      *
      * @required
      *

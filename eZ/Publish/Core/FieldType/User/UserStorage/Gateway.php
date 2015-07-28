@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the UserStorage Gateway
+ * File containing the UserStorage Gateway.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\User\UserStorage;
 
 use eZ\Publish\Core\FieldType\StorageGateway;
@@ -14,7 +13,7 @@ use eZ\Publish\Core\FieldType\StorageGateway;
 abstract class Gateway extends StorageGateway
 {
     /**
-     * Get field data
+     * Get field data.
      *
      * The User storage handles the following attributes, following the user field
      * type in eZ Publish 4:
@@ -36,6 +35,5 @@ abstract class Gateway extends StorageGateway
      *
      * @return array
      */
-    abstract public function getFieldData( $fieldId, $userId = null );
+    abstract public function getFieldData($fieldId, $userId = null);
 }
-

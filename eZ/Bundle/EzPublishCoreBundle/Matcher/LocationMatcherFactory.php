@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Matcher;
 
 use eZ\Publish\API\Repository\Repository;
@@ -29,16 +28,16 @@ class LocationMatcherFactory extends BaseMatcherFactory implements SiteAccessAwa
      */
     private $configResolver;
 
-    public function __construct( ConfigResolverInterface $configResolver, Repository $repository )
+    public function __construct(ConfigResolverInterface $configResolver, Repository $repository)
     {
         $this->configResolver = $configResolver;
         parent::__construct(
             $repository,
-            $this->configResolver->getParameter( 'location_view' )
+            $this->configResolver->getParameter('location_view')
         );
     }
 
-    public function setContainer( ContainerInterface $container = null )
+    public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
     }
@@ -48,12 +47,13 @@ class LocationMatcherFactory extends BaseMatcherFactory implements SiteAccessAwa
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MatcherInterface
      */
-    protected function getMatcher( $matcherIdentifier )
+    protected function getMatcher($matcherIdentifier)
     {
-        if ( $this->container->has( $matcherIdentifier ) )
-            return $this->container->get( $matcherIdentifier );
+        if ($this->container->has($matcherIdentifier)) {
+            return $this->container->get($matcherIdentifier);
+        }
 
-        return parent::getMatcher( $matcherIdentifier );
+        return parent::getMatcher($matcherIdentifier);
     }
 
     /**
@@ -61,13 +61,12 @@ class LocationMatcherFactory extends BaseMatcherFactory implements SiteAccessAwa
      *
      * @param SiteAccess $siteAccess
      */
-    public function setSiteAccess( SiteAccess $siteAccess = null )
+    public function setSiteAccess(SiteAccess $siteAccess = null)
     {
-        if ( $siteAccess === null )
-        {
+        if ($siteAccess === null) {
             return;
         }
 
-        $this->matchConfig = $this->configResolver->getParameter( 'location_view', 'ezsettings', $siteAccess->name );
+        $this->matchConfig = $this->configResolver->getParameter('location_view', 'ezsettings', $siteAccess->name);
     }
 }

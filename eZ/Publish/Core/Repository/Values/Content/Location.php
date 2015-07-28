@@ -6,18 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\Content\Location as APILocation;
 
 /**
- * This class represents a location in the repository
+ * This class represents a location in the repository.
  */
 class Location extends APILocation
 {
     /**
-     * Content info of the content object of this location
+     * Content info of the content object of this location.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */
@@ -29,7 +28,7 @@ class Location extends APILocation
     protected $path;
 
     /**
-     * Returns the content info of the content object of this location
+     * Returns the content info of the content object of this location.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */
@@ -39,7 +38,7 @@ class Location extends APILocation
     }
 
     /**
-     * Function where list of properties are returned
+     * Function where list of properties are returned.
      *
      * Override to add dynamic properties
      * @uses parent::getProperties()
@@ -48,52 +47,50 @@ class Location extends APILocation
      *
      * @return array
      */
-    protected function getProperties( $dynamicProperties = array( 'contentId' ) )
+    protected function getProperties($dynamicProperties = array('contentId'))
     {
-        return parent::getProperties( $dynamicProperties );
+        return parent::getProperties($dynamicProperties);
     }
 
     /**
-     * Magic getter for retrieving convenience properties
+     * Magic getter for retrieving convenience properties.
      *
      * @param string $property The name of the property to retrieve
      *
      * @return mixed
      */
-    public function __get( $property )
+    public function __get($property)
     {
-        switch ( $property )
-        {
+        switch ($property) {
             case 'contentId':
                 return $this->contentInfo->id;
             case 'path':
-                if ( $this->path !== null )
-                {
+                if ($this->path !== null) {
                     return $this->path;
                 }
-                if ( isset( $this->pathString[1] ) && $this->pathString[0] === '/' )
-                {
-                    return $this->path = explode( '/', trim( $this->pathString, '/' ) );
+                if (isset($this->pathString[1]) && $this->pathString[0] === '/') {
+                    return $this->path = explode('/', trim($this->pathString, '/'));
                 }
 
                 return $this->path = array();
         }
 
-        return parent::__get( $property );
+        return parent::__get($property);
     }
 
     /**
-     * Magic isset for signaling existence of convenience properties
+     * Magic isset for signaling existence of convenience properties.
      *
      * @param string $property
      *
-     * @return boolean
+     * @return bool
      */
-    public function __isset( $property )
+    public function __isset($property)
     {
-        if ( $property === 'contentId' || $property === 'path' )
+        if ($property === 'contentId' || $property === 'path') {
             return true;
+        }
 
-        return parent::__isset( $property );
+        return parent::__isset($property);
     }
 }

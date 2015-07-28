@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the ImageStorage Converter class
+ * File containing the ImageStorage Converter class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Image;
 
 use eZ\Publish\SPI\Persistence\Content\VersionInfo;
@@ -15,11 +14,10 @@ use eZ\Publish\Core\IO\IOServiceInterface;
 use eZ\Publish\Core\FieldType\GatewayBasedStorage;
 use eZ\Publish\Core\IO\MetadataHandler;
 use eZ\Publish\Core\Base\Exceptions\NotFoundException;
-use Psr\Log\LoggerInterface;
 use eZ\Publish\Core\Base\Utils\DeprecationWarnerInterface as DeprecationWarner;
 
 /**
- * Converter for Image field type external storage
+ * Converter for Image field type external storage.
  *
  * The keyword storage ships a list (array) of keywords in
  * $field->value->externalData. $field->value->data is simply empty, because no
@@ -28,14 +26,14 @@ use eZ\Publish\Core\Base\Utils\DeprecationWarnerInterface as DeprecationWarner;
 class ImageStorage extends GatewayBasedStorage
 {
     /**
-     * The IO Service used to manipulate data
+     * The IO Service used to manipulate data.
      *
      * @var IOServiceInterface
      */
     protected $IOService;
 
     /**
-     * Path generator
+     * Path generator.
      *
      * @var PathGenerator
      */
@@ -61,9 +59,8 @@ class ImageStorage extends GatewayBasedStorage
         MetadataHandler $imageSizeMetadataHandler,
         DeprecationWarner $deprecationWarner,
         AliasCleanerInterface $aliasCleaner = null
-    )
-    {
-        parent::__construct( $gateways );
+    ) {
+        parent::__construct($gateways);
         $this->IOService = $IOService;
         $this->pathGenerator = $pathGenerator;
         $this->imageSizeMetadataHandler = $imageSizeMetadataHandler;
@@ -106,7 +103,7 @@ class ImageStorage extends GatewayBasedStorage
     /**
      * @see \eZ\Publish\SPI\FieldType\FieldStorage
      */
-    public function storeFieldData( VersionInfo $versionInfo, Field $field, array $context )
+    public function storeFieldData(VersionInfo $versionInfo, Field $field, array $context)
     {
         $contentMetaData = array(
             'fieldId' => $field->id,
@@ -115,8 +112,7 @@ class ImageStorage extends GatewayBasedStorage
         );
 
         // new image
-        if ( isset( $field->value->externalData ) )
-        {
+        if (isset($field->value->externalData)) {
             $targetPath = sprintf(
                 '%s/%s',
                 $this->pathGenerator->getStoragePathForField(
@@ -127,36 +123,30 @@ class ImageStorage extends GatewayBasedStorage
                 $field->value->externalData['fileName']
             );
 
-            if ( $this->IOService->exists( $targetPath ) )
-            {
-                $binaryFile = $this->IOService->loadBinaryFile( $targetPath );
-            }
-            else
-            {
-                if ( isset( $field->value->externalData['inputUri'] ) )
-                {
+            if ($this->IOService->exists($targetPath)) {
+                $binaryFile = $this->IOService->loadBinaryFile($targetPath);
+            } else {
+                if (isset($field->value->externalData['inputUri'])) {
                     $localFilePath = $field->value->externalData['inputUri'];
-                    unset( $field->value->externalData['inputUri'] );
-                }
-                else
-                {
+                    unset($field->value->externalData['inputUri']);
+                } else {
                     $this->deprecationWarner->log(
                         "Using the Image\\Value::\$id property to create images is deprecated. Use 'inputUri'"
                     );
                     $localFilePath = $field->value->externalData['id'];
                 }
-                $binaryFileCreateStruct = $this->IOService->newBinaryCreateStructFromLocalFile( $localFilePath );
+                $binaryFileCreateStruct = $this->IOService->newBinaryCreateStructFromLocalFile($localFilePath);
                 $binaryFileCreateStruct->id = $targetPath;
-                $binaryFile = $this->IOService->createBinaryFile( $binaryFileCreateStruct );
+                $binaryFile = $this->IOService->createBinaryFile($binaryFileCreateStruct);
 
-                $imageSize = getimagesize( $localFilePath );
+                $imageSize = getimagesize($localFilePath);
                 $field->value->externalData['width'] = $imageSize[0];
                 $field->value->externalData['height'] = $imageSize[1];
             }
             $field->value->externalData['imageId'] = $versionInfo->contentInfo->id . '-' . $field->id;
             $field->value->externalData['uri'] = $binaryFile->uri;
             $field->value->externalData['id'] = $binaryFile->id;
-            $field->value->externalData['mime'] = $this->IOService->getMimeType( $binaryFile->id );
+            $field->value->externalData['mime'] = $this->IOService->getMimeType($binaryFile->id);
 
             $field->value->data = array_merge(
                 $field->value->externalData,
@@ -166,16 +156,15 @@ class ImageStorage extends GatewayBasedStorage
             $field->value->externalData = null;
         }
         // existing image from another version
-        else
-        {
-            if ( $field->value->data === null )
-            {
+        else {
+            if ($field->value->data === null) {
                 // Store empty value only with content meta data
                 $field->value->data = $contentMetaData;
+
                 return false;
             }
 
-            $this->IOService->loadBinaryFile( $field->value->data['id'] );
+            $this->IOService->loadBinaryFile($field->value->data['id']);
 
             $field->value->data = array_merge(
                 $field->value->data,
@@ -184,7 +173,7 @@ class ImageStorage extends GatewayBasedStorage
             $field->value->externalData = null;
         }
 
-        $this->getGateway( $context )->storeImageReference( $field->value->data['uri'], $field->id );
+        $this->getGateway($context)->storeImageReference($field->value->data['uri'], $field->id);
 
         // Data has been updated and needs to be stored!
         return true;
@@ -201,15 +190,12 @@ class ImageStorage extends GatewayBasedStorage
      * @param array $context
      *
      * @throws NotFoundException If the stored image path couldn't be retrieved by the IOService
-     *
-     * @return void
      */
-    public function getFieldData( VersionInfo $versionInfo, Field $field, array $context )
+    public function getFieldData(VersionInfo $versionInfo, Field $field, array $context)
     {
-        if ( $field->value->data !== null )
-        {
+        if ($field->value->data !== null) {
             $field->value->data['imageId'] = $versionInfo->contentInfo->id . '-' . $field->id;
-            $binaryFile = $this->IOService->loadBinaryFile( $field->value->data['id'] );
+            $binaryFile = $this->IOService->loadBinaryFile($field->value->data['id']);
             $field->value->data['id'] = $binaryFile->id;
             $field->value->data['fileSize'] = $binaryFile->size;
             $field->value->data['uri'] = $binaryFile->uri;
@@ -220,44 +206,39 @@ class ImageStorage extends GatewayBasedStorage
      * @param array $fieldIds
      * @param array $context
      *
-     * @return boolean
+     * @return bool
      */
-    public function deleteFieldData( VersionInfo $versionInfo, array $fieldIds, array $context )
+    public function deleteFieldData(VersionInfo $versionInfo, array $fieldIds, array $context)
     {
         /** @var \eZ\Publish\Core\FieldType\Image\ImageStorage\Gateway $gateway */
-        $gateway = $this->getGateway( $context );
+        $gateway = $this->getGateway($context);
 
-        $fieldXmls = $gateway->getXmlForImages( $versionInfo->versionNo, $fieldIds );
+        $fieldXmls = $gateway->getXmlForImages($versionInfo->versionNo, $fieldIds);
 
-        foreach ( $fieldXmls as $fieldId => $xml )
-        {
-            $storedFiles = $gateway->extractFilesFromXml( $xml );
-            if ( $storedFiles === null )
-            {
+        foreach ($fieldXmls as $fieldId => $xml) {
+            $storedFiles = $gateway->extractFilesFromXml($xml);
+            if ($storedFiles === null) {
                 continue;
             }
 
-            if ( $this->aliasCleaner )
-            {
-                $this->aliasCleaner->removeAliases( $storedFiles['original'] );
+            if ($this->aliasCleaner) {
+                $this->aliasCleaner->removeAliases($storedFiles['original']);
             }
 
-            foreach ( $storedFiles as $storedFilePath )
-            {
-                $gateway->removeImageReferences( $storedFilePath, $versionInfo->versionNo, $fieldId );
-                if ( $gateway->countImageReferences( $storedFilePath ) === 0 )
-                {
-                    $binaryFile = $this->IOService->loadBinaryFileByUri( $storedFilePath );
-                    $this->IOService->deleteBinaryFile( $binaryFile );
+            foreach ($storedFiles as $storedFilePath) {
+                $gateway->removeImageReferences($storedFilePath, $versionInfo->versionNo, $fieldId);
+                if ($gateway->countImageReferences($storedFilePath) === 0) {
+                    $binaryFile = $this->IOService->loadBinaryFileByUri($storedFilePath);
+                    $this->IOService->deleteBinaryFile($binaryFile);
                 }
             }
         }
     }
 
     /**
-     * Checks if field type has external data to deal with
+     * Checks if field type has external data to deal with.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFieldData()
     {
@@ -268,7 +249,7 @@ class ImageStorage extends GatewayBasedStorage
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
      * @param array $context
      */
-    public function getIndexData( VersionInfo $versionInfo, Field $field, array $context )
+    public function getIndexData(VersionInfo $versionInfo, Field $field, array $context)
     {
         // @todo: Correct?
         return null;

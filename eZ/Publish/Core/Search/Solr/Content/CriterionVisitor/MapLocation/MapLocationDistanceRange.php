@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the MapLocationDistanceRange criterion visitor class
+ * File containing the MapLocationDistanceRange criterion visitor class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Solr\Content\CriterionVisitor\MapLocation;
 
 use eZ\Publish\Core\Search\Solr\Content\CriterionVisitor\MapLocation;
@@ -16,30 +15,30 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 
 /**
- * Visits the MapLocationDistance criterion
+ * Visits the MapLocationDistance criterion.
  */
 class MapLocationDistanceRange extends MapLocation
 {
     /**
-     * Check if visitor is applicable to current criterion
+     * Check if visitor is applicable to current criterion.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function canVisit( Criterion $criterion )
+    public function canVisit(Criterion $criterion)
     {
         return
             $criterion instanceof Criterion\MapLocationDistance &&
-            ( $criterion->operator === Operator::LT ||
+            ($criterion->operator === Operator::LT ||
               $criterion->operator === Operator::LTE ||
               $criterion->operator === Operator::GT ||
               $criterion->operator === Operator::GTE ||
-              $criterion->operator === Operator::BETWEEN );
+              $criterion->operator === Operator::BETWEEN);
     }
 
     /**
-     * Map field value to a proper Solr representation
+     * Map field value to a proper Solr representation.
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException If no searchable fields are found for the given criterion target.
      *
@@ -48,16 +47,15 @@ class MapLocationDistanceRange extends MapLocation
      *
      * @return string
      */
-    public function visit( Criterion $criterion, CriterionVisitor $subVisitor = null )
+    public function visit(Criterion $criterion, CriterionVisitor $subVisitor = null)
     {
         $criterion->value = (array)$criterion->value;
 
         $start = $criterion->value[0];
-        $end = isset( $criterion->value[1] ) ? $criterion->value[1] : 63510;
+        $end = isset($criterion->value[1]) ? $criterion->value[1] : 63510;
 
-        if ( ( $criterion->operator === Operator::LT ) ||
-            ( $criterion->operator === Operator::LTE ) )
-        {
+        if (($criterion->operator === Operator::LT) ||
+            ($criterion->operator === Operator::LTE)) {
             $end = $start;
             $start = null;
         }
@@ -69,10 +67,9 @@ class MapLocationDistanceRange extends MapLocation
             $this->fieldName
         );
 
-        if ( empty( $fieldNames ) )
-        {
+        if (empty($fieldNames)) {
             throw new InvalidArgumentException(
-                "\$criterion->target",
+                '$criterion->target',
                 "No searchable fields found for the given criterion target '{$criterion->target}'."
             );
         }
@@ -81,12 +78,10 @@ class MapLocationDistanceRange extends MapLocation
         $location = $criterion->valueData;
 
         $queries = array();
-        foreach ( $fieldNames as $name )
-        {
+        foreach ($fieldNames as $name) {
             // @todo in future it should become possible to specify ranges directly on the filter (donut shape)
             $query = "{!geofilt sfield={$name} pt={$location->latitude},{$location->longitude} d={$end}}";
-            if ( $start !== null )
-            {
+            if ($start !== null) {
                 $query = "{!frange l={$start}}{$query}";
             }
 
@@ -94,6 +89,6 @@ class MapLocationDistanceRange extends MapLocation
             $queries[] = '_query_:"' . $query . '"';
         }
 
-        return '(' . implode( ' OR ', $queries ) . ')';
+        return '(' . implode(' OR ', $queries) . ')';
     }
 }

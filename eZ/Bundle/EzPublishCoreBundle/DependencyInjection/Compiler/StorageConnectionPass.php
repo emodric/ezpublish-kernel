@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -15,18 +14,15 @@ use LogicException;
 
 /**
  * This compiler pass will create aliases for storage engine database handler connections
- * to the storage connection factory
+ * to the storage connection factory.
  */
 class StorageConnectionPass implements CompilerPassInterface
 {
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        foreach ( $container->findTaggedServiceIds( 'ezpublish.storageEngine' ) as $id => $attributes )
-        {
-            foreach ( $attributes as $attribute )
-            {
-                if ( !isset( $attribute['alias'] ) )
-                {
+        foreach ($container->findTaggedServiceIds('ezpublish.storageEngine') as $id => $attributes) {
+            foreach ($attributes as $attribute) {
+                if (!isset($attribute['alias'])) {
                     throw new LogicException(
                         'ezpublish.storageEngine service tag needs an "alias" attribute to ' .
                         'identify the storage engine. None given.'
@@ -37,7 +33,7 @@ class StorageConnectionPass implements CompilerPassInterface
 
                 $container->setAlias(
                     "ezpublish.api.storage_engine.{$alias}.connection",
-                    "ezpublish.persistence.connection"
+                    'ezpublish.persistence.connection'
                 );
             }
         }

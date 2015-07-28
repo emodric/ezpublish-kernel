@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\Matcher\Identifier;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\Section as SectionIdentifierMatcher;
@@ -23,31 +22,31 @@ class SectionTest extends BaseTest
     protected function setUp()
     {
         parent::setUp();
-        $this->matcher = new SectionIdentifierMatcher;
+        $this->matcher = new SectionIdentifierMatcher();
     }
 
     /**
-     * Returns a Repository mock configured to return the appropriate Section object with given section identifier
+     * Returns a Repository mock configured to return the appropriate Section object with given section identifier.
      *
      * @param string $sectionIdentifier
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    private function generateRepositoryMockForSectionIdentifier( $sectionIdentifier )
+    private function generateRepositoryMockForSectionIdentifier($sectionIdentifier)
     {
         $sectionServiceMock = $this
-            ->getMockBuilder( 'eZ\\Publish\\API\\Repository\\SectionService' )
+            ->getMockBuilder('eZ\\Publish\\API\\Repository\\SectionService')
             ->disableOriginalConstructor()
             ->getMock();
-        $sectionServiceMock->expects( $this->once() )
-            ->method( 'loadSection' )
+        $sectionServiceMock->expects($this->once())
+            ->method('loadSection')
             ->will(
                 $this->returnValue(
                     $this
-                        ->getMockBuilder( 'eZ\\Publish\\API\\Repository\\Values\\Content\\Section' )
+                        ->getMockBuilder('eZ\\Publish\\API\\Repository\\Values\\Content\\Section')
                         ->setConstructorArgs(
                             array(
-                                array( 'identifier' => $sectionIdentifier )
+                                array('identifier' => $sectionIdentifier),
                             )
                         )
                         ->getMockForAbstractClass()
@@ -56,9 +55,9 @@ class SectionTest extends BaseTest
 
         $repository = $this->getRepositoryMock();
         $repository
-            ->expects( $this->once() )
-            ->method( 'getSectionService' )
-            ->will( $this->returnValue( $sectionServiceMock ) );
+            ->expects($this->once())
+            ->method('getSectionService')
+            ->will($this->returnValue($sectionServiceMock));
 
         return $repository;
     }
@@ -71,18 +70,16 @@ class SectionTest extends BaseTest
      *
      * @param string|string[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param boolean $expectedResult
-     *
-     * @return void
+     * @param bool $expectedResult
      */
-    public function testMatchLocation( $matchingConfig, Repository $repository, $expectedResult )
+    public function testMatchLocation($matchingConfig, Repository $repository, $expectedResult)
     {
-        $this->matcher->setRepository( $repository );
-        $this->matcher->setMatchingConfig( $matchingConfig );
+        $this->matcher->setRepository($repository);
+        $this->matcher->setMatchingConfig($matchingConfig);
         $location = $this->getLocationMock();
         $location
-            ->expects( $this->once() )
-            ->method( 'getContentInfo' )
+            ->expects($this->once())
+            ->method('getContentInfo')
             ->will(
                 $this->returnValue(
                     $this->getContentInfoMock()
@@ -90,7 +87,7 @@ class SectionTest extends BaseTest
             );
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchLocation( $location )
+            $this->matcher->matchLocation($location)
         );
     }
 
@@ -99,24 +96,24 @@ class SectionTest extends BaseTest
         return array(
             array(
                 'foo',
-                $this->generateRepositoryMockForSectionIdentifier( 'foo' ),
-                true
+                $this->generateRepositoryMockForSectionIdentifier('foo'),
+                true,
             ),
             array(
                 'foo',
-                $this->generateRepositoryMockForSectionIdentifier( 'bar' ),
-                false
+                $this->generateRepositoryMockForSectionIdentifier('bar'),
+                false,
             ),
             array(
-                array( 'foo', 'baz' ),
-                $this->generateRepositoryMockForSectionIdentifier( 'bar' ),
-                false
+                array('foo', 'baz'),
+                $this->generateRepositoryMockForSectionIdentifier('bar'),
+                false,
             ),
             array(
-                array( 'foo', 'baz' ),
-                $this->generateRepositoryMockForSectionIdentifier( 'baz' ),
-                true
-            )
+                array('foo', 'baz'),
+                $this->generateRepositoryMockForSectionIdentifier('baz'),
+                true,
+            ),
         );
     }
 
@@ -128,17 +125,15 @@ class SectionTest extends BaseTest
      *
      * @param string|string[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param boolean $expectedResult
-     *
-     * @return void
+     * @param bool $expectedResult
      */
-    public function testMatchContentInfo( $matchingConfig, Repository $repository, $expectedResult )
+    public function testMatchContentInfo($matchingConfig, Repository $repository, $expectedResult)
     {
-        $this->matcher->setRepository( $repository );
-        $this->matcher->setMatchingConfig( $matchingConfig );
+        $this->matcher->setRepository($repository);
+        $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo( $this->getContentInfoMock() )
+            $this->matcher->matchContentInfo($this->getContentInfoMock())
         );
     }
 }

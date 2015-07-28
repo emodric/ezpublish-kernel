@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\User;
 
 use eZ\Publish\SPI\HashGenerator as HashGeneratorInterface;
@@ -35,7 +34,7 @@ class HashGenerator implements HashGeneratorInterface, IdentityAware, ContextPro
     /**
      * @param IdentityAware $identityDefiner
      */
-    public function setIdentityDefiner( IdentityAware $identityDefiner )
+    public function setIdentityDefiner(IdentityAware $identityDefiner)
     {
         $this->identityDefiners[] = $identityDefiner;
     }
@@ -51,7 +50,7 @@ class HashGenerator implements HashGeneratorInterface, IdentityAware, ContextPro
     /**
      * @param IdentityInterface $identity
      */
-    public function setIdentity( IdentityInterface $identity )
+    public function setIdentity(IdentityInterface $identity)
     {
         $this->userIdentity = $identity;
     }
@@ -65,22 +64,21 @@ class HashGenerator implements HashGeneratorInterface, IdentityAware, ContextPro
     }
 
     /**
-     * Generates the user hash
+     * Generates the user hash.
      *
      * @return string
      */
     public function generate()
     {
-        foreach ( $this->getIdentityDefiners() as $identityDefiner )
-        {
-            $identityDefiner->setIdentity( $this->userIdentity );
+        foreach ($this->getIdentityDefiners() as $identityDefiner) {
+            $identityDefiner->setIdentity($this->userIdentity);
         }
 
         return $this->userIdentity->getHash();
     }
 
-    public function updateUserContext( UserContext $context )
+    public function updateUserContext(UserContext $context)
     {
-        $context->addParameter( 'ezpublish_identity', $this->generate() );
+        $context->addParameter('ezpublish_identity', $this->generate());
     }
 }

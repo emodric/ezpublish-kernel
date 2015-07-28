@@ -12,5 +12,4 @@ use Countable;
  */
 interface ImageFileList extends Countable, Iterator
 {
-
 }
