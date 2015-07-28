@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the CreatedUser class
+ * File containing the CreatedUser class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Values;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -17,7 +16,7 @@ use eZ\Publish\API\Repository\Values\ValueObject;
 class CreatedUser extends ValueObject
 {
     /**
-     * The created user
+     * The created user.
      *
      * @var \eZ\Publish\Core\REST\Server\Values\RestUser
      */

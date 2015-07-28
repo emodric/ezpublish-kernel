@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\Authorization\Voter;
 
 use eZ\Publish\API\Repository\Repository;
@@ -21,7 +20,7 @@ class CoreVoter implements VoterInterface
      */
     private $repository;
 
-    public function __construct( Repository $repository )
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
@@ -33,9 +32,9 @@ class CoreVoter implements VoterInterface
      *
      * @return Boolean true if this Voter supports the attribute, false otherwise
      */
-    public function supportsAttribute( $attribute )
+    public function supportsAttribute($attribute)
     {
-        return $attribute instanceof AuthorizationAttribute && empty( $attribute->limitations );
+        return $attribute instanceof AuthorizationAttribute && empty($attribute->limitations);
     }
 
     /**
@@ -45,7 +44,7 @@ class CoreVoter implements VoterInterface
      *
      * @return true if this Voter can process the class
      */
-    public function supportsClass( $class )
+    public function supportsClass($class)
     {
         return true;
     }
@@ -60,16 +59,15 @@ class CoreVoter implements VoterInterface
      * @param object $object The object to secure
      * @param array $attributes An array of attributes associated with the method being invoked
      *
-     * @return integer either ACCESS_GRANTED, ACCESS_ABSTAIN, or ACCESS_DENIED
+     * @return int either ACCESS_GRANTED, ACCESS_ABSTAIN, or ACCESS_DENIED
      */
-    public function vote( TokenInterface $token, $object, array $attributes )
+    public function vote(TokenInterface $token, $object, array $attributes)
     {
-        foreach ( $attributes as $attribute )
-        {
-            if ( $this->supportsAttribute( $attribute ) )
-            {
-                if ( $this->repository->hasAccess( $attribute->module, $attribute->function ) === false )
+        foreach ($attributes as $attribute) {
+            if ($this->supportsAttribute($attribute)) {
+                if ($this->repository->hasAccess($attribute->module, $attribute->function) === false) {
                     return VoterInterface::ACCESS_DENIED;
+                }
 
                 return VoterInterface::ACCESS_GRANTED;
             }

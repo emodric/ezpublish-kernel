@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the Authenticator used for integration tests
+ * File containing the Authenticator used for integration tests.
  *
  * ATTENTION: This is a only meant for the test setup for the REST server. DO
  * NOT USE IT IN PRODUCTION!
@@ -9,19 +9,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Authenticator;
 
 use eZ\Publish\Core\REST\Server\Authenticator;
 use eZ\Publish\Core\REST\Server\Exceptions\AuthenticationFailedException;
 use eZ\Publish\API\Repository\Repository;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
-
 use Qafoo\RMF;
 use InvalidArgumentException;
 
 /**
- * Authenticator for integration tests
+ * Authenticator for integration tests.
  *
  * This is, by now, just an untested stub.
  * @todo Remove when the REST client is refactored
@@ -29,11 +27,11 @@ use InvalidArgumentException;
 class BasicAuth extends Authenticator
 {
     /**
-     * Creates an new Authenticator to $repository
+     * Creates an new Authenticator to $repository.
      *
      * @param \eZ\Publish\API\Repository\Repository $repository
      */
-    public function __construct( Repository $repository )
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
@@ -47,24 +45,19 @@ class BasicAuth extends Authenticator
      *
      * @param RMF\Request $request
      *
-     * @return boolean
+     * @return bool
      */
-    public function authenticate( RMF\Request $request )
+    public function authenticate(RMF\Request $request)
     {
-        try
-        {
+        try {
             $this->repository->setCurrentUser(
                 $this->repository->getUserService()->loadUserByCredentials(
                     $request->username, $request->password
                 )
             );
-        }
-        catch ( InvalidArgumentException $e )
-        {
+        } catch (InvalidArgumentException $e) {
             return false;
-        }
-        catch ( NotFoundException $e )
-        {
+        } catch (NotFoundException $e) {
             throw new AuthenticationFailedException();
         }
     }

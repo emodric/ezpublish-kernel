@@ -1,35 +1,33 @@
 <?php
 /**
- * File containing the CustomFieldRange Field criterion visitor class
+ * File containing the CustomFieldRange Field criterion visitor class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Elasticsearch\Content\CriterionVisitor\CustomField;
 
 use eZ\Publish\Core\Search\Elasticsearch\Content\CriterionVisitorDispatcher as Dispatcher;
-use eZ\Publish\Core\Search\Elasticsearch\Content\CriterionVisitor;
 use eZ\Publish\Core\Search\Elasticsearch\Content\CriterionVisitor\CustomField;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator;
 
 /**
- * Visits the CustomField criterion with range operators (LT, LTE, GT, GTE and BETWEEN)
+ * Visits the CustomField criterion with range operators (LT, LTE, GT, GTE and BETWEEN).
  *
  * @todo needs tests
  */
 class CustomFieldRange extends CustomField
 {
     /**
-     * Check if visitor is applicable to current criterion
+     * Check if visitor is applicable to current criterion.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function canVisit( Criterion $criterion )
+    public function canVisit(Criterion $criterion)
     {
         return
             $criterion instanceof Criterion\CustomField &&
@@ -49,21 +47,21 @@ class CustomFieldRange extends CustomField
      *
      * @return array
      */
-    protected function getCondition( Criterion $criterion )
+    protected function getCondition(Criterion $criterion)
     {
         $start = $criterion->value[0];
-        $end = isset( $criterion->value[1] ) ? $criterion->value[1] : null;
-        $range = $this->getRange( $criterion->operator, $start, $end );
+        $end = isset($criterion->value[1]) ? $criterion->value[1] : null;
+        $range = $this->getRange($criterion->operator, $start, $end);
 
         return array(
-            "range" => array(
-                "fields_doc." . $criterion->target => $range,
+            'range' => array(
+                'fields_doc.' . $criterion->target => $range,
             ),
         );
     }
 
     /**
-     * Map field value to a proper Elasticsearch filter representation
+     * Map field value to a proper Elasticsearch filter representation.
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentException If no searchable fields are found for the given criterion target.
      *
@@ -73,23 +71,22 @@ class CustomFieldRange extends CustomField
      *
      * @return mixed
      */
-    public function visitFilter( Criterion $criterion, Dispatcher $dispatcher, array $fieldFilters )
+    public function visitFilter(Criterion $criterion, Dispatcher $dispatcher, array $fieldFilters)
     {
         $filter = array(
-            "nested" => array(
-                "path" => "fields_doc",
-                "filter" => $this->getCondition( $criterion ),
+            'nested' => array(
+                'path' => 'fields_doc',
+                'filter' => $this->getCondition($criterion),
             ),
         );
 
-        $fieldFilter = $this->getFieldFilter( $fieldFilters );
+        $fieldFilter = $this->getFieldFilter($fieldFilters);
 
-        if ( $fieldFilter !== null )
-        {
-            $filter["nested"]["filter"] = array(
-                "and" => array(
+        if ($fieldFilter !== null) {
+            $filter['nested']['filter'] = array(
+                'and' => array(
                     $fieldFilter,
-                    $filter["nested"]["filter"],
+                    $filter['nested']['filter'],
                 ),
             );
         }

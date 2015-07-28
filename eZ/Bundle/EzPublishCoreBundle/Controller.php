@@ -6,11 +6,9 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
-use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 
 class Controller extends BaseController
 {
@@ -26,7 +24,7 @@ class Controller extends BaseController
      */
     public function getRepository()
     {
-        return $this->container->get( 'ezpublish.api.repository' );
+        return $this->container->get('ezpublish.api.repository');
     }
 
     /**
@@ -37,11 +35,10 @@ class Controller extends BaseController
      */
     protected function getLegacyKernel()
     {
-        $this->get( 'logger' )->notice( __METHOD__ . ' is deprecated. Make your controller extend \eZ\Bundle\EzPublishLegacyBundle\Controller instead.' );
+        $this->get('logger')->notice(__METHOD__ . ' is deprecated. Make your controller extend \eZ\Bundle\EzPublishLegacyBundle\Controller instead.');
 
-        if ( !isset( $this->legacyKernelClosure ) )
-        {
-            $this->legacyKernelClosure = $this->get( 'ezpublish_legacy.kernel' );
+        if (!isset($this->legacyKernelClosure)) {
+            $this->legacyKernelClosure = $this->get('ezpublish_legacy.kernel');
         }
 
         $legacyKernelClosure = $this->legacyKernelClosure;
@@ -54,7 +51,7 @@ class Controller extends BaseController
      */
     protected function getConfigResolver()
     {
-        return $this->container->get( 'ezpublish.config.resolver' );
+        return $this->container->get('ezpublish.config.resolver');
     }
 
     /**
@@ -64,7 +61,7 @@ class Controller extends BaseController
      */
     public function getGlobalHelper()
     {
-        return $this->container->get( 'ezpublish.templating.global_helper' );
+        return $this->container->get('ezpublish.templating.global_helper');
     }
 
     /**

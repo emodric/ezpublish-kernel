@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Exception;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;

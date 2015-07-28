@@ -1,13 +1,11 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributd with this source code.
  */
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ComplexSettings;
-
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ConfigResolver;
 
 /**
  * Factory for complex dynamic settings resolution.
@@ -38,7 +36,7 @@ use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\ConfigResolv
 class ComplexSettingValueFactory
 {
     /**
-     * Can receive as many tuples of array( argumentName ), argumentValue as necessary
+     * Can receive as many tuples of array( argumentName ), argumentValue as necessary.
      *
      * @param $argumentString
      * @param string $dynamicSettingName..
@@ -46,15 +44,14 @@ class ComplexSettingValueFactory
      *
      * @return string
      */
-    public static function getArgumentValue( $argumentString )
+    public static function getArgumentValue($argumentString)
     {
-        $arguments = array_slice( func_get_args(), 1 );
+        $arguments = array_slice(func_get_args(), 1);
 
         $value = $argumentString;
-        while ( $dynamicSettingName = array_shift( $arguments ) )
-        {
-            $dynamicSettingValue = array_shift( $arguments );
-            $value = str_replace( "\$$dynamicSettingName\$", $dynamicSettingValue, $value );
+        while ($dynamicSettingName = array_shift($arguments)) {
+            $dynamicSettingValue = array_shift($arguments);
+            $value = str_replace("\$$dynamicSettingName\$", $dynamicSettingValue, $value);
         }
 
         return $value;

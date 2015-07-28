@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -19,30 +18,26 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RichTextHtml5ConverterPass implements CompilerPassInterface
 {
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'ezpublish.fieldType.ezrichtext.converter.output.xhtml5' ) )
-        {
+        if (!$container->hasDefinition('ezpublish.fieldType.ezrichtext.converter.output.xhtml5')) {
             return;
         }
 
-        $html5ConverterDefinition = $container->getDefinition( 'ezpublish.fieldType.ezrichtext.converter.output.xhtml5' );
-        $taggedServiceIds = $container->findTaggedServiceIds( 'ezpublish.ezrichtext.converter.output.xhtml5' );
+        $html5ConverterDefinition = $container->getDefinition('ezpublish.fieldType.ezrichtext.converter.output.xhtml5');
+        $taggedServiceIds = $container->findTaggedServiceIds('ezpublish.ezrichtext.converter.output.xhtml5');
 
         $convertersByPriority = array();
-        foreach ( $taggedServiceIds as $id => $tags )
-        {
-            foreach ( $tags as $tag )
-            {
-                $priority = isset( $tag['priority'] ) ? (int)$tag['priority'] : 0;
-                $convertersByPriority[$priority][] = new Reference( $id );
+        foreach ($taggedServiceIds as $id => $tags) {
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? (int)$tag['priority'] : 0;
+                $convertersByPriority[$priority][] = new Reference($id);
             }
         }
 
-        if ( count( $convertersByPriority ) > 0 )
-        {
+        if (count($convertersByPriority) > 0) {
             $html5ConverterDefinition->setArguments(
-                array( $this->sortConverters( $convertersByPriority ) )
+                array($this->sortConverters($convertersByPriority))
             );
         }
     }
@@ -55,10 +50,10 @@ class RichTextHtml5ConverterPass implements CompilerPassInterface
      *
      * @return \Symfony\Component\DependencyInjection\Reference[]
      */
-    protected function sortConverters( array $convertersByPriority )
+    protected function sortConverters(array $convertersByPriority)
     {
-        ksort( $convertersByPriority );
+        ksort($convertersByPriority);
 
-        return call_user_func_array( 'array_merge', $convertersByPriority );
+        return call_user_func_array('array_merge', $convertersByPriority);
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -14,7 +13,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator\Specificat
 use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 
 /**
- * A criterion that matches content based on its ContentType Identifier
+ * A criterion that matches content based on its ContentType Identifier.
  *
  * Supported operators:
  * - IN: will match from a list of ContentTypeIdentifier
@@ -23,7 +22,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 class ContentTypeIdentifier extends Criterion implements CriterionInterface
 {
     /**
-     * Creates a new ContentType criterion
+     * Creates a new ContentType criterion.
      *
      * Content will be matched if it matches one of the contentTypeIdentifier in $value
      *
@@ -31,9 +30,9 @@ class ContentTypeIdentifier extends Criterion implements CriterionInterface
      *
      * @throws \InvalidArgumentException if the value type doesn't match the operator
      */
-    public function __construct( $value )
+    public function __construct($value)
     {
-        parent::__construct( null, null, $value );
+        parent::__construct(null, null, $value);
     }
 
     public function getSpecifications()
@@ -52,9 +51,8 @@ class ContentTypeIdentifier extends Criterion implements CriterionInterface
         );
     }
 
-    public static function createFromQueryBuilder( $target, $operator, $value )
+    public static function createFromQueryBuilder($target, $operator, $value)
     {
-        return new self( $value );
+        return new self($value);
     }
 }
-

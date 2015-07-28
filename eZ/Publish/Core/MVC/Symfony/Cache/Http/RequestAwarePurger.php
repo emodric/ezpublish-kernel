@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache\Http;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 interface RequestAwarePurger
 {
     /**
-     * Purges data from $request
+     * Purges data from $request.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return boolean True if purge was successful. False otherwise
+     * @return bool True if purge was successful. False otherwise
      */
-    public function purgeByRequest( Request $request );
+    public function purgeByRequest(Request $request);
 }

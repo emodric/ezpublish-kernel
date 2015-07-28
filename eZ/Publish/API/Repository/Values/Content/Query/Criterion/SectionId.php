@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -14,14 +13,14 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator\Specificat
 use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 
 /**
- * SectionId Criterion
+ * SectionId Criterion.
  *
  * Will match content that belongs to one of the given sections
  */
 class SectionId extends Criterion implements CriterionInterface
 {
     /**
-     * Creates a new Section criterion
+     * Creates a new Section criterion.
      *
      * Matches the content against one or more sectionId
      *
@@ -30,9 +29,9 @@ class SectionId extends Criterion implements CriterionInterface
      * @throws \InvalidArgumentException if a non numeric id is given
      * @throws \InvalidArgumentException if the value type doesn't match the operator
      */
-    public function __construct( $value  )
+    public function __construct($value)
     {
-        parent::__construct( null, null, $value );
+        parent::__construct(null, null, $value);
     }
 
     public function getSpecifications()
@@ -51,8 +50,8 @@ class SectionId extends Criterion implements CriterionInterface
         );
     }
 
-    public static function createFromQueryBuilder( $target, $operator, $value )
+    public static function createFromQueryBuilder($target, $operator, $value)
     {
-        return new self( $value );
+        return new self($value);
     }
 }

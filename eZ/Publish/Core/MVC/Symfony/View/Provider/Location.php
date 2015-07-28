@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\View\Provider;
 
 use eZ\Publish\API\Repository\Values\Content\Location as APIContentLocation;
@@ -19,12 +18,12 @@ use eZ\Publish\API\Repository\Values\Content\Location as APIContentLocation;
 interface Location
 {
     /**
-     * Returns a ContentView object corresponding to $location, or null if not applicable
+     * Returns a ContentView object corresponding to $location, or null if not applicable.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
      * @param string $viewType Variation of display for your content.
      *
      * @return \eZ\Publish\Core\MVC\Symfony\View\ContentView|null
      */
-    public function getView( APIContentLocation $location, $viewType );
+    public function getView(APIContentLocation $location, $viewType);
 }

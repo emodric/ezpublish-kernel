@@ -4,7 +4,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\Regression;
 
 use eZ\Publish\API\Repository\Tests\BaseTest;
@@ -15,33 +14,33 @@ class EZP22612URLAliasTranslations extends BaseTest
     {
         $contentService = $this->getRepository()->getContentService();
         $draft = $contentService->createContent(
-            $this->getFolderCreateStruct( 'common' ),
+            $this->getFolderCreateStruct('common'),
             array(
-                $this->getRepository()->getLocationService()->newLocationCreateStruct( 2 )
+                $this->getRepository()->getLocationService()->newLocationCreateStruct(2),
             )
         );
-        $parentContent = $contentService->publishVersion( $draft->versionInfo );
+        $parentContent = $contentService->publishVersion($draft->versionInfo);
 
         $draft = $contentService->createContent(
-            $this->getFolderCreateStruct( 'alias' ),
+            $this->getFolderCreateStruct('alias'),
             array(
                 $this->getRepository()->getLocationService()->newLocationCreateStruct(
                     $parentContent->contentInfo->mainLocationId
-                )
+                ),
             )
         );
 
-        $contentService->publishVersion( $draft->versionInfo );
+        $contentService->publishVersion($draft->versionInfo);
     }
 
-    private function getFolderCreateStruct( $name )
+    private function getFolderCreateStruct($name)
     {
         $createStruct = $this->getRepository()->getContentService()->newContentCreateStruct(
-            $this->getRepository()->getContentTypeService()->loadContentTypeByIdentifier( 'folder' ),
+            $this->getRepository()->getContentTypeService()->loadContentTypeByIdentifier('folder'),
             'ger-DE'
         );
-        $createStruct->setField( 'name', $name, 'eng-GB' );
-        $createStruct->setField( 'name', $name, 'ger-DE' );
+        $createStruct->setField('name', $name, 'eng-GB');
+        $createStruct->setField('name', $name, 'ger-DE');
 
         return $createStruct;
     }
@@ -52,10 +51,10 @@ class EZP22612URLAliasTranslations extends BaseTest
     public function testURLAliasLoadedInRightLanguage()
     {
         $aliasService = $this->getRepository()->getURLAliasService();
-        $alias = $aliasService->lookup( 'common/alias' );
+        $alias = $aliasService->lookup('common/alias');
 
         $this->assertInstanceOf(
-            "eZ\\Publish\\API\\Repository\\Values\\Content\\URLAlias",
+            'eZ\\Publish\\API\\Repository\\Values\\Content\\URLAlias',
             $alias
         );
     }

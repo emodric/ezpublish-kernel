@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler\Search\Solr;
 
 use eZ\Publish\Core\Base\Container\Compiler\Search\Solr\AggregateSortClauseVisitorPass;
@@ -28,28 +27,28 @@ class AggregateSortClauseVisitorPassTest extends AbstractCompilerPassTestCase
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new AggregateSortClauseVisitorPass() );
+        $container->addCompilerPass(new AggregateSortClauseVisitorPass());
     }
 
     public function testAddVisitor()
     {
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.solr.content.sort_clause_visitor' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.solr.content.sort_clause_visitor');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.solr.content.sort_clause_visitor.aggregate',
             'addVisitor',
-            array( new Reference( $serviceId ) )
+            array(new Reference($serviceId))
         );
     }
 }

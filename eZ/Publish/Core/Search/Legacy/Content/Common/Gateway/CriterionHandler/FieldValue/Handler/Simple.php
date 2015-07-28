@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase Simple field value handler class
+ * File containing the DoctrineDatabase Simple field value handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler\FieldValue\Handler;
 
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler\FieldValue\Handler;
@@ -30,19 +29,18 @@ class Simple extends Handler
      *
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      */
-    public function handle( SelectQuery $query, Criterion $criterion, $column )
+    public function handle(SelectQuery $query, Criterion $criterion, $column)
     {
-        switch ( $criterion->operator )
-        {
+        switch ($criterion->operator) {
             case Criterion\Operator::CONTAINS:
                 $filter = $query->expr->eq(
-                    $this->dbHandler->quoteColumn( $column ),
-                    $query->bindValue( $this->lowerCase( $criterion->value ) )
+                    $this->dbHandler->quoteColumn($column),
+                    $query->bindValue($this->lowerCase($criterion->value))
                 );
                 break;
 
             default:
-                $filter = parent::handle( $query, $criterion, $column );
+                $filter = parent::handle($query, $criterion, $column);
         }
 
         return $filter;

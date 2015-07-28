@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Variation;
 
 use eZ\Publish\API\Repository\Values\Content\Field;
@@ -15,7 +14,7 @@ use eZ\Publish\API\Repository\Values\Content\VersionInfo;
 /**
  * Interface for Variation services.
  * A variation service allows to generate variation from a given content field/version info
- * (i.e. image aliases, variations of a document - doc, pdf...)
+ * (i.e. image aliases, variations of a document - doc, pdf...).
  */
 interface VariationHandler
 {
@@ -31,5 +30,5 @@ interface VariationHandler
      *
      * @return \eZ\Publish\SPI\Variation\Values\Variation
      */
-    public function getVariation( Field $field, VersionInfo $versionInfo, $variationName, array $parameters = array() );
+    public function getVariation(Field $field, VersionInfo $versionInfo, $variationName, array $parameters = array());
 }

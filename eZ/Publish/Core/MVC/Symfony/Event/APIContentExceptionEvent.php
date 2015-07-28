@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Event;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -34,7 +33,7 @@ class APIContentExceptionEvent extends Event
      */
     private $contentMeta;
 
-    public function __construct( Exception $apiException, array $contentMeta )
+    public function __construct(Exception $apiException, array $contentMeta)
     {
         $this->apiException = $apiException;
         $this->contentMeta = $contentMeta;
@@ -54,7 +53,7 @@ class APIContentExceptionEvent extends Event
      *
      * @param \eZ\Publish\Core\MVC\Symfony\View\ContentViewInterface $contentView
      */
-    public function setContentView( ContentViewInterface $contentView )
+    public function setContentView(ContentViewInterface $contentView)
     {
         $this->contentView = $contentView;
     }
@@ -68,11 +67,11 @@ class APIContentExceptionEvent extends Event
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasContentView()
     {
-        return isset( $this->contentView );
+        return isset($this->contentView);
     }
 
     /**

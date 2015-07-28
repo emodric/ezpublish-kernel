@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\DependencyInjection\Compiler;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler\SignalSlotPass;
@@ -22,26 +21,26 @@ class SignalSlotPassTest extends PHPUnit_Framework_TestCase
         $dispatcherDef = new Definition();
         $slotDef = new Definition();
         $signalIdentifier = 'FooSignal';
-        $slotDef->addTag( 'ezpublish.api.slot', array( 'signal' => $signalIdentifier ) );
+        $slotDef->addTag('ezpublish.api.slot', array('signal' => $signalIdentifier));
 
         $containerBuilder = new ContainerBuilder();
         $slotId = 'acme.foo_slot';
         $containerBuilder->addDefinitions(
             array(
                 $slotId => $slotDef,
-                'ezpublish.signalslot.signal_dispatcher' => $dispatcherDef
+                'ezpublish.signalslot.signal_dispatcher' => $dispatcherDef,
             )
         );
 
         $pass = new SignalSlotPass();
-        $pass->process( $containerBuilder );
-        $this->assertTrue( $dispatcherDef->hasMethodCall( 'attach' ) );
+        $pass->process($containerBuilder);
+        $this->assertTrue($dispatcherDef->hasMethodCall('attach'));
         $calls = $dispatcherDef->getMethodCalls();
-        list( $method, $arguments ) = $calls[0];
-        $this->assertSame( 'attach', $method );
-        list( $signal, $serviceId ) = $arguments;
-        $this->assertSame( $signalIdentifier, $signal );
-        $this->assertEquals( $slotId, new Reference( $serviceId ) );
+        list($method, $arguments) = $calls[0];
+        $this->assertSame('attach', $method);
+        list($signal, $serviceId) = $arguments;
+        $this->assertSame($signalIdentifier, $signal);
+        $this->assertEquals($slotId, new Reference($serviceId));
     }
 
     /**
@@ -50,17 +49,17 @@ class SignalSlotPassTest extends PHPUnit_Framework_TestCase
     public function testProcessNoSignal()
     {
         $slotDef = new Definition();
-        $slotDef->addTag( 'ezpublish.api.slot', array() );
+        $slotDef->addTag('ezpublish.api.slot', array());
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->addDefinitions(
             array(
                 'acme.foo_slot' => $slotDef,
-                'ezpublish.signalslot.signal_dispatcher' => new Definition()
+                'ezpublish.signalslot.signal_dispatcher' => new Definition(),
             )
         );
 
         $pass = new SignalSlotPass();
-        $pass->process( $containerBuilder );
+        $pass->process($containerBuilder);
     }
 }

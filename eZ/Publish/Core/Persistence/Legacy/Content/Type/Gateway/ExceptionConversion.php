@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Type Gateway class
+ * File containing the Content Type Gateway class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Content\Type\Gateway;
 
 use eZ\Publish\Core\Persistence\Legacy\Content\Type\Gateway;
@@ -26,18 +25,18 @@ use RuntimeException;
 class ExceptionConversion extends Gateway
 {
     /**
-     * The wrapped gateway
+     * The wrapped gateway.
      *
      * @var Gateway
      */
     protected $innerGateway;
 
     /**
-     * Creates a new exception conversion gateway around $innerGateway
+     * Creates a new exception conversion gateway around $innerGateway.
      *
      * @param Gateway $innerGateway
      */
-    public function __construct( Gateway $innerGateway )
+    public function __construct(Gateway $innerGateway)
     {
         $this->innerGateway = $innerGateway;
     }
@@ -49,19 +48,14 @@ class ExceptionConversion extends Gateway
      *
      * @return mixed Group ID
      */
-    public function insertGroup( Group $group )
+    public function insertGroup(Group $group)
     {
-        try
-        {
-            return $this->innerGateway->insertGroup( $group );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->insertGroup($group);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -69,22 +63,15 @@ class ExceptionConversion extends Gateway
      * Updates a group with data in $group.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\Type\Group\UpdateStruct $group
-     *
-     * @return void
      */
-    public function updateGroup( GroupUpdateStruct $group )
+    public function updateGroup(GroupUpdateStruct $group)
     {
-        try
-        {
-            return $this->innerGateway->updateGroup( $group );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->updateGroup($group);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -95,19 +82,14 @@ class ExceptionConversion extends Gateway
      *
      * @return int
      */
-    public function countTypesInGroup( $groupId )
+    public function countTypesInGroup($groupId)
     {
-        try
-        {
-            return $this->innerGateway->countTypesInGroup( $groupId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->countTypesInGroup($groupId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -119,19 +101,14 @@ class ExceptionConversion extends Gateway
      *
      * @return int
      */
-    public function countGroupsForType( $typeId, $status )
+    public function countGroupsForType($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->countGroupsForType( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->countGroupsForType($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -139,22 +116,15 @@ class ExceptionConversion extends Gateway
      * Deletes the Group with the given $groupId.
      *
      * @param int $groupId
-     *
-     * @return void
      */
-    public function deleteGroup( $groupId )
+    public function deleteGroup($groupId)
     {
-        try
-        {
-            return $this->innerGateway->deleteGroup( $groupId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteGroup($groupId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -165,19 +135,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array
      */
-    public function loadGroupData( $groupId )
+    public function loadGroupData($groupId)
     {
-        try
-        {
-            return $this->innerGateway->loadGroupData( $groupId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadGroupData($groupId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -188,19 +153,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array
      */
-    public function loadGroupDataByIdentifier( $identifier )
+    public function loadGroupDataByIdentifier($identifier)
     {
-        try
-        {
-            return $this->innerGateway->loadGroupDataByIdentifier( $identifier );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadGroupDataByIdentifier($identifier);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -211,17 +171,12 @@ class ExceptionConversion extends Gateway
      */
     public function loadAllGroupsData()
     {
-        try
-        {
+        try {
             return $this->innerGateway->loadAllGroupsData();
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -233,19 +188,14 @@ class ExceptionConversion extends Gateway
      *
      * @return string[][]
      */
-    public function loadTypesDataForGroup( $groupId, $status )
+    public function loadTypesDataForGroup($groupId, $status)
     {
-        try
-        {
-            return $this->innerGateway->loadTypesDataForGroup( $groupId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadTypesDataForGroup($groupId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -257,19 +207,14 @@ class ExceptionConversion extends Gateway
      *
      * @return mixed Type ID
      */
-    public function insertType( Type $type, $typeId = null )
+    public function insertType(Type $type, $typeId = null)
     {
-        try
-        {
-            return $this->innerGateway->insertType( $type, $typeId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->insertType($type, $typeId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -279,22 +224,15 @@ class ExceptionConversion extends Gateway
      * @param mixed $typeId
      * @param int $status
      * @param mixed $groupId
-     *
-     * @return void
      */
-    public function insertGroupAssignment( $typeId, $status, $groupId )
+    public function insertGroupAssignment($typeId, $status, $groupId)
     {
-        try
-        {
-            return $this->innerGateway->insertGroupAssignment( $typeId, $status, $groupId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->insertGroupAssignment($typeId, $status, $groupId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -304,22 +242,15 @@ class ExceptionConversion extends Gateway
      * @param mixed $groupId
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    public function deleteGroupAssignment( $groupId, $typeId, $status )
+    public function deleteGroupAssignment($groupId, $typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->deleteGroupAssignment( $groupId, $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteGroupAssignment($groupId, $typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -331,19 +262,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array Data rows.
      */
-    public function loadFieldDefinition( $id, $status )
+    public function loadFieldDefinition($id, $status)
     {
-        try
-        {
-            return $this->innerGateway->loadFieldDefinition( $id, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadFieldDefinition($id, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -360,19 +286,13 @@ class ExceptionConversion extends Gateway
     public function insertFieldDefinition(
         $typeId, $status, FieldDefinition $fieldDefinition,
         StorageFieldDefinition $storageFieldDef
-    )
-    {
-        try
-        {
-            return $this->innerGateway->insertFieldDefinition( $typeId, $status, $fieldDefinition, $storageFieldDef );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+    ) {
+        try {
+            return $this->innerGateway->insertFieldDefinition($typeId, $status, $fieldDefinition, $storageFieldDef);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -382,22 +302,15 @@ class ExceptionConversion extends Gateway
      * @param mixed $typeId
      * @param int $status
      * @param mixed $fieldDefinitionId
-     *
-     * @return void
      */
-    public function deleteFieldDefinition( $typeId, $status, $fieldDefinitionId )
+    public function deleteFieldDefinition($typeId, $status, $fieldDefinitionId)
     {
-        try
-        {
-            return $this->innerGateway->deleteFieldDefinition( $typeId, $status, $fieldDefinitionId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteFieldDefinition($typeId, $status, $fieldDefinitionId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -408,25 +321,17 @@ class ExceptionConversion extends Gateway
      * @param int $status
      * @param \eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition $fieldDefinition
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldDefinition $storageFieldDef
-     *
-     * @return void
      */
     public function updateFieldDefinition(
         $typeId, $status, FieldDefinition $fieldDefinition,
         StorageFieldDefinition $storageFieldDef
-    )
-    {
-        try
-        {
-            return $this->innerGateway->updateFieldDefinition( $typeId, $status, $fieldDefinition, $storageFieldDef );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+    ) {
+        try {
+            return $this->innerGateway->updateFieldDefinition($typeId, $status, $fieldDefinition, $storageFieldDef);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -436,22 +341,15 @@ class ExceptionConversion extends Gateway
      * @param mixed $typeId
      * @param int $status
      * @param \eZ\Publish\SPI\Persistence\Content\Type\UpdateStruct $updateStruct
-     *
-     * @return void
      */
-    public function updateType( $typeId, $status, UpdateStruct $updateStruct )
+    public function updateType($typeId, $status, UpdateStruct $updateStruct)
     {
-        try
-        {
-            return $this->innerGateway->updateType( $typeId, $status, $updateStruct );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->updateType($typeId, $status, $updateStruct);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -463,19 +361,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array Data rows.
      */
-    public function loadTypeData( $typeId, $status )
+    public function loadTypeData($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->loadTypeData( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadTypeData($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -488,19 +381,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array(int=>array(string=>mixed)) Data rows.
      */
-    public function loadTypeDataByIdentifier( $identifier, $status )
+    public function loadTypeDataByIdentifier($identifier, $status)
     {
-        try
-        {
-            return $this->innerGateway->loadTypeDataByIdentifier( $identifier, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadTypeDataByIdentifier($identifier, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -513,19 +401,14 @@ class ExceptionConversion extends Gateway
      *
      * @return array(int=>array(string=>mixed)) Data rows.
      */
-    public function loadTypeDataByRemoteId( $remoteId, $status )
+    public function loadTypeDataByRemoteId($remoteId, $status)
     {
-        try
-        {
-            return $this->innerGateway->loadTypeDataByRemoteId( $remoteId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->loadTypeDataByRemoteId($remoteId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -536,19 +419,14 @@ class ExceptionConversion extends Gateway
      *
      * @return int
      */
-    public function countInstancesOfType( $typeId )
+    public function countInstancesOfType($typeId)
     {
-        try
-        {
-            return $this->innerGateway->countInstancesOfType( $typeId );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->countInstancesOfType($typeId);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -557,22 +435,15 @@ class ExceptionConversion extends Gateway
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    public function delete( $typeId, $status )
+    public function delete($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->delete( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->delete($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -581,22 +452,15 @@ class ExceptionConversion extends Gateway
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    public function deleteFieldDefinitionsForType( $typeId, $status )
+    public function deleteFieldDefinitionsForType($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->deleteFieldDefinitionsForType( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteFieldDefinitionsForType($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -607,22 +471,15 @@ class ExceptionConversion extends Gateway
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    public function deleteType( $typeId, $status )
+    public function deleteType($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->deleteType( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteType($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
@@ -631,69 +488,50 @@ class ExceptionConversion extends Gateway
      *
      * @param mixed $typeId
      * @param int $status
-     *
-     * @return void
      */
-    public function deleteGroupAssignmentsForType( $typeId, $status )
+    public function deleteGroupAssignmentsForType($typeId, $status)
     {
-        try
-        {
-            return $this->innerGateway->deleteGroupAssignmentsForType( $typeId, $status );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->deleteGroupAssignmentsForType($typeId, $status);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
     /**
      * Publishes the Type with $typeId from $sourceVersion to $targetVersion,
-     * including its fields
+     * including its fields.
      *
      * @param int $typeId
      * @param int $sourceStatus
      * @param int $targetStatus
-     *
-     * @return void
      */
-    public function publishTypeAndFields( $typeId, $sourceStatus, $targetStatus )
+    public function publishTypeAndFields($typeId, $sourceStatus, $targetStatus)
     {
-        try
-        {
-            return $this->innerGateway->publishTypeAndFields( $typeId, $sourceStatus, $targetStatus );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->publishTypeAndFields($typeId, $sourceStatus, $targetStatus);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 
     /**
-     * Returns searchable field mapping data
+     * Returns searchable field mapping data.
      *
      * @return array
      */
     public function getSearchableFieldMapData()
     {
-        try
-        {
+        try {
             return $this->innerGateway->getSearchableFieldMapData();
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 }

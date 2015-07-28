@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\Imagick;
 
 use eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\AbstractFilter;
@@ -19,11 +18,11 @@ class SwirlFilter extends AbstractFilter
      *
      * @return ImageInterface
      */
-    public function apply( ImageInterface $image )
+    public function apply(ImageInterface $image)
     {
         /** @var \Imagick $imagick */
         $imagick = $image->getImagick();
-        $imagick->swirlImage( (float)$this->getOption( 'degrees', 60 ) );
+        $imagick->swirlImage((float)$this->getOption('degrees', 60));
 
         return $image;
     }

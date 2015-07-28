@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\SPI\Tests\FieldType\SelectionIntegrationTest class
+ * File contains: eZ\Publish\SPI\Tests\FieldType\SelectionIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Tests\FieldType;
 
 use eZ\Publish\Core\Persistence\Legacy;
@@ -15,14 +14,14 @@ use eZ\Publish\Core\FieldType;
 use eZ\Publish\SPI\Persistence\Content;
 
 /**
- * Integration test for legacy storage field types
+ * Integration test for legacy storage field types.
  *
  * @group integration
  */
 class SelectionIntegrationTest extends BaseIntegrationTest
 {
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -32,14 +31,14 @@ class SelectionIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get handler with required custom field types registered
+     * Get handler with required custom field types registered.
      *
      * @return Handler
      */
     public function getCustomHandler()
     {
         $fieldType = new FieldType\Selection\Type();
-        $fieldType->setTransformationProcessor( $this->getTransformationProcessor() );
+        $fieldType->setTransformationProcessor($this->getTransformationProcessor());
 
         return $this->getHandler(
             'ezselection',
@@ -67,15 +66,15 @@ class SelectionIntegrationTest extends BaseIntegrationTest
                             1 => 'First',
                             2 => 'Second',
                             3 => 'Sindelfingen',
-                        )
+                        ),
                     )
-                )
+                ),
             )
         );
     }
 
     /**
-     * Get field definition data values
+     * Get field definition data values.
      *
      * This is a PHPUnit data provider
      *
@@ -84,7 +83,7 @@ class SelectionIntegrationTest extends BaseIntegrationTest
     public function getFieldDefinitionData()
     {
         return array(
-            array( 'fieldType', 'ezselection' ),
+            array('fieldType', 'ezselection'),
             array(
                 'fieldTypeConstraints',
                 new Content\FieldTypeConstraints(
@@ -97,17 +96,17 @@ class SelectionIntegrationTest extends BaseIntegrationTest
                                     1 => 'First',
                                     2 => 'Second',
                                     3 => 'Sindelfingen',
-                                )
+                                ),
                             )
-                        )
+                        ),
                     )
-                )
-            )
+                ),
+            ),
         );
     }
 
     /**
-     * Get initial field value
+     * Get initial field value.
      *
      * @return \eZ\Publish\SPI\Persistence\Content\FieldValue
      */
@@ -115,9 +114,9 @@ class SelectionIntegrationTest extends BaseIntegrationTest
     {
         return new Content\FieldValue(
             array(
-                'data'         => array( 1, 3 ),
+                'data' => array(1, 3),
                 'externalData' => null,
-                'sortKey'      => '1-3',
+                'sortKey' => '1-3',
             )
         );
     }
@@ -133,9 +132,9 @@ class SelectionIntegrationTest extends BaseIntegrationTest
     {
         return new Content\FieldValue(
             array(
-                'data'         => array( 2 ),
+                'data' => array(2),
                 'externalData' => null,
-                'sortKey'      => '2',
+                'sortKey' => '2',
             )
         );
     }

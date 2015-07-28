@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\DependencyInjection\Configuration\Parser;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
@@ -18,10 +17,10 @@ abstract class AbstractParserTestCase extends AbstractExtensionTestCase
      */
     protected $configResolver;
 
-    protected function load( array $configurationValues = array() )
+    protected function load(array $configurationValues = array())
     {
-        parent::load( $configurationValues );
-        $this->configResolver = $this->container->get( 'ezpublish.config.resolver.core' );
+        parent::load($configurationValues);
+        $this->configResolver = $this->container->get('ezpublish.config.resolver.core');
     }
 
     /**
@@ -32,9 +31,9 @@ abstract class AbstractParserTestCase extends AbstractExtensionTestCase
      * @param string $scope SiteAccess name, group, default or global
      * @param bool $assertSame Set to false if you want to use assertEquals() instead of assertSame()
      */
-    protected function assertConfigResolverParameterValue( $parameterName, $expectedValue, $scope, $assertSame = true )
+    protected function assertConfigResolverParameterValue($parameterName, $expectedValue, $scope, $assertSame = true)
     {
         $assertMethod = $assertSame ? 'assertSame' : 'assertEquals';
-        $this->$assertMethod( $expectedValue, $this->configResolver->getParameter( $parameterName, 'ezsettings', $scope ) );
+        $this->$assertMethod($expectedValue, $this->configResolver->getParameter($parameterName, 'ezsettings', $scope));
     }
 }

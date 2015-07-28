@@ -6,10 +6,8 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishLegacyBundle\Controller;
 
-use eZ\Bundle\EzPublishLegacyBundle\LegacyResponse;
 use eZ\Bundle\EzPublishLegacyBundle\LegacyResponse\LegacyResponseManager;
 use eZ\Publish\Core\MVC\Legacy\Kernel\URIHelper;
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyHelper;
@@ -68,10 +66,9 @@ class LegacyKernelController
         LegacyResponseManager $legacyResponseManager,
         LegacyHelper $legacyHelper,
         RouterInterface $router
-    )
-    {
+    ) {
         $this->kernelClosure = $kernelClosure;
-        $this->legacyLayout = $configResolver->getParameter( 'module_default_layout', 'ezpublish_legacy' );
+        $this->legacyLayout = $configResolver->getParameter('module_default_layout', 'ezpublish_legacy');
         $this->configResolver = $configResolver;
         $this->uriHelper = $uriHelper;
         $this->legacyResponseManager = $legacyResponseManager;
@@ -79,7 +76,7 @@ class LegacyKernelController
         $this->router = $router;
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
@@ -96,30 +93,28 @@ class LegacyKernelController
         /** @var \eZ\Publish\Core\MVC\Legacy\Kernel $kernel */
         $kernel = $kernelClosure();
 
-        $legacyMode = $this->configResolver->getParameter( 'legacy_mode' );
-        $kernel->setUseExceptions( false );
+        $legacyMode = $this->configResolver->getParameter('legacy_mode');
+        $kernel->setUseExceptions(false);
         // Fix up legacy URI with current request since we can be in a sub-request here.
-        $this->uriHelper->updateLegacyURI( $this->request );
+        $this->uriHelper->updateLegacyURI($this->request);
 
         // If we have a layout for legacy AND we're not in legacy mode, we ask the legacy kernel not to generate layout.
-        if ( isset( $this->legacyLayout ) && !$legacyMode )
-        {
-            $kernel->setUsePagelayout( false );
+        if (isset($this->legacyLayout) && !$legacyMode) {
+            $kernel->setUsePagelayout(false);
         }
 
         $result = $kernel->run();
 
-        $kernel->setUseExceptions( true );
+        $kernel->setUseExceptions(true);
 
-        if ( $result instanceof ezpKernelRedirect )
-        {
-            return $this->legacyResponseManager->generateRedirectResponse( $result );
+        if ($result instanceof ezpKernelRedirect) {
+            return $this->legacyResponseManager->generateRedirectResponse($result);
         }
 
-        $this->legacyHelper->loadDataFromModuleResult( $result->getAttribute( 'module_result' ) );
+        $this->legacyHelper->loadDataFromModuleResult($result->getAttribute('module_result'));
 
-        $response = $this->legacyResponseManager->generateResponseFromModuleResult( $result );
-        $this->legacyResponseManager->mapHeaders( headers_list(), $response );
+        $response = $this->legacyResponseManager->generateResponseFromModuleResult($result);
+        $this->legacyResponseManager->mapHeaders(headers_list(), $response);
 
         return $response;
     }
@@ -131,7 +126,7 @@ class LegacyKernelController
      */
     public function loginAction()
     {
-        return new RedirectResponse( $this->router->generate( 'login' ) );
+        return new RedirectResponse($this->router->generate('login'));
     }
 
     /**
@@ -141,6 +136,6 @@ class LegacyKernelController
      */
     public function logoutAction()
     {
-        return new RedirectResponse( $this->router->generate( 'logout' ) );
+        return new RedirectResponse($this->router->generate('logout'));
     }
 }

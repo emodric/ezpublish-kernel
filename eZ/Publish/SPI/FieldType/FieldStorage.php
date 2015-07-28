@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\FieldType;
 
 use eZ\Publish\SPI\Persistence\Content\Field;
@@ -27,8 +26,6 @@ use eZ\Publish\SPI\Persistence\Content\VersionInfo;
  *   - connection = {@link \eZ\Publish\Core\Persistence\Doctrine\ConnectionHandler} object handler (for DB connection),
  *                  to be used accordingly to
  *                  {@link http://incubator.apache.org/zetacomponents/documentation/trunk/Database/tutorial.html ezcDatabase} usage
- *
- * @package eZ\Publish\SPI\FieldType
  */
 interface FieldStorage
 {
@@ -65,7 +62,7 @@ interface FieldStorage
      *
      * @return mixed null|true
      */
-    public function storeFieldData( VersionInfo $versionInfo, Field $field, array $context );
+    public function storeFieldData(VersionInfo $versionInfo, Field $field, array $context);
 
     /**
      * Populates $field value property based on the external data.
@@ -76,10 +73,8 @@ interface FieldStorage
      * @param \eZ\Publish\SPI\Persistence\Content\VersionInfo $versionInfo
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
      * @param array $context
-     *
-     * @return void
      */
-    public function getFieldData( VersionInfo $versionInfo, Field $field, array $context );
+    public function getFieldData(VersionInfo $versionInfo, Field $field, array $context);
 
     /**
      * Deletes field data for all $fieldIds in the version identified by
@@ -89,19 +84,19 @@ interface FieldStorage
      * @param array $fieldIds Array of field IDs
      * @param array $context
      *
-     * @return boolean
+     * @return bool
      */
-    public function deleteFieldData( VersionInfo $versionInfo, array $fieldIds, array $context );
+    public function deleteFieldData(VersionInfo $versionInfo, array $fieldIds, array $context);
 
     /**
-     * Checks if field type has external data to deal with
+     * Checks if field type has external data to deal with.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFieldData();
 
     /**
-     * Get index data for external data for search backend
+     * Get index data for external data for search backend.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\VersionInfo $versionInfo
      * @param \eZ\Publish\SPI\Persistence\Content\Field $field
@@ -109,5 +104,5 @@ interface FieldStorage
      *
      * @return \eZ\Publish\SPI\Search\Field[]
      */
-    public function getIndexData( VersionInfo $versionInfo, Field $field, array $context );
+    public function getIndexData(VersionInfo $versionInfo, Field $field, array $context);
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the FieldTypeConstraints class
+ * File containing the FieldTypeConstraints class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Persistence\Content;
 
 use eZ\Publish\SPI\Persistence\ValueObject;
@@ -14,7 +13,7 @@ use eZ\Publish\SPI\Persistence\ValueObject;
 class FieldTypeConstraints extends ValueObject
 {
     /**
-     * Validator settings compatible to the corresponding FieldType
+     * Validator settings compatible to the corresponding FieldType.
      *
      * This property contains validator settings as defined by the fields type.
      * Note that contents of this property must be serializable and exportable
@@ -26,7 +25,7 @@ class FieldTypeConstraints extends ValueObject
     public $validators;
 
     /**
-     * Field settings compatible to the corresponding FieldType
+     * Field settings compatible to the corresponding FieldType.
      *
      * This property contains field settings as defined by the fields type.
      * Note that contents of this property must be serializable and exportable

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\View\Provider;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface;
@@ -26,7 +25,7 @@ abstract class Configured
     /**
      * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherFactoryInterface $matcherFactory
      */
-    public function __construct( MatcherFactoryInterface $matcherFactory )
+    public function __construct(MatcherFactoryInterface $matcherFactory)
     {
         $this->matcherFactory = $matcherFactory;
     }
@@ -40,15 +39,15 @@ abstract class Configured
      *
      * @return ContentView
      */
-    protected function buildContentView( array $viewConfig )
+    protected function buildContentView(array $viewConfig)
     {
-        if ( !isset( $viewConfig['template'] ) )
-        {
-            throw new InvalidArgumentException( '$viewConfig must contain the template identifier in order to correctly generate the ContentView object' );
+        if (!isset($viewConfig['template'])) {
+            throw new InvalidArgumentException('$viewConfig must contain the template identifier in order to correctly generate the ContentView object');
         }
 
-        $view = new ContentView( $viewConfig['template'] );
-        $view->setConfigHash( $viewConfig );
+        $view = new ContentView($viewConfig['template']);
+        $view->setConfigHash($viewConfig);
+
         return $view;
     }
 }

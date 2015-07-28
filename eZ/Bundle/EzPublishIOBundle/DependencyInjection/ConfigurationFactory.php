@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -33,7 +33,7 @@ interface ConfigurationFactory
      * ```
      * @param ArrayNodeDefinition $node The handler's configuration node.
      */
-    public function addConfiguration( ArrayNodeDefinition $node );
+    public function addConfiguration(ArrayNodeDefinition $node);
 
     /**
      * Returns the ID of the base, abstract service used to create the handlers.
@@ -55,5 +55,5 @@ interface ConfigurationFactory
      * @param ServiceDefinition $serviceDefinition
      * @param array $config
      */
-    public function configureHandler( ServiceDefinition $serviceDefinition, array $config );
+    public function configureHandler(ServiceDefinition $serviceDefinition, array $config);
 }

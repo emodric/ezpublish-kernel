@@ -6,19 +6,16 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishRestBundle\Features\Context\SubContext;
-
-use Behat\Behat\Tester\Exception\PendingException;
 
 trait Authentication
 {
     /**
      * @Given I have :role permissions
      */
-    public function usePermissionsOfRole( $role )
+    public function usePermissionsOfRole($role)
     {
-        $credentials = $this->getCredentialsFor( $role );
+        $credentials = $this->getCredentialsFor($role);
 
         $this->restDriver->setAuthentication(
             $credentials['login'],
@@ -32,6 +29,6 @@ trait Authentication
      */
     public function useAnonymousRole()
     {
-        $this->restDriver->setAuthentication( '', '' );
+        $this->restDriver->setAuthentication('', '');
     }
 }

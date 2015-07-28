@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine\Filter;
 
 use Imagine\Exception\NotSupportedException;
@@ -17,8 +16,8 @@ class UnsupportedFilter extends AbstractFilter
     /**
      * @throws \Imagine\Exception\NotSupportedException
      */
-    public function apply( ImageInterface $image )
+    public function apply(ImageInterface $image)
     {
-        throw new NotSupportedException( 'Filter is not supported by your current configuration.' );
+        throw new NotSupportedException('Filter is not supported by your current configuration.');
     }
 }

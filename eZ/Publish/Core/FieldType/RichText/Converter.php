@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\RichText;
 
 use DOMDocument;
@@ -17,11 +16,11 @@ use DOMDocument;
 interface Converter
 {
     /**
-     * Converts given $xmlDoc into another \DOMDocument object
+     * Converts given $xmlDoc into another \DOMDocument object.
      *
      * @param \DOMDocument $xmlDoc
      *
      * @return \DOMDocument
      */
-    public function convert( DOMDocument $xmlDoc );
+    public function convert(DOMDocument $xmlDoc);
 }

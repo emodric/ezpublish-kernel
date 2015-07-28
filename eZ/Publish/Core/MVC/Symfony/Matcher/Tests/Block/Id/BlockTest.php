@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\Block\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\Block\Id\Block as BlockIdMatcher;
@@ -23,7 +22,7 @@ class BlockTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->matcher = new BlockIdMatcher;
+        $this->matcher = new BlockIdMatcher();
     }
 
     /**
@@ -33,10 +32,10 @@ class BlockTest extends PHPUnit_Framework_TestCase
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      * @param $expectedResult
      */
-    public function testMatchBlock( $matchingConfig, Block $block, $expectedResult )
+    public function testMatchBlock($matchingConfig, Block $block, $expectedResult)
     {
-        $this->matcher->setMatchingConfig( $matchingConfig );
-        $this->assertSame( $expectedResult, $this->matcher->matchBlock( $block ) );
+        $this->matcher->setMatchingConfig($matchingConfig);
+        $this->assertSame($expectedResult, $this->matcher->matchBlock($block));
     }
 
     public function matchBlockProvider()
@@ -44,24 +43,24 @@ class BlockTest extends PHPUnit_Framework_TestCase
         return array(
             array(
                 123,
-                $this->generateBlockForId( 123 ),
-                true
+                $this->generateBlockForId(123),
+                true,
             ),
             array(
                 123,
-                $this->generateBlockForId( 456 ),
-                false
+                $this->generateBlockForId(456),
+                false,
             ),
             array(
-                array( 123, 789 ),
-                $this->generateBlockForId( 456 ),
-                false
+                array(123, 789),
+                $this->generateBlockForId(456),
+                false,
             ),
             array(
-                array( 123, 789 ),
-                $this->generateBlockForId( 789 ),
-                true
-            )
+                array(123, 789),
+                $this->generateBlockForId(789),
+                true,
+            ),
         );
     }
 
@@ -69,10 +68,10 @@ class BlockTest extends PHPUnit_Framework_TestCase
      * @param $id
      * @return \eZ\Publish\Core\FieldType\Page\Parts\Block
      */
-    private function generateBlockForId( $id )
+    private function generateBlockForId($id)
     {
         return new Block(
-            array( 'id' => $id )
+            array('id' => $id)
         );
     }
 }

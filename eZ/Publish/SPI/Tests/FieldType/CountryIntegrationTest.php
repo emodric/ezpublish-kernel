@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\HandlerTest class
+ * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\HandlerTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Tests\FieldType;
 
 use eZ\Publish\Core\Persistence\Legacy;
@@ -14,7 +13,7 @@ use eZ\Publish\Core\FieldType;
 use eZ\Publish\SPI\Persistence\Content;
 
 /**
- * Integration test for legacy storage field types
+ * Integration test for legacy storage field types.
  *
  * This abstract base test case is supposed to be the base for field type
  * integration tests. It basically calls all involved methods in the field type
@@ -36,7 +35,7 @@ use eZ\Publish\SPI\Persistence\Content;
 class CountryIntegrationTest extends BaseIntegrationTest
 {
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -46,7 +45,7 @@ class CountryIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get handler with required custom field types registered
+     * Get handler with required custom field types registered.
      *
      * @return Handler
      */
@@ -54,21 +53,21 @@ class CountryIntegrationTest extends BaseIntegrationTest
     {
         $fieldType = new FieldType\Country\Type(
             array(
-                "BE" => array(
-                    "Name" => "Belgium",
-                    "Alpha2" => "BE",
-                    "Alpha3" => "BEL",
-                    "IDC" => "32",
+                'BE' => array(
+                    'Name' => 'Belgium',
+                    'Alpha2' => 'BE',
+                    'Alpha3' => 'BEL',
+                    'IDC' => '32',
                 ),
-                "FR" => array(
-                    "Name" => "France",
-                    "Alpha2" => "FR",
-                    "Alpha3" => "FRA",
-                    "IDC" => "33",
+                'FR' => array(
+                    'Name' => 'France',
+                    'Alpha2' => 'FR',
+                    'Alpha3' => 'FRA',
+                    'IDC' => '33',
                 ),
             )
         );
-        $fieldType->setTransformationProcessor( $this->getTransformationProcessor() );
+        $fieldType->setTransformationProcessor($this->getTransformationProcessor());
 
         return $this->getHandler(
             'ezcountry',
@@ -90,7 +89,7 @@ class CountryIntegrationTest extends BaseIntegrationTest
     }
 
     /**
-     * Get field definition data values
+     * Get field definition data values.
      *
      * This is a PHPUnit data provider
      *
@@ -101,24 +100,24 @@ class CountryIntegrationTest extends BaseIntegrationTest
         return array(
             // The ezcountry field type does not have any special field definition
             // properties
-            array( 'fieldType', 'ezcountry' ),
+            array('fieldType', 'ezcountry'),
             array(
                 'fieldTypeConstraints',
                 new Content\FieldTypeConstraints(
                     array(
                         'fieldSettings' => new FieldType\FieldSettings(
                             array(
-                                'isMultiple' => false
+                                'isMultiple' => false,
                             )
                         ),
                     )
-                )
+                ),
             ),
         );
     }
 
     /**
-     * Get initial field value
+     * Get initial field value.
      *
      * @return \eZ\Publish\SPI\Persistence\Content\FieldValue
      */
@@ -126,9 +125,9 @@ class CountryIntegrationTest extends BaseIntegrationTest
     {
         return new Content\FieldValue(
             array(
-                'data'         => array( 'BE' ),
+                'data' => array('BE'),
                 'externalData' => null,
-                'sortKey'      => "Belgium",
+                'sortKey' => 'Belgium',
             )
         );
     }
@@ -144,9 +143,9 @@ class CountryIntegrationTest extends BaseIntegrationTest
     {
         return new Content\FieldValue(
             array(
-                'data'         => array( 'FR' ),
+                'data' => array('FR'),
                 'externalData' => null,
-                'sortKey'      => "France",
+                'sortKey' => 'France',
             )
         );
     }

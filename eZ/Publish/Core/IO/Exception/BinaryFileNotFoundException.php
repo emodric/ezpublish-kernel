@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -12,8 +12,8 @@ use eZ\Publish\Core\Base\Exceptions\NotFoundException as BaseNotFoundException;
 
 class BinaryFileNotFoundException extends BaseNotFoundException
 {
-    public function __construct( $path, Exception $previous = null )
+    public function __construct($path, Exception $previous = null)
     {
-        parent::__construct( "BinaryFile", $path, $previous );
+        parent::__construct('BinaryFile', $path, $previous);
     }
 }

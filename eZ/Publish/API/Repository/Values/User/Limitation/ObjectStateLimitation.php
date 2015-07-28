@@ -6,19 +6,16 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\User\Limitation;
 
 use eZ\Publish\API\Repository\Values\User\Limitation;
 
 /**
- * Class ObjectStateLimitation
+ * Class ObjectStateLimitation.
  *
  * This Object state serves as API limitation for "StateGroup" from legacy,
  * StateGroup stored a combination of StateGroup identifier as well as State id(s) while this one
  * only cares about the state id's.
- *
- * @package eZ\Publish\API\Repository\Values\User\Limitation
  */
 class ObjectStateLimitation extends Limitation
 {

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\HookableConfigurationMapperInterface;
@@ -18,8 +17,6 @@ interface ParserInterface extends HookableConfigurationMapperInterface
      * Adds semantic configuration definition.
      *
      * @param \Symfony\Component\Config\Definition\Builder\NodeBuilder $nodeBuilder Node just under ezpublish.system.<siteaccess>
-     *
-     * @return void
      */
-    public function addSemanticConfig( NodeBuilder $nodeBuilder );
+    public function addSemanticConfig(NodeBuilder $nodeBuilder);
 }

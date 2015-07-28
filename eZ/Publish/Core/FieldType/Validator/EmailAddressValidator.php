@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the EmailAddressValidator class
+ * File containing the EmailAddressValidator class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Validator;
 
 use eZ\Publish\Core\FieldType\Validator;
@@ -14,7 +13,7 @@ use eZ\Publish\Core\FieldType\ValidationError;
 use eZ\Publish\Core\FieldType\Value as BaseValue;
 
 /**
- * Validator for checking validity of email addresses. Both form and MX record validity checking are provided
+ * Validator for checking validity of email addresses. Both form and MX record validity checking are provided.
  *
  * @property int $maxStringLength The maximum allowed length of the string.
  * @property int $minStringLength The minimum allowed length of the string.
@@ -22,14 +21,14 @@ use eZ\Publish\Core\FieldType\Value as BaseValue;
 class EmailAddressValidator extends Validator
 {
     protected $constraints = array(
-        "Extent" => false,
+        'Extent' => false,
     );
 
     protected $constraintsSchema = array(
-        "Extent" => array(
-            "type" => "string",
-            "default" => "regex"
-        )
+        'Extent' => array(
+            'type' => 'string',
+            'default' => 'regex',
+        ),
     );
 
     /**
@@ -39,22 +38,19 @@ class EmailAddressValidator extends Validator
      *
      * @return mixed
      */
-    public function validateConstraints( $constraints )
+    public function validateConstraints($constraints)
     {
         $validationErrors = array();
-        foreach ( $constraints as $name => $value )
-        {
-            switch ( $name )
-            {
-                case "Extent":
+        foreach ($constraints as $name => $value) {
+            switch ($name) {
+                case 'Extent':
 
-                    if ( $value !== false && $value !== "regex" )
-                    {
+                    if ($value !== false && $value !== 'regex') {
                         $validationErrors[] = new ValidationError(
                             "Validator parameter '%parameter%' value must be regex for now",
                             null,
                             array(
-                                "parameter" => $name
+                                'parameter' => $name,
                             )
                         );
                     }
@@ -64,7 +60,7 @@ class EmailAddressValidator extends Validator
                         "Validator parameter '%parameter%' is unknown",
                         null,
                         array(
-                            "parameter" => $name
+                            'parameter' => $name,
                         )
                     );
             }
@@ -86,22 +82,22 @@ class EmailAddressValidator extends Validator
      *
      * @param \eZ\Publish\Core\FieldType\Value $value
      *
-     * @return boolean
+     * @return bool
      */
-    public function validate( BaseValue $value )
+    public function validate(BaseValue $value)
     {
         $pattern = '/^((\"[^\"\f\n\r\t\v\b]+\")|([A-Za-z0-9_\!\#\$\%\&\'\*\+\-\~\/\^\`\|\{\}]+(\.[A-Za-z0-9_\!\#\$\%\&\'\*\+\-\~\/\^\`\|\{\}]+)*))@((\[(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))\])|(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))|((([A-Za-z0-9\-])+\.)+[A-Za-z\-]{2,}))$/';
 
-        if ( preg_match( $pattern, $value->email ) )
-        {
+        if (preg_match($pattern, $value->email)) {
             return true;
         }
 
         $this->errors[] = new ValidationError(
-            "The value must be a valid email address.",
+            'The value must be a valid email address.',
             null,
             array()
         );
+
         return false;
     }
 }

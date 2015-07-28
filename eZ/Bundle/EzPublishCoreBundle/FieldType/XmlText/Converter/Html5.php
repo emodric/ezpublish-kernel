@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\FieldType\XmlText\Converter;
 
 use eZ\Publish\Core\FieldType\XmlText\Converter\Html5 as BaseHtml5Converter;
@@ -17,10 +16,10 @@ use eZ\Publish\Core\MVC\ConfigResolverInterface;
  */
 class Html5 extends BaseHtml5Converter
 {
-    public function __construct( $stylesheet, ConfigResolverInterface $configResolver, array $preConverters = array() )
+    public function __construct($stylesheet, ConfigResolverInterface $configResolver, array $preConverters = array())
     {
-        $customStylesheets = $configResolver->getParameter( 'fieldtypes.ezxml.custom_xsl' );
+        $customStylesheets = $configResolver->getParameter('fieldtypes.ezxml.custom_xsl');
         $customStylesheets = $customStylesheets ?: array();
-        parent::__construct( $stylesheet, $customStylesheets, $preConverters );
+        parent::__construct($stylesheet, $customStylesheets, $preConverters);
     }
 }

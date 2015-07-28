@@ -6,22 +6,21 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\Content\ContentCreateStruct as APIContentCreateStruct;
 use eZ\Publish\API\Repository\Values\Content\Field;
 
 /**
- * This class is used for creating a new content object
+ * This class is used for creating a new content object.
  * @property-write \eZ\Publish\API\Repository\Values\Content\Field[] $fields
  */
 class ContentCreateStruct extends APIContentCreateStruct
 {
     /**
-     * Field collection
+     * Field collection.
      *
-     * @var \eZ\Publish\API\Repository\Values\Content\Field[] $fields
+     * @var \eZ\Publish\API\Repository\Values\Content\Field[]
      */
     public $fields = array();
 
@@ -39,16 +38,17 @@ class ContentCreateStruct extends APIContentCreateStruct
      *
      * @param string|null $language If not given on a translatable field the initial language is used
      */
-    public function setField( $fieldDefIdentifier, $value, $language = null )
+    public function setField($fieldDefIdentifier, $value, $language = null)
     {
-        if ( !isset( $language ) )
+        if (!isset($language)) {
             $language = $this->mainLanguageCode;
+        }
 
         $this->fields[] = new Field(
             array(
                 'fieldDefIdentifier' => $fieldDefIdentifier,
                 'value' => $value,
-                'languageCode' => $language
+                'languageCode' => $language,
             )
         );
     }

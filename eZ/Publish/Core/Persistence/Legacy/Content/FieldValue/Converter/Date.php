@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Date field value converter class
+ * File containing the Date field value converter class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter;
 
 use eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter;
@@ -19,12 +18,12 @@ use eZ\Publish\Core\FieldType\FieldSettings;
 use DateTime;
 
 /**
- * Date field value converter class
+ * Date field value converter class.
  */
 class Date implements Converter
 {
     /**
-     * Factory for current class
+     * Factory for current class.
      *
      * @note Class should instead be configured as service if it gains dependencies.
      *
@@ -32,75 +31,73 @@ class Date implements Converter
      */
     public static function create()
     {
-        return new self;
+        return new self();
     }
 
     /**
-     * Converts data from $value to $storageFieldValue
+     * Converts data from $value to $storageFieldValue.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\FieldValue $value
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldValue $storageFieldValue
      */
-    public function toStorageValue( FieldValue $value, StorageFieldValue $storageFieldValue )
+    public function toStorageValue(FieldValue $value, StorageFieldValue $storageFieldValue)
     {
-        $storageFieldValue->dataInt = ( $value->data !== null ? $value->data["timestamp"] : null );
+        $storageFieldValue->dataInt = ($value->data !== null ? $value->data['timestamp'] : null);
         $storageFieldValue->sortKeyInt = (int)$value->sortKey;
     }
 
     /**
-     * Converts data from $value to $fieldValue
+     * Converts data from $value to $fieldValue.
      *
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldValue $value
      * @param \eZ\Publish\SPI\Persistence\Content\FieldValue $fieldValue
      */
-    public function toFieldValue( StorageFieldValue $value, FieldValue $fieldValue )
+    public function toFieldValue(StorageFieldValue $value, FieldValue $fieldValue)
     {
-        if ( $value->dataInt === null || $value->dataInt == 0 )
-        {
+        if ($value->dataInt === null || $value->dataInt == 0) {
             return;
         }
 
         $fieldValue->data = array(
-            "timestamp" => $value->dataInt,
-            "rfc850" => null,
+            'timestamp' => $value->dataInt,
+            'rfc850' => null,
         );
         $fieldValue->sortKey = $value->sortKeyInt;
     }
 
     /**
-     * Converts field definition data in $fieldDef into $storageFieldDef
+     * Converts field definition data in $fieldDef into $storageFieldDef.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition $fieldDef
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldDefinition $storageDef
      */
-    public function toStorageFieldDefinition( FieldDefinition $fieldDef, StorageFieldDefinition $storageDef )
+    public function toStorageFieldDefinition(FieldDefinition $fieldDef, StorageFieldDefinition $storageDef)
     {
-        $storageDef->dataInt1 = $fieldDef->fieldTypeConstraints->fieldSettings["defaultType"];
+        $storageDef->dataInt1 = $fieldDef->fieldTypeConstraints->fieldSettings['defaultType'];
     }
 
     /**
-     * Converts field definition data in $storageDef into $fieldDef
+     * Converts field definition data in $storageDef into $fieldDef.
      *
      * @param \eZ\Publish\Core\Persistence\Legacy\Content\StorageFieldDefinition $storageDef
      * @param \eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition $fieldDef
      */
-    public function toFieldDefinition( StorageFieldDefinition $storageDef, FieldDefinition $fieldDef )
+    public function toFieldDefinition(StorageFieldDefinition $storageDef, FieldDefinition $fieldDef)
     {
         $fieldDef->fieldTypeConstraints->fieldSettings = new FieldSettings(
             array(
-                "defaultType" => $storageDef->dataInt1
+                'defaultType' => $storageDef->dataInt1,
             )
         );
 
         // Building default value
-        switch ( $fieldDef->fieldTypeConstraints->fieldSettings["defaultType"] )
-        {
+        switch ($fieldDef->fieldTypeConstraints->fieldSettings['defaultType']) {
             case DateType::DEFAULT_CURRENT_DATE:
                 $dateTime = new DateTime();
-                $dateTime->setTime( 0, 0, 0 );
+                $dateTime->setTime(0, 0, 0);
                 $data = array(
-                    "timestamp" => $dateTime->getTimestamp(),
-                    "rfc850" => null,
+                    'timestamp' => $dateTime->getTimestamp(),
+                    'rfc850' => null,
                 );
                 break;
             default:
@@ -111,7 +108,7 @@ class Date implements Converter
     }
 
     /**
-     * Returns the name of the index column in the attribute table
+     * Returns the name of the index column in the attribute table.
      *
      * Returns the name of the index column the datatype uses, which is either
      * "sort_key_int" or "sort_key_string". This column is then used for
@@ -121,6 +118,6 @@ class Date implements Converter
      */
     public function getIndexColumn()
     {
-        return "sort_key_int";
+        return 'sort_key_int';
     }
 }

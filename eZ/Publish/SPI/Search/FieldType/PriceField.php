@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Price document field
+ * Price document field.
  */
 class PriceField extends FieldType
 {
@@ -22,4 +22,3 @@ class PriceField extends FieldType
      */
     protected $type = 'ez_currency';
 }
-

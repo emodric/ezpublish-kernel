@@ -1,18 +1,17 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Repository\Tests\Service\Integration\FieldTypeBase class
+ * File contains: eZ\Publish\Core\Repository\Tests\Service\Integration\FieldTypeBase class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Tests\Service\Integration;
 
 use eZ\Publish\Core\Repository\Tests\Service\Integration\Base as BaseServiceTest;
 
 /**
- * Test case for FieldType service
+ * Test case for FieldType service.
  */
 abstract class FieldTypeBase extends BaseServiceTest
 {
@@ -26,36 +25,33 @@ abstract class FieldTypeBase extends BaseServiceTest
     public function testGetFieldTypes()
     {
         $fieldTypeService = $this->repository->getFieldTypeService();
-        $refObject = new \ReflectionObject( $fieldTypeService );
-        $refProperty = $refObject->getProperty( 'settings' );
-        $refProperty->setAccessible( true );
-        $fieldTypeSettings = $refProperty->getValue( $fieldTypeService );
+        $refObject = new \ReflectionObject($fieldTypeService);
+        $refProperty = $refObject->getProperty('settings');
+        $refProperty->setAccessible(true);
+        $fieldTypeSettings = $refProperty->getValue($fieldTypeService);
 
         $fieldTypes = $fieldTypeService->getFieldTypes();
 
-        self::assertEquals( count( $fieldTypeSettings ), count( $fieldTypes ) );
-        foreach ( $fieldTypes as $fieldType )
-        {
-            self::assertInstanceOf( "eZ\\Publish\\API\\Repository\\FieldType", $fieldType );
-            self::assertInternalType( "string", $fieldType->getFieldTypeIdentifier() );
-            self::assertArrayHasKey( $fieldType->getFieldTypeIdentifier(), $fieldTypeSettings );
+        self::assertEquals(count($fieldTypeSettings), count($fieldTypes));
+        foreach ($fieldTypes as $fieldType) {
+            self::assertInstanceOf('eZ\\Publish\\API\\Repository\\FieldType', $fieldType);
+            self::assertInternalType('string', $fieldType->getFieldTypeIdentifier());
+            self::assertArrayHasKey($fieldType->getFieldTypeIdentifier(), $fieldTypeSettings);
         }
     }
 
     protected function getFieldIdentifiersData()
     {
-        if ( !isset( $this->fieldIdentifiersData ) )
-        {
+        if (!isset($this->fieldIdentifiersData)) {
             $fieldTypeService = $this->getRepository()->getFieldTypeService();
-            $refObject = new \ReflectionObject( $fieldTypeService );
-            $refProperty = $refObject->getProperty( 'settings' );
-            $refProperty->setAccessible( true );
-            $fieldTypeIdentifiers = array_keys( $refProperty->getValue( $fieldTypeService ) );
+            $refObject = new \ReflectionObject($fieldTypeService);
+            $refProperty = $refObject->getProperty('settings');
+            $refProperty->setAccessible(true);
+            $fieldTypeIdentifiers = array_keys($refProperty->getValue($fieldTypeService));
 
             $this->fieldIdentifiersData = array_map(
-                function ( $identifier )
-                {
-                    return array( $identifier );
+                function ($identifier) {
+                    return array($identifier);
                 },
                 $fieldTypeIdentifiers
             );
@@ -75,21 +71,21 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @covers \eZ\Publish\Core\Repository\FieldTypeService::getFieldType
      * @dataProvider providerForTestGetFieldType
      */
-    public function testGetFieldType( $identifier )
+    public function testGetFieldType($identifier)
     {
         $fieldTypeService = $this->repository->getFieldTypeService();
-        $fieldType = $fieldTypeService->getFieldType( $identifier );
+        $fieldType = $fieldTypeService->getFieldType($identifier);
 
-        self::assertInstanceOf( "eZ\\Publish\\API\\Repository\\FieldType", $fieldType );
-        self::assertInternalType( "string", $fieldType->getFieldTypeIdentifier() );
-        self::assertEquals( $identifier, $fieldType->getFieldTypeIdentifier() );
+        self::assertInstanceOf('eZ\\Publish\\API\\Repository\\FieldType', $fieldType);
+        self::assertInternalType('string', $fieldType->getFieldTypeIdentifier());
+        self::assertEquals($identifier, $fieldType->getFieldTypeIdentifier());
     }
 
     public function providerForTestGetFieldTypeThrowsNotFoundException()
     {
         return array(
-            array( "EZSTRING" ),
-            array( "thingamajigger" )
+            array('EZSTRING'),
+            array('thingamajigger'),
         );
     }
 
@@ -100,10 +96,10 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @expectedException \eZ\Publish\Core\Base\Exceptions\NotFound\FieldTypeNotFoundException
      * @dataProvider providerForTestGetFieldTypeThrowsNotFoundException
      */
-    public function testGetFieldTypeThrowsNotFoundException( $identifier )
+    public function testGetFieldTypeThrowsNotFoundException($identifier)
     {
         $fieldTypeService = $this->repository->getFieldTypeService();
-        $fieldTypeService->getFieldType( $identifier );
+        $fieldTypeService->getFieldType($identifier);
     }
 
     public function providerForTestHasFieldTypeTrue()
@@ -117,18 +113,18 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @covers \eZ\Publish\Core\Repository\FieldTypeService::hasFieldType
      * @dataProvider providerForTestHasFieldTypeTrue
      */
-    public function testHasFieldTypeTrue( $identifier )
+    public function testHasFieldTypeTrue($identifier)
     {
         self::assertTrue(
-            $this->repository->getFieldTypeService()->hasFieldType( $identifier )
+            $this->repository->getFieldTypeService()->hasFieldType($identifier)
         );
     }
 
     public function providerForTestHasFieldTypeFalse()
     {
         return array(
-            array( "EZSTRING" ),
-            array( "thingamajigger" )
+            array('EZSTRING'),
+            array('thingamajigger'),
         );
     }
 
@@ -138,10 +134,10 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @covers \eZ\Publish\Core\Repository\FieldTypeService::hasFieldType
      * @dataProvider providerForTestHasFieldTypeFalse
      */
-    public function testHasFieldTypeFalse( $identifier )
+    public function testHasFieldTypeFalse($identifier)
     {
         self::assertFalse(
-            $this->repository->getFieldTypeService()->hasFieldType( $identifier )
+            $this->repository->getFieldTypeService()->hasFieldType($identifier)
         );
     }
 
@@ -156,22 +152,22 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @covers \eZ\Publish\Core\Repository\FieldTypeService::buildFieldType
      * @dataProvider providerForTestBuildFieldType
      */
-    public function testBuildFieldType( $identifier )
+    public function testBuildFieldType($identifier)
     {
         $fieldTypeService = $this->repository->getFieldTypeService();
-        $fieldType = $fieldTypeService->buildFieldType( $identifier );
+        $fieldType = $fieldTypeService->buildFieldType($identifier);
 
-        self::assertInstanceOf( "eZ\\Publish\\Core\\FieldType\\FieldType", $fieldType );
+        self::assertInstanceOf('eZ\\Publish\\Core\\FieldType\\FieldType', $fieldType);
         $fieldTypeIdentifier = $fieldType->getFieldTypeIdentifier();
-        self::assertInternalType( "string", $fieldType->getFieldTypeIdentifier() );
-        self::assertEquals( $identifier, $fieldType->getFieldTypeIdentifier() );
+        self::assertInternalType('string', $fieldType->getFieldTypeIdentifier());
+        self::assertEquals($identifier, $fieldType->getFieldTypeIdentifier());
     }
 
     public function providerForTestBuildFieldTypeThrowsNotFoundException()
     {
         return array(
-            array( "EZSTRING" ),
-            array( "thingamajigger" )
+            array('EZSTRING'),
+            array('thingamajigger'),
         );
     }
 
@@ -182,9 +178,9 @@ abstract class FieldTypeBase extends BaseServiceTest
      * @expectedException \eZ\Publish\Core\Base\Exceptions\NotFound\FieldTypeNotFoundException
      * @dataProvider providerForTestBuildFieldTypeThrowsNotFoundException
      */
-    public function testBuildFieldTypeThrowsNotFoundException( $identifier )
+    public function testBuildFieldTypeThrowsNotFoundException($identifier)
     {
         $fieldTypeService = $this->repository->getFieldTypeService();
-        $fieldTypeService->getFieldType( $identifier );
+        $fieldTypeService->getFieldType($identifier);
     }
 }

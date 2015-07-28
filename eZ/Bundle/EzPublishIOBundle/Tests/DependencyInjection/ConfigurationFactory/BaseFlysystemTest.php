@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -19,23 +19,24 @@ abstract class BaseFlysystemTest extends ConfigurationFactoryTest
 
     public function provideHandlerConfiguration()
     {
-        $this->setDefinition( $this->flysystemAdapterServiceId, new Definition() );
+        $this->setDefinition($this->flysystemAdapterServiceId, new Definition());
+
         return array(
-            'adapter' => 'test'
+            'adapter' => 'test',
         );
     }
 
     public function provideParentServiceDefinition()
     {
-        return new Definition( null, array( null ) );
+        return new Definition(null, array(null));
     }
 
-    public function validateConfiguredHandler( $handlerDefinitionId )
+    public function validateConfiguredHandler($handlerDefinitionId)
     {
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
             $handlerDefinitionId,
             0,
-            new Reference( $this->filesystemServiceId )
+            new Reference($this->filesystemServiceId)
         );
     }
 
@@ -47,7 +48,7 @@ abstract class BaseFlysystemTest extends ConfigurationFactoryTest
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
             'ezpublish.core.io.flysystem.my_test_handler_filesystem',
             0,
-            new Reference( $this->flysystemAdapterServiceId )
+            new Reference($this->flysystemAdapterServiceId)
         );
     }
 }

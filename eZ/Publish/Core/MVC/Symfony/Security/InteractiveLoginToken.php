@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -22,9 +21,9 @@ class InteractiveLoginToken extends UsernamePasswordToken
      */
     private $originalTokenType;
 
-    public function __construct( UserInterface $user, $originalTokenType, $credentials, $providerKey, array $roles = array() )
+    public function __construct(UserInterface $user, $originalTokenType, $credentials, $providerKey, array $roles = array())
     {
-        parent::__construct( $user, $credentials, $providerKey, $roles );
+        parent::__construct($user, $credentials, $providerKey, $roles);
         $this->originalTokenType = $originalTokenType;
     }
 
@@ -38,12 +37,12 @@ class InteractiveLoginToken extends UsernamePasswordToken
 
     public function serialize()
     {
-        return serialize( array( $this->originalTokenType, parent::serialize() ) );
+        return serialize(array($this->originalTokenType, parent::serialize()));
     }
 
-    public function unserialize( $serialized )
+    public function unserialize($serialized)
     {
-        list( $this->originalTokenType, $parentStr ) = unserialize( $serialized );
-        parent::unserialize( $parentStr );
+        list($this->originalTokenType, $parentStr) = unserialize($serialized);
+        parent::unserialize($parentStr);
     }
 }

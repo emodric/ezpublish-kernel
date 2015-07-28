@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\Imagine\Filter\Loader;
 
 use eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\Loader\ReduceNoiseFilterLoader;
@@ -27,8 +26,8 @@ class ReduceNoiseFilterLoaderTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->filter = $this->getMock( '\eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\FilterInterface' );
-        $this->loader = new ReduceNoiseFilterLoader( $this->filter );
+        $this->filter = $this->getMock('\eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\FilterInterface');
+        $this->loader = new ReduceNoiseFilterLoader($this->filter);
     }
 
     /**
@@ -36,6 +35,6 @@ class ReduceNoiseFilterLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testLoadInvalidDriver()
     {
-        $this->loader->load( $this->getMock( '\Imagine\Image\ImageInterface' ) );
+        $this->loader->load($this->getMock('\Imagine\Image\ImageInterface'));
     }
 }

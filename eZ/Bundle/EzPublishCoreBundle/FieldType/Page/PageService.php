@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\FieldType\Page;
 
 use eZ\Publish\Core\FieldType\Page\PageService as BasePageService;
@@ -21,12 +20,11 @@ class PageService extends BasePageService
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentInfo[]
      */
-    public function getValidBlockItemsAsContentInfo( Block $block )
+    public function getValidBlockItemsAsContentInfo(Block $block)
     {
         $contentInfoObjects = array();
-        foreach ( $this->getValidBlockItems( $block ) as $item )
-        {
-            $contentInfoObjects[] = $this->contentService->loadContentInfo( $item->contentId );
+        foreach ($this->getValidBlockItems($block) as $item) {
+            $contentInfoObjects[] = $this->contentService->loadContentInfo($item->contentId);
         }
 
         return $contentInfoObjects;

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Event;
 
 use eZ\Publish\API\Repository\Values\User\User as APIUser;
@@ -26,7 +25,7 @@ class InteractiveLoginEvent extends BaseInteractiveLoginEvent
      */
     public function hasAPIUser()
     {
-        return isset( $this->apiUser );
+        return isset($this->apiUser);
     }
 
     /**
@@ -34,7 +33,7 @@ class InteractiveLoginEvent extends BaseInteractiveLoginEvent
      *
      * @param \eZ\Publish\API\Repository\Values\User\User $apiUser
      */
-    public function setApiUser( APIUser $apiUser )
+    public function setApiUser(APIUser $apiUser)
     {
         $this->apiUser = $apiUser;
     }

@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Date document field
+ * Date document field.
  */
 class DateField extends FieldType
 {
@@ -22,4 +22,3 @@ class DateField extends FieldType
      */
     protected $type = 'ez_date';
 }
-

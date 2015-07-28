@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the ObjectState Mapper class
+ * File containing the ObjectState Mapper class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Content\ObjectState;
 
 use eZ\Publish\SPI\Persistence\Content\ObjectState;
@@ -15,12 +14,12 @@ use eZ\Publish\SPI\Persistence\Content\ObjectState\InputStruct;
 use eZ\Publish\SPI\Persistence\Content\Language\Handler as LanguageHandler;
 
 /**
- * Mapper for ObjectState and object state Group objects
+ * Mapper for ObjectState and object state Group objects.
  */
 class Mapper
 {
     /**
-     * Language handler
+     * Language handler.
      *
      * @var \eZ\Publish\Core\Persistence\Legacy\Content\Language\Handler
      */
@@ -31,19 +30,19 @@ class Mapper
      *
      * @param \eZ\Publish\SPI\Persistence\Content\Language\Handler $languageHandler
      */
-    public function __construct( LanguageHandler $languageHandler )
+    public function __construct(LanguageHandler $languageHandler)
     {
         $this->languageHandler = $languageHandler;
     }
 
     /**
-     * Creates ObjectState object from provided $data
+     * Creates ObjectState object from provided $data.
      *
      * @param array $data
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState
      */
-    public function createObjectStateFromData( array $data )
+    public function createObjectStateFromData(array $data)
     {
         $objectState = new ObjectState();
 
@@ -59,8 +58,7 @@ class Mapper
         $objectState->name = array();
         $objectState->description = array();
 
-        foreach ( $data as $stateTranslation )
-        {
+        foreach ($data as $stateTranslation) {
             $languageCode = $this->languageHandler->load(
                 $stateTranslation['ezcobj_state_language_language_id'] & ~1
             )->languageCode;
@@ -74,32 +72,31 @@ class Mapper
     }
 
     /**
-     * Creates ObjectState array of objects from provided $data
+     * Creates ObjectState array of objects from provided $data.
      *
      * @param array $data
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState[]
      */
-    public function createObjectStateListFromData( array $data )
+    public function createObjectStateListFromData(array $data)
     {
         $objectStates = array();
 
-        foreach ( $data as $objectStateData )
-        {
-            $objectStates[] = $this->createObjectStateFromData( $objectStateData );
+        foreach ($data as $objectStateData) {
+            $objectStates[] = $this->createObjectStateFromData($objectStateData);
         }
 
         return $objectStates;
     }
 
     /**
-     * Creates ObjectStateGroup object from provided $data
+     * Creates ObjectStateGroup object from provided $data.
      *
      * @param array $data
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState\Group
      */
-    public function createObjectStateGroupFromData( array $data )
+    public function createObjectStateGroupFromData(array $data)
     {
         $objectStateGroup = new Group();
 
@@ -113,8 +110,7 @@ class Mapper
         $objectStateGroup->name = array();
         $objectStateGroup->description = array();
 
-        foreach ( $data as $groupTranslation )
-        {
+        foreach ($data as $groupTranslation) {
             $languageCode = $this->languageHandler->load(
                 $groupTranslation['ezcobj_state_group_language_real_language_id']
             )->languageCode;
@@ -128,32 +124,31 @@ class Mapper
     }
 
     /**
-     * Creates ObjectStateGroup array of objects from provided $data
+     * Creates ObjectStateGroup array of objects from provided $data.
      *
      * @param array $data
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState\Group[]
      */
-    public function createObjectStateGroupListFromData( array $data )
+    public function createObjectStateGroupListFromData(array $data)
     {
         $objectStateGroups = array();
 
-        foreach ( $data as $objectStateGroupData )
-        {
-            $objectStateGroups[] = $this->createObjectStateGroupFromData( $objectStateGroupData );
+        foreach ($data as $objectStateGroupData) {
+            $objectStateGroups[] = $this->createObjectStateGroupFromData($objectStateGroupData);
         }
 
         return $objectStateGroups;
     }
 
     /**
-     * Creates an instance of ObjectStateGroup object from provided $input struct
+     * Creates an instance of ObjectStateGroup object from provided $input struct.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\ObjectState\InputStruct $input
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState\Group
      */
-    public function createObjectStateGroupFromInputStruct( InputStruct $input )
+    public function createObjectStateGroupFromInputStruct(InputStruct $input)
     {
         $objectStateGroup = new Group();
 
@@ -163,8 +158,7 @@ class Mapper
         $objectStateGroup->description = $input->description;
 
         $objectStateGroup->languageCodes = array();
-        foreach ( $input->name as $languageCode => $name )
-        {
+        foreach ($input->name as $languageCode => $name) {
             $objectStateGroup->languageCodes[] = $languageCode;
         }
 
@@ -172,13 +166,13 @@ class Mapper
     }
 
     /**
-     * Creates an instance of ObjectState object from provided $input struct
+     * Creates an instance of ObjectState object from provided $input struct.
      *
      * @param \eZ\Publish\SPI\Persistence\Content\ObjectState\InputStruct $input
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ObjectState
      */
-    public function createObjectStateFromInputStruct( InputStruct $input )
+    public function createObjectStateFromInputStruct(InputStruct $input)
     {
         $objectState = new ObjectState();
 
@@ -188,8 +182,7 @@ class Mapper
         $objectState->description = $input->description;
 
         $objectState->languageCodes = array();
-        foreach ( $input->name as $languageCode => $name )
-        {
+        foreach ($input->name as $languageCode => $name) {
             $objectState->languageCodes[] = $languageCode;
         }
 

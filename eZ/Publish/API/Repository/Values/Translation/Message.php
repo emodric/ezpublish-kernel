@@ -5,9 +5,7 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
- * @package eZ\Publish\API\Repository\Values
  */
-
 namespace eZ\Publish\API\Repository\Values\Translation;
 
 use eZ\Publish\API\Repository\Values\Translation;
@@ -17,8 +15,6 @@ use eZ\Publish\API\Repository\Values\Translation;
  *
  * The message might include replacements, in the form %[A-Za-z]%. Those are
  * replaced by the values provided. A raw % can be escaped like %%.
- *
- * @package eZ\Publish\API\Repository\Values
  */
 class Message extends Translation
 {
@@ -39,17 +35,14 @@ class Message extends Translation
     protected $values;
 
     /**
-     * Construct singular only message from string and optional value array
+     * Construct singular only message from string and optional value array.
      *
      * @param string $message
      * @param array $values
-     *
-     * @return void
      */
-    public function __construct( $message, array $values = array() )
+    public function __construct($message, array $values = array())
     {
         $this->message = $message;
-        $this->values  = $values;
+        $this->values = $values;
     }
 }
-

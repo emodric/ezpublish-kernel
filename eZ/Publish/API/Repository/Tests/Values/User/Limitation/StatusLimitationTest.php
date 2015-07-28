@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the StatusLimitationTest class
+ * File containing the StatusLimitationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\Values\User\Limitation;
 
 use eZ\Publish\API\Repository\Values\User\Limitation\StatusLimitation;
@@ -24,17 +23,16 @@ use eZ\Publish\API\Repository\Values\Content\VersionInfo;
 class StatusLimitationTest extends BaseLimitationTest
 {
     /**
-     * Tests a StatusLimitation
+     * Tests a StatusLimitation.
      *
-     * @return void
      * @see eZ\Publish\API\Repository\Values\User\Limitation\StatusLimitation
      */
     public function testStatusLimitationAllow()
     {
         $repository = $this->getRepository();
 
-        $administratorUserId = $this->generateId( 'user', 14 );
-        $anonymousUserId = $this->generateId( 'user', 10 );
+        $administratorUserId = $this->generateId('user', 14);
+        $anonymousUserId = $this->generateId('user', 10);
         /* BEGIN: Use Case */
         // $administratorUserId is the ID of the "Administrator" user in a eZ
         // Publish demo installation.
@@ -45,34 +43,34 @@ class StatusLimitationTest extends BaseLimitationTest
         $userService = $repository->getUserService();
 
         // Load the "Administrator" user and set it as current user
-        $administratorUser = $userService->loadUser( $administratorUserId );
-        $repository->setCurrentUser( $administratorUser );
+        $administratorUser = $userService->loadUser($administratorUserId);
+        $repository->setCurrentUser($administratorUser);
 
         // Create a Content draft with "Administrator" user
         $draft = $this->createWikiPageDraft();
 
         $roleService = $repository->getRoleService();
 
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'versionread' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'versionread');
         $policyCreate->addLimitation(
             new StatusLimitation(
-                array( 'limitationValues' => array( VersionInfo::STATUS_DRAFT ) )
+                array('limitationValues' => array(VersionInfo::STATUS_DRAFT))
             )
         );
 
         // Add policy to load draft versions to "Anonymous" role
-        $roleService->addPolicy( $role, $policyCreate );
+        $roleService->addPolicy($role, $policyCreate);
 
         // Load the user service
         $userService = $repository->getUserService();
 
         // Load "Anonymous User" (which has "Anonymous" role)
-        $anonymousUser = $userService->loadUser( $anonymousUserId );
+        $anonymousUser = $userService->loadUser($anonymousUserId);
 
         // Set it as current user
-        $repository->setCurrentUser( $anonymousUser );
+        $repository->setCurrentUser($anonymousUser);
 
         $contentService = $repository->getContentService();
 
@@ -87,14 +85,13 @@ class StatusLimitationTest extends BaseLimitationTest
 
         $this->assertEquals(
             'An awesome wiki page',
-            $loadedDraft->getFieldValue( 'title' )->text
+            $loadedDraft->getFieldValue('title')->text
         );
     }
 
     /**
-     * Tests a StatusLimitation
+     * Tests a StatusLimitation.
      *
-     * @return void
      * @see eZ\Publish\API\Repository\Values\User\Limitation\StatusLimitation
      * @expectedException \eZ\Publish\API\Repository\Exceptions\UnauthorizedException
      */
@@ -102,8 +99,8 @@ class StatusLimitationTest extends BaseLimitationTest
     {
         $repository = $this->getRepository();
 
-        $administratorUserId = $this->generateId( 'user', 14 );
-        $anonymousUserId = $this->generateId( 'user', 10 );
+        $administratorUserId = $this->generateId('user', 14);
+        $anonymousUserId = $this->generateId('user', 10);
         /* BEGIN: Use Case */
         // $anonymousUserId is the ID of the "Anonymous" user in a eZ
         // Publish demo installation.
@@ -114,34 +111,34 @@ class StatusLimitationTest extends BaseLimitationTest
         $userService = $repository->getUserService();
 
         // Load the "Administrator" user and set it as current user
-        $administratorUser = $userService->loadUser( $administratorUserId );
-        $repository->setCurrentUser( $administratorUser );
+        $administratorUser = $userService->loadUser($administratorUserId);
+        $repository->setCurrentUser($administratorUser);
 
         // Create a Content draft with "Administrator" user
         $draft = $this->createWikiPageDraft();
 
         $roleService = $repository->getRoleService();
 
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'versionread' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'versionread');
         $policyCreate->addLimitation(
             new StatusLimitation(
-                array( 'limitationValues' => array( VersionInfo::STATUS_PUBLISHED ) )
+                array('limitationValues' => array(VersionInfo::STATUS_PUBLISHED))
             )
         );
 
         // Add policy to load published versions to "Anonymous" role
-        $roleService->addPolicy( $role, $policyCreate );
+        $roleService->addPolicy($role, $policyCreate);
 
         // Load the user service
         $userService = $repository->getUserService();
 
         // Load anonymous user (which has "Anonymous" role)
-        $anonymousUser = $userService->loadUser( $anonymousUserId );
+        $anonymousUser = $userService->loadUser($anonymousUserId);
 
         // Set it as current user
-        $repository->setCurrentUser( $anonymousUser );
+        $repository->setCurrentUser($anonymousUser);
 
         $contentService = $repository->getContentService();
 

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest;
@@ -24,5 +23,5 @@ interface MatcherBuilderInterface
      *
      * @throws \RuntimeException
      */
-    public function buildMatcher( $matcherIdentifier, $matchingConfiguration, SimplifiedRequest $request );
+    public function buildMatcher($matcherIdentifier, $matchingConfiguration, SimplifiedRequest $request);
 }

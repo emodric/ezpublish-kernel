@@ -11,7 +11,6 @@ namespace eZ\Publish\Core\SignalSlot\Tests;
 use eZ\Publish\API\Repository\Values\Content\SectionCreateStruct;
 use eZ\Publish\API\Repository\Values\Content\SectionUpdateStruct;
 use eZ\Publish\API\Repository\Values\Content\Section;
-
 use eZ\Publish\Core\SignalSlot\SignalDispatcher;
 use eZ\Publish\Core\SignalSlot\SectionService;
 
@@ -24,9 +23,9 @@ class SectionServiceTest extends ServiceTest
         );
     }
 
-    protected function getSignalSlotService( $coreService, SignalDispatcher $dispatcher )
+    protected function getSignalSlotService($coreService, SignalDispatcher $dispatcher)
     {
-        return new SectionService( $coreService, $dispatcher );
+        return new SectionService($coreService, $dispatcher);
     }
 
     public function serviceProvider()
@@ -40,10 +39,10 @@ class SectionServiceTest extends ServiceTest
             array(
                 'id' => $sectionId,
                 'identifier' => $sectionIdentifier,
-                'name' => $sectionName
+                'name' => $sectionName,
             )
         );
-        $contentInfo = $this->getContentInfo( $contentId, md5( 'Osgiliath' ) );
+        $contentInfo = $this->getContentInfo($contentId, md5('Osgiliath'));
 
         $sectionCreateStruct = new SectionCreateStruct();
         $sectionUpdateStruct = new SectionUpdateStruct();
@@ -51,76 +50,76 @@ class SectionServiceTest extends ServiceTest
         return array(
             array(
                 'createSection',
-                array( $sectionCreateStruct ),
+                array($sectionCreateStruct),
                 $section,
                 1,
                 'eZ\Publish\Core\SignalSlot\Signal\SectionService\CreateSectionSignal',
-                array( 'sectionId' => $sectionId )
+                array('sectionId' => $sectionId),
             ),
             array(
                 'updateSection',
-                array( $section, $sectionUpdateStruct ),
+                array($section, $sectionUpdateStruct),
                 $section,
                 1,
                 'eZ\Publish\Core\SignalSlot\Signal\SectionService\UpdateSectionSignal',
-                array( 'sectionId' => $sectionId )
+                array('sectionId' => $sectionId),
             ),
             array(
                 'loadSection',
-                array( $sectionId ),
+                array($sectionId),
                 $section,
-                0
+                0,
             ),
             array(
                 'loadSections',
                 array(),
-                array( $section ),
-                0
+                array($section),
+                0,
             ),
             array(
                 'loadSectionByIdentifier',
-                array( $sectionIdentifier ),
+                array($sectionIdentifier),
                 $section,
-                0
+                0,
             ),
             array(
                 'countAssignedContents',
-                array( $section ),
+                array($section),
                 42,
-                0
+                0,
             ),
             array(
                 'assignSection',
-                array( $contentInfo, $section ),
+                array($contentInfo, $section),
                 null,
                 1,
                 'eZ\Publish\Core\SignalSlot\Signal\SectionService\AssignSectionSignal',
                 array(
                     'contentId' => $contentId,
-                    'sectionId' => $sectionId
-                )
+                    'sectionId' => $sectionId,
+                ),
             ),
             array(
                 'deleteSection',
-                array( $section ),
+                array($section),
                 null,
                 1,
                 'eZ\Publish\Core\SignalSlot\Signal\SectionService\DeleteSectionSignal',
                 array(
-                    'sectionId' => $sectionId
-                )
+                    'sectionId' => $sectionId,
+                ),
             ),
             array(
                 'newSectionCreateStruct',
                 array(),
                 $sectionCreateStruct,
-                0
+                0,
             ),
             array(
                 'newSectionUpdateStruct',
                 array(),
                 $sectionUpdateStruct,
-                0
+                0,
             ),
         );
     }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Functional\RoleTest class
+ * File containing the Functional\RoleTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishRestBundle\Tests\Functional;
 
 use eZ\Bundle\EzPublishRestBundle\Tests\Functional\TestCase as RESTFunctionalTestCase;
@@ -32,15 +31,16 @@ class RoleTest extends RESTFunctionalTestCase
   </descriptions>
 </RoleInput>
 XML;
-        $request = $this->createHttpRequest( "POST", "/api/ezp/v2/user/roles", 'RoleInput+xml', 'Role+json' );
-        $request->setContent( $xml );
-        $response = $this->sendHttpRequest( $request );
+        $request = $this->createHttpRequest('POST', '/api/ezp/v2/user/roles', 'RoleInput+xml', 'Role+json');
+        $request->setContent($xml);
+        $response = $this->sendHttpRequest($request);
 
-        self::assertHttpResponseCodeEquals( $response, 201 );
-        self::assertHttpResponseHasHeader( $response, 'Location' );
+        self::assertHttpResponseCodeEquals($response, 201);
+        self::assertHttpResponseHasHeader($response, 'Location');
 
-        $href = $response->getHeader( 'Location' );
-        $this->addCreatedElement( $href );
+        $href = $response->getHeader('Location');
+        $this->addCreatedElement($href);
+
         return $href;
     }
 
@@ -50,30 +50,30 @@ XML;
     public function testListRoles()
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", "/api/ezp/v2/user/roles" )
+            $this->createHttpRequest('GET', '/api/ezp/v2/user/roles')
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @depends testCreateRole
      * @covers GET /user/roles/{roleId}
      */
-    public function testLoadRole( $roleHref )
+    public function testLoadRole($roleHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", $roleHref )
+            $this->createHttpRequest('GET', $roleHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
-   /**
-    * @depends testCreateRole
-    * @covers PATCH /user/roles/{roleId}
-    */
-    public function testUpdateRole( $roleHref )
+    /**
+     * @depends testCreateRole
+     * @covers PATCH /user/roles/{roleId}
+     */
+    public function testUpdateRole($roleHref)
     {
         $xml = <<< XML
 <RoleInput>
@@ -88,12 +88,12 @@ XML;
 </RoleInput>
 XML;
 
-        $request = $this->createHttpRequest( "PATCH", $roleHref, 'RoleInput+xml', 'Role+json' );
-        $request->setContent( $xml );
-        $response = $this->sendHttpRequest( $request );
+        $request = $this->createHttpRequest('PATCH', $roleHref, 'RoleInput+xml', 'Role+json');
+        $request->setContent($xml);
+        $response = $this->sendHttpRequest($request);
 
         // @todo Fix failure Notice: Trying to get property of non-object in \/home\/bertrand\/www\/ezpublish-kernel\/eZ\/Publish\/Core\/Persistence\/Cache\/UserHandler.php line 174
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -101,7 +101,7 @@ XML;
      * @depends testCreateRole
      * @return string The created policy href
      */
-    public function testAddPolicy( $roleHref )
+    public function testAddPolicy($roleHref)
     {
         // @todo Error in Resource URL in spec @ https://github.com/ezsystems/ezpublish-kernel/blob/master/doc/specifications/rest/REST-API-V2.rst#151213create-policy
         $xml = <<< XML
@@ -118,15 +118,16 @@ XML;
   </limitations>
 </PolicyCreate>
 XML;
-        $request = $this->createHttpRequest( "POST", "$roleHref/policies", "PolicyCreate+xml", "Policy+json" );
-        $request->setContent( $xml );
+        $request = $this->createHttpRequest('POST', "$roleHref/policies", 'PolicyCreate+xml', 'Policy+json');
+        $request->setContent($xml);
 
-        $response = $this->sendHttpRequest( $request );
-        self::assertHttpResponseCodeEquals( $response, 201 );
-        self::assertHttpResponseHasHeader( $response, 'Location' );
+        $response = $this->sendHttpRequest($request);
+        self::assertHttpResponseCodeEquals($response, 201);
+        self::assertHttpResponseHasHeader($response, 'Location');
 
-        $href = $response->getHeader( 'Location' );
-        $this->addCreatedElement( $href );
+        $href = $response->getHeader('Location');
+        $this->addCreatedElement($href);
+
         return $href;
     }
 
@@ -134,33 +135,33 @@ XML;
      * @covers GET /user/roles/{roleId}/policies/{policyId}
      * @depends testAddPolicy
      */
-    public function testLoadPolicy( $policyHref )
+    public function testLoadPolicy($policyHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", $policyHref )
+            $this->createHttpRequest('GET', $policyHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @covers GET /user/roles/{roleId}/policies
      * @depends testCreateRole
      */
-    public function testLoadPolicies( $roleHref )
+    public function testLoadPolicies($roleHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", "$roleHref/policies" )
+            $this->createHttpRequest('GET', "$roleHref/policies")
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @covers PATCH /user/roles/{roleId}/policies/{policyId}
      * @depends testAddPolicy
      */
-    public function testUpdatePolicy( $policyHref )
+    public function testUpdatePolicy($policyHref)
     {
         $xml = <<< XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -175,11 +176,11 @@ XML;
 </PolicyUpdate>
 XML;
 
-        $request = $this->createHttpRequest( "PATCH", $policyHref, 'PolicyUpdate+xml', 'Policy+json' );
-        $request->setContent( $xml );
-        $response = $this->sendHttpRequest( $request );
+        $request = $this->createHttpRequest('PATCH', $policyHref, 'PolicyUpdate+xml', 'Policy+json');
+        $request->setContent($xml);
+        $response = $this->sendHttpRequest($request);
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -188,7 +189,7 @@ XML;
      * @return string assigned role href
      * @todo stop using the anonymous user, this is dangerous...
      */
-    public function testAssignRoleToUser( $roleHref )
+    public function testAssignRoleToUser($roleHref)
     {
         $xml = <<< XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -203,17 +204,17 @@ XML;
 XML;
 
         $request = $this->createHttpRequest(
-            "POST",
-            "/api/ezp/v2/user/users/10/roles",
-            "RoleAssignInput+xml",
-            "RoleAssignmentList+json"
+            'POST',
+            '/api/ezp/v2/user/users/10/roles',
+            'RoleAssignInput+xml',
+            'RoleAssignmentList+json'
         );
-        $request->setContent( $xml );
+        $request->setContent($xml);
 
-        $response = $this->sendHttpRequest( $request );
-        $roleAssignmentArray = json_decode( $response->getContent(), true );
+        $response = $this->sendHttpRequest($request);
+        $roleAssignmentArray = json_decode($response->getContent(), true);
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
 
         return $roleAssignmentArray['RoleAssignmentList']['RoleAssignment'][0]['_href'];
     }
@@ -222,26 +223,26 @@ XML;
      * @covers GET /user/users/{userId}/roles/{roleId}
      * @depends testAssignRoleToUser
      */
-    public function testLoadRoleAssignmentForUser( $roleAssignmentHref )
+    public function testLoadRoleAssignmentForUser($roleAssignmentHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", $roleAssignmentHref )
+            $this->createHttpRequest('GET', $roleAssignmentHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @covers DELETE /user/users/{userId}/roles/{roleId}
      * @depends testAssignRoleToUser
      */
-    public function testUnassignRoleFromUser( $roleAssignmentHref )
+    public function testUnassignRoleFromUser($roleAssignmentHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "DELETE", $roleAssignmentHref )
+            $this->createHttpRequest('DELETE', $roleAssignmentHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -249,7 +250,7 @@ XML;
      * @covers POST /user/groups/{groupId}/roles
      * @return string role assignment href
      */
-    public function testAssignRoleToUserGroup( $roleHref )
+    public function testAssignRoleToUserGroup($roleHref)
     {
         $xml = <<< XML
 <?xml version="1.0" encoding="UTF-8"?>
@@ -264,17 +265,17 @@ XML;
 XML;
 
         $request = $this->createHttpRequest(
-            "POST",
-            "/api/ezp/v2/user/groups/1/5/44/roles",
-            "RoleAssignInput+xml",
-            "RoleAssignmentList+json"
+            'POST',
+            '/api/ezp/v2/user/groups/1/5/44/roles',
+            'RoleAssignInput+xml',
+            'RoleAssignmentList+json'
         );
-        $request->setContent( $xml );
+        $request->setContent($xml);
 
-        $response = $this->sendHttpRequest( $request );
-        $roleAssignmentArray = json_decode( $response->getContent(), true );
+        $response = $this->sendHttpRequest($request);
+        $roleAssignmentArray = json_decode($response->getContent(), true);
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
 
         return $roleAssignmentArray['RoleAssignmentList']['RoleAssignment'][0]['_href'];
     }
@@ -283,28 +284,28 @@ XML;
      * @covers GET /user/groups/{groupId}/roles/{roleId}
      * @depends testAssignRoleToUserGroup
      */
-    public function testLoadRoleAssignmentForUserGroup( $roleAssignmentHref )
+    public function testLoadRoleAssignmentForUserGroup($roleAssignmentHref)
     {
         $response = $this->sendHttpRequest(
-            $request = $this->createHttpRequest( "GET", $roleAssignmentHref )
+            $request = $this->createHttpRequest('GET', $roleAssignmentHref)
         );
 
-        self::markTestIncomplete( "Requires that visitors are fixed (group url generation)" );
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::markTestIncomplete('Requires that visitors are fixed (group url generation)');
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @covers DELETE /user/groups/{groupId}/roles/{roleId}
      * @depends testAssignRoleToUserGroup
      */
-    public function testUnassignRoleFromUserGroup( $roleAssignmentHref )
+    public function testUnassignRoleFromUserGroup($roleAssignmentHref)
     {
         $response = $this->sendHttpRequest(
-            $request = $this->createHttpRequest( "DELETE", $roleAssignmentHref )
+            $request = $this->createHttpRequest('DELETE', $roleAssignmentHref)
         );
 
-        self::markTestIncomplete( "Requires that visitors are fixed (group url generation)" );
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::markTestIncomplete('Requires that visitors are fixed (group url generation)');
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -313,10 +314,10 @@ XML;
     public function testLoadRoleAssignmentsForUser()
     {
         $response = $this->sendHttpRequest(
-            $request = $this->createHttpRequest( "GET", "/api/ezp/v2/user/users/10/roles" )
+            $request = $this->createHttpRequest('GET', '/api/ezp/v2/user/users/10/roles')
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -325,10 +326,10 @@ XML;
     public function testLoadRoleAssignmentsForUserGroup()
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", "/api/ezp/v2/user/groups/1/5/44/roles" )
+            $this->createHttpRequest('GET', '/api/ezp/v2/user/groups/1/5/44/roles')
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
@@ -337,48 +338,48 @@ XML;
     public function testListPoliciesForUser()
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "GET", "/api/ezp/v2/user/policies?userId=10" )
+            $this->createHttpRequest('GET', '/api/ezp/v2/user/policies?userId=10')
         );
 
-        self::assertHttpResponseCodeEquals( $response, 200 );
+        self::assertHttpResponseCodeEquals($response, 200);
     }
 
     /**
      * @covers DELETE /user/roles/{roleId}/policies/{policyId}
      * @depends testAddPolicy
      */
-    public function testDeletePolicy( $policyHref )
+    public function testDeletePolicy($policyHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "DELETE", $policyHref )
+            $this->createHttpRequest('DELETE', $policyHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 204 );
+        self::assertHttpResponseCodeEquals($response, 204);
     }
 
     /**
      * @covers DELETE /user/roles/{roleId}/policies
      * @depends testCreateRole
      */
-    public function testDeletePolicies( $roleHref )
+    public function testDeletePolicies($roleHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "DELETE", "$roleHref/policies" )
+            $this->createHttpRequest('DELETE', "$roleHref/policies")
         );
 
-        self::assertHttpResponseCodeEquals( $response, 204 );
+        self::assertHttpResponseCodeEquals($response, 204);
     }
 
     /**
      * @covers DELETE /user/roles/{roleId}
      * @depends testCreateRole
      */
-    public function testDeleteRole( $roleHref )
+    public function testDeleteRole($roleHref)
     {
         $response = $this->sendHttpRequest(
-            $this->createHttpRequest( "DELETE", $roleHref )
+            $this->createHttpRequest('DELETE', $roleHref)
         );
 
-        self::assertHttpResponseCodeEquals( $response, 204 );
+        self::assertHttpResponseCodeEquals($response, 204);
     }
 }

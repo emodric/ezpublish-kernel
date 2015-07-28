@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase date metadata criterion handler class
+ * File containing the DoctrineDatabase date metadata criterion handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
 
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
@@ -16,7 +15,7 @@ use eZ\Publish\Core\Persistence\Database\SelectQuery;
 use RuntimeException;
 
 /**
- * Date metadata criterion handler
+ * Date metadata criterion handler.
  */
 class DateMetadata extends CriterionHandler
 {
@@ -25,15 +24,15 @@ class DateMetadata extends CriterionHandler
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept( Criterion $criterion )
+    public function accept(Criterion $criterion)
     {
         return $criterion instanceof Criterion\DateMetadata;
     }
 
     /**
-     * Generate query expression for a Criterion this handler accepts
+     * Generate query expression for a Criterion this handler accepts.
      *
      * accept() must be called before calling this method.
      *
@@ -43,7 +42,7 @@ class DateMetadata extends CriterionHandler
      *
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      */
-    public function handle( CriteriaConverter $converter, SelectQuery $query, Criterion $criterion )
+    public function handle(CriteriaConverter $converter, SelectQuery $query, Criterion $criterion)
     {
         $column = $this->dbHandler->quoteColumn(
             $criterion->target === Criterion\DateMetadata::MODIFIED ?
@@ -52,8 +51,7 @@ class DateMetadata extends CriterionHandler
             'ezcontentobject'
         );
 
-        switch ( $criterion->operator )
-        {
+        switch ($criterion->operator) {
             case Criterion\Operator::IN:
                 return $query->expr->in(
                     $column,
@@ -63,8 +61,8 @@ class DateMetadata extends CriterionHandler
             case Criterion\Operator::BETWEEN:
                 return $query->expr->between(
                     $column,
-                    $query->bindValue( $criterion->value[0] ),
-                    $query->bindValue( $criterion->value[1] )
+                    $query->bindValue($criterion->value[0]),
+                    $query->bindValue($criterion->value[1])
                 );
 
             case Criterion\Operator::EQ:
@@ -73,9 +71,10 @@ class DateMetadata extends CriterionHandler
             case Criterion\Operator::LT:
             case Criterion\Operator::LTE:
                 $operatorFunction = $this->comparatorMap[$criterion->operator];
+
                 return $query->expr->$operatorFunction(
                     $column,
-                    $query->bindValue( reset( $criterion->value ) )
+                    $query->bindValue(reset($criterion->value))
                 );
 
             default:
@@ -83,7 +82,5 @@ class DateMetadata extends CriterionHandler
                     "Unknown operator '{$criterion->operator}' for DateMetadata criterion handler."
                 );
         }
-
     }
 }
-

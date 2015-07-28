@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -17,7 +17,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mimeTypeDetector = new MimeTypeDetector;
+        $this->mimeTypeDetector = new MimeTypeDetector();
     }
 
     protected function getFixture()
@@ -39,7 +39,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
     {
         self::assertEquals(
             $this->mimeTypeDetector->getFromBuffer(
-                file_get_contents( $this->getFixture() )
+                file_get_contents($this->getFixture())
             ),
             'image/jpeg'
         );

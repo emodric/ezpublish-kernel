@@ -6,14 +6,13 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher\Compound;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher\Compound;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\VersatileMatcher;
 
 /**
- * Siteaccess matcher that allows a combination of matchers, with a logical OR
+ * Siteaccess matcher that allows a combination of matchers, with a logical OR.
  */
 class LogicalOr extends Compound
 {
@@ -21,13 +20,11 @@ class LogicalOr extends Compound
 
     public function match()
     {
-        foreach ( $this->config as $i => $rule )
-        {
-            foreach ( $rule['matchers'] as $subMatcherClass => $matchingConfig )
-            {
-                if ( $this->matchersMap[$i][$subMatcherClass]->match() )
-                {
+        foreach ($this->config as $i => $rule) {
+            foreach ($rule['matchers'] as $subMatcherClass => $matchingConfig) {
+                if ($this->matchersMap[$i][$subMatcherClass]->match()) {
                     $this->subMatchers = $this->matchersMap[$i];
+
                     return $rule['match'];
                 }
             }
@@ -36,26 +33,22 @@ class LogicalOr extends Compound
         return false;
     }
 
-    public function reverseMatch( $siteAccessName )
+    public function reverseMatch($siteAccessName)
     {
-        foreach ( $this->config as $i => $rule )
-        {
-            if ( $rule['match'] === $siteAccessName )
-            {
-                foreach ( $this->matchersMap[$i] as $subMatcher )
-                {
-                    if ( !$subMatcher instanceof VersatileMatcher )
-                    {
+        foreach ($this->config as $i => $rule) {
+            if ($rule['match'] === $siteAccessName) {
+                foreach ($this->matchersMap[$i] as $subMatcher) {
+                    if (!$subMatcher instanceof VersatileMatcher) {
                         continue;
                     }
 
-                    $reverseMatcher = $subMatcher->reverseMatch( $siteAccessName );
-                    if ( !$reverseMatcher )
-                    {
+                    $reverseMatcher = $subMatcher->reverseMatch($siteAccessName);
+                    if (!$reverseMatcher) {
                         continue;
                     }
 
-                    $this->setSubMatchers( array( $subMatcher ) );
+                    $this->setSubMatchers(array($subMatcher));
+
                     return $this;
                 }
             }

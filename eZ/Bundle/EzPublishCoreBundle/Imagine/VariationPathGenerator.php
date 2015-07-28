@@ -10,12 +10,12 @@ namespace eZ\Bundle\EzPublishCoreBundle\Imagine;
 interface VariationPathGenerator
 {
     /**
-     * Returns the variation for image $originalPath with $filter
+     * Returns the variation for image $originalPath with $filter.
      *
      * @param string $originalPath
      * @param string $filter
      *
      * @return string
      */
-    public function getVariationPath( $originalPath, $filter );
+    public function getVariationPath($originalPath, $filter);
 }

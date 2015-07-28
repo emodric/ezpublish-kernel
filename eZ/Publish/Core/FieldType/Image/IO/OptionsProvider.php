@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the eZ Publish Legacy package
+ * This file is part of the eZ Publish Legacy package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -17,15 +17,15 @@ class OptionsProvider
 
     protected $publishedImagesDir;
 
-    public function __construct( array $values = array() )
+    public function __construct(array $values = array())
     {
-        $this->varDir = isset( $values['var_dir'] ) ? $values['var_dir'] : null;
-        $this->storageDir = isset( $values['storage_dir'] ) ? $values['storage_dir'] : null;
-        $this->draftImagesDir = isset( $values['draft_images_dir'] ) ? $values['draft_images_dir'] : null;
-        $this->publishedImagesDir = isset( $values['published_images_dir'] ) ? $values['published_images_dir'] : null;
+        $this->varDir = isset($values['var_dir']) ? $values['var_dir'] : null;
+        $this->storageDir = isset($values['storage_dir']) ? $values['storage_dir'] : null;
+        $this->draftImagesDir = isset($values['draft_images_dir']) ? $values['draft_images_dir'] : null;
+        $this->publishedImagesDir = isset($values['published_images_dir']) ? $values['published_images_dir'] : null;
     }
 
-    public function setVarDir( $varDir )
+    public function setVarDir($varDir)
     {
         $this->varDir = $varDir;
     }
@@ -35,7 +35,7 @@ class OptionsProvider
         return $this->varDir;
     }
 
-    public function setStorageDir( $storageDir )
+    public function setStorageDir($storageDir)
     {
         $this->storageDir = $storageDir;
     }
@@ -45,7 +45,7 @@ class OptionsProvider
         return $this->storageDir;
     }
 
-    public function setDraftImagesDir( $draftImagesDir )
+    public function setDraftImagesDir($draftImagesDir)
     {
         $this->draftImagesDir = $draftImagesDir;
     }
@@ -55,7 +55,7 @@ class OptionsProvider
         return $this->draftImagesDir;
     }
 
-    public function setPublishedImagesDir( $publishedImagesDir )
+    public function setPublishedImagesDir($publishedImagesDir)
     {
         $this->publishedImagesDir = $publishedImagesDir;
     }

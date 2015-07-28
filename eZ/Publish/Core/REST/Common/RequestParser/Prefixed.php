@@ -17,24 +17,23 @@ class Prefixed extends EzPublishRequestParser
      */
     protected $prefix;
 
-    public function __construct( $prefix = '', array $map = array() )
+    public function __construct($prefix = '', array $map = array())
     {
         $this->prefix = $prefix;
-        parent::__construct( $map );
+        parent::__construct($map);
     }
 
-    public function generate( $type, array $values = array() )
+    public function generate($type, array $values = array())
     {
-        return $this->prefix . parent::generate( $type, $values );
+        return $this->prefix . parent::generate($type, $values);
     }
 
-    public function parse( $type, $url )
+    public function parse($type, $url)
     {
-        if ( strpos( $url, $this->prefix ) === 0 )
-        {
-            $url = substr( $url, strlen( $this->prefix ) );
+        if (strpos($url, $this->prefix) === 0) {
+            $url = substr($url, strlen($this->prefix));
         }
-        return parent::parse( $type, $url );
-    }
 
+        return parent::parse($type, $url);
+    }
 }

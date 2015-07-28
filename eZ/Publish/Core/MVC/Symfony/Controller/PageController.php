@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Controller;
 
 use eZ\Publish\Core\FieldType\Page\Parts\Block;
@@ -26,14 +25,14 @@ class PageController extends Controller
      */
     protected $pageService;
 
-    public function __construct( ViewManager $viewManager, PageService $pageService )
+    public function __construct(ViewManager $viewManager, PageService $pageService)
     {
         $this->viewManager = $viewManager;
         $this->pageService = $pageService;
     }
 
     /**
-     * Render the block
+     * Render the block.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      * @param array $params
@@ -42,25 +41,22 @@ class PageController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewBlock( Block $block, array $params = array(), array $cacheSettings = array() )
+    public function viewBlock(Block $block, array $params = array(), array $cacheSettings = array())
     {
         $response = new Response();
-        if ( $this->getParameter( 'content.view_cache' ) === true )
-        {
+        if ($this->getParameter('content.view_cache') === true) {
             $response->setPublic();
             if (
-                isset( $cacheSettings['smax-age'] )
-                && is_int( $cacheSettings['smax-age'] )
-            )
-            {
-                $response->setSharedMaxAge( (int)$cacheSettings['smax-age'] );
+                isset($cacheSettings['smax-age'])
+                && is_int($cacheSettings['smax-age'])
+            ) {
+                $response->setSharedMaxAge((int)$cacheSettings['smax-age']);
             }
             if (
-                isset( $cacheSettings['max-age'] )
-                && is_int( $cacheSettings['max-age'] )
-            )
-            {
-                $response->setMaxAge( (int)$cacheSettings['max-age'] );
+                isset($cacheSettings['max-age'])
+                && is_int($cacheSettings['max-age'])
+            ) {
+                $response->setMaxAge((int)$cacheSettings['max-age']);
             }
         }
 
@@ -70,10 +66,11 @@ class PageController extends Controller
                 $params + array(
                     // @deprecated pageService injection will be removed in 6.0.
                     'pageService' => $this->pageService,
-                    'valid_items' => $this->pageService->getValidBlockItems( $block )
+                    'valid_items' => $this->pageService->getValidBlockItems($block),
                 )
             )
         );
+
         return $response;
     }
 
@@ -93,10 +90,10 @@ class PageController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewBlockById( $id, array $params = array(), array $cacheSettings = array() )
+    public function viewBlockById($id, array $params = array(), array $cacheSettings = array())
     {
         return $this->viewBlock(
-            $this->pageService->loadBlock( $id ),
+            $this->pageService->loadBlock($id),
             $params,
             $cacheSettings
         );

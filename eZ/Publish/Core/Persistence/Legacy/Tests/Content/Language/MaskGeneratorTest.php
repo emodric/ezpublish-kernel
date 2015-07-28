@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\Language\MaskGeneratorTest class
+ * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\Language\MaskGeneratorTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\Language;
 
 use eZ\Publish\Core\Persistence\Legacy\Tests\Content\LanguageAwareTestCase;
@@ -14,31 +13,29 @@ use eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator;
 use eZ\Publish\SPI\Persistence\Content\Language;
 
 /**
- * Test case for Language MaskGenerator
+ * Test case for Language MaskGenerator.
  */
 class MaskGeneratorTest extends LanguageAwareTestCase
 {
-
     /**
      * @param array $languages
      * @param int $expectedMask
      *
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::generateLanguageMask
      * @dataProvider getLanguageMaskData
      */
-    public function testGenerateLanguageMask( array $languages, $expectedMask )
+    public function testGenerateLanguageMask(array $languages, $expectedMask)
     {
         $generator = $this->getMaskGenerator();
 
         $this->assertSame(
             $expectedMask,
-            $generator->generateLanguageMask( $languages )
+            $generator->generateLanguageMask($languages)
         );
     }
 
     /**
-     * Returns test data for {@link testGenerateLanguageMask()}
+     * Returns test data for {@link testGenerateLanguageMask()}.
      *
      * @return array
      */
@@ -50,19 +47,19 @@ class MaskGeneratorTest extends LanguageAwareTestCase
                 0,
             ),
             'single_lang' => array(
-                array( 'eng-GB' => true ),
+                array('eng-GB' => true),
                 4,
             ),
             'multi_lang' => array(
-                array( 'eng-US' => true, 'eng-GB' => true ),
+                array('eng-US' => true, 'eng-GB' => true),
                 6,
             ),
             'always_available' => array(
-                array( 'always-available' => 'eng-US', 'eng-US' => true ),
+                array('always-available' => 'eng-US', 'eng-US' => true),
                 3,
             ),
             'full' => array(
-                array( 'always-available' => 'eng-US', 'eng-US' => true, 'eng-GB' => true ),
+                array('always-available' => 'eng-US', 'eng-US' => true, 'eng-GB' => true),
                 7,
             ),
         );
@@ -70,26 +67,25 @@ class MaskGeneratorTest extends LanguageAwareTestCase
 
     /**
      * @param string $languageCode
-     * @param boolean $alwaysAvailable
+     * @param bool $alwaysAvailable
      * @param int $expectedIndicator
      *
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::generateLanguageIndicator
      * @dataProvider getLanguageIndicatorData
      */
     public function testGenerateLanguageIndicator(
-        $languageCode, $alwaysAvailable, $expectedIndicator )
+        $languageCode, $alwaysAvailable, $expectedIndicator)
     {
         $generator = $this->getMaskGenerator();
 
         $this->assertSame(
             $expectedIndicator,
-            $generator->generateLanguageIndicator( $languageCode, $alwaysAvailable )
+            $generator->generateLanguageIndicator($languageCode, $alwaysAvailable)
         );
     }
 
     /**
-     * Returns test data for {@link testGenerateLanguageIndicator()}
+     * Returns test data for {@link testGenerateLanguageIndicator()}.
      *
      * @return array
      */
@@ -111,8 +107,6 @@ class MaskGeneratorTest extends LanguageAwareTestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::isLanguageAlwaysAvailable
-     *
-     * @return void
      */
     public function testIsLanguageAlwaysAvailable()
     {
@@ -123,7 +117,7 @@ class MaskGeneratorTest extends LanguageAwareTestCase
                 'eng-GB',
                 array(
                     'always-available' => 'eng-GB',
-                    'eng-GB' => 'lala'
+                    'eng-GB' => 'lala',
                 )
             )
         );
@@ -131,8 +125,6 @@ class MaskGeneratorTest extends LanguageAwareTestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::isLanguageAlwaysAvailable
-     *
-     * @return void
      */
     public function testIsLanguageAlwaysAvailableOtherLanguage()
     {
@@ -143,7 +135,7 @@ class MaskGeneratorTest extends LanguageAwareTestCase
                 'eng-GB',
                 array(
                     'always-available' => 'eng-US',
-                    'eng-GB' => 'lala'
+                    'eng-GB' => 'lala',
                 )
             )
         );
@@ -151,8 +143,6 @@ class MaskGeneratorTest extends LanguageAwareTestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::isLanguageAlwaysAvailable
-     *
-     * @return void
      */
     public function testIsLanguageAlwaysAvailableNoDefault()
     {
@@ -162,7 +152,7 @@ class MaskGeneratorTest extends LanguageAwareTestCase
             $generator->isLanguageAlwaysAvailable(
                 'eng-GB',
                 array(
-                    'eng-GB' => 'lala'
+                    'eng-GB' => 'lala',
                 )
             )
         );
@@ -170,30 +160,30 @@ class MaskGeneratorTest extends LanguageAwareTestCase
 
     /**
      * @param int $languageMask
-     * @param boolean $expectedResult
+     * @param bool $expectedResult
      *
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::isAlwaysAvailable
      * @dataProvider isAlwaysAvailableProvider
      */
-    public function testIsAlwaysAvailable( $langMask, $expectedResult )
+    public function testIsAlwaysAvailable($langMask, $expectedResult)
     {
         $generator = $this->getMaskGenerator();
-        self::assertSame( $expectedResult, $generator->isAlwaysAvailable( $langMask ) );
+        self::assertSame($expectedResult, $generator->isAlwaysAvailable($langMask));
     }
 
     /**
-     * Returns test data for {@link testIsAlwaysAvailable()}
+     * Returns test data for {@link testIsAlwaysAvailable()}.
      *
      * @return array
      */
     public function isAlwaysAvailableProvider()
     {
         return array(
-            array( 2, false ),
-            array( 3, true ),
-            array( 62, false ),
-            array( 14, false ),
-            array( 15, true )
+            array(2, false),
+            array(3, true),
+            array(62, false),
+            array(14, false),
+            array(15, true),
         );
     }
 
@@ -201,24 +191,24 @@ class MaskGeneratorTest extends LanguageAwareTestCase
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::removeAlwaysAvailableFlag
      * @dataProvider removeAlwaysAvailableFlagProvider
      */
-    public function testRemoveAlwaysAvailableFlag( $langMask, $expectedResult )
+    public function testRemoveAlwaysAvailableFlag($langMask, $expectedResult)
     {
         $generator = $this->getMaskGenerator();
-        self::assertSame( $expectedResult, $generator->removeAlwaysAvailableFlag( $langMask ) );
+        self::assertSame($expectedResult, $generator->removeAlwaysAvailableFlag($langMask));
     }
 
     /**
-     * Returns test data for {@link testRemoveAlwaysAvailableFlag}
+     * Returns test data for {@link testRemoveAlwaysAvailableFlag}.
      *
      * @return array
      */
     public function removeAlwaysAvailableFlagProvider()
     {
         return array(
-            array( 3, 2 ),
-            array( 7, 6 ),
-            array( 14, 14 ),
-            array( 62, 62 )
+            array(3, 2),
+            array(7, 6),
+            array(14, 14),
+            array(62, 62),
         );
     }
 
@@ -229,14 +219,14 @@ class MaskGeneratorTest extends LanguageAwareTestCase
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator::extractLanguageIdsFromMask
      * @dataProvider languageIdsFromMaskProvider
      */
-    public function testExtractLanguageIdsFromMask( $langMask, array $expectedResult )
+    public function testExtractLanguageIdsFromMask($langMask, array $expectedResult)
     {
         $generator = $this->getMaskGenerator();
-        self::assertSame( $expectedResult, $generator->extractLanguageIdsFromMask( $langMask ) );
+        self::assertSame($expectedResult, $generator->extractLanguageIdsFromMask($langMask));
     }
 
     /**
-     * Returns test data for {@link testExtractLanguageIdsFromMask}
+     * Returns test data for {@link testExtractLanguageIdsFromMask}.
      *
      * @return array
      */
@@ -245,53 +235,50 @@ class MaskGeneratorTest extends LanguageAwareTestCase
         return array(
             array(
                 2,
-                array( 2 )
+                array(2),
             ),
             array(
                 15,
-                array( 2, 4, 8 )
+                array(2, 4, 8),
             ),
             array(
                 62,
-                array( 2, 4, 8, 16, 32 )
+                array(2, 4, 8, 16, 32),
             ),
         );
     }
 
     /**
-     * Returns the mask generator to test
+     * Returns the mask generator to test.
      *
      * @return \eZ\Publish\Core\Persistence\Legacy\Content\Language\MaskGenerator
      */
     protected function getMaskGenerator()
     {
-        return new MaskGenerator( $this->getLanguageHandler() );
+        return new MaskGenerator($this->getLanguageHandler());
     }
 
     /**
-     * Returns a language handler mock
+     * Returns a language handler mock.
      *
      * @return \eZ\Publish\Core\Persistence\Legacy\Content\Language\Handler
      */
     protected function getLanguageHandler()
     {
-        if ( !isset( $this->languageHandler ) )
-        {
-            $this->languageHandler = $this->getMock( 'eZ\\Publish\\SPI\\Persistence\\Content\\Language\\Handler' );
-            $this->languageHandler->expects( $this->any() )
-                ->method( 'loadByLanguageCode' )
+        if (!isset($this->languageHandler)) {
+            $this->languageHandler = $this->getMock('eZ\\Publish\\SPI\\Persistence\\Content\\Language\\Handler');
+            $this->languageHandler->expects($this->any())
+                ->method('loadByLanguageCode')
                 ->will(
                     $this->returnCallback(
-                        function ( $languageCode )
-                        {
-                            switch ( $languageCode )
-                            {
+                        function ($languageCode) {
+                            switch ($languageCode) {
                                 case 'eng-US':
                                     return new Language(
                                         array(
                                             'id' => 2,
                                             'languageCode' => 'eng-US',
-                                            'name' => 'US english'
+                                            'name' => 'US english',
                                         )
                                     );
                                 case 'eng-GB':
@@ -299,7 +286,7 @@ class MaskGeneratorTest extends LanguageAwareTestCase
                                         array(
                                             'id' => 4,
                                             'languageCode' => 'eng-GB',
-                                            'name' => 'British english'
+                                            'name' => 'British english',
                                         )
                                     );
                             }
@@ -307,6 +294,7 @@ class MaskGeneratorTest extends LanguageAwareTestCase
                     )
                 );
         }
+
         return $this->languageHandler;
     }
 }

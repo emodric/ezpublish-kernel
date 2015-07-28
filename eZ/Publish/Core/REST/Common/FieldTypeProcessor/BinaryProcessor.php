@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Common\FieldTypeProcessor;
 
 class BinaryProcessor extends BinaryInputProcessor
 {
     /**
-     * Host prefix for uris, without a leading /
+     * Host prefix for uris, without a leading /.
      *
      * @todo Refactor such transformation with a service that receives the request and has the host
      *
@@ -24,43 +23,42 @@ class BinaryProcessor extends BinaryInputProcessor
      * @param string $temporaryDirectory
      * @param string $hostPrefix
      */
-    public function __construct( $temporaryDirectory, $hostPrefix )
+    public function __construct($temporaryDirectory, $hostPrefix)
     {
-        parent::__construct( $temporaryDirectory );
+        parent::__construct($temporaryDirectory);
         $this->hostPrefix = $hostPrefix;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function postProcessValueHash( $outgoingValueHash )
+    public function postProcessValueHash($outgoingValueHash)
     {
-        if ( !is_array( $outgoingValueHash ) )
-        {
+        if (!is_array($outgoingValueHash)) {
             return $outgoingValueHash;
         }
 
         // url is kept for BC, but uri is the right one
-        $outgoingValueHash['uri'] = $outgoingValueHash['url'] = $this->generateUrl( $outgoingValueHash['uri'] );
+        $outgoingValueHash['uri'] = $outgoingValueHash['url'] = $this->generateUrl($outgoingValueHash['uri']);
 
         return $outgoingValueHash;
     }
 
     /**
-     * Generates a URL for $path
+     * Generates a URL for $path.
      *
      * @param string $path absolute url
      *
      * @return string
      */
-    protected function generateUrl( $path )
+    protected function generateUrl($path)
     {
         $url = $path;
-        if ( $this->hostPrefix )
-        {
+        if ($this->hostPrefix) {
             // url should start with a /
             $url = $this->hostPrefix . $url;
         }
+
         return $url;
     }
 }

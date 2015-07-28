@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the CreateStruct class
+ * File containing the CreateStruct class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\SPI\Persistence\Content\Location;
 
 use eZ\Publish\SPI\Persistence\ValueObject;
@@ -14,7 +13,7 @@ use eZ\Publish\SPI\Persistence\ValueObject;
 class UpdateStruct extends ValueObject
 {
     /**
-     * Location priority
+     * Location priority.
      *
      * Position of the Location among its siblings when sorted using priority
      * sort order.

@@ -11,16 +11,14 @@ namespace eZ\Publish\API\Repository\Values\Content\Search;
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * Base class for facets
- *
+ * Base class for facets.
  */
 abstract class Facet extends ValueObject
 {
     /**
-     * The name of the facet
+     * The name of the facet.
      *
      * @var string
      */
     public $name;
 }
-

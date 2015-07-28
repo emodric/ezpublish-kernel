@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -19,11 +18,10 @@ class BlockMatcherFactory extends AbstractMatcherFactory
 {
     const MATCHER_RELATIVE_NAMESPACE = 'eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\Block';
 
-    protected function getMatcher( $matcherIdentifier )
+    protected function getMatcher($matcherIdentifier)
     {
-        $matcher = parent::getMatcher( $matcherIdentifier );
-        if ( !$matcher instanceof BlockMatcherInterface )
-        {
+        $matcher = parent::getMatcher($matcherIdentifier);
+        if (!$matcher instanceof BlockMatcherInterface) {
             throw new InvalidArgumentException(
                 'Matcher for Blocks must implement eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\Block\\MatcherInterface.'
             );
@@ -42,11 +40,12 @@ class BlockMatcherFactory extends AbstractMatcherFactory
      *
      * @return bool
      */
-    protected function doMatch( BaseMatcherInterface $matcher, ValueObject $valueObject )
+    protected function doMatch(BaseMatcherInterface $matcher, ValueObject $valueObject)
     {
-        if ( !$valueObject instanceof Block )
-            throw new InvalidArgumentException( 'Value object must be a valid Block instance' );
+        if (!$valueObject instanceof Block) {
+            throw new InvalidArgumentException('Value object must be a valid Block instance');
+        }
 
-        return $matcher->matchBlock( $valueObject );
+        return $matcher->matchBlock($valueObject);
     }
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher\Regex;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher;
@@ -23,11 +22,11 @@ class Host extends Regex implements Matcher
      *
      * @param array $siteAccessesConfiguration SiteAccesses configuration.
      */
-    public function __construct( array $siteAccessesConfiguration )
+    public function __construct(array $siteAccessesConfiguration)
     {
         parent::__construct(
-            isset( $siteAccessesConfiguration["regex"] ) ? $siteAccessesConfiguration["regex"] : "",
-            isset( $siteAccessesConfiguration["itemNumber"] ) ? (int)$siteAccessesConfiguration["itemNumber"] : 1
+            isset($siteAccessesConfiguration['regex']) ? $siteAccessesConfiguration['regex'] : '',
+            isset($siteAccessesConfiguration['itemNumber']) ? (int)$siteAccessesConfiguration['itemNumber'] : 1
         );
     }
 
@@ -41,13 +40,12 @@ class Host extends Regex implements Matcher
      *
      * @param \eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest $request
      */
-    public function setRequest( SimplifiedRequest $request )
+    public function setRequest(SimplifiedRequest $request)
     {
-        if ( !$this->element )
-        {
-            $this->setMatchElement( $request->host );
+        if (!$this->element) {
+            $this->setMatchElement($request->host);
         }
 
-        parent::setRequest( $request );
+        parent::setRequest($request);
     }
 }

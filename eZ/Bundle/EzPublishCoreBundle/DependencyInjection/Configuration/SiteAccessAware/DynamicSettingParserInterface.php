@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware;
 
 /**
@@ -38,11 +37,11 @@ interface DynamicSettingParserInterface
      *
      * @return bool
      */
-    public function isDynamicSetting( $setting );
+    public function isDynamicSetting($setting);
 
     /**
      * Parses $setting and returns a hash of corresponding arguments.
-     * Returned hash will contain the following entries:
+     * Returned hash will contain the following entries:.
      *
      * - "param": the parameter name (e.g. "my_param").
      * - "namespace": the namespace. Will be null if none was specified (considered default).
@@ -52,5 +51,5 @@ interface DynamicSettingParserInterface
      *
      * @return array
      */
-    public function parseDynamicSetting( $setting );
+    public function parseDynamicSetting($setting);
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Search Gateway class
+ * File containing the Content Search Gateway class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Gateway;
 
 use eZ\Publish\Core\Search\Legacy\Content\Gateway;
@@ -22,18 +21,18 @@ use RuntimeException;
 class ExceptionConversion extends Gateway
 {
     /**
-     * The wrapped gateway
+     * The wrapped gateway.
      *
      * @var Gateway
      */
     protected $innerGateway;
 
     /**
-     * Creates a new exception conversion gateway around $innerGateway
+     * Creates a new exception conversion gateway around $innerGateway.
      *
      * @param Gateway $innerGateway
      */
-    public function __construct( Gateway $innerGateway )
+    public function __construct(Gateway $innerGateway)
     {
         $this->innerGateway = $innerGateway;
     }
@@ -52,20 +51,14 @@ class ExceptionConversion extends Gateway
      *
      * @return mixed[][]
      */
-    public function find( Criterion $criterion, $offset = 0, $limit = null, array $sort = null, array $translations = null, $doCount = true )
+    public function find(Criterion $criterion, $offset = 0, $limit = null, array $sort = null, array $translations = null, $doCount = true)
     {
-        try
-        {
-            return $this->innerGateway->find( $criterion, $offset, $limit, $sort, $translations, $doCount );
-        }
-        catch ( DBALException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
-        }
-        catch ( PDOException $e )
-        {
-            throw new RuntimeException( 'Database error', 0, $e );
+        try {
+            return $this->innerGateway->find($criterion, $offset, $limit, $sort, $translations, $doCount);
+        } catch (DBALException $e) {
+            throw new RuntimeException('Database error', 0, $e);
+        } catch (PDOException $e) {
+            throw new RuntimeException('Database error', 0, $e);
         }
     }
 }
-

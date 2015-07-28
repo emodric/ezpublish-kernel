@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Routing\Generator;
 
 use eZ\Publish\Core\MVC\Symfony\Event\RouteReferenceGenerationEvent;
@@ -27,12 +26,12 @@ class RouteReferenceGenerator implements RouteReferenceGeneratorInterface
      */
     private $request;
 
-    public function __construct( EventDispatcherInterface $dispatcher )
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
@@ -46,16 +45,16 @@ class RouteReferenceGenerator implements RouteReferenceGeneratorInterface
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Routing\RouteReference
      */
-    public function generate( $resource = null, array $params = array() )
+    public function generate($resource = null, array $params = array())
     {
-        if ( $resource === null )
-        {
-            $resource = $this->request->attributes->get( '_route' );
-            $params += $this->request->attributes->get( '_route_params', array() );
+        if ($resource === null) {
+            $resource = $this->request->attributes->get('_route');
+            $params += $this->request->attributes->get('_route_params', array());
         }
 
-        $event = new RouteReferenceGenerationEvent( new RouteReference( $resource, $params ), $this->request );
-        $this->dispatcher->dispatch( MVCEvents::ROUTE_REFERENCE_GENERATION, $event );
+        $event = new RouteReferenceGenerationEvent(new RouteReference($resource, $params), $this->request);
+        $this->dispatcher->dispatch(MVCEvents::ROUTE_REFERENCE_GENERATION, $event);
+
         return $event->getRouteReference();
     }
 }

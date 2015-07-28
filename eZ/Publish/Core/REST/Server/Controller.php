@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the REST Server Controller class
+ * File containing the REST Server Controller class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server;
 
 use eZ\Publish\API\Repository\Repository;
@@ -39,49 +38,47 @@ abstract class Controller extends ContainerAware
     protected $requestParser;
 
     /**
-     * Repository
+     * Repository.
      *
      * @var \eZ\Publish\API\Repository\Repository
      */
     protected $repository;
 
-    public function setInputDispatcher( InputDispatcher $inputDispatcher )
+    public function setInputDispatcher(InputDispatcher $inputDispatcher)
     {
         $this->inputDispatcher = $inputDispatcher;
     }
 
-    public function setRouter( RouterInterface $router )
+    public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
 
-    public function setRepository( Repository $repository )
+    public function setRepository(Repository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function setRequestParser( RequestParser $requestParser )
+    public function setRequestParser(RequestParser $requestParser)
     {
         $this->requestParser = $requestParser;
     }
 
     /**
-     * Extracts the requested media type from $request
+     * Extracts the requested media type from $request.
      * @todo refactor, maybe to a REST Request with an accepts('content-type') method
      *
      * @return string
      */
     protected function getMediaType()
     {
-        foreach ( $this->request->getAcceptableContentTypes() as $mimeType )
-        {
-            if ( preg_match( '(^([a-z0-9-/.]+)\+.*$)', strtolower( $mimeType ), $matches ) )
-            {
+        foreach ($this->request->getAcceptableContentTypes() as $mimeType) {
+            if (preg_match('(^([a-z0-9-/.]+)\+.*$)', strtolower($mimeType), $matches)) {
                 return $matches[1];
             }
         }

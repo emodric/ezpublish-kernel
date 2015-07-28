@@ -1,19 +1,18 @@
 <?php
 /**
- * File containing the JsonTest class
+ * File containing the JsonTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Common\Tests\Input\Handler;
 
 use eZ\Publish\Core\REST\Common;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Json input handler test
+ * Json input handler test.
  */
 class JsonTest extends PHPUnit_Framework_TestCase
 {
@@ -23,11 +22,11 @@ class JsonTest extends PHPUnit_Framework_TestCase
     public function testConvertInvalidJson()
     {
         $handler = $this->getHandler();
-        $handler->convert( '{text:"Hello world!"}' );
+        $handler->convert('{text:"Hello world!"}');
     }
 
     /**
-     * Tests conversion of array to JSON
+     * Tests conversion of array to JSON.
      */
     public function testConvertJson()
     {
@@ -37,7 +36,7 @@ class JsonTest extends PHPUnit_Framework_TestCase
             array(
                 'text' => 'Hello world!',
             ),
-            $handler->convert( '{"text":"Hello world!"}' )
+            $handler->convert('{"text":"Hello world!"}')
         );
     }
 
@@ -59,8 +58,8 @@ class JsonTest extends PHPUnit_Framework_TestCase
                             'name' => 'Joe Bielefeld',
                             'email' => 'bielefeld@example.com',
                         ),
-                    )
-                )
+                    ),
+                ),
             ),
             $handler->convert(
                 '{"Field":{"fieldValue":[{"id":1,"name":"Joe Sindelfingen","email":"sindelfingen@example.com"},{"id":2,"name":"Joe Bielefeld","email":"bielefeld@example.com"}]}}'

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\Suggestion\Collector;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\Suggestion\ConfigSuggestion;
@@ -21,7 +20,7 @@ interface SuggestionCollectorInterface
      *
      * @param \eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\Suggestion\ConfigSuggestion $suggestion
      */
-    public function addSuggestion( ConfigSuggestion $suggestion );
+    public function addSuggestion(ConfigSuggestion $suggestion);
 
     /**
      * Returns all config suggestions.
@@ -31,7 +30,7 @@ interface SuggestionCollectorInterface
     public function getSuggestions();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasSuggestions();
 }

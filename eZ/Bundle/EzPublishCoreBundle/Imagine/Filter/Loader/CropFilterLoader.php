@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine\Filter\Loader;
 
 use Imagine\Image\ImageInterface;
@@ -14,22 +13,21 @@ use Imagine\Exception\InvalidArgumentException;
 
 /**
  * Filter loader for geometry/crop filter.
- * Proxy to CropFilterLoader
+ * Proxy to CropFilterLoader.
  */
 class CropFilterLoader extends FilterLoaderWrapped
 {
-    public function load( ImageInterface $image, array $options = array() )
+    public function load(ImageInterface $image, array $options = array())
     {
-        if ( count( $options ) < 4 )
-        {
-            throw new InvalidArgumentException( 'Invalid options for geometry/crop filter. You must provide array(width, height, offsetX, offsetY)' );
+        if (count($options) < 4) {
+            throw new InvalidArgumentException('Invalid options for geometry/crop filter. You must provide array(width, height, offsetX, offsetY)');
         }
 
         return $this->innerLoader->load(
             $image,
             array(
-                'size' => array( $options[0], $options[1] ),
-                'start' => array( $options[2], $options[3] )
+                'size' => array($options[0], $options[1]),
+                'start' => array($options[2], $options[3]),
             )
         );
     }

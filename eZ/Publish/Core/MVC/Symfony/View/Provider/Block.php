@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\View\Provider;
 
 use eZ\Publish\Core\FieldType\Page\Parts\Block as PageBlock;
@@ -20,11 +19,11 @@ use eZ\Publish\Core\FieldType\Page\Parts\Block as PageBlock;
 interface Block
 {
     /**
-     * Returns a ContentView object corresponding to $block, or null if not applicable
+     * Returns a ContentView object corresponding to $block, or null if not applicable.
      *
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      *
      * @return \eZ\Publish\Core\MVC\Symfony\View\ContentView|void
      */
-    public function getView( PageBlock $block );
+    public function getView(PageBlock $block);
 }

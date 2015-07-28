@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Search Gateway class
+ * File containing the Content Search Gateway class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Solr\Content;
 
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -28,7 +27,7 @@ abstract class Gateway
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
      */
-    abstract public function findContent( Query $query, array $fieldFilters = array() );
+    abstract public function findContent(Query $query, array $fieldFilters = array());
 
     /**
      * Indexes a block of documents, which in our case is a Content preceded by its Locations.
@@ -36,7 +35,7 @@ abstract class Gateway
      *
      * @param \eZ\Publish\SPI\Search\Document[] $documents
      */
-    abstract public function bulkIndexDocuments( array $documents );
+    abstract public function bulkIndexDocuments(array $documents);
 
     /**
      * Deletes a block of documents, which in our case is a Content preceded by its Locations.
@@ -44,21 +43,19 @@ abstract class Gateway
      *
      * @param string $blockId
      */
-    abstract public function deleteBlock( $blockId );
+    abstract public function deleteBlock($blockId);
 
     /**
-     * Purges all contents from the index
-     *
-     * @return void
+     * Purges all contents from the index.
      */
     abstract public function purgeIndex();
 
     /**
-     * Set if index/delete actions should commit or if several actions is to be expected
+     * Set if index/delete actions should commit or if several actions is to be expected.
      *
      * This should be set to false before group of actions and true before the last one
      *
      * @param bool $commit
      */
-    abstract public function setCommit( $commit );
+    abstract public function setCommit($commit);
 }

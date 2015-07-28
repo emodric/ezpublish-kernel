@@ -6,19 +6,18 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 
 /**
- * A criterion that just matches everything
+ * A criterion that just matches everything.
  */
 class MatchAll extends Criterion implements CriterionInterface
 {
     /**
-     * Creates a new MatchAll criterion
+     * Creates a new MatchAll criterion.
      */
     public function __construct()
     {
@@ -30,7 +29,7 @@ class MatchAll extends Criterion implements CriterionInterface
         return array();
     }
 
-    public static function createFromQueryBuilder( $target, $operator, $value )
+    public static function createFromQueryBuilder($target, $operator, $value)
     {
         return new self();
     }

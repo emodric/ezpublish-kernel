@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\ApiLoader;
 
 use eZ\Bundle\EzPublishCoreBundle\ApiLoader\Exception\InvalidStorageEngine;
@@ -30,7 +29,7 @@ class StorageEngineFactory
      */
     protected $storageEngines = array();
 
-    public function __construct( StorageRepositoryProvider $storageRepositoryProvider )
+    public function __construct(StorageRepositoryProvider $storageRepositoryProvider)
     {
         $this->storageRepositoryProvider = $storageRepositoryProvider;
     }
@@ -43,7 +42,7 @@ class StorageEngineFactory
      * @param \eZ\Publish\SPI\Persistence\Handler $persistenceHandler
      * @param string $storageEngineIdentifier
      */
-    public function registerStorageEngine( PersistenceHandler $persistenceHandler, $storageEngineIdentifier )
+    public function registerStorageEngine(PersistenceHandler $persistenceHandler, $storageEngineIdentifier)
     {
         $this->storageEngines[$storageEngineIdentifier] = $persistenceHandler;
     }
@@ -69,11 +68,10 @@ class StorageEngineFactory
 
         if (
         !(
-            isset( $repositoryConfig['engine'] )
-            && isset( $this->storageEngines[$repositoryConfig['engine']] )
+            isset($repositoryConfig['engine'])
+            && isset($this->storageEngines[$repositoryConfig['engine']])
         )
-        )
-        {
+        ) {
             throw new InvalidStorageEngine(
                 "Invalid storage engine '{$repositoryConfig['engine']}'. Could not find any service tagged as ezpublish.storageEngine with alias {$repositoryConfig['engine']}."
             );

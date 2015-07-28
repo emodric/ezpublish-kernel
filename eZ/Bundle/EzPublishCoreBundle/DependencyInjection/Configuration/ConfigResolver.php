@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration;
 
 use eZ\Publish\Core\MVC\Symfony\Configuration\VersatileScopeInterface;
@@ -77,14 +76,13 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
         array $groupsBySiteAccess,
         $defaultNamespace,
         $undefinedStrategy = self::UNDEFINED_STRATEGY_EXCEPTION
-    )
-    {
+    ) {
         $this->groupsBySiteAccess = $groupsBySiteAccess;
         $this->defaultNamespace = $defaultNamespace;
         $this->undefinedStrategy = $undefinedStrategy;
     }
 
-    public function setSiteAccess( SiteAccess $siteAccess = null )
+    public function setSiteAccess(SiteAccess $siteAccess = null)
     {
         $this->siteAccess = $siteAccess;
         $this->defaultScope = $siteAccess->name;
@@ -94,13 +92,13 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
      * Sets the strategy to use if an undefined parameter is being asked.
      * Can be one of:
      *  - ConfigResolver::UNDEFINED_STRATEGY_EXCEPTION (throw an exception)
-     *  - ConfigResolver::UNDEFINED_STRATEGY_NULL (return null)
+     *  - ConfigResolver::UNDEFINED_STRATEGY_NULL (return null).
      *
      * Defaults to ConfigResolver::UNDEFINED_STRATEGY_EXCEPTION.
      *
      * @param int $undefinedStrategy
      */
-    public function setUndefinedStrategy( $undefinedStrategy )
+    public function setUndefinedStrategy($undefinedStrategy)
     {
         $this->undefinedStrategy = $undefinedStrategy;
     }
@@ -114,16 +112,16 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
     }
 
     /**
-     * Checks if $paramName exists in $namespace
+     * Checks if $paramName exists in $namespace.
      *
      * @param string $paramName
      * @param string $namespace If null, the default namespace should be used.
      * @param string $scope The scope you need $paramName value for. It's typically the siteaccess name.
      *                      If null, the current siteaccess name will be used.
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasParameter( $paramName, $namespace = null, $scope = null )
+    public function hasParameter($paramName, $namespace = null, $scope = null)
     {
         $namespace = $namespace ?: $this->defaultNamespace;
         $scope = $scope ?: $this->defaultScope;
@@ -134,13 +132,10 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
 
         // Relative scope, siteaccess group wise
         $groupScopeHasParam = false;
-        if ( isset( $this->groupsBySiteAccess[$scope] ) )
-        {
-            foreach ( $this->groupsBySiteAccess[$scope] as $groupName )
-            {
+        if (isset($this->groupsBySiteAccess[$scope])) {
+            foreach ($this->groupsBySiteAccess[$scope] as $groupName) {
                 $groupScopeParamName = "$namespace.$groupName.$paramName";
-                if ( $this->container->hasParameter( $groupScopeParamName ) )
-                {
+                if ($this->container->hasParameter($groupScopeParamName)) {
                     $groupScopeHasParam = true;
                     break;
                 }
@@ -148,10 +143,10 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
         }
 
         return
-            $this->container->hasParameter( $defaultScopeParamName )
+            $this->container->hasParameter($defaultScopeParamName)
             || $groupScopeHasParam
-            || $this->container->hasParameter( $relativeScopeParamName )
-            || $this->container->hasParameter( $globalScopeParamName );
+            || $this->container->hasParameter($relativeScopeParamName)
+            || $this->container->hasParameter($globalScopeParamName);
     }
 
     /**
@@ -166,7 +161,7 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
      *
      * @return mixed
      */
-    public function getParameter( $paramName, $namespace = null, $scope = null )
+    public function getParameter($paramName, $namespace = null, $scope = null)
     {
         $namespace = $namespace ?: $this->defaultNamespace;
         $scope = $scope ?: $this->defaultScope;
@@ -174,53 +169,46 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
 
         // Global scope
         $globalScopeParamName = "$namespace." . self::SCOPE_GLOBAL . ".$paramName";
-        if ( $this->container->hasParameter( $globalScopeParamName ) )
-        {
-            return $this->container->getParameter( $globalScopeParamName );
+        if ($this->container->hasParameter($globalScopeParamName)) {
+            return $this->container->getParameter($globalScopeParamName);
         }
         $triedScopes[] = self::SCOPE_GLOBAL;
-        unset( $globalScopeParamName );
+        unset($globalScopeParamName);
 
         // Relative scope, siteaccess wise
         $relativeScopeParamName = "$namespace.$scope.$paramName";
-        if ( $this->container->hasParameter( $relativeScopeParamName ) )
-        {
-            return $this->container->getParameter( $relativeScopeParamName );
+        if ($this->container->hasParameter($relativeScopeParamName)) {
+            return $this->container->getParameter($relativeScopeParamName);
         }
         $triedScopes[] = $this->defaultScope;
-        unset( $relativeScopeParamName );
+        unset($relativeScopeParamName);
 
         // Relative scope, siteaccess group wise
-        if ( isset( $this->groupsBySiteAccess[$scope] ) )
-        {
-            foreach ( $this->groupsBySiteAccess[$scope] as $groupName )
-            {
+        if (isset($this->groupsBySiteAccess[$scope])) {
+            foreach ($this->groupsBySiteAccess[$scope] as $groupName) {
                 $relativeScopeParamName = "$namespace.$groupName.$paramName";
-                if ( $this->container->hasParameter( $relativeScopeParamName ) )
-                {
-                    return $this->container->getParameter( $relativeScopeParamName );
+                if ($this->container->hasParameter($relativeScopeParamName)) {
+                    return $this->container->getParameter($relativeScopeParamName);
                 }
             }
         }
 
         // Default scope
         $defaultScopeParamName = "$namespace." . self::SCOPE_DEFAULT . ".$paramName";
-        if ( $this->container->hasParameter( $defaultScopeParamName ) )
-        {
-            return $this->container->getParameter( $defaultScopeParamName );
+        if ($this->container->hasParameter($defaultScopeParamName)) {
+            return $this->container->getParameter($defaultScopeParamName);
         }
         $triedScopes[] = $this->defaultNamespace;
-        unset( $defaultScopeParamName );
+        unset($defaultScopeParamName);
 
         // Undefined parameter
-        switch ( $this->undefinedStrategy )
-        {
+        switch ($this->undefinedStrategy) {
             case self::UNDEFINED_STRATEGY_NULL:
                 return null;
 
             case self::UNDEFINED_STRATEGY_EXCEPTION:
             default:
-                throw new ParameterNotFoundException( $paramName, $namespace, $triedScopes );
+                throw new ParameterNotFoundException($paramName, $namespace, $triedScopes);
         }
     }
 
@@ -229,7 +217,7 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
      *
      * @param string $defaultNamespace
      */
-    public function setDefaultNamespace( $defaultNamespace )
+    public function setDefaultNamespace($defaultNamespace)
     {
         $this->defaultNamespace = $defaultNamespace;
     }
@@ -247,7 +235,7 @@ class ConfigResolver extends ContainerAware implements VersatileScopeInterface, 
         return $this->defaultScope;
     }
 
-    public function setDefaultScope( $scope )
+    public function setDefaultScope($scope)
     {
         $this->defaultScope = $scope;
     }

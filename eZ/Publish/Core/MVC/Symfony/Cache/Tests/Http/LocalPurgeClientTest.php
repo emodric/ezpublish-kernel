@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Cache\Tests;
 
 use eZ\Publish\Core\MVC\Symfony\Cache\Http\LocalPurgeClient;
@@ -17,28 +16,28 @@ class LocalPurgeClientTest extends PHPUnit_Framework_TestCase
 {
     public function testPurge()
     {
-        $locationIds = array( 123, 456, 789 );
-        $expectedBanRequest = Request::create( 'http://localhost', 'BAN' );
-        $expectedBanRequest->headers->set( 'X-Location-Id', '(' . implode( '|', $locationIds ) . ')' );
+        $locationIds = array(123, 456, 789);
+        $expectedBanRequest = Request::create('http://localhost', 'BAN');
+        $expectedBanRequest->headers->set('X-Location-Id', '(' . implode('|', $locationIds) . ')');
 
-        $cacheStore = $this->getMock( 'eZ\\Publish\\Core\\MVC\\Symfony\\Cache\\Http\\ContentPurger' );
+        $cacheStore = $this->getMock('eZ\\Publish\\Core\\MVC\\Symfony\\Cache\\Http\\ContentPurger');
         $cacheStore
-            ->expects( $this->once() )
-            ->method( 'purgeByRequest' )
-            ->with( $this->equalTo( $expectedBanRequest ) );
+            ->expects($this->once())
+            ->method('purgeByRequest')
+            ->with($this->equalTo($expectedBanRequest));
 
-        $purgeClient = new LocalPurgeClient( $cacheStore );
-        $purgeClient->purge( $locationIds );
+        $purgeClient = new LocalPurgeClient($cacheStore);
+        $purgeClient->purge($locationIds);
     }
 
     public function testPurgeAll()
     {
-        $cacheStore = $this->getMock( 'eZ\\Publish\\Core\\MVC\\Symfony\\Cache\\Http\\ContentPurger' );
+        $cacheStore = $this->getMock('eZ\\Publish\\Core\\MVC\\Symfony\\Cache\\Http\\ContentPurger');
         $cacheStore
-            ->expects( $this->once() )
-            ->method( 'purgeAllContent' );
+            ->expects($this->once())
+            ->method('purgeAllContent');
 
-        $purgeClient = new LocalPurgeClient( $cacheStore );
+        $purgeClient = new LocalPurgeClient($cacheStore);
         $purgeClient->purgeAll();
     }
 }

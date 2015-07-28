@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the ValidationError class
+ * File containing the ValidationError class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType;
 
 use eZ\Publish\SPI\FieldType\ValidationError as ValidationErrorInterface;
@@ -38,7 +37,7 @@ class ValidationError implements ValidationErrorInterface
      * @param string $plural
      * @param array $values
      */
-    public function __construct( $singular, $plural = null, array $values = array() )
+    public function __construct($singular, $plural = null, array $values = array())
     {
         $this->singular = $singular;
         $this->plural = $plural;
@@ -46,22 +45,19 @@ class ValidationError implements ValidationErrorInterface
     }
 
     /**
-     * Returns a translatable Message
+     * Returns a translatable Message.
      *
      * @return \eZ\Publish\API\Repository\Values\Translation
      */
     public function getTranslatableMessage()
     {
-        if ( isset( $this->plural ) )
-        {
+        if (isset($this->plural)) {
             return new Plural(
                 $this->singular,
                 $this->plural,
                 $this->values
             );
-        }
-        else
-        {
+        } else {
             return new Message(
                 $this->singular,
                 $this->values

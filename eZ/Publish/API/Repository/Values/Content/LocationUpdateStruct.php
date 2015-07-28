@@ -6,18 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
+
 /**
- *
  * This class is used for updating location meta data.
  */
 class LocationUpdateStruct extends ValueObject
 {
     /**
-     * If set the location priority is changed to the new value
+     * If set the location priority is changed to the new value.
      *
      * @var int
      */
@@ -35,7 +34,7 @@ class LocationUpdateStruct extends ValueObject
     /**
      * If set the sortField is changed.
      * The sort field specifies which property the child locations should be sorted on.
-     * Valid values are found at {@link Location::SORT_FIELD_*}
+     * Valid values are found at {@link Location::SORT_FIELD_*}.
      *
      * @var mixed
      */
@@ -44,7 +43,7 @@ class LocationUpdateStruct extends ValueObject
     /**
      * If set the sortOrder is changed.
      * The sort order specifies whether the sort order should be ascending or descending.
-     * Valid values are {@link Location::SORT_ORDER_*}
+     * Valid values are {@link Location::SORT_ORDER_*}.
      *
      * @var mixed
      */

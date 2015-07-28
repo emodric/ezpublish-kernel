@@ -1,58 +1,55 @@
 <?php
 /**
- * File containing a test class
+ * File containing a test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Tests\Output\ValueObjectVisitor;
 
 use eZ\Publish\Core\REST\Common\Tests\Output\ValueObjectVisitorBaseTest;
 use eZ\Publish\Core\Repository\Values\User\User;
-
 use eZ\Publish\Core\REST\Server\Output\ValueObjectVisitor;
 use eZ\Publish\Core\REST\Server\Values\UserRefList;
 use eZ\Publish\Core\REST\Server\Values\RestUser;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\Repository\Values\Content\Location;
-use eZ\Publish\Core\REST\Common;
 
 class UserRefListTest extends ValueObjectVisitorBaseTest
 {
     /**
-     * Test the UserRefList visitor
+     * Test the UserRefList visitor.
      *
      * @return \DOMDocument
      */
     public function testVisit()
     {
-        $visitor   = $this->getVisitor();
+        $visitor = $this->getVisitor();
         $generator = $this->getGenerator();
 
-        $generator->startDocument( null );
+        $generator->startDocument(null);
 
         $UserRefList = new UserRefList(
             array(
                 new RestUser(
                     new User(),
-                    $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType" ),
+                    $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType'),
                     new ContentInfo(
                         array(
-                            'id' => 14
+                            'id' => 14,
                         )
                     ),
                     new Location(),
                     array()
-                )
+                ),
             ),
             '/some/path'
         );
 
         $this->addRouteExpectation(
             'ezpublish_rest_loadUser',
-            array( 'userId' => $UserRefList->users[0]->contentInfo->id ),
+            array('userId' => $UserRefList->users[0]->contentInfo->id),
             "/user/users/{$UserRefList->users[0]->contentInfo->id}"
         );
 
@@ -62,12 +59,12 @@ class UserRefListTest extends ValueObjectVisitorBaseTest
             $UserRefList
         );
 
-        $result = $generator->endDocument( null );
+        $result = $generator->endDocument(null);
 
-        $this->assertNotNull( $result );
+        $this->assertNotNull($result);
 
         $dom = new \DOMDocument();
-        $dom->loadXml( $result );
+        $dom->loadXml($result);
 
         return $dom;
     }
@@ -77,9 +74,9 @@ class UserRefListTest extends ValueObjectVisitorBaseTest
      *
      * @depends testVisit
      */
-    public function testUserRefListHrefCorrect( \DOMDocument $dom )
+    public function testUserRefListHrefCorrect(\DOMDocument $dom)
     {
-        $this->assertXPath( $dom, '/UserRefList[@href="/some/path"]'  );
+        $this->assertXPath($dom, '/UserRefList[@href="/some/path"]');
     }
 
     /**
@@ -87,9 +84,9 @@ class UserRefListTest extends ValueObjectVisitorBaseTest
      *
      * @depends testVisit
      */
-    public function testUserRefListMediaTypeCorrect( \DOMDocument $dom )
+    public function testUserRefListMediaTypeCorrect(\DOMDocument $dom)
     {
-        $this->assertXPath( $dom, '/UserRefList[@media-type="application/vnd.ez.api.UserRefList+xml"]'  );
+        $this->assertXPath($dom, '/UserRefList[@media-type="application/vnd.ez.api.UserRefList+xml"]');
     }
 
     /**
@@ -97,9 +94,9 @@ class UserRefListTest extends ValueObjectVisitorBaseTest
      *
      * @depends testVisit
      */
-    public function testUserHrefCorrect( \DOMDocument $dom )
+    public function testUserHrefCorrect(\DOMDocument $dom)
     {
-        $this->assertXPath( $dom, '/UserRefList/User[@href="/user/users/14"]'  );
+        $this->assertXPath($dom, '/UserRefList/User[@href="/user/users/14"]');
     }
 
     /**
@@ -107,18 +104,18 @@ class UserRefListTest extends ValueObjectVisitorBaseTest
      *
      * @depends testVisit
      */
-    public function testUserMediaTypeCorrect( \DOMDocument $dom )
+    public function testUserMediaTypeCorrect(\DOMDocument $dom)
     {
-        $this->assertXPath( $dom, '/UserRefList/User[@media-type="application/vnd.ez.api.User+xml"]'  );
+        $this->assertXPath($dom, '/UserRefList/User[@media-type="application/vnd.ez.api.User+xml"]');
     }
 
     /**
-     * Get the UserRefList visitor
+     * Get the UserRefList visitor.
      *
      * @return \eZ\Publish\Core\REST\Server\Output\ValueObjectVisitor\UserRefList
      */
     protected function internalGetVisitor()
     {
-        return new ValueObjectVisitor\UserRefList;
+        return new ValueObjectVisitor\UserRefList();
     }
 }

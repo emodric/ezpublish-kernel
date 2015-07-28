@@ -6,23 +6,22 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 
 /**
- * Sets sort direction on the content creation date for a content query
+ * Sets sort direction on the content creation date for a content query.
  */
 class DatePublished extends SortClause
 {
     /**
-     * Constructs a new DatePublished SortClause
+     * Constructs a new DatePublished SortClause.
      * @param string $sortDirection
      */
-    public function __construct( $sortDirection = Query::SORT_ASC )
+    public function __construct($sortDirection = Query::SORT_ASC)
     {
-        parent::__construct( 'date_published', $sortDirection );
+        parent::__construct('date_published', $sortDirection);
     }
 }

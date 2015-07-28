@@ -14,14 +14,14 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Goes through all REST routes, and registers new routes for all routes
- * a new one with the OPTIONS method
+ * a new one with the OPTIONS method.
  */
 class OptionsLoader extends Loader
 {
     /** @var RouteCollectionMapperMapper */
     protected $routeCollectionMapper;
 
-    public function __construct( RouteCollectionMapper $mapper )
+    public function __construct(RouteCollectionMapper $mapper)
     {
         $this->routeCollectionMapper = $mapper;
     }
@@ -32,12 +32,12 @@ class OptionsLoader extends Loader
      *
      * @return RouteCollection
      */
-    public function load( $resource, $type = null )
+    public function load($resource, $type = null)
     {
-        return $this->routeCollectionMapper->mapCollection( $this->import( $resource ) );
+        return $this->routeCollectionMapper->mapCollection($this->import($resource));
     }
 
-    public function supports( $resource, $type = null )
+    public function supports($resource, $type = null)
     {
         return $type === 'rest_options';
     }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing an interface for the database abstractions
+ * File containing an interface for the database abstractions.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Database;
 
 /**
@@ -68,7 +67,7 @@ interface Expression
      * @param string $expression
      * @return string a logical expression
      */
-    public function not( $expression );
+    public function not($expression);
 
     /**
      * Returns the SQL to add values or expressions together.
@@ -164,7 +163,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function eq( $value1, $value2 );
+    public function eq($value1, $value2);
 
     /**
      * Returns the SQL to check if two values are unequal.
@@ -180,7 +179,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function neq( $value1, $value2 );
+    public function neq($value1, $value2);
 
     /**
      * Returns the SQL to check if one value is greater than another value.
@@ -196,7 +195,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function gt( $value1, $value2 );
+    public function gt($value1, $value2);
 
     /**
      * Returns the SQL to check if one value is greater than or equal to
@@ -213,7 +212,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function gte( $value1, $value2 );
+    public function gte($value1, $value2);
 
     /**
      * Returns the SQL to check if one value is less than another value.
@@ -229,7 +228,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function lt( $value1, $value2 );
+    public function lt($value1, $value2);
 
     /**
      * Returns the SQL to check if one value is less than or equal to
@@ -246,7 +245,7 @@ interface Expression
      * @param string $value2 logical expression to compare with
      * @return string logical expression
      */
-    public function lte( $value1, $value2 );
+    public function lte($value1, $value2);
 
     /**
      * Returns the SQL to check if a value is one in a set of
@@ -277,7 +276,7 @@ interface Expression
      * @param string|array(string) $... values that will be matched against $column
      * @return string logical expression
      */
-    public function in( $column );
+    public function in($column);
 
     /**
      * Returns SQL that checks if a expression is null.
@@ -292,7 +291,7 @@ interface Expression
      * @param string $expression the expression that should be compared to null
      * @return string logical expression
      */
-    public function isNull( $expression );
+    public function isNull($expression);
 
     /**
      * Returns SQL that checks if an expression evaluates to a value between
@@ -316,7 +315,7 @@ interface Expression
      * @param string $value2 the higher value to compare with
      * @return string logical expression
      */
-    public function between( $expression, $value1, $value2 );
+    public function between($expression, $value1, $value2);
 
     /**
      * Match a partial string in a column.
@@ -328,18 +327,18 @@ interface Expression
      * @param string $expression the name of the expression to match on
      * @param string $pattern the pattern to match with.
      */
-    public function like( $expression, $pattern );
+    public function like($expression, $pattern);
 
     /**
-     * Returns the average value of a column
+     * Returns the average value of a column.
      *
      * @param string $column the column to use
      * @return string
      */
-    public function avg( $column );
+    public function avg($column);
 
     /**
-     * Returns the number of rows (without a NULL value) of a column
+     * Returns the number of rows (without a NULL value) of a column.
      *
      * If a '*' is used instead of a column the number of selected rows
      * is returned.
@@ -347,39 +346,39 @@ interface Expression
      * @param string $column the column to use
      * @return string
      */
-    public function count( $column );
+    public function count($column);
 
     /**
-     * Returns the highest value of a column
+     * Returns the highest value of a column.
      *
      * @param string $column the column to use
      * @return string
      */
-    public function max( $column );
+    public function max($column);
 
     /**
-     * Returns the lowest value of a column
+     * Returns the lowest value of a column.
      *
      * @param string $column the column to use
      * @return string
      */
-    public function min( $column );
+    public function min($column);
 
     /**
-     * Returns the total sum of a column
+     * Returns the total sum of a column.
      *
      * @param string $column the column to use
      * @return string
      */
-    public function sum( $column );
+    public function sum($column);
 
     /**
-     * Returns the length of text field $column
+     * Returns the length of text field $column.
      *
      * @param string $column
      * @return string
      */
-    public function length( $column );
+    public function length($column);
 
     /**
      * Rounds a numeric field to the number of decimals specified.
@@ -388,7 +387,7 @@ interface Expression
      * @param int $decimals
      * @return string
      */
-    public function round( $column, $decimals );
+    public function round($column, $decimals);
 
     /**
      * Returns the remainder of the division operation
@@ -398,7 +397,7 @@ interface Expression
      * @param string $expression2
      * @return string
      */
-    public function mod( $expression1, $expression2 );
+    public function mod($expression1, $expression2);
 
     /**
      * Returns the current system date and time in the database internal
@@ -419,10 +418,10 @@ interface Expression
      * @param int $len extract this amount of characters.
      * @return string sql that extracts part of a string.
      */
-    public function subString( $value, $from, $len = null );
+    public function subString($value, $from, $len = null);
 
     /**
-     * Returns a series of strings concatinated
+     * Returns a series of strings concatinated.
      *
      * concat() accepts an arbitrary number of parameters. Each parameter
      * must contain an expression or an array with expressions.
@@ -432,29 +431,29 @@ interface Expression
     public function concat();
 
     /**
-     * Returns the SQL to locate the position of the first occurrence of a substring
+     * Returns the SQL to locate the position of the first occurrence of a substring.
      *
      * @param string $substr
      * @param string $value
      * @return string
      */
-    public function position( $substr, $value );
+    public function position($substr, $value);
 
     /**
-     * Returns the SQL to change all characters to lowercase
+     * Returns the SQL to change all characters to lowercase.
      *
      * @param string $value
      * @return string
      */
-    public function lower( $value );
+    public function lower($value);
 
     /**
-     * Returns the SQL to change all characters to uppercase
+     * Returns the SQL to change all characters to uppercase.
      *
      * @param string $value
      * @return string
      */
-    public function upper( $value );
+    public function upper($value);
 
     /**
      * Returns the SQL that performs the bitwise AND on two values.
@@ -463,7 +462,7 @@ interface Expression
      * @param string $value2
      * @return string
      */
-    public function bitAnd( $value1, $value2 );
+    public function bitAnd($value1, $value2);
 
     /**
      * Returns the SQL that performs the bitwise OR on two values.
@@ -472,7 +471,7 @@ interface Expression
      * @param string $value2
      * @return string
      */
-    public function bitOr( $value1, $value2 );
+    public function bitOr($value1, $value2);
 
     /**
      * Returns a searched CASE statement.

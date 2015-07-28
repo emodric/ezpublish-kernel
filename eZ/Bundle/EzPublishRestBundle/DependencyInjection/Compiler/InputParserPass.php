@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishRestBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,25 +20,23 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class InputParserPass implements CompilerPassInterface
 {
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'ezpublish_rest.input.parsing_dispatcher' ) )
-        {
+        if (!$container->hasDefinition('ezpublish_rest.input.parsing_dispatcher')) {
             return;
         }
 
-        $definition = $container->getDefinition( 'ezpublish_rest.input.parsing_dispatcher' );
+        $definition = $container->getDefinition('ezpublish_rest.input.parsing_dispatcher');
 
-        foreach ( $container->findTaggedServiceIds( 'ezpublish_rest.input.parser' ) as $id => $attributes )
-        {
-            foreach ( $attributes as $attribute )
-            {
-                if ( !isset( $attribute['mediaType'] ) )
-                    throw new \LogicException( 'ezpublish_rest.input.parser service tag needs a "mediaType" attribute to identify the input parser. None given.' );
+        foreach ($container->findTaggedServiceIds('ezpublish_rest.input.parser') as $id => $attributes) {
+            foreach ($attributes as $attribute) {
+                if (!isset($attribute['mediaType'])) {
+                    throw new \LogicException('ezpublish_rest.input.parser service tag needs a "mediaType" attribute to identify the input parser. None given.');
+                }
 
                 $definition->addMethodCall(
                     'addParser',
-                    array( $attribute["mediaType"], new Reference( $id ) )
+                    array($attribute['mediaType'], new Reference($id))
                 );
             }
         }

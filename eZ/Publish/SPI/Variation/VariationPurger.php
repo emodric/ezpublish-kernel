@@ -5,13 +5,13 @@
 namespace eZ\Publish\SPI\Variation;
 
 /**
- * Handles physical purging of image variations from storage
+ * Handles physical purging of image variations from storage.
  */
 interface VariationPurger
 {
     /**
-     * Purge all variations generated for aliases in $aliasNames
+     * Purge all variations generated for aliases in $aliasNames.
      * @param array $aliasNames
      */
-    public function purge( array $aliasNames );
+    public function purge(array $aliasNames);
 }

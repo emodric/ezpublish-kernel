@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\EventListener;
 
 use eZ\Publish\API\Repository\Repository;
@@ -34,7 +33,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * This security listener listens to security.interactive_login event to:
  *  - Give a chance to retrieve an eZ user when using multiple user providers
- *  - Check if user can actually login to the current SiteAccess
+ *  - Check if user can actually login to the current SiteAccess.
  *
  * Also listens to kernel.request to:
  *  - Check if current user (authenticated or not) can access to current SiteAccess
@@ -74,8 +73,7 @@ class SecurityListener implements EventSubscriberInterface
         EventDispatcherInterface $eventDispatcher,
         SecurityContextInterface $securityContext,
         $fragmentPath = '/_fragment'
-    )
-    {
+    ) {
         $this->repository = $repository;
         $this->configResolver = $configResolver;
         $this->eventDispatcher = $eventDispatcher;
@@ -87,11 +85,11 @@ class SecurityListener implements EventSubscriberInterface
     {
         return array(
             SecurityEvents::INTERACTIVE_LOGIN => array(
-                array( 'onInteractiveLogin', 10 ),
-                array( 'checkSiteAccessPermission', 9 ),
+                array('onInteractiveLogin', 10),
+                array('checkSiteAccessPermission', 9),
             ),
             // Priority 7, so that it occurs just after firewall (priority 8)
-            KernelEvents::REQUEST => array( 'onKernelRequest', 7 )
+            KernelEvents::REQUEST => array('onKernelRequest', 7),
         );
     }
 
@@ -102,12 +100,11 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @param \Symfony\Component\Security\Http\Event\InteractiveLoginEvent $event
      */
-    public function onInteractiveLogin( BaseInteractiveLoginEvent $event )
+    public function onInteractiveLogin(BaseInteractiveLoginEvent $event)
     {
         $token = $event->getAuthenticationToken();
         $originalUser = $token->getUser();
-        if ( $originalUser instanceof eZUser || !$originalUser instanceof UserInterface )
-        {
+        if ($originalUser instanceof eZUser || !$originalUser instanceof UserInterface) {
             return;
         }
 
@@ -119,32 +116,29 @@ class SecurityListener implements EventSubscriberInterface
          * 5. Create new token with UserWrapped user
          * 6. Inject the new token in security context
          */
-        $subLoginEvent = new InteractiveLoginEvent( $event->getRequest(), $token );
-        $this->eventDispatcher->dispatch( MVCEvents::INTERACTIVE_LOGIN, $subLoginEvent );
+        $subLoginEvent = new InteractiveLoginEvent($event->getRequest(), $token);
+        $this->eventDispatcher->dispatch(MVCEvents::INTERACTIVE_LOGIN, $subLoginEvent);
 
-        if ( $subLoginEvent->hasAPIUser() )
-        {
+        if ($subLoginEvent->hasAPIUser()) {
             $apiUser = $subLoginEvent->getAPIUser();
-        }
-        else
-        {
+        } else {
             $apiUser = $this->repository->getUserService()->loadUser(
-                $this->configResolver->getParameter( "anonymous_user_id" )
+                $this->configResolver->getParameter('anonymous_user_id')
             );
         }
 
-        $this->repository->setCurrentUser( $apiUser );
+        $this->repository->setCurrentUser($apiUser);
 
-        $providerKey = method_exists( $token, 'getProviderKey' ) ? $token->getProviderKey() : __CLASS__;
+        $providerKey = method_exists($token, 'getProviderKey') ? $token->getProviderKey() : __CLASS__;
         $interactiveToken = new InteractiveLoginToken(
-            $this->getUser( $originalUser, $apiUser ),
-            get_class( $token ),
+            $this->getUser($originalUser, $apiUser),
+            get_class($token),
             $token->getCredentials(),
             $providerKey,
             $token->getRoles()
         );
-        $interactiveToken->setAttributes( $token->getAttributes() );
-        $this->securityContext->setToken( $interactiveToken );
+        $interactiveToken->setAttributes($token->getAttributes());
+        $this->securityContext->setToken($interactiveToken);
     }
 
     /**
@@ -156,9 +150,9 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Security\UserInterface
      */
-    protected function getUser( UserInterface $originalUser, APIUser $apiUser )
+    protected function getUser(UserInterface $originalUser, APIUser $apiUser)
     {
-        return new UserWrapped( $originalUser, $apiUser );
+        return new UserWrapped($originalUser, $apiUser);
     }
 
     /**
@@ -168,20 +162,18 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @throws \eZ\Publish\Core\MVC\Symfony\Security\Exception\UnauthorizedSiteAccessException
      */
-    public function checkSiteAccessPermission( BaseInteractiveLoginEvent $event )
+    public function checkSiteAccessPermission(BaseInteractiveLoginEvent $event)
     {
         $token = $event->getAuthenticationToken();
         $originalUser = $token->getUser();
         $request = $event->getRequest();
-        $siteAccess = $request->attributes->get( 'siteaccess' );
-        if ( !( $originalUser instanceof eZUser && $siteAccess instanceof SiteAccess ) )
-        {
+        $siteAccess = $request->attributes->get('siteaccess');
+        if (!($originalUser instanceof eZUser && $siteAccess instanceof SiteAccess)) {
             return;
         }
 
-        if ( !$this->hasAccess( $siteAccess, $originalUser->getUsername() ) )
-        {
-            throw new UnauthorizedSiteAccessException( $siteAccess, $originalUser->getUsername() );
+        if (!$this->hasAccess($siteAccess, $originalUser->getUsername())) {
+            throw new UnauthorizedSiteAccessException($siteAccess, $originalUser->getUsername());
         }
     }
 
@@ -192,53 +184,48 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @throws \eZ\Publish\Core\MVC\Symfony\Security\Exception\UnauthorizedSiteAccessException
      */
-    public function onKernelRequest( GetResponseEvent $event )
+    public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
         // Ignore sub-requests, including fragments.
-        if ( !$this->isMasterRequest( $request, $event->getRequestType() ) )
-        {
+        if (!$this->isMasterRequest($request, $event->getRequestType())) {
             return;
         }
 
-        $siteAccess = $request->attributes->get( 'siteaccess' );
-        if ( !$siteAccess instanceof SiteAccess )
-        {
+        $siteAccess = $request->attributes->get('siteaccess');
+        if (!$siteAccess instanceof SiteAccess) {
             return;
         }
 
         $token = $this->securityContext->getToken();
-        if ( $token === null )
-        {
+        if ($token === null) {
             return;
         }
 
         if (
             // Leave access to login route, so that user can attempt re-authentication.
-            $request->attributes->get( '_route' ) !== 'login'
-            && !$this->hasAccess( $siteAccess, $token->getUsername() )
-        )
-        {
-            throw new UnauthorizedSiteAccessException( $siteAccess, $token->getUsername() );
+            $request->attributes->get('_route') !== 'login'
+            && !$this->hasAccess($siteAccess, $token->getUsername())
+        ) {
+            throw new UnauthorizedSiteAccessException($siteAccess, $token->getUsername());
         }
     }
 
     /**
      * Returns true if given request is considered as a master request.
-     * Fragments are considered as sub-requests (i.e. ESI, Hinclude...)
+     * Fragments are considered as sub-requests (i.e. ESI, Hinclude...).
      *
      * @param Request $request
      * @param $requestType
      *
      * @return bool
      */
-    private function isMasterRequest( Request $request, $requestType )
+    private function isMasterRequest(Request $request, $requestType)
     {
         if (
             $requestType !== HttpKernelInterface::MASTER_REQUEST
-            || substr( $request->getPathInfo(), -strlen( $this->fragmentPath ) ) === $this->fragmentPath
-        )
-        {
+            || substr($request->getPathInfo(), -strlen($this->fragmentPath)) === $this->fragmentPath
+        ) {
             return false;
         }
 
@@ -252,8 +239,8 @@ class SecurityListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    protected function hasAccess( SiteAccess $siteAccess )
+    protected function hasAccess(SiteAccess $siteAccess)
     {
-        return $this->securityContext->isGranted( new Attribute( 'user', 'login', array( 'valueObject' => $siteAccess ) ) );
+        return $this->securityContext->isGranted(new Attribute('user', 'login', array('valueObject' => $siteAccess)));
     }
 }

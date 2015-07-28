@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing a Test Case for LimitationType class
+ * File containing a Test Case for LimitationType class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Limitation\Tests;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -17,7 +16,7 @@ use eZ\Publish\Core\Limitation\SiteAccessLimitationType;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 
 /**
- * Test Case for LimitationType
+ * Test Case for LimitationType.
  */
 class SiteAccessLimitationTypeTest extends Base
 {
@@ -35,18 +34,18 @@ class SiteAccessLimitationTypeTest extends Base
     public function providerForTestAcceptValue()
     {
         return array(
-            array( new SiteAccessLimitation() ),
-            array( new SiteAccessLimitation( array() ) ),
+            array(new SiteAccessLimitation()),
+            array(new SiteAccessLimitation(array())),
             array(
                 new SiteAccessLimitation(
                     array(
                         'limitationValues' => array(
-                            "2339567439",
-                            "2582995467",
-                            "1817462202"
-                        )
+                            '2339567439',
+                            '2582995467',
+                            '1817462202',
+                        ),
                     )
-                )
+                ),
             ),
         );
     }
@@ -58,9 +57,9 @@ class SiteAccessLimitationTypeTest extends Base
      * @param \eZ\Publish\API\Repository\Values\User\Limitation\SiteAccessLimitation $limitation
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testAcceptValue( SiteAccessLimitation $limitation, SiteAccessLimitationType $limitationType )
+    public function testAcceptValue(SiteAccessLimitation $limitation, SiteAccessLimitationType $limitationType)
     {
-        $limitationType->acceptValue( $limitation );
+        $limitationType->acceptValue($limitation);
     }
 
     /**
@@ -69,8 +68,8 @@ class SiteAccessLimitationTypeTest extends Base
     public function providerForTestAcceptValueException()
     {
         return array(
-            array( new ObjectStateLimitation() ),
-            array( new SiteAccessLimitation( array( 'limitationValues' => array( true ) ) ) ),
+            array(new ObjectStateLimitation()),
+            array(new SiteAccessLimitation(array('limitationValues' => array(true)))),
         );
     }
 
@@ -82,9 +81,9 @@ class SiteAccessLimitationTypeTest extends Base
      * @param \eZ\Publish\API\Repository\Values\User\Limitation $limitation
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testAcceptValueException( Limitation $limitation, SiteAccessLimitationType $limitationType )
+    public function testAcceptValueException(Limitation $limitation, SiteAccessLimitationType $limitationType)
     {
-        $limitationType->acceptValue( $limitation );
+        $limitationType->acceptValue($limitation);
     }
 
     /**
@@ -93,50 +92,50 @@ class SiteAccessLimitationTypeTest extends Base
     public function providerForTestValidateError()
     {
         return array(
-            array( new SiteAccessLimitation(), 0 ),
-            array( new SiteAccessLimitation( array() ), 0 ),
+            array(new SiteAccessLimitation(), 0),
+            array(new SiteAccessLimitation(array()), 0),
             array(
                 new SiteAccessLimitation(
                     array(
-                        'limitationValues' => array( "2339567439" )
+                        'limitationValues' => array('2339567439'),
                     )
                 ),
-                0
+                0,
             ),
-            array( new SiteAccessLimitation( array( 'limitationValues' => array( true ) ) ), 1 ),
+            array(new SiteAccessLimitation(array('limitationValues' => array(true))), 1),
             array(
                 new SiteAccessLimitation(
                     array(
                         'limitationValues' => array(
-                            "2339567439",
-                            false
-                        )
+                            '2339567439',
+                            false,
+                        ),
                     )
                 ),
-                1
+                1,
             ),
             array(
                 new SiteAccessLimitation(
                     array(
                         'limitationValues' => array(
                             null,
-                            array()
-                        )
+                            array(),
+                        ),
                     )
                 ),
-                2
+                2,
             ),
             array(
                 new SiteAccessLimitation(
                     array(
                         'limitationValues' => array(
-                            "2339567439",
-                            "2582995467",
-                            "1817462202"
-                        )
+                            '2339567439',
+                            '2582995467',
+                            '1817462202',
+                        ),
                     )
                 ),
-                0
+                0,
             ),
         );
     }
@@ -149,11 +148,11 @@ class SiteAccessLimitationTypeTest extends Base
      * @param int $errorCount
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testValidateError( SiteAccessLimitation $limitation, $errorCount, SiteAccessLimitationType $limitationType )
+    public function testValidateError(SiteAccessLimitation $limitation, $errorCount, SiteAccessLimitationType $limitationType)
     {
-        self::markTestSkipped( "Method validate() is not implemented" );
-        $validationErrors = $limitationType->validate( $limitation );
-        self::assertCount( $errorCount, $validationErrors );
+        self::markTestSkipped('Method validate() is not implemented');
+        $validationErrors = $limitationType->validate($limitation);
+        self::assertCount($errorCount, $validationErrors);
     }
 
     /**
@@ -161,14 +160,14 @@ class SiteAccessLimitationTypeTest extends Base
      *
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testBuildValue( SiteAccessLimitationType $limitationType )
+    public function testBuildValue(SiteAccessLimitationType $limitationType)
     {
-        $expected = array( 'test', 'test' => 9 );
-        $value = $limitationType->buildValue( $expected );
+        $expected = array('test', 'test' => 9);
+        $value = $limitationType->buildValue($expected);
 
-        self::assertInstanceOf( '\eZ\Publish\API\Repository\Values\User\Limitation\SiteAccessLimitation', $value );
-        self::assertInternalType( 'array', $value->limitationValues );
-        self::assertEquals( $expected, $value->limitationValues );
+        self::assertInstanceOf('\eZ\Publish\API\Repository\Values\User\Limitation\SiteAccessLimitation', $value);
+        self::assertInternalType('array', $value->limitationValues);
+        self::assertEquals($expected, $value->limitationValues);
     }
 
     /**
@@ -180,20 +179,20 @@ class SiteAccessLimitationTypeTest extends Base
             // SiteAccess, no access
             array(
                 'limitation' => new SiteAccessLimitation(),
-                'object' => new SiteAccess( 'behat_site' ),
-                'expected' => false
+                'object' => new SiteAccess('behat_site'),
+                'expected' => false,
             ),
             // SiteAccess, no access
             array(
-                'limitation' => new SiteAccessLimitation( array( 'limitationValues' => array( "2339567439" ) ) ),
-                'object' => new SiteAccess( 'behat_site' ),
-                'expected' => false
+                'limitation' => new SiteAccessLimitation(array('limitationValues' => array('2339567439'))),
+                'object' => new SiteAccess('behat_site'),
+                'expected' => false,
             ),
             // SiteAccess, with access
             array(
-                'limitation' => new SiteAccessLimitation( array( 'limitationValues' => array( "1817462202" ) ) ),
-                'object' => new SiteAccess( 'behat_site' ),
-                'expected' => true
+                'limitation' => new SiteAccessLimitation(array('limitationValues' => array('1817462202'))),
+                'object' => new SiteAccess('behat_site'),
+                'expected' => true,
             ),
         );
     }
@@ -207,10 +206,9 @@ class SiteAccessLimitationTypeTest extends Base
         ValueObject $object,
         $expected,
         SiteAccessLimitationType $limitationType
-    )
-    {
+    ) {
         $userMock = $this->getUserMock();
-        $userMock->expects( $this->never() )->method( $this->anything() );
+        $userMock->expects($this->never())->method($this->anything());
 
         $value = $limitationType->evaluate(
             $limitation,
@@ -218,8 +216,8 @@ class SiteAccessLimitationTypeTest extends Base
             $object
         );
 
-        self::assertInternalType( 'boolean', $value );
-        self::assertEquals( $expected, $value );
+        self::assertInternalType('boolean', $value);
+        self::assertEquals($expected, $value);
     }
 
     /**
@@ -231,12 +229,12 @@ class SiteAccessLimitationTypeTest extends Base
             // invalid limitation
             array(
                 'limitation' => new ObjectStateLimitation(),
-                'object' => new SiteAccess()
+                'object' => new SiteAccess(),
             ),
             // invalid object
             array(
                 'limitation' => new SiteAccessLimitation(),
-                'object' => new ObjectStateLimitation()
+                'object' => new ObjectStateLimitation(),
             ),
         );
     }
@@ -250,10 +248,9 @@ class SiteAccessLimitationTypeTest extends Base
         Limitation $limitation,
         ValueObject $object,
         SiteAccessLimitationType $limitationType
-    )
-    {
+    ) {
         $userMock = $this->getUserMock();
-        $userMock->expects( $this->never() )->method( $this->anything() );
+        $userMock->expects($this->never())->method($this->anything());
 
         $limitationType->evaluate(
             $limitation,
@@ -268,9 +265,9 @@ class SiteAccessLimitationTypeTest extends Base
      *
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testGetCriterion( SiteAccessLimitationType $limitationType )
+    public function testGetCriterion(SiteAccessLimitationType $limitationType)
     {
-        $limitationType->getCriterion( new SiteAccessLimitation(), $this->getUserMock() );
+        $limitationType->getCriterion(new SiteAccessLimitation(), $this->getUserMock());
     }
 
     /**
@@ -278,8 +275,8 @@ class SiteAccessLimitationTypeTest extends Base
      *
      * @param \eZ\Publish\Core\Limitation\SiteAccessLimitationType $limitationType
      */
-    public function testValueSchema( SiteAccessLimitationType $limitationType )
+    public function testValueSchema(SiteAccessLimitationType $limitationType)
     {
-        self::markTestSkipped( "Method valueSchema() is not implemented" );
+        self::markTestSkipped('Method valueSchema() is not implemented');
     }
 }

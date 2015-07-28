@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Block\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\Block\MultipleValued;
@@ -19,10 +18,10 @@ class Block extends MultipleValued
      *
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      *
-     * @return boolean
+     * @return bool
      */
-    public function matchBlock( PageBlock $block )
+    public function matchBlock(PageBlock $block)
     {
-        return isset( $this->values[$block->id] );
+        return isset($this->values[$block->id]);
     }
 }

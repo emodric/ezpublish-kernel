@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Repository\Tests\Service\Mock\RelationProcessorTest class
+ * File contains: eZ\Publish\Core\Repository\Tests\Service\Mock\RelationProcessorTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Tests\Service\Mock;
 
 use eZ\Publish\Core\Repository\Tests\Service\Mock\Base as BaseServiceMockTest;
@@ -18,7 +17,7 @@ use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\SPI\Persistence\Content\Relation\CreateStruct;
 
 /**
- * Mock Test case for RelationProcessor service
+ * Mock Test case for RelationProcessor service.
  */
 class RelationProcessorTest extends BaseServiceMockTest
 {
@@ -33,13 +32,13 @@ class RelationProcessorTest extends BaseServiceMockTest
 
         $this->assertAttributeSame(
             $this->getRepositoryMock(),
-            "repository",
+            'repository',
             $relationProcessor
         );
 
         $this->assertAttributeSame(
             $this->getPersistenceMock(),
-            "persistenceHandler",
+            'persistenceHandler',
             $relationProcessor
         );
     }
@@ -51,78 +50,78 @@ class RelationProcessorTest extends BaseServiceMockTest
      */
     public function testGetFieldRelations()
     {
-        $relationProcessor = $this->getPartlyMockedRelationProcessor( array( "appendFieldRelations" ) );
+        $relationProcessor = $this->getPartlyMockedRelationProcessor(array('appendFieldRelations'));
         $repositoryMock = $this->getRepositoryMock();
         $fieldTypeServiceMock = $this->getFieldTypeServiceMock();
-        $contentServiceMock = $this->getMock( "eZ\\Publish\\API\\Repository\\ContentService" );
-        $contentInfoMock = $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\Content\\ContentInfo" );
-        $contentTypeMock = $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType" );
-        $fieldValueMock = $this->getMockForAbstractClass( "eZ\\Publish\\Core\\FieldType\\Value" );
-        $fieldTypeMock = $this->getMock( "eZ\\Publish\\SPI\\FieldType\\FieldType" );
+        $contentServiceMock = $this->getMock('eZ\\Publish\\API\\Repository\\ContentService');
+        $contentInfoMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\Content\\ContentInfo');
+        $contentTypeMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType');
+        $fieldValueMock = $this->getMockForAbstractClass('eZ\\Publish\\Core\\FieldType\\Value');
+        $fieldTypeMock = $this->getMock('eZ\\Publish\\SPI\\FieldType\\FieldType');
         $contentMock = $this->getMock(
-            "eZ\\Publish\\API\\Repository\\Values\\Content\\Content",
-            array( "__get", "getFields", "getFieldValue", "getVersionInfo", "getFieldsByLanguage" )
+            'eZ\\Publish\\API\\Repository\\Values\\Content\\Content',
+            array('__get', 'getFields', 'getFieldValue', 'getVersionInfo', 'getFieldsByLanguage')
         );
 
-        $contentMock->expects( $this->any() )
-            ->method( "__get" )
-            ->with( "contentType" )
-            ->will( $this->returnValue( $contentTypeMock ) );
+        $contentMock->expects($this->any())
+            ->method('__get')
+            ->with('contentType')
+            ->will($this->returnValue($contentTypeMock));
 
-        $repositoryMock->expects( $this->once() )
-            ->method( "getContentService" )
-            ->will( $this->returnValue( $contentServiceMock ) );
+        $repositoryMock->expects($this->once())
+            ->method('getContentService')
+            ->will($this->returnValue($contentServiceMock));
 
-        $repositoryMock->expects( $this->once() )
-            ->method( "getFieldTypeService" )
-            ->will( $this->returnValue( $fieldTypeServiceMock ) );
+        $repositoryMock->expects($this->once())
+            ->method('getFieldTypeService')
+            ->will($this->returnValue($fieldTypeServiceMock));
 
-        $contentServiceMock->expects( $this->once() )
-            ->method( "loadContentByContentInfo" )
-            ->with( $contentInfoMock )
-            ->will( $this->returnValue( $contentMock ) );
+        $contentServiceMock->expects($this->once())
+            ->method('loadContentByContentInfo')
+            ->with($contentInfoMock)
+            ->will($this->returnValue($contentMock));
 
-        $contentMock->expects( $this->once() )
-            ->method( "getFields" )
+        $contentMock->expects($this->once())
+            ->method('getFields')
             ->will(
                 $this->returnValue(
                     array(
                         new Field(
                             array(
-                                "fieldDefIdentifier" => "test_fielddefinition_identifier",
-                                "value" => 42,
+                                'fieldDefIdentifier' => 'test_fielddefinition_identifier',
+                                'value' => 42,
                             )
-                        )
+                        ),
                     )
                 )
             );
 
-        $contentTypeMock->expects( $this->once() )
-            ->method( "getFieldDefinition" )
-            ->with( "test_fielddefinition_identifier" )
+        $contentTypeMock->expects($this->once())
+            ->method('getFieldDefinition')
+            ->with('test_fielddefinition_identifier')
             ->will(
                 $this->returnValue(
                     new FieldDefinition(
                         array(
-                            "id" => 24,
-                            "fieldTypeIdentifier" => "test_fieldtype_identifier",
+                            'id' => 24,
+                            'fieldTypeIdentifier' => 'test_fieldtype_identifier',
                         )
                     )
                 )
             );
 
-        $fieldTypeServiceMock->expects( $this->once() )
-            ->method( "buildFieldType" )
-            ->with( "test_fieldtype_identifier" )
-            ->will( $this->returnValue( $fieldTypeMock ) );
+        $fieldTypeServiceMock->expects($this->once())
+            ->method('buildFieldType')
+            ->with('test_fieldtype_identifier')
+            ->will($this->returnValue($fieldTypeMock));
 
-        $fieldTypeMock->expects( $this->once() )
-            ->method( "acceptValue" )
-            ->with( 42 )
-            ->will( $this->returnValue( $fieldValueMock ) );
+        $fieldTypeMock->expects($this->once())
+            ->method('acceptValue')
+            ->with(42)
+            ->will($this->returnValue($fieldValueMock));
 
-        $relationProcessor->expects( $this->once() )
-            ->method( "appendFieldRelations" )
+        $relationProcessor->expects($this->once())
+            ->method('appendFieldRelations')
             ->with(
                 array(),
                 array(),
@@ -131,94 +130,94 @@ class RelationProcessorTest extends BaseServiceMockTest
                 24
             );
 
-        $relationProcessor->getFieldRelations( $contentInfoMock );
+        $relationProcessor->getFieldRelations($contentInfoMock);
     }
 
     public function providerForTestAppendRelations()
     {
         return array(
             array(
-                array( Relation::FIELD => array( 100 ) ),
-                array( Relation::FIELD => array( 42 => array( 100 => 0 ) ) ),
+                array(Relation::FIELD => array(100)),
+                array(Relation::FIELD => array(42 => array(100 => 0))),
             ),
             array(
-                array( Relation::LINK => array( "contentIds" => array( 100 ) ) ),
-                array( Relation::LINK => array( 100 => 0 ) ),
+                array(Relation::LINK => array('contentIds' => array(100))),
+                array(Relation::LINK => array(100 => 0)),
             ),
             array(
-                array( Relation::EMBED => array( "contentIds" => array( 100 ) ) ),
-                array( Relation::EMBED => array( 100 => 0 ) ),
+                array(Relation::EMBED => array('contentIds' => array(100))),
+                array(Relation::EMBED => array(100 => 0)),
             ),
             array(
                 array(
-                    Relation::FIELD => array( 100 ),
-                    Relation::LINK => array( "contentIds" => array( 100 ) ),
-                    Relation::EMBED => array( "contentIds" => array( 100 ) ),
+                    Relation::FIELD => array(100),
+                    Relation::LINK => array('contentIds' => array(100)),
+                    Relation::EMBED => array('contentIds' => array(100)),
                 ),
                 array(
-                    Relation::FIELD => array( 42 => array( 100 => 0 ) ),
-                    Relation::LINK => array( 100 => 0 ),
-                    Relation::EMBED => array( 100 => 0 ),
+                    Relation::FIELD => array(42 => array(100 => 0)),
+                    Relation::LINK => array(100 => 0),
+                    Relation::EMBED => array(100 => 0),
                 ),
             ),
             array(
-                array( Relation::LINK => array( "locationIds" => array( 100 ) ) ),
-                array( Relation::LINK => array( 200 => true ) ),
+                array(Relation::LINK => array('locationIds' => array(100))),
+                array(Relation::LINK => array(200 => true)),
             ),
             array(
                 array(
                     Relation::LINK => array(
-                        "locationIds" => array( 100 ),
-                        "contentIds" => array( 100 ),
-                    )
+                        'locationIds' => array(100),
+                        'contentIds' => array(100),
+                    ),
                 ),
-                array( Relation::LINK => array( 100 => 0, 200 => true ) ),
+                array(Relation::LINK => array(100 => 0, 200 => true)),
             ),
             array(
-                array( Relation::EMBED => array( "locationIds" => array( 100 ) ) ),
-                array( Relation::EMBED => array( 200 => true ) ),
+                array(Relation::EMBED => array('locationIds' => array(100))),
+                array(Relation::EMBED => array(200 => true)),
             ),
             array(
                 array(
                     Relation::EMBED => array(
-                        "locationIds" => array( 100 ),
-                        "contentIds" => array( 100 ),
-                    )
+                        'locationIds' => array(100),
+                        'contentIds' => array(100),
+                    ),
                 ),
-                array( Relation::EMBED => array( 100 => 0, 200 => true ) ),
+                array(Relation::EMBED => array(100 => 0, 200 => true)),
             ),
             array(
                 array(
                     Relation::LINK => array(
-                        "locationIds" => array( 100 ),
-                        "contentIds" => array( 100 ),
+                        'locationIds' => array(100),
+                        'contentIds' => array(100),
                     ),
                     Relation::EMBED => array(
-                        "locationIds" => array( 101 ),
-                        "contentIds" => array( 100 ),
+                        'locationIds' => array(101),
+                        'contentIds' => array(100),
                     ),
                 ),
                 array(
-                    Relation::LINK => array( 100 => 0, 200 => true ),
-                    Relation::EMBED => array( 100 => 0, 201 => true ),
+                    Relation::LINK => array(100 => 0, 200 => true),
+                    Relation::EMBED => array(100 => 0, 201 => true),
                 ),
             ),
             array(
                 array(
-                    Relation::FIELD => array( 100 ),
+                    Relation::FIELD => array(100),
                     Relation::LINK => array(
-                        "locationIds" => array( 100 ),
-                        "contentIds" => array( 100 ),
+                        'locationIds' => array(100),
+                        'contentIds' => array(100),
                     ),
                     Relation::EMBED => array(
-                        "locationIds" => array( 101 ),
-                        "contentIds" => array( 100 ),
+                        'locationIds' => array(101),
+                        'contentIds' => array(100),
                     ),
                 ),
                 array(
-                    Relation::FIELD => array( 42 => array( 100 => 0 ) ),
-                    Relation::LINK => array( 100 => 0, 200 => true ),
-                    Relation::EMBED => array( 100 => 0, 201 => true ),
+                    Relation::FIELD => array(42 => array(100 => 0)),
+                    Relation::LINK => array(100 => 0, 200 => true),
+                    Relation::EMBED => array(100 => 0, 201 => true),
                 ),
             ),
         );
@@ -230,23 +229,23 @@ class RelationProcessorTest extends BaseServiceMockTest
      * @dataProvider providerForTestAppendRelations
      * @covers \eZ\Publish\Core\Repository\RelationProcessor::appendFieldRelations
      */
-    public function testAppendFieldRelations( array $fieldRelations, array $expected )
+    public function testAppendFieldRelations(array $fieldRelations, array $expected)
     {
         $repositoryMock = $this->getRepositoryMock();
         $relationProcessor = $this->getPartlyMockedRelationProcessor();
-        $fieldValueMock = $this->getMockForAbstractClass( "eZ\\Publish\\Core\\FieldType\\Value" );
-        $fieldTypeMock = $this->getMock( "eZ\\Publish\\SPI\\FieldType\\FieldType" );
-        $locationServiceMock = $this->getMock( "eZ\\Publish\\API\\Repository\\LocationService" );
+        $fieldValueMock = $this->getMockForAbstractClass('eZ\\Publish\\Core\\FieldType\\Value');
+        $fieldTypeMock = $this->getMock('eZ\\Publish\\SPI\\FieldType\\FieldType');
+        $locationServiceMock = $this->getMock('eZ\\Publish\\API\\Repository\\LocationService');
         $locationCallCount = 0;
 
-        $repositoryMock->expects( $this->any() )
-            ->method( "getLocationService" )
-            ->will( $this->returnValue( $locationServiceMock ) );
+        $repositoryMock->expects($this->any())
+            ->method('getLocationService')
+            ->will($this->returnValue($locationServiceMock));
 
-        $fieldTypeMock->expects( $this->once() )
-            ->method( "getRelations" )
-            ->with( $this->equalTo( $fieldValueMock ) )
-            ->will( $this->returnValue( $fieldRelations ) );
+        $fieldTypeMock->expects($this->once())
+            ->method('getRelations')
+            ->with($this->equalTo($fieldValueMock))
+            ->will($this->returnValue($fieldRelations));
 
         $this->assertLocationServiceExpectation(
             $locationServiceMock,
@@ -272,25 +271,23 @@ class RelationProcessorTest extends BaseServiceMockTest
             42
         );
 
-        $this->assertEquals( $expected, $relations );
+        $this->assertEquals($expected, $relations);
     }
 
     /**
      * Assert loading Locations to find Content id in {@link RelationProcessor::appendFieldRelations()} method.
      */
-    protected function assertLocationServiceExpectation( $locationServiceMock, $fieldRelations, $type, &$callCounter )
+    protected function assertLocationServiceExpectation($locationServiceMock, $fieldRelations, $type, &$callCounter)
     {
-        if ( isset( $fieldRelations[$type]["locationIds"] ) )
-        {
-            foreach ( $fieldRelations[$type]["locationIds"] as $locationId )
-            {
-                $locationServiceMock->expects( $this->at( $callCounter ) )
-                    ->method( "loadLocation" )
-                    ->with( $this->equalTo( $locationId ) )
+        if (isset($fieldRelations[$type]['locationIds'])) {
+            foreach ($fieldRelations[$type]['locationIds'] as $locationId) {
+                $locationServiceMock->expects($this->at($callCounter))
+                    ->method('loadLocation')
+                    ->with($this->equalTo($locationId))
                     ->will(
                         $this->returnValue(
                             new Location(
-                                array( "contentInfo" => new ContentInfo( array( "id" => $locationId + 100 ) ) )
+                                array('contentInfo' => new ContentInfo(array('id' => $locationId + 100)))
                             )
                         )
                     );
@@ -309,40 +306,40 @@ class RelationProcessorTest extends BaseServiceMockTest
     {
         $repositoryMock = $this->getRepositoryMock();
         $relationProcessor = $this->getPartlyMockedRelationProcessor();
-        $fieldValueMock = $this->getMockForAbstractClass( "eZ\\Publish\\Core\\FieldType\\Value" );
-        $fieldTypeMock = $this->getMock( "eZ\\Publish\\SPI\\FieldType\\FieldType" );
-        $locationServiceMock = $this->getMock( "eZ\\Publish\\API\\Repository\\LocationService" );
+        $fieldValueMock = $this->getMockForAbstractClass('eZ\\Publish\\Core\\FieldType\\Value');
+        $fieldTypeMock = $this->getMock('eZ\\Publish\\SPI\\FieldType\\FieldType');
+        $locationServiceMock = $this->getMock('eZ\\Publish\\API\\Repository\\LocationService');
 
-        $repositoryMock->expects( $this->any() )
-            ->method( "getLocationService" )
-            ->will( $this->returnValue( $locationServiceMock ) );
+        $repositoryMock->expects($this->any())
+            ->method('getLocationService')
+            ->will($this->returnValue($locationServiceMock));
 
-        $fieldTypeMock->expects( $this->once() )
-            ->method( "getRelations" )
-            ->with( $this->equalTo( $fieldValueMock ) )
+        $fieldTypeMock->expects($this->once())
+            ->method('getRelations')
+            ->with($this->equalTo($fieldValueMock))
             ->will(
                 $this->returnValue(
                     array(
-                        Relation::FIELD => array( 100 ),
+                        Relation::FIELD => array(100),
                         Relation::LINK => array(
-                            "locationIds" => array( 100 ),
-                            "contentIds" => array( 100 ),
+                            'locationIds' => array(100),
+                            'contentIds' => array(100),
                         ),
                         Relation::EMBED => array(
-                            "locationIds" => array( 100 ),
-                            "contentIds" => array( 100 ),
+                            'locationIds' => array(100),
+                            'contentIds' => array(100),
                         ),
                     )
                 )
             );
 
-        $locationServiceMock->expects( $this->once() )
-            ->method( "loadLocation" )
-            ->with( $this->equalTo( 100 ) )
+        $locationServiceMock->expects($this->once())
+            ->method('loadLocation')
+            ->with($this->equalTo(100))
             ->will(
                 $this->returnValue(
                     new Location(
-                        array( "contentInfo" => new ContentInfo( array( "id" => 200 ) ) )
+                        array('contentInfo' => new ContentInfo(array('id' => 200)))
                     )
                 )
             );
@@ -360,9 +357,9 @@ class RelationProcessorTest extends BaseServiceMockTest
 
         $this->assertEquals(
             array(
-                Relation::FIELD => array( 42 => array( 100 => 0 ) ),
-                Relation::LINK => array( 100 => 0, 200 => true ),
-                Relation::EMBED => array( 100 => 0, 200 => true ),
+                Relation::FIELD => array(42 => array(100 => 0)),
+                Relation::LINK => array(100 => 0, 200 => true),
+                Relation::EMBED => array(100 => 0, 200 => true),
             ),
             $relations
         );
@@ -376,22 +373,22 @@ class RelationProcessorTest extends BaseServiceMockTest
     public function testProcessFieldRelationsNoChanges()
     {
         $relationProcessor = $this->getPartlyMockedRelationProcessor();
-        $contentHandlerMock = $this->getPersistenceMockHandler( 'Content\\Handler' );
-        $contentTypeMock = $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType" );
+        $contentHandlerMock = $this->getPersistenceMockHandler('Content\\Handler');
+        $contentTypeMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType');
 
-        $contentTypeMock->expects( $this->once() )
-            ->method( "getFieldDefinition" )
-            ->with( $this->equalTo( "identifier42" ) )
-            ->will( $this->returnValue( new FieldDefinition( array( "id" => 42 ) ) ) );
+        $contentTypeMock->expects($this->once())
+            ->method('getFieldDefinition')
+            ->with($this->equalTo('identifier42'))
+            ->will($this->returnValue(new FieldDefinition(array('id' => 42))));
 
-        $contentHandlerMock->expects( $this->never() )->method( "addRelation" );
-        $contentHandlerMock->expects( $this->never() )->method( "removeRelation" );
+        $contentHandlerMock->expects($this->never())->method('addRelation');
+        $contentHandlerMock->expects($this->never())->method('removeRelation');
 
         $existingRelations = array(
-            $this->getStubbedRelation( 1, Relation::COMMON, null, 10 ),
-            $this->getStubbedRelation( 2, Relation::EMBED, null, 11 ),
-            $this->getStubbedRelation( 3, Relation::LINK, null, 12 ),
-            $this->getStubbedRelation( 4, Relation::FIELD, 42, 13 ),
+            $this->getStubbedRelation(1, Relation::COMMON, null, 10),
+            $this->getStubbedRelation(2, Relation::EMBED, null, 11),
+            $this->getStubbedRelation(3, Relation::LINK, null, 12),
+            $this->getStubbedRelation(4, Relation::FIELD, 42, 13),
             // Legacy Storage cases - composite entries
             $this->getStubbedRelation(
                 5,
@@ -419,9 +416,9 @@ class RelationProcessorTest extends BaseServiceMockTest
             ),
         );
         $inputRelations = array(
-            Relation::EMBED => array_flip( array( 11, 14, 16, 17 ) ),
-            Relation::LINK => array_flip( array( 12, 15, 16, 17 ) ),
-            Relation::FIELD => array( 42 => array_flip( array( 13 ) ) ),
+            Relation::EMBED => array_flip(array(11, 14, 16, 17)),
+            Relation::LINK => array_flip(array(12, 15, 16, 17)),
+            Relation::FIELD => array(42 => array_flip(array(13))),
         );
 
         $relationProcessor->processFieldRelations(
@@ -441,13 +438,13 @@ class RelationProcessorTest extends BaseServiceMockTest
     public function testProcessFieldRelationsAddsRelations()
     {
         $relationProcessor = $this->getPartlyMockedRelationProcessor();
-        $contentHandlerMock = $this->getPersistenceMockHandler( 'Content\\Handler' );
-        $contentTypeMock = $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType" );
+        $contentHandlerMock = $this->getPersistenceMockHandler('Content\\Handler');
+        $contentTypeMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType');
 
         $existingRelations = array(
-            $this->getStubbedRelation( 1, Relation::COMMON, null, 10 ),
-            $this->getStubbedRelation( 2, Relation::EMBED, null, 11 ),
-            $this->getStubbedRelation( 3, Relation::LINK, null, 12 ),
+            $this->getStubbedRelation(1, Relation::COMMON, null, 10),
+            $this->getStubbedRelation(2, Relation::EMBED, null, 11),
+            $this->getStubbedRelation(3, Relation::LINK, null, 12),
             // Legacy Storage cases - composite entries
             $this->getStubbedRelation(
                 5,
@@ -469,52 +466,52 @@ class RelationProcessorTest extends BaseServiceMockTest
             ),
         );
         $inputRelations = array(
-            Relation::EMBED => array_flip( array( 11, 14, 16, 17 ) ),
-            Relation::LINK => array_flip( array( 12, 15, 16, 17 ) ),
-            Relation::FIELD => array( 42 => array_flip( array( 13 ) ) ),
+            Relation::EMBED => array_flip(array(11, 14, 16, 17)),
+            Relation::LINK => array_flip(array(12, 15, 16, 17)),
+            Relation::FIELD => array(42 => array_flip(array(13))),
         );
 
-        $contentTypeMock->expects( $this->never() )->method( "getFieldDefinition" );
-        $contentHandlerMock->expects( $this->never() )->method( "removeRelation" );
+        $contentTypeMock->expects($this->never())->method('getFieldDefinition');
+        $contentHandlerMock->expects($this->never())->method('removeRelation');
 
-        $contentHandlerMock->expects( $this->at( 0 ) )
-            ->method( "addRelation" )
+        $contentHandlerMock->expects($this->at(0))
+            ->method('addRelation')
             ->with(
                 new CreateStruct(
                     array(
-                        "sourceContentId" => 24,
-                        "sourceContentVersionNo" => 2,
-                        "sourceFieldDefinitionId" => null,
-                        "destinationContentId" => 17,
-                        "type" => Relation::EMBED
+                        'sourceContentId' => 24,
+                        'sourceContentVersionNo' => 2,
+                        'sourceFieldDefinitionId' => null,
+                        'destinationContentId' => 17,
+                        'type' => Relation::EMBED,
                     )
                 )
             );
 
-        $contentHandlerMock->expects( $this->at( 1 ) )
-            ->method( "addRelation" )
+        $contentHandlerMock->expects($this->at(1))
+            ->method('addRelation')
             ->with(
                 new CreateStruct(
                     array(
-                        "sourceContentId" => 24,
-                        "sourceContentVersionNo" => 2,
-                        "sourceFieldDefinitionId" => null,
-                        "destinationContentId" => 17,
-                        "type" => Relation::LINK
+                        'sourceContentId' => 24,
+                        'sourceContentVersionNo' => 2,
+                        'sourceFieldDefinitionId' => null,
+                        'destinationContentId' => 17,
+                        'type' => Relation::LINK,
                     )
                 )
             );
 
-        $contentHandlerMock->expects( $this->at( 2 ) )
-            ->method( "addRelation" )
+        $contentHandlerMock->expects($this->at(2))
+            ->method('addRelation')
             ->with(
                 new CreateStruct(
                     array(
-                        "sourceContentId" => 24,
-                        "sourceContentVersionNo" => 2,
-                        "sourceFieldDefinitionId" => 42,
-                        "destinationContentId" => 13,
-                        "type" => Relation::FIELD
+                        'sourceContentId' => 24,
+                        'sourceContentVersionNo' => 2,
+                        'sourceFieldDefinitionId' => 42,
+                        'destinationContentId' => 13,
+                        'type' => Relation::FIELD,
                     )
                 )
             );
@@ -536,14 +533,14 @@ class RelationProcessorTest extends BaseServiceMockTest
     public function testProcessFieldRelationsRemovesRelations()
     {
         $relationProcessor = $this->getPartlyMockedRelationProcessor();
-        $contentHandlerMock = $this->getPersistenceMockHandler( 'Content\\Handler' );
-        $contentTypeMock = $this->getMockForAbstractClass( "eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType" );
+        $contentHandlerMock = $this->getPersistenceMockHandler('Content\\Handler');
+        $contentTypeMock = $this->getMockForAbstractClass('eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentType');
 
         $existingRelations = array(
-            $this->getStubbedRelation( 1, Relation::COMMON, null, 10 ),
-            $this->getStubbedRelation( 2, Relation::EMBED, null, 11 ),
-            $this->getStubbedRelation( 3, Relation::LINK, null, 12 ),
-            $this->getStubbedRelation( 4, Relation::FIELD, 42, 13 ),
+            $this->getStubbedRelation(1, Relation::COMMON, null, 10),
+            $this->getStubbedRelation(2, Relation::EMBED, null, 11),
+            $this->getStubbedRelation(3, Relation::LINK, null, 12),
+            $this->getStubbedRelation(4, Relation::FIELD, 42, 13),
             // Legacy Storage cases - composite entries
             $this->getStubbedRelation(
                 5,
@@ -571,36 +568,36 @@ class RelationProcessorTest extends BaseServiceMockTest
             ),
         );
         $inputRelations = array(
-            Relation::EMBED => array_flip( array( 11, 14, 17 ) ),
-            Relation::LINK => array_flip( array( 12, 15, 17 ) ),
+            Relation::EMBED => array_flip(array(11, 14, 17)),
+            Relation::LINK => array_flip(array(12, 15, 17)),
         );
 
-        $contentHandlerMock->expects( $this->never() )->method( "addRelation" );
+        $contentHandlerMock->expects($this->never())->method('addRelation');
 
-        $contentTypeMock->expects( $this->once() )
-            ->method( "getFieldDefinition" )
-            ->with( $this->equalTo( "identifier42" ) )
-            ->will( $this->returnValue( new FieldDefinition( array( "id" => 42 ) ) ) );
+        $contentTypeMock->expects($this->once())
+            ->method('getFieldDefinition')
+            ->with($this->equalTo('identifier42'))
+            ->will($this->returnValue(new FieldDefinition(array('id' => 42))));
 
-        $contentHandlerMock->expects( $this->at( 0 ) )
-            ->method( "removeRelation" )
+        $contentHandlerMock->expects($this->at(0))
+            ->method('removeRelation')
             ->with(
-                $this->equalTo( 7 ),
-                $this->equalTo( Relation::EMBED )
+                $this->equalTo(7),
+                $this->equalTo(Relation::EMBED)
             );
 
-        $contentHandlerMock->expects( $this->at( 1 ) )
-            ->method( "removeRelation" )
+        $contentHandlerMock->expects($this->at(1))
+            ->method('removeRelation')
             ->with(
-                $this->equalTo( 7 ),
-                $this->equalTo( Relation::LINK )
+                $this->equalTo(7),
+                $this->equalTo(Relation::LINK)
             );
 
-        $contentHandlerMock->expects( $this->at( 2 ) )
-            ->method( "removeRelation" )
+        $contentHandlerMock->expects($this->at(2))
+            ->method('removeRelation')
             ->with(
-                $this->equalTo( 4 ),
-                $this->equalTo( Relation::FIELD )
+                $this->equalTo(4),
+                $this->equalTo(Relation::FIELD)
             );
 
         $relationProcessor->processFieldRelations(
@@ -612,22 +609,22 @@ class RelationProcessorTest extends BaseServiceMockTest
         );
     }
 
-    protected function getStubbedRelation( $id, $type, $fieldDefinitionId, $contentId )
+    protected function getStubbedRelation($id, $type, $fieldDefinitionId, $contentId)
     {
         return new \eZ\Publish\Core\Repository\Values\Content\Relation(
             array(
-                "id" => $id,
-                "type" => $type,
-                "destinationContentInfo" => new ContentInfo( array( "id" => $contentId ) ),
-                "sourceFieldDefinitionIdentifier" => $fieldDefinitionId ?
-                    "identifier" . $fieldDefinitionId :
+                'id' => $id,
+                'type' => $type,
+                'destinationContentInfo' => new ContentInfo(array('id' => $contentId)),
+                'sourceFieldDefinitionIdentifier' => $fieldDefinitionId ?
+                    'identifier' . $fieldDefinitionId :
                     null,
             )
         );
     }
 
     /**
-     * Returns the content service to test with $methods mocked
+     * Returns the content service to test with $methods mocked.
      *
      * Injected Repository comes from {@see getRepositoryMock()}
      *
@@ -635,14 +632,14 @@ class RelationProcessorTest extends BaseServiceMockTest
      *
      * @return \eZ\Publish\Core\Repository\RelationProcessor|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getPartlyMockedRelationProcessor( array $methods = null )
+    protected function getPartlyMockedRelationProcessor(array $methods = null)
     {
         return $this->getMock(
-            "eZ\\Publish\\Core\\Repository\\RelationProcessor",
+            'eZ\\Publish\\Core\\Repository\\RelationProcessor',
             $methods,
             array(
                 $this->getRepositoryMock(),
-                $this->getPersistenceMock()
+                $this->getPersistenceMock(),
             )
         );
     }
@@ -653,7 +650,7 @@ class RelationProcessorTest extends BaseServiceMockTest
     protected function getFieldTypeServiceMock()
     {
         return $this->getMock(
-            "eZ\\Publish\\Core\\Repository\\FieldTypeService",
+            'eZ\\Publish\\Core\\Repository\\FieldTypeService',
             array(),
             array(),
             '',

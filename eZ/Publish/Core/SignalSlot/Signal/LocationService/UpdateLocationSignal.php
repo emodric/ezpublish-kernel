@@ -1,31 +1,29 @@
 <?php
 /**
- * UpdateLocationSignal class
+ * UpdateLocationSignal class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\SignalSlot\Signal\LocationService;
 
 use eZ\Publish\Core\SignalSlot\Signal;
 
 /**
- * UpdateLocationSignal class
- * @package eZ\Publish\Core\SignalSlot\Signal\LocationService
+ * UpdateLocationSignal class.
  */
 class UpdateLocationSignal extends Signal
 {
     /**
-     * ContentId
+     * ContentId.
      *
      * @var mixed
      */
     public $contentId;
 
     /**
-     * Location ID
+     * Location ID.
      *
      * @var mixed
      */

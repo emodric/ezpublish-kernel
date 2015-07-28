@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\DependencyInjection\Compiler;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler\FieldTypeParameterProviderRegistryPass;
@@ -20,18 +19,18 @@ class FieldTypeParameterProviderRegistryPassTest extends AbstractCompilerPassTes
     protected function setUp()
     {
         parent::setUp();
-        $this->setDefinition( 'ezpublish.fieldType.parameterProviderRegistry', new Definition() );
+        $this->setDefinition('ezpublish.fieldType.parameterProviderRegistry', new Definition());
     }
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new FieldTypeParameterProviderRegistryPass() );
+        $container->addCompilerPass(new FieldTypeParameterProviderRegistryPass());
     }
 
     public function testRegisterFieldType()
@@ -39,15 +38,15 @@ class FieldTypeParameterProviderRegistryPassTest extends AbstractCompilerPassTes
         $fieldTypeIdentifier = 'field_type_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.fieldType.parameterProvider', array( 'alias' => $fieldTypeIdentifier ) );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.fieldType.parameterProvider', array('alias' => $fieldTypeIdentifier));
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.fieldType.parameterProviderRegistry',
             'setParameterProvider',
-            array( new Reference( $serviceId ), $fieldTypeIdentifier )
+            array(new Reference($serviceId), $fieldTypeIdentifier)
         );
     }
 
@@ -59,15 +58,15 @@ class FieldTypeParameterProviderRegistryPassTest extends AbstractCompilerPassTes
         $fieldTypeIdentifier = 'field_type_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.fieldType.parameterProvider' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.fieldType.parameterProvider');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.fieldType.parameterProviderRegistry',
             'setParameterProvider',
-            array( new Reference( $serviceId ), $fieldTypeIdentifier )
+            array(new Reference($serviceId), $fieldTypeIdentifier)
         );
     }
 }

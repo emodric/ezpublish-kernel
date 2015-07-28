@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Controller\Content;
 
 use eZ\Publish\API\Repository\ContentService;
@@ -63,8 +62,7 @@ class PreviewController
         ContentPreviewHelper $previewHelper,
         SecurityContextInterface $securityContext,
         PreviewLocationProvider $locationProvider
-    )
-    {
+    ) {
         $this->contentService = $contentService;
         $this->kernel = $kernel;
         $this->previewHelper = $previewHelper;
@@ -72,7 +70,7 @@ class PreviewController
         $this->locationProvider = $locationProvider;
     }
 
-    public function setRequest( Request $request = null )
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
     }
@@ -80,49 +78,43 @@ class PreviewController
     /**
      * @throws NotImplementedException If Content is missing location as this is not supported in current version
      */
-    public function previewContentAction( $contentId, $versionNo, $language, $siteAccessName = null )
+    public function previewContentAction($contentId, $versionNo, $language, $siteAccessName = null)
     {
-        $this->previewHelper->setPreviewActive( true );
+        $this->previewHelper->setPreviewActive(true);
 
-        try
-        {
-            $content = $this->contentService->loadContent( $contentId, array( $language ), $versionNo );
-            $location = $this->locationProvider->loadMainLocation( $contentId );
+        try {
+            $content = $this->contentService->loadContent($contentId, array($language), $versionNo);
+            $location = $this->locationProvider->loadMainLocation($contentId);
 
-            if ( !$location instanceof Location )
-            {
-                throw new NotImplementedException( "Preview for content without locations" );
+            if (!$location instanceof Location) {
+                throw new NotImplementedException('Preview for content without locations');
             }
 
-            $this->previewHelper->setPreviewedContent( $content );
-            $this->previewHelper->setPreviewedLocation( $location );
-        }
-        catch ( UnauthorizedException $e )
-        {
+            $this->previewHelper->setPreviewedContent($content);
+            $this->previewHelper->setPreviewedLocation($location);
+        } catch (UnauthorizedException $e) {
             throw new AccessDeniedException();
         }
 
-        if ( !$this->securityContext->isGranted( new AuthorizationAttribute( 'content', 'versionread', array( 'valueObject' => $content ) ) ) )
-        {
+        if (!$this->securityContext->isGranted(new AuthorizationAttribute('content', 'versionread', array('valueObject' => $content)))) {
             throw new AccessDeniedException();
         }
 
         $siteAccess = $this->previewHelper->getOriginalSiteAccess();
         // Only switch if $siteAccessName is set and different from original
-        if ( $siteAccessName !== null && $siteAccessName !== $siteAccess->name )
-        {
-            $siteAccess = $this->previewHelper->changeConfigScope( $siteAccessName );
+        if ($siteAccessName !== null && $siteAccessName !== $siteAccess->name) {
+            $siteAccess = $this->previewHelper->changeConfigScope($siteAccessName);
         }
 
         $response = $this->kernel->handle(
-            $this->getForwardRequest( $location, $content, $siteAccess ),
+            $this->getForwardRequest($location, $content, $siteAccess),
             HttpKernelInterface::SUB_REQUEST
         );
-        $response->headers->remove( 'cache-control' );
-        $response->headers->remove( 'expires' );
+        $response->headers->remove('cache-control');
+        $response->headers->remove('expires');
 
         $this->previewHelper->restoreConfigScope();
-        $this->previewHelper->setPreviewActive( false );
+        $this->previewHelper->setPreviewActive(false);
 
         return $response;
     }
@@ -136,7 +128,7 @@ class PreviewController
      *
      * @return \Symfony\Component\HttpFoundation\Request
      */
-    protected function getForwardRequest( Location $location, Content $content, SiteAccess $previewSiteAccess )
+    protected function getForwardRequest(Location $location, Content $content, SiteAccess $previewSiteAccess)
     {
         return $this->request->duplicate(
             null, null,
@@ -153,10 +145,10 @@ class PreviewController
                 'params' => array(
                     'content' => $content,
                     'location' => $location,
-                    'isPreview' => true
+                    'isPreview' => true,
                 ),
                 'siteaccess' => $previewSiteAccess,
-                'semanticPathinfo' => $this->request->attributes->get( 'semanticPathinfo' ),
+                'semanticPathinfo' => $this->request->attributes->get('semanticPathinfo'),
             )
         );
     }

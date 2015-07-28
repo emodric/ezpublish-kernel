@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Imagine;
 
 use eZ\Publish\Core\FieldType\Image\AliasCleanerInterface;
@@ -19,13 +18,13 @@ class AliasCleaner implements AliasCleanerInterface
      */
     private $aliasResolver;
 
-    public function __construct( ResolverInterface $aliasResolver )
+    public function __construct(ResolverInterface $aliasResolver)
     {
         $this->aliasResolver = $aliasResolver;
     }
 
-    public function removeAliases( $originalPath )
+    public function removeAliases($originalPath)
     {
-        $this->aliasResolver->remove( array( $originalPath ), array() );
+        $this->aliasResolver->remove(array($originalPath), array());
     }
 }

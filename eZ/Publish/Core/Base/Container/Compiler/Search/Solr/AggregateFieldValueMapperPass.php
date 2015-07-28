@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Container\Compiler\Search\Solr;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,10 +20,9 @@ class AggregateFieldValueMapperPass implements CompilerPassInterface
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'ezpublish.search.solr.content.field_value_mapper.aggregate' ) )
-        {
+        if (!$container->hasDefinition('ezpublish.search.solr.content.field_value_mapper.aggregate')) {
             return;
         }
 
@@ -32,12 +30,11 @@ class AggregateFieldValueMapperPass implements CompilerPassInterface
             'ezpublish.search.solr.content.field_value_mapper.aggregate'
         );
 
-        foreach ( $container->findTaggedServiceIds( 'ezpublish.search.solr.content.field_value_mapper' ) as $id => $attributes )
-        {
+        foreach ($container->findTaggedServiceIds('ezpublish.search.solr.content.field_value_mapper') as $id => $attributes) {
             $aggregateFieldValueMapperDefinition->addMethodCall(
                 'addMapper',
                 array(
-                    new Reference( $id ),
+                    new Reference($id),
                 )
             );
         }

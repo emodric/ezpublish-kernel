@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Event;
 
 use eZ\Publish\Core\SignalSlot\Signal;
@@ -23,7 +22,7 @@ class SignalEvent extends Event
      */
     private $signal;
 
-    public function __construct( Signal $signal )
+    public function __construct(Signal $signal)
     {
         $this->signal = $signal;
     }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -28,14 +27,15 @@ class FieldRelation extends Criterion implements CriterionInterface
     public function getSpecifications()
     {
         $types = Specifications::TYPE_INTEGER | Specifications::TYPE_STRING;
+
         return array(
-            new Specifications( Operator::CONTAINS, Specifications::FORMAT_SINGLE | Specifications::FORMAT_ARRAY, $types ),
-            new Specifications( Operator::IN, Specifications::FORMAT_ARRAY, $types ),
+            new Specifications(Operator::CONTAINS, Specifications::FORMAT_SINGLE | Specifications::FORMAT_ARRAY, $types),
+            new Specifications(Operator::IN, Specifications::FORMAT_ARRAY, $types),
         );
     }
 
-    public static function createFromQueryBuilder( $target, $operator, $value )
+    public static function createFromQueryBuilder($target, $operator, $value)
     {
-        return new self( $target, $operator, $value );
+        return new self($target, $operator, $value);
     }
 }

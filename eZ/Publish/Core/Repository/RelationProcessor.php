@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RelationProcessor class
+ * File containing the RelationProcessor class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository;
 
 use eZ\Publish\API\Repository\Repository as RepositoryInterface;
@@ -36,12 +35,12 @@ class RelationProcessor
     protected $persistenceHandler;
 
     /**
-     * Setups service with reference to repository object that created it & corresponding handler
+     * Setups service with reference to repository object that created it & corresponding handler.
      *
      * @param \eZ\Publish\API\Repository\Repository $repository
      * @param \eZ\Publish\SPI\Persistence\Handler $handler
      */
-    public function __construct( RepositoryInterface $repository, Handler $handler )
+    public function __construct(RepositoryInterface $repository, Handler $handler)
     {
         $this->repository = $repository;
         $this->persistenceHandler = $handler;
@@ -54,21 +53,20 @@ class RelationProcessor
      *
      * @return mixed
      */
-    public function getFieldRelations( ContentInfo $contentInfo )
+    public function getFieldRelations(ContentInfo $contentInfo)
     {
         $relations = array();
         $locationIdToContentIdMapping = array();
-        $content = $this->repository->getContentService()->loadContentByContentInfo( $contentInfo );
+        $content = $this->repository->getContentService()->loadContentByContentInfo($contentInfo);
 
-        foreach ( $content->getFields() as $field )
-        {
-            $fieldDefinition = $content->contentType->getFieldDefinition( $field->fieldDefIdentifier );
-            $fieldType = $this->repository->getFieldTypeService()->buildFieldType( $fieldDefinition->fieldTypeIdentifier );
+        foreach ($content->getFields() as $field) {
+            $fieldDefinition = $content->contentType->getFieldDefinition($field->fieldDefIdentifier);
+            $fieldType = $this->repository->getFieldTypeService()->buildFieldType($fieldDefinition->fieldTypeIdentifier);
             $this->appendFieldRelations(
                 $relations,
                 $locationIdToContentIdMapping,
                 $fieldType,
-                $fieldType->acceptValue( $field->value ),
+                $fieldType->acceptValue($field->value),
                 $fieldDefinition->id
             );
         }
@@ -86,8 +84,6 @@ class RelationProcessor
      * @param \eZ\Publish\SPI\FieldType\FieldType $fieldType
      * @param \eZ\Publish\Core\FieldType\Value $fieldValue Accepted field value.
      * @param string $fieldDefinitionId
-     *
-     * @return void
      */
     public function appendFieldRelations(
         array &$relations,
@@ -95,34 +91,25 @@ class RelationProcessor
         SPIFieldType $fieldType,
         BaseValue $fieldValue,
         $fieldDefinitionId
-    )
-    {
-        foreach ( $fieldType->getRelations( $fieldValue ) as $relationType => $destinationIds )
-        {
-            if ( $relationType === Relation::FIELD )
-            {
-                if ( !isset( $relations[$relationType][$fieldDefinitionId] ) )
-                {
+    ) {
+        foreach ($fieldType->getRelations($fieldValue) as $relationType => $destinationIds) {
+            if ($relationType === Relation::FIELD) {
+                if (!isset($relations[$relationType][$fieldDefinitionId])) {
                     $relations[$relationType][$fieldDefinitionId] = array();
                 }
-                $relations[$relationType][$fieldDefinitionId] += array_flip( $destinationIds );
+                $relations[$relationType][$fieldDefinitionId] += array_flip($destinationIds);
             }
             // Using bitwise operators as Legacy Stack stores COMMON, LINK and EMBED relation types
             // in the same entry using bitmask
-            else if ( $relationType & ( Relation::LINK | Relation::EMBED ) )
-            {
-                if ( !isset( $relations[$relationType] ) )
-                {
+            elseif ($relationType & (Relation::LINK | Relation::EMBED)) {
+                if (!isset($relations[$relationType])) {
                     $relations[$relationType] = array();
                 }
 
-                if ( isset( $destinationIds["locationIds"] ) )
-                {
-                    foreach ( $destinationIds["locationIds"] as $locationId )
-                    {
-                        if ( !isset( $locationIdToContentIdMapping[$locationId] ) )
-                        {
-                            $location = $this->repository->getLocationService()->loadLocation( $locationId );
+                if (isset($destinationIds['locationIds'])) {
+                    foreach ($destinationIds['locationIds'] as $locationId) {
+                        if (!isset($locationIdToContentIdMapping[$locationId])) {
+                            $location = $this->repository->getLocationService()->loadLocation($locationId);
                             $locationIdToContentIdMapping[$locationId] = $location->contentId;
                         }
 
@@ -130,9 +117,8 @@ class RelationProcessor
                     }
                 }
 
-                if ( isset( $destinationIds["contentIds"] ) )
-                {
-                    $relations[$relationType] += array_flip( $destinationIds["contentIds"] );
+                if (isset($destinationIds['contentIds'])) {
+                    $relations[$relationType] += array_flip($destinationIds['contentIds']);
                 }
             }
         }
@@ -148,8 +134,6 @@ class RelationProcessor
      * @param mixed $sourceContentVersionNo
      * @param \eZ\Publish\API\Repository\Values\ContentType\ContentType $contentType
      * @param \eZ\Publish\API\Repository\Values\Content\Relation[] $existingRelations An array of existing relations for Content version (empty when creating new content)
-     *
-     * @return void
      */
     public function processFieldRelations(
         array $inputRelations,
@@ -157,77 +141,59 @@ class RelationProcessor
         $sourceContentVersionNo,
         ContentType $contentType,
         array $existingRelations = array()
-    )
-    {
+    ) {
         // Map existing relations for easier handling
         $mappedRelations = array();
-        foreach ( $existingRelations as $relation )
-        {
-            if ( $relation->type === Relation::FIELD )
-            {
-                $fieldDefinitionId = $contentType->getFieldDefinition( $relation->sourceFieldDefinitionIdentifier )->id;
+        foreach ($existingRelations as $relation) {
+            if ($relation->type === Relation::FIELD) {
+                $fieldDefinitionId = $contentType->getFieldDefinition($relation->sourceFieldDefinitionIdentifier)->id;
                 $mappedRelations[$relation->type][$fieldDefinitionId][$relation->destinationContentInfo->id] = $relation;
             }
             // Using bitwise AND as Legacy Stack stores COMMON, LINK and EMBED relation types
             // in the same entry using bitmask
-            if ( $relation->type & Relation::LINK )
-            {
+            if ($relation->type & Relation::LINK) {
                 $mappedRelations[Relation::LINK][$relation->destinationContentInfo->id] = $relation;
             }
-            if ( $relation->type & Relation::EMBED )
-            {
+            if ($relation->type & Relation::EMBED) {
                 $mappedRelations[Relation::EMBED][$relation->destinationContentInfo->id] = $relation;
             }
         }
 
         // Add new relations
-        foreach ( $inputRelations as $relationType => $relationData )
-        {
-            if ( $relationType === Relation::FIELD )
-            {
-                foreach ( $relationData as $fieldDefinitionId => $contentIds )
-                {
-                    foreach ( array_keys( $contentIds ) as $destinationContentId )
-                    {
-                        if ( isset( $mappedRelations[$relationType][$fieldDefinitionId][$destinationContentId] ) )
-                        {
-                            unset( $mappedRelations[$relationType][$fieldDefinitionId][$destinationContentId] );
-                        }
-                        else
-                        {
+        foreach ($inputRelations as $relationType => $relationData) {
+            if ($relationType === Relation::FIELD) {
+                foreach ($relationData as $fieldDefinitionId => $contentIds) {
+                    foreach (array_keys($contentIds) as $destinationContentId) {
+                        if (isset($mappedRelations[$relationType][$fieldDefinitionId][$destinationContentId])) {
+                            unset($mappedRelations[$relationType][$fieldDefinitionId][$destinationContentId]);
+                        } else {
                             $this->persistenceHandler->contentHandler()->addRelation(
                                 new SPIRelationCreateStruct(
                                     array(
-                                        "sourceContentId" => $sourceContentId,
-                                        "sourceContentVersionNo" => $sourceContentVersionNo,
-                                        "sourceFieldDefinitionId" => $fieldDefinitionId,
-                                        "destinationContentId" => $destinationContentId,
-                                        "type" => $relationType
+                                        'sourceContentId' => $sourceContentId,
+                                        'sourceContentVersionNo' => $sourceContentVersionNo,
+                                        'sourceFieldDefinitionId' => $fieldDefinitionId,
+                                        'destinationContentId' => $destinationContentId,
+                                        'type' => $relationType,
                                     )
                                 )
                             );
                         }
                     }
                 }
-            }
-            else if ( $relationType === Relation::LINK || $relationType === Relation::EMBED )
-            {
-                foreach ( array_keys( $relationData ) as $destinationContentId )
-                {
-                    if ( isset( $mappedRelations[$relationType][$destinationContentId] ) )
-                    {
-                        unset( $mappedRelations[$relationType][$destinationContentId] );
-                    }
-                    else
-                    {
+            } elseif ($relationType === Relation::LINK || $relationType === Relation::EMBED) {
+                foreach (array_keys($relationData) as $destinationContentId) {
+                    if (isset($mappedRelations[$relationType][$destinationContentId])) {
+                        unset($mappedRelations[$relationType][$destinationContentId]);
+                    } else {
                         $this->persistenceHandler->contentHandler()->addRelation(
                             new SPIRelationCreateStruct(
                                 array(
-                                    "sourceContentId" => $sourceContentId,
-                                    "sourceContentVersionNo" => $sourceContentVersionNo,
-                                    "sourceFieldDefinitionId" => null,
-                                    "destinationContentId" => $destinationContentId,
-                                    "type" => $relationType
+                                    'sourceContentId' => $sourceContentId,
+                                    'sourceContentVersionNo' => $sourceContentVersionNo,
+                                    'sourceFieldDefinitionId' => null,
+                                    'destinationContentId' => $destinationContentId,
+                                    'type' => $relationType,
                                 )
                             )
                         );
@@ -237,15 +203,11 @@ class RelationProcessor
         }
 
         // Remove relations not present in input set
-        foreach ( $mappedRelations as $relationType => $relationData )
-        {
-            foreach ( $relationData as $relationEntry )
-            {
-                switch ( $relationType )
-                {
+        foreach ($mappedRelations as $relationType => $relationData) {
+            foreach ($relationData as $relationEntry) {
+                switch ($relationType) {
                     case Relation::FIELD:
-                        foreach ( $relationEntry as $relation )
-                        {
+                        foreach ($relationEntry as $relation) {
                             $this->persistenceHandler->contentHandler()->removeRelation(
                                 $relation->id,
                                 $relationType

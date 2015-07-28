@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -17,7 +16,7 @@ use eZ\Publish\API\Repository\Values\ValueObject;
 class SectionUpdateStruct extends ValueObject
 {
     /**
-     * If set the Unique identifier of the section is changes
+     * If set the Unique identifier of the section is changes.
      *
      * Needs to be a unique Section->identifier string value.
      *
@@ -26,7 +25,7 @@ class SectionUpdateStruct extends ValueObject
     public $identifier;
 
     /**
-     * If set the name of the section is changed
+     * If set the name of the section is changed.
      *
      * @var string
      */

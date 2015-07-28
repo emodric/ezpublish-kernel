@@ -6,12 +6,10 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishRestBundle\Features\Context;
 
 use EzSystems\BehatBundle\Context\Api\Context;
 use EzSystems\BehatBundle\Helper\Gherkin as GherkinHelper;
-use eZ\Bundle\EzPublishRestBundle\Features\Context\SubContext;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 use PHPUnit_Framework_Assert as Assertion;
 
@@ -19,7 +17,7 @@ use PHPUnit_Framework_Assert as Assertion;
  * RestContext is the core of the REST testing
  *   All SubContext (traits), helpers are loaded here
  *   Settings and client initializations is done here
- *   Also it contains all REST generic actions
+ *   Also it contains all REST generic actions.
  */
 class RestContext extends Context
 {
@@ -33,95 +31,90 @@ class RestContext extends Context
     const DEFAULT_BODY_TYPE = 'json';
 
     /**
-     * Rest driver for all requests and responses
+     * Rest driver for all requests and responses.
      *
      * @var \eZ\Bundle\EzPublishRestBundle\Features\Context\RestClient\RestClient
      */
     protected $restDriver;
 
     /**
-     * Initialize class
+     * Initialize class.
      *
      * @param string $url    Base URL for REST calls
      * @param string $driver REST Driver to be used
      * @param string $json   
-     *
-     * @return void
      */
     public function __construct(
         $url = self::DEFAULT_URL,
         $driver = self::DEFAULT_DRIVER,
         $type = self::DEFAULT_BODY_TYPE
-    )
-    {
-        $this->setRestDriver( $driver, $url );
+    ) {
+        $this->setRestDriver($driver, $url);
         $this->restBodyType = $type;
     }
 
     /**
-     * Create and set the REST driver to be used
+     * Create and set the REST driver to be used.
      *
      * @param string $restDriver REST driver class name
      * @param string|null $restUrl Base URL for the REST calls
      */
-    private function setRestDriver( $restDriver, $restUrl )
+    private function setRestDriver($restDriver, $restUrl)
     {
         $namespace = '\\' . __NAMESPACE__ .  '\\RestClient\\';
         $driver = $namespace . $restDriver;
-        $parent = $namespace . "DriverInterface";
+        $parent = $namespace . 'DriverInterface';
 
         if (
-            empty( $restDriver )
-            || !class_exists( $driver )
-            || !is_subclass_of( $driver, $parent )
-        )
-        {
-            throw new InvalidArgumentException( 'rest driver', $driver );
+            empty($restDriver)
+            || !class_exists($driver)
+            || !is_subclass_of($driver, $parent)
+        ) {
+            throw new InvalidArgumentException('rest driver', $driver);
         }
 
         // create a new REST Driver
         $this->restDriver = new $driver();
-        $this->restDriver->setHost( $restUrl );
+        $this->restDriver->setHost($restUrl);
     }
 
     /**
      * @When I create a :type request to :resource (url)
      */
-    public function createRequest( $type, $resource )
+    public function createRequest($type, $resource)
     {
-        $this->restDriver->setMethod( $type );
+        $this->restDriver->setMethod($type);
         $this->restDriver->setResource(
-            $this->changeMappedValuesOnUrl( $resource )
+            $this->changeMappedValuesOnUrl($resource)
         );
     }
 
     /**
      * @When I send a :type request to :resource (url)
      */
-    public function createAndSendRequest( $type, $resource )
+    public function createAndSendRequest($type, $resource)
     {
-        $this->createRequest( $type, $resource );
+        $this->createRequest($type, $resource);
         $this->restDriver->send();
     }
 
     /**
      * @When I set :header header with :value (value)
      */
-    public function setHeader( $header, $value )
+    public function setHeader($header, $value)
     {
-        $this->restDriver->setHeader( $header, $value );
+        $this->restDriver->setHeader($header, $value);
     }
 
     /**
      * @When I set headers:
      */
-    public function setHeaders( TableNode $table )
+    public function setHeaders(TableNode $table)
     {
-        $headers = GherkinHelper::convertTableToArrayOfData( $table );
+        $headers = GherkinHelper::convertTableToArrayOfData($table);
 
-        foreach ( $headers as $header => $value )
-        {
-            $this->iAddHeaderWithValue( $header, $value );
+        foreach ($headers as $header => $value) {
+            $this->iAddHeaderWithValue($header, $value);
         }
     }
 
@@ -131,8 +124,7 @@ class RestContext extends Context
     public function sendRequest()
     {
         $requestObject = $this->getRequestObject();
-        if ( ! empty( $requestObject ) )
-        {
+        if (!empty($requestObject)) {
             $this->addObjectToRequestBody(
                 $requestObject,
                 $this->restBodyType
@@ -144,7 +136,7 @@ class RestContext extends Context
     /**
      * @Then response status code is :code
      */
-    public function assertStatusCode( $code )
+    public function assertStatusCode($code)
     {
         Assertion::assertEquals(
             $code,
@@ -156,11 +148,11 @@ class RestContext extends Context
     /**
      * @Then response status message is :message
      */
-    public function assertStatusMessage( $message )
+    public function assertStatusMessage($message)
     {
         Assertion::assertEquals(
-            strtolower( $message ),
-            strtolower( $this->restDriver->getStatusMessage() ),
+            strtolower($message),
+            strtolower($this->restDriver->getStatusMessage()),
             "Expected status message '$message' found '{$this->restDriver->getStatusMessage()}'"
         );
     }
@@ -168,10 +160,10 @@ class RestContext extends Context
     /**
      * @Then response header :header exist
      */
-    public function existResponseHeader( $header )
+    public function existResponseHeader($header)
     {
         Assertion::assertNotNull(
-            $this->restDriver->getHeader( $header ),
+            $this->restDriver->getHeader($header),
             "Expected '$header' header not found"
         );
     }
@@ -179,51 +171,51 @@ class RestContext extends Context
     /**
      * @Then response header :header don't exist
      */
-    public function dontExistResponseHeader( $header )
+    public function dontExistResponseHeader($header)
     {
         Assertion::assertNull(
-            $this->restDriver->getHeader( $header ),
-            "Unexpected '$header' header found with '{$this->restDriver->getHeader( $header )}' value"
+            $this->restDriver->getHeader($header),
+            "Unexpected '$header' header found with '{$this->restDriver->getHeader($header)}' value"
         );
     }
 
     /**
      * @Then response header :header have :value (value)
      */
-    public function assertHeaderHaveValue( $header, $value )
+    public function assertHeaderHaveValue($header, $value)
     {
         Assertion::assertEquals(
             $value,
-            $this->restDriver->getResponseHeader( $header ),
-            "Expected '$header' header with '$value' found it with '{$this->restDriver->getHeader( $header )}' value"
+            $this->restDriver->getResponseHeader($header),
+            "Expected '$header' header with '$value' found it with '{$this->restDriver->getHeader($header)}' value"
         );
     }
 
     /**
      * @Then response header :header don't have :value (value)
      */
-    public function assertHeaderDontHaveValue( $header, $value )
+    public function assertHeaderDontHaveValue($header, $value)
     {
         Assertion::assertNotEquals(
             $value,
-            $this->restDriver->getResponseHeader( $header ),
-            "Unexpected '$header' header found with '{$this->restDriver->getHeader( $header )}' value"
+            $this->restDriver->getResponseHeader($header),
+            "Unexpected '$header' header found with '{$this->restDriver->getHeader($header)}' value"
         );
     }
 
     /**
      * @Then response body has :value (value)
      */
-    public function responseBodyHasValue( $value )
+    public function responseBodyHasValue($value)
     {
         Assertion::assertEquals(
             $value,
             $this->restDriver->getBody(),
             "Expected body isn't equal to the actual one."
             . "\nExpected: "
-            . print_r( $value, true )
+            . print_r($value, true)
             . "\nActual: "
-            . print_r( $this->restDriver->getBody(), true )
+            . print_r($this->restDriver->getBody(), true)
         );
     }
 }

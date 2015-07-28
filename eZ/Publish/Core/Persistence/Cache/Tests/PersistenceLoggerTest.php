@@ -1,19 +1,18 @@
 <?php
 /**
- * File contains Test class
+ * File contains Test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Cache\Tests;
 
 use eZ\Publish\Core\Persistence\Cache\PersistenceLogger;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Test case for PersistenceLogger
+ * Test case for PersistenceLogger.
  */
 class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
 {
@@ -32,11 +31,11 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tear down test (properties)
+     * Tear down test (properties).
      */
     protected function tearDown()
     {
-        unset( $this->logger );
+        unset($this->logger);
         parent::tearDown();
     }
 
@@ -45,7 +44,7 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetName()
     {
-        $this->assertEquals( PersistenceLogger::NAME, $this->logger->getName() );
+        $this->assertEquals(PersistenceLogger::NAME, $this->logger->getName());
     }
 
     /**
@@ -53,7 +52,7 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCount()
     {
-        $this->assertEquals( 0, $this->logger->getCount() );
+        $this->assertEquals(0, $this->logger->getCount());
     }
 
     /**
@@ -61,7 +60,7 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCalls()
     {
-        $this->assertEquals( array(), $this->logger->getCalls() );
+        $this->assertEquals(array(), $this->logger->getCalls());
     }
 
     /**
@@ -69,10 +68,11 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      */
     public function testLogCall()
     {
-        $this->assertNull( $this->logger->logCall( __METHOD__ ) );
-        $this->logger->logCall( __METHOD__ );
-        $this->logger->logCall( __METHOD__ );
-        $this->logger->logCall( __METHOD__, array( 33 ) );
+        $this->assertNull($this->logger->logCall(__METHOD__));
+        $this->logger->logCall(__METHOD__);
+        $this->logger->logCall(__METHOD__);
+        $this->logger->logCall(__METHOD__, array(33));
+
         return $this->logger;
     }
 
@@ -82,9 +82,10 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      *
      * @param \eZ\Publish\Core\Persistence\Cache\PersistenceLogger $logger
      */
-    public function testGetCountValues( $logger )
+    public function testGetCountValues($logger)
     {
-        $this->assertEquals( 4, $logger->getCount() );
+        $this->assertEquals(4, $logger->getCount());
+
         return $logger;
     }
 
@@ -94,15 +95,15 @@ class PersistenceLoggerTest extends PHPUnit_Framework_TestCase
      *
      * @param \eZ\Publish\Core\Persistence\Cache\PersistenceLogger $logger
      */
-    public function testGetCallValues( $logger )
+    public function testGetCallValues($logger)
     {
         $method = __CLASS__ . '::testLogCall';
         $this->assertEquals(
             array(
-                array( 'method' => $method, 'arguments' => array() ),
-                array( 'method' => $method, 'arguments' => array() ),
-                array( 'method' => $method, 'arguments' => array() ),
-                array( 'method' => $method, 'arguments' => array( 33 ) )
+                array('method' => $method, 'arguments' => array()),
+                array('method' => $method, 'arguments' => array()),
+                array('method' => $method, 'arguments' => array()),
+                array('method' => $method, 'arguments' => array(33)),
             ),
             $logger->getCalls()
         );

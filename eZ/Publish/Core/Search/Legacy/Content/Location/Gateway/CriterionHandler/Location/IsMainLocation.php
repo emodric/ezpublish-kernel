@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase location main status criterion handler class
+ * File containing the DoctrineDatabase location main status criterion handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Location\Gateway\CriterionHandler\Location;
 
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
@@ -16,7 +15,7 @@ use RuntimeException;
 use eZ\Publish\Core\Persistence\Database\SelectQuery;
 
 /**
- * Location main status criterion handler
+ * Location main status criterion handler.
  */
 class IsMainLocation extends CriterionHandler
 {
@@ -25,15 +24,15 @@ class IsMainLocation extends CriterionHandler
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept( Criterion $criterion )
+    public function accept(Criterion $criterion)
     {
         return $criterion instanceof Criterion\Location\IsMainLocation;
     }
 
     /**
-     * Generate query expression for a Criterion this handler accepts
+     * Generate query expression for a Criterion this handler accepts.
      *
      * accept() must be called before calling this method.
      *
@@ -43,13 +42,12 @@ class IsMainLocation extends CriterionHandler
      *
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      */
-    public function handle( CriteriaConverter $converter, SelectQuery $query, Criterion $criterion )
+    public function handle(CriteriaConverter $converter, SelectQuery $query, Criterion $criterion)
     {
-        $idColumn = $this->dbHandler->quoteColumn( 'node_id', 'ezcontentobject_tree' );
-        $mainIdColumn = $this->dbHandler->quoteColumn( 'main_node_id', 'ezcontentobject_tree' );
+        $idColumn = $this->dbHandler->quoteColumn('node_id', 'ezcontentobject_tree');
+        $mainIdColumn = $this->dbHandler->quoteColumn('main_node_id', 'ezcontentobject_tree');
 
-        switch ( $criterion->value[0] )
-        {
+        switch ($criterion->value[0]) {
             case Criterion\Location\IsMainLocation::MAIN:
                 return $query->expr->eq(
                     $idColumn,
@@ -69,4 +67,3 @@ class IsMainLocation extends CriterionHandler
         }
     }
 }
-

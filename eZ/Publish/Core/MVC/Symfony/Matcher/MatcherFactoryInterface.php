@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -25,5 +24,5 @@ interface MatcherFactoryInterface
      *
      * @return array|null The matched configuration as a hash, containing template or controller to use, or null if not matched.
      */
-    public function match( ValueObject $valueObject, $viewType );
+    public function match(ValueObject $valueObject, $viewType);
 }

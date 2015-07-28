@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Routing\Generator;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,7 @@ interface RouteReferenceGeneratorInterface
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function setRequest( Request $request = null );
+    public function setRequest(Request $request = null);
 
     /**
      * Generates a RouteReference, based on the given resource and associated params.
@@ -32,5 +31,5 @@ interface RouteReferenceGeneratorInterface
      *
      * @return \eZ\Publish\Core\MVC\Symfony\Routing\RouteReference
      */
-    public function generate( $resource = null, array $params = array() );
+    public function generate($resource = null, array $params = array());
 }

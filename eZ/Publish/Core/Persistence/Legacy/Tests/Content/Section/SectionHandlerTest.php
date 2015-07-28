@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\Section\SectionHandlerTest class
+ * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\Section\SectionHandlerTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\Section;
 
 use eZ\Publish\Core\Persistence\Legacy\Tests\TestCase;
@@ -14,19 +13,19 @@ use eZ\Publish\SPI\Persistence\Content\Section;
 use eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler;
 
 /**
- * Test case for Section Handler
+ * Test case for Section Handler.
  */
 class SectionHandlerTest extends TestCase
 {
     /**
-     * Section handler
+     * Section handler.
      *
      * @var \eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler
      */
     protected $sectionHandler;
 
     /**
-     * Section gateway mock
+     * Section gateway mock.
      *
      * @var \eZ\Publish\Core\Persistence\Legacy\Content\Section\Gateway
      */
@@ -34,8 +33,6 @@ class SectionHandlerTest extends TestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::create
-     *
-     * @return void
      */
     public function testCreate()
     {
@@ -43,19 +40,19 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'insertSection' )
+        $gatewayMock->expects($this->once())
+            ->method('insertSection')
             ->with(
-                $this->equalTo( 'New Section' ),
-                $this->equalTo( 'new_section' )
-            )->will( $this->returnValue( 23 ) );
+                $this->equalTo('New Section'),
+                $this->equalTo('new_section')
+            )->will($this->returnValue(23));
 
         $sectionRef = new Section();
         $sectionRef->id = 23;
         $sectionRef->name = 'New Section';
         $sectionRef->identifier = 'new_section';
 
-        $result = $handler->create( 'New Section', 'new_section' );
+        $result = $handler->create('New Section', 'new_section');
 
         $this->assertEquals(
             $sectionRef,
@@ -65,8 +62,6 @@ class SectionHandlerTest extends TestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::update
-     *
-     * @return void
      */
     public function testUpdate()
     {
@@ -74,12 +69,12 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'updateSection' )
+        $gatewayMock->expects($this->once())
+            ->method('updateSection')
             ->with(
-                $this->equalTo( 23 ),
-                $this->equalTo( 'New Section' ),
-                $this->equalTo( 'new_section' )
+                $this->equalTo(23),
+                $this->equalTo('New Section'),
+                $this->equalTo('new_section')
             );
 
         $sectionRef = new Section();
@@ -87,7 +82,7 @@ class SectionHandlerTest extends TestCase
         $sectionRef->name = 'New Section';
         $sectionRef->identifier = 'new_section';
 
-        $result = $handler->update( 23, 'New Section', 'new_section' );
+        $result = $handler->update(23, 'New Section', 'new_section');
 
         $this->assertEquals(
             $sectionRef,
@@ -96,7 +91,6 @@ class SectionHandlerTest extends TestCase
     }
 
     /**
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::load
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::createSectionFromArray
      */
@@ -106,10 +100,10 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'loadSectionData' )
+        $gatewayMock->expects($this->once())
+            ->method('loadSectionData')
             ->with(
-                $this->equalTo( 23 )
+                $this->equalTo(23)
             )->will(
                 $this->returnValue(
                     array(
@@ -127,7 +121,7 @@ class SectionHandlerTest extends TestCase
         $sectionRef->name = 'New Section';
         $sectionRef->identifier = 'new_section';
 
-        $result = $handler->load( 23 );
+        $result = $handler->load(23);
 
         $this->assertEquals(
             $sectionRef,
@@ -136,7 +130,6 @@ class SectionHandlerTest extends TestCase
     }
 
     /**
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::loadAll
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::createSectionFromArray
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::createSectionsFromArray
@@ -147,8 +140,8 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-        ->method( 'loadAllSectionData' )
+        $gatewayMock->expects($this->once())
+        ->method('loadAllSectionData')
         ->will(
             $this->returnValue(
                 array(
@@ -179,13 +172,12 @@ class SectionHandlerTest extends TestCase
         $result = $handler->loadAll();
 
         $this->assertEquals(
-            array( $sectionRef, $sectionRef2 ),
+            array($sectionRef, $sectionRef2),
             $result
         );
     }
 
     /**
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::loadByIdentifier
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::createSectionFromArray
      */
@@ -195,10 +187,10 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'loadSectionDataByIdentifier' )
+        $gatewayMock->expects($this->once())
+            ->method('loadSectionDataByIdentifier')
             ->with(
-                $this->equalTo( 'new_section' )
+                $this->equalTo('new_section')
             )->will(
                 $this->returnValue(
                     array(
@@ -216,7 +208,7 @@ class SectionHandlerTest extends TestCase
         $sectionRef->name = 'New Section';
         $sectionRef->identifier = 'new_section';
 
-        $result = $handler->loadByIdentifier( 'new_section' );
+        $result = $handler->loadByIdentifier('new_section');
 
         $this->assertEquals(
             $sectionRef,
@@ -226,8 +218,6 @@ class SectionHandlerTest extends TestCase
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::delete
-     *
-     * @return void
      */
     public function testDelete()
     {
@@ -235,22 +225,21 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'countContentObjectsInSection' )
-            ->with( $this->equalTo( 23 ) )
-            ->will( $this->returnValue( 0 ) );
+        $gatewayMock->expects($this->once())
+            ->method('countContentObjectsInSection')
+            ->with($this->equalTo(23))
+            ->will($this->returnValue(0));
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'deleteSection' )
+        $gatewayMock->expects($this->once())
+            ->method('deleteSection')
             ->with(
-                $this->equalTo( 23 )
+                $this->equalTo(23)
             );
 
-        $result = $handler->delete( 23 );
+        $result = $handler->delete(23);
     }
 
     /**
-     * @return void
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::delete
      * @expectedException RuntimeException
      */
@@ -260,21 +249,19 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'countContentObjectsInSection' )
-            ->with( $this->equalTo( 23 ) )
-            ->will( $this->returnValue( 2 ) );
+        $gatewayMock->expects($this->once())
+            ->method('countContentObjectsInSection')
+            ->with($this->equalTo(23))
+            ->will($this->returnValue(2));
 
-        $gatewayMock->expects( $this->never() )
-            ->method( 'deleteSection' );
+        $gatewayMock->expects($this->never())
+            ->method('deleteSection');
 
-        $result = $handler->delete( 23 );
+        $result = $handler->delete(23);
     }
 
     /**
      * @covers eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler::assign
-     *
-     * @return void
      */
     public function testAssign()
     {
@@ -282,45 +269,45 @@ class SectionHandlerTest extends TestCase
 
         $gatewayMock = $this->getGatewayMock();
 
-        $gatewayMock->expects( $this->once() )
-            ->method( 'assignSectionToContent' )
+        $gatewayMock->expects($this->once())
+            ->method('assignSectionToContent')
             ->with(
-                $this->equalTo( 23 ),
-                $this->equalTo( 42 )
+                $this->equalTo(23),
+                $this->equalTo(42)
             );
 
-        $result = $handler->assign( 23, 42 );
+        $result = $handler->assign(23, 42);
     }
 
     /**
-     * Returns the section handler to test
+     * Returns the section handler to test.
      *
      * @return \eZ\Publish\Core\Persistence\Legacy\Content\Section\Handler
      */
     protected function getSectionHandler()
     {
-        if ( !isset( $this->sectionHandler ) )
-        {
+        if (!isset($this->sectionHandler)) {
             $this->sectionHandler = new Handler(
                 $this->getGatewayMock()
             );
         }
+
         return $this->sectionHandler;
     }
 
     /**
-     * Returns a mock for the section gateway
+     * Returns a mock for the section gateway.
      *
      * @return \eZ\Publish\Core\Persistence\Legacy\Content\Section\Gateway
      */
     protected function getGatewayMock()
     {
-        if ( !isset( $this->gatewayMock ) )
-        {
+        if (!isset($this->gatewayMock)) {
             $this->gatewayMock = $this->getMockForAbstractClass(
                 'eZ\\Publish\\Core\\Persistence\\Legacy\\Content\\Section\\Gateway'
             );
         }
+
         return $this->gatewayMock;
     }
 }

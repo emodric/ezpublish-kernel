@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Helper;
 
 use eZ\Publish\API\Repository\Values\Content\Content;
@@ -44,18 +43,18 @@ class ContentPreviewHelper implements SiteAccessAware
      */
     private $previewedLocation;
 
-    public function __construct( EventDispatcherInterface $eventDispatcher )
+    public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function setSiteAccess( SiteAccess $siteAccess = null )
+    public function setSiteAccess(SiteAccess $siteAccess = null)
     {
         $this->originalSiteAccess = $siteAccess;
     }
 
     /**
-     * Return original SiteAccess
+     * Return original SiteAccess.
      *
      * @return \eZ\Publish\Core\MVC\Symfony\SiteAccess
      */
@@ -71,10 +70,10 @@ class ContentPreviewHelper implements SiteAccessAware
      *
      * @return SiteAccess
      */
-    public function changeConfigScope( $siteAccessName )
+    public function changeConfigScope($siteAccessName)
     {
-        $event = new ScopeChangeEvent( new SiteAccess( $siteAccessName, 'preview' ) );
-        $this->eventDispatcher->dispatch( MVCEvents::CONFIG_SCOPE_CHANGE, $event );
+        $event = new ScopeChangeEvent(new SiteAccess($siteAccessName, 'preview'));
+        $this->eventDispatcher->dispatch(MVCEvents::CONFIG_SCOPE_CHANGE, $event);
 
         return $event->getSiteAccess();
     }
@@ -86,14 +85,14 @@ class ContentPreviewHelper implements SiteAccessAware
      */
     public function restoreConfigScope()
     {
-        $event = new ScopeChangeEvent( $this->originalSiteAccess );
-        $this->eventDispatcher->dispatch( MVCEvents::CONFIG_SCOPE_RESTORE, $event );
+        $event = new ScopeChangeEvent($this->originalSiteAccess);
+        $this->eventDispatcher->dispatch(MVCEvents::CONFIG_SCOPE_RESTORE, $event);
 
         return $event->getSiteAccess();
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPreviewActive()
     {
@@ -101,9 +100,9 @@ class ContentPreviewHelper implements SiteAccessAware
     }
 
     /**
-     * @param boolean $previewActive
+     * @param bool $previewActive
      */
-    public function setPreviewActive( $previewActive )
+    public function setPreviewActive($previewActive)
     {
         $this->previewActive = (bool)$previewActive;
     }
@@ -119,7 +118,7 @@ class ContentPreviewHelper implements SiteAccessAware
     /**
      * @param \eZ\Publish\API\Repository\Values\Content\Content $previewedContent
      */
-    public function setPreviewedContent( Content $previewedContent )
+    public function setPreviewedContent(Content $previewedContent)
     {
         $this->previewedContent = $previewedContent;
     }
@@ -135,7 +134,7 @@ class ContentPreviewHelper implements SiteAccessAware
     /**
      * @param \eZ\Publish\API\Repository\Values\Content\Location $previewedLocation
      */
-    public function setPreviewedLocation( APILocation $previewedLocation )
+    public function setPreviewedLocation(APILocation $previewedLocation)
     {
         $this->previewedLocation = $previewedLocation;
     }

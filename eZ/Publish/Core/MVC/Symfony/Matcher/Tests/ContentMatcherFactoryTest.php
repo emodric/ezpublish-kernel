@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests;
 
 class ContentMatcherFactoryTest extends ContentBasedMatcherFactoryTest
@@ -15,24 +14,24 @@ class ContentMatcherFactoryTest extends ContentBasedMatcherFactoryTest
 
     /**
      * Returns a valid ValueObject (supported by current MatcherFactory), that will match the test rules.
-     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory
+     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory.
      *
      * @return \eZ\Publish\API\Repository\Values\ValueObject
      */
     protected function getMatchableValueObject()
     {
-        return $this->getContentInfoMock( array( 'id' => 456 ) );
+        return $this->getContentInfoMock(array('id' => 456));
     }
 
     /**
      * Returns a valid ValueObject (supported by current MatcherFactory), that won't match the test rules.
-     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory
+     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory.
      *
      * @return \eZ\Publish\API\Repository\Values\ValueObject
      */
     protected function getNonMatchableValueObject()
     {
-        return $this->getContentInfoMock( array( 'id' => 123456789 ) );
+        return $this->getContentInfoMock(array('id' => 123456789));
     }
 
     protected function getMatcherClass()

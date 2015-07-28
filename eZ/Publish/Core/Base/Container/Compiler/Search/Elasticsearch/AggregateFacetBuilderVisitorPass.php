@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Container\Compiler\Search\Elasticsearch;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,14 +20,13 @@ class AggregateFacetBuilderVisitorPass implements CompilerPassInterface
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
         if (
             !$container->hasDefinition(
                 'ezpublish.search.elasticsearch.content.facet_builder_visitor.aggregate'
             )
-        )
-        {
+        ) {
             return;
         }
 
@@ -40,12 +38,11 @@ class AggregateFacetBuilderVisitorPass implements CompilerPassInterface
             $container->findTaggedServiceIds(
                 'ezpublish.search.elasticsearch.content.facet_builder_visitor'
             ) as $id => $attributes
-        )
-        {
+        ) {
             $aggregateFacetBuilderVisitorDefinition->addMethodCall(
                 'addVisitor',
                 array(
-                    new Reference( $id ),
+                    new Reference($id),
                 )
             );
         }

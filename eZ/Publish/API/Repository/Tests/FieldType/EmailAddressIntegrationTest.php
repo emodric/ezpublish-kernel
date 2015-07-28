@@ -1,19 +1,18 @@
 <?php
 /**
- * File contains: eZ\Publish\API\Repository\Tests\FieldType\MailIntegrationTest class
+ * File contains: eZ\Publish\API\Repository\Tests\FieldType\MailIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\EmailAddress\Value as EmailAddressValue;
 use eZ\Publish\API\Repository\Values\Content\Field;
 
 /**
- * Integration test for use field type
+ * Integration test for use field type.
  *
  * @group integration
  * @group field-type
@@ -21,7 +20,7 @@ use eZ\Publish\API\Repository\Values\Content\Field;
 class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
 {
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -31,7 +30,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get expected settings schema
+     * Get expected settings schema.
      *
      * @return array
      */
@@ -41,7 +40,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get a valid $fieldSettings value
+     * Get a valid $fieldSettings value.
      *
      * @return mixed
      */
@@ -51,7 +50,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get $fieldSettings value not accepted by the field type
+     * Get $fieldSettings value not accepted by the field type.
      *
      * @return mixed
      */
@@ -63,31 +62,31 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get expected validator schema
+     * Get expected validator schema.
      *
      * @return array
      */
     public function getValidatorSchema()
     {
         return array(
-            'EmailAddressValidator' => array()
+            'EmailAddressValidator' => array(),
         );
     }
 
     /**
-     * Get a valid $validatorConfiguration
+     * Get a valid $validatorConfiguration.
      *
      * @return mixed
      */
     public function getValidValidatorConfiguration()
     {
         return array(
-            'EmailAddressValidator' => array()
+            'EmailAddressValidator' => array(),
         );
     }
 
     /**
-     * Get $validatorConfiguration not accepted by the field type
+     * Get $validatorConfiguration not accepted by the field type.
      *
      * @return mixed
      */
@@ -96,18 +95,18 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
         return array(
             'StringLengthValidator' => array(
                 'minStringLength' => new \stdClass(),
-            )
+            ),
         );
     }
 
     /**
-     * Get initial field data for valid object creation
+     * Get initial field data for valid object creation.
      *
      * @return mixed
      */
     public function getValidCreationFieldData()
     {
-        return new EmailAddressValue( 'spam@ez.no' );
+        return new EmailAddressValue('spam@ez.no');
     }
 
     /**
@@ -117,10 +116,8 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
      * was stored and loaded correctly.
      *
      * @param Field $field
-     *
-     * @return void
      */
-    public function assertFieldDataLoadedCorrect( Field $field )
+    public function assertFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\EmailAddress\\Value',
@@ -137,7 +134,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during creation
+     * Get field data which will result in errors during creation.
      *
      * This is a PHPUnit data provider.
      *
@@ -169,42 +166,42 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
                 'eZ\\Publish\\Core\\Base\\Exceptions\\InvalidArgumentType',
             ),
             array(
-                new EmailAddressValue( str_repeat( '.', 64 ) ),
+                new EmailAddressValue(str_repeat('.', 64)),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
             array(
-                new EmailAddressValue( 'spam@' ),
+                new EmailAddressValue('spam@'),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
             array(
-                new EmailAddressValue( '@ez.no' ),
+                new EmailAddressValue('@ez.no'),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
             array(
-                new EmailAddressValue( 'spam@ez-no' ),
+                new EmailAddressValue('spam@ez-no'),
                 'eZ\\Publish\\Core\\Base\\Exceptions\\ContentFieldValidationException',
             ),
         );
     }
 
     /**
-     * Get update field externals data
+     * Get update field externals data.
      *
      * @return array
      */
     public function getValidUpdateFieldData()
     {
-        return new EmailAddressValue( 'spam_name@ez-some-thing.no' );
+        return new EmailAddressValue('spam_name@ez-some-thing.no');
     }
 
     /**
-     * Get externals updated field data values
+     * Get externals updated field data values.
      *
      * This is a PHPUnit data provider
      *
      * @return array
      */
-    public function assertUpdatedFieldDataLoadedCorrect( Field $field )
+    public function assertUpdatedFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\EmailAddress\\Value',
@@ -221,7 +218,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get field data which will result in errors during update
+     * Get field data which will result in errors during update.
      *
      * This is a PHPUnit data provider.
      *
@@ -254,7 +251,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
      *
      * @param Field $field
      */
-    public function assertCopiedFieldDataLoadedCorrectly( Field $field )
+    public function assertCopiedFieldDataLoadedCorrectly(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\EmailAddress\\Value',
@@ -271,7 +268,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     }
 
     /**
-     * Get data to test to hash method
+     * Get data to test to hash method.
      *
      * This is a PHPUnit data provider
      *
@@ -294,14 +291,14 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     {
         return array(
             array(
-                new EmailAddressValue( 'spam@example.no' ),
+                new EmailAddressValue('spam@example.no'),
                 'spam@example.no',
             ),
         );
     }
 
     /**
-     * Get expectations for the fromHash call on our field value
+     * Get expectations for the fromHash call on our field value.
      *
      * This is a PHPUnit data provider
      *
@@ -312,7 +309,7 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
         return array(
             array(
                 'spam@example.no',
-                new EmailAddressValue( 'spam@example.no' )
+                new EmailAddressValue('spam@example.no'),
             ),
         );
     }
@@ -320,9 +317,9 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     public function providerForTestIsEmptyValue()
     {
         return array(
-            array( new EmailAddressValue ),
-            array( new EmailAddressValue( null ) ),
-            array( new EmailAddressValue( "" ) ),
+            array(new EmailAddressValue()),
+            array(new EmailAddressValue(null)),
+            array(new EmailAddressValue('')),
         );
     }
 
@@ -330,18 +327,18 @@ class EmailAddressIntegrationTest extends SearchBaseIntegrationTest
     {
         return array(
             array(
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
         );
     }
 
     protected function getValidSearchValueOne()
     {
-        return "holmes4@ez.no";
+        return 'holmes4@ez.no';
     }
 
     protected function getValidSearchValueTwo()
     {
-        return "wyoming.knott@ez.no";
+        return 'wyoming.knott@ez.no';
     }
 }

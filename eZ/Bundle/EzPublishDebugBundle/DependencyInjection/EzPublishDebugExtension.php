@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishDebugBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -17,27 +16,26 @@ use Symfony\Component\Config\FileLocator;
 
 class EzPublishDebugExtension extends Extension implements PrependExtensionInterface
 {
-    public function load( array $configs, ContainerBuilder $container )
+    public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader(
             $container,
-            new FileLocator( __DIR__ . '/../Resources/config' )
+            new FileLocator(__DIR__ . '/../Resources/config')
         );
 
         // Base services and services overrides
-        $loader->load( 'services.yml' );
+        $loader->load('services.yml');
     }
 
     /**
-     * Sets the twig base template class to this bundle's in order to collect template infos
+     * Sets the twig base template class to this bundle's in order to collect template infos.
      */
-    public function prepend( ContainerBuilder $container )
+    public function prepend(ContainerBuilder $container)
     {
-        if ( $container->getParameter( 'kernel.debug' ) )
-        {
+        if ($container->getParameter('kernel.debug')) {
             $container->prependExtensionConfig(
                 'twig',
-                array( 'base_template_class' => 'eZ\Bundle\EzPublishDebugBundle\Twig\DebugTemplate' )
+                array('base_template_class' => 'eZ\Bundle\EzPublishDebugBundle\Twig\DebugTemplate')
             );
         }
     }

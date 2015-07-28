@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RoleServiceTest class
+ * File containing the RoleServiceTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests;
 
 use eZ\Publish\API\Repository\Values\User\Limitation\ContentTypeLimitation;
@@ -40,7 +39,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the newRoleCreateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newRoleCreateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RepositoryTest::testGetRoleService
      */
@@ -49,15 +47,14 @@ class RoleServiceTest extends BaseTest
         $repository = $this->getRepository();
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
-        $this->assertInstanceOf( '\\eZ\\Publish\\API\\Repository\\Values\\User\\RoleCreateStruct', $roleCreate );
+        $this->assertInstanceOf('\\eZ\\Publish\\API\\Repository\\Values\\User\\RoleCreateStruct', $roleCreate);
     }
 
     /**
      * Test for the newRoleCreateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newRoleCreateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewRoleCreateStruct
      */
@@ -68,17 +65,16 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         /* END: Use Case */
 
-        $this->assertEquals( 'roleName', $roleCreate->identifier );
+        $this->assertEquals('roleName', $roleCreate->identifier);
     }
 
     /**
      * Test for the createRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::createRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewRoleCreateStruct
      */
@@ -89,12 +85,12 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         /* END: Use Case */
 
@@ -107,7 +103,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the createRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::createRole()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRole
@@ -119,13 +114,13 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'Editor' );
+        $roleCreate = $roleService->newRoleCreateStruct('Editor');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
         // This call will fail with an InvalidArgumentException, because Editor exists
-        $roleService->createRole( $roleCreate );
+        $roleService->createRole($roleCreate);
 
         /* END: Use Case */
     }
@@ -133,7 +128,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the createRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::createRole()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\LimitationValidationException
      */
@@ -145,7 +139,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Create new role create struct
-        $roleCreate = $roleService->newRoleCreateStruct( 'Lumberjack' );
+        $roleCreate = $roleService->newRoleCreateStruct('Lumberjack');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
@@ -153,27 +147,26 @@ class RoleServiceTest extends BaseTest
         // Create new subtree limitation
         $limitation = new SubtreeLimitation(
             array(
-                'limitationValues' => array( "/mountain/forest/tree/42/" )
+                'limitationValues' => array('/mountain/forest/tree/42/'),
             )
         );
 
         // Create policy create struct and add limitation to it
-        $policyCreate = $roleService->newPolicyCreateStruct( "content", "remove" );
-        $policyCreate->addLimitation( $limitation );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'remove');
+        $policyCreate->addLimitation($limitation);
 
         // Add policy create struct to role create struct
-        $roleCreate->addPolicy( $policyCreate );
+        $roleCreate->addPolicy($policyCreate);
 
         // This call will fail with an LimitationValidationException, because subtree
         // "/mountain/forest/tree/42/" does not exist
-        $roleService->createRole( $roleCreate );
+        $roleService->createRole($roleCreate);
         /* END: Use Case */
     }
 
     /**
      * Test for the createRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::createRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewRoleCreateStruct
      */
@@ -187,33 +180,29 @@ class RoleServiceTest extends BaseTest
 
         $repository->beginTransaction();
 
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $createdRoleId = $roleService->createRole( $roleCreate )->id;
+        $createdRoleId = $roleService->createRole($roleCreate)->id;
 
         $repository->rollback();
 
-        try
-        {
+        try {
             // This call will fail with a "NotFoundException"
-            $role = $roleService->loadRole( $createdRoleId );
-        }
-        catch ( NotFoundException $e )
-        {
+            $role = $roleService->loadRole($createdRoleId);
+        } catch (NotFoundException $e) {
             return;
         }
         /* END: Use Case */
 
-        $this->fail( 'Role object still exists after rollback.' );
+        $this->fail('Role object still exists after rollback.');
     }
 
     /**
      * Test for the loadRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRole
      */
@@ -224,25 +213,24 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $roleId = $roleService->createRole( $roleCreate )->id;
+        $roleId = $roleService->createRole($roleCreate)->id;
 
         // Load the newly create role by it's name
-        $role = $roleService->loadRole( $roleId );
+        $role = $roleService->loadRole($roleId);
 
         /* END: Use Case */
 
-        $this->assertEquals( 'roleName', $role->identifier );
+        $this->assertEquals('roleName', $role->identifier);
     }
 
     /**
      * Test for the loadRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRole()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRole
@@ -251,13 +239,13 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $nonExistingRoleId = $this->generateId( 'role', self::DB_INT_MAX );
+        $nonExistingRoleId = $this->generateId('role', self::DB_INT_MAX);
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
 
         // This call will fail with a NotFoundException, because no such role exists.
-        $roleService->loadRole( $nonExistingRoleId );
+        $roleService->loadRole($nonExistingRoleId);
 
         /* END: Use Case */
     }
@@ -265,7 +253,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the loadRoleByIdentifier() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRoleByIdentifier()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRole
      */
@@ -276,25 +263,24 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
 
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $roleService->createRole( $roleCreate );
+        $roleService->createRole($roleCreate);
 
         // Load the newly create role by it's name
-        $role = $roleService->loadRoleByIdentifier( 'roleName' );
+        $role = $roleService->loadRoleByIdentifier('roleName');
 
         /* END: Use Case */
 
-        $this->assertEquals( 'roleName', $role->identifier );
+        $this->assertEquals('roleName', $role->identifier);
     }
 
     /**
      * Test for the loadRoleByIdentifier() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRoleByIdentifier()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
@@ -308,7 +294,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // This call will fail with a NotFoundException, because no such role exists.
-        $roleService->loadRoleByIdentifier( 'MissingRole' );
+        $roleService->loadRoleByIdentifier('MissingRole');
 
         /* END: Use Case */
     }
@@ -316,7 +302,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the loadRoles() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRoles()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRole
      */
@@ -328,33 +313,30 @@ class RoleServiceTest extends BaseTest
 
         // First create a custom role
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'roleName' );
+        $roleCreate = $roleService->newRoleCreateStruct('roleName');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Now load all available roles
         $roles = $roleService->loadRoles();
 
-        foreach ( $roles as $role )
-        {
-            if ( $role->identifier === 'roleName' )
-            {
+        foreach ($roles as $role) {
+            if ($role->identifier === 'roleName') {
                 break;
             }
         }
 
         /* END: Use Case */
 
-        $this->assertEquals( 'roleName', $role->identifier );
+        $this->assertEquals('roleName', $role->identifier);
     }
 
     /**
      * Test for the loadRoles() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadRoles()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoles
      */
@@ -368,13 +350,12 @@ class RoleServiceTest extends BaseTest
         $roles = $roleService->loadRoles();
 
         $roleNames = array();
-        foreach ( $roles as $role )
-        {
+        foreach ($roles as $role) {
             $roleNames[] = $role->identifier;
         }
         /* END: Use Case */
 
-        sort( $roleNames );
+        sort($roleNames);
 
         $this->assertEquals(
             array(
@@ -382,7 +363,7 @@ class RoleServiceTest extends BaseTest
                 'Anonymous',
                 'Editor',
                 'Member',
-                'Partner'
+                'Partner',
             ),
             $roleNames
         );
@@ -391,7 +372,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the newRoleUpdateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newRoleUpdateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RepositoryTest::testGetRoleService
      */
@@ -401,16 +381,15 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $roleUpdate = $roleService->newRoleUpdateStruct( 'newRole' );
+        $roleUpdate = $roleService->newRoleUpdateStruct('newRole');
         /* END: Use Case */
 
-        $this->assertInstanceOf( '\\eZ\\Publish\\API\\Repository\\Values\\User\\RoleUpdateStruct', $roleUpdate );
+        $this->assertInstanceOf('\\eZ\\Publish\\API\\Repository\\Values\\User\\RoleUpdateStruct', $roleUpdate);
     }
 
     /**
      * Test for the updateRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::updateRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewRoleUpdateStruct
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
@@ -421,29 +400,28 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         $roleUpdate = $roleService->newRoleUpdateStruct();
         $roleUpdate->identifier = 'updatedRole';
 
-        $updatedRole = $roleService->updateRole( $role, $roleUpdate );
+        $updatedRole = $roleService->updateRole($role, $roleUpdate);
         /* END: Use Case */
 
         // Now verify that our change was saved
-        $role = $roleService->loadRoleByIdentifier( 'updatedRole' );
+        $role = $roleService->loadRoleByIdentifier('updatedRole');
 
-        $this->assertEquals( $role->id, $updatedRole->id );
+        $this->assertEquals($role->id, $updatedRole->id);
     }
 
     /**
      * Test for the updateRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::updateRole()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testUpdateRole
@@ -454,25 +432,24 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         $roleUpdate = $roleService->newRoleUpdateStruct();
         $roleUpdate->identifier = 'Editor';
 
         // This call will fail with an InvalidArgumentException, because Editor is a predefined role
-        $roleService->updateRole( $role, $roleUpdate );
+        $roleService->updateRole($role, $roleUpdate);
         /* END: Use Case */
     }
 
     /**
      * Test for the deleteRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::deleteRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRole
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoles
@@ -483,23 +460,22 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
-        $roleService->deleteRole( $role );
+        $roleService->deleteRole($role);
         /* END: Use Case */
 
-        $this->assertEquals( 5, count( $roleService->loadRoles() ) );
+        $this->assertEquals(5, count($roleService->loadRoles()));
     }
 
     /**
      * Test for the newPolicyCreateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newPolicyCreateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RepositoryTest::testGetRoleService
      */
@@ -509,16 +485,15 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'create' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'create');
         /* END: Use Case */
 
-        $this->assertInstanceOf( '\\eZ\\Publish\\API\\Repository\\Values\\User\\PolicyCreateStruct', $policyCreate );
+        $this->assertInstanceOf('\\eZ\\Publish\\API\\Repository\\Values\\User\\PolicyCreateStruct', $policyCreate);
     }
 
     /**
      * Test for the newPolicyCreateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newPolicyCreateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewPolicyCreateStruct
      */
@@ -528,19 +503,18 @@ class RoleServiceTest extends BaseTest
 
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'create' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'create');
         /* END: Use Case */
 
         $this->assertEquals(
-            array( 'content', 'create' ),
-            array( $policyCreate->module, $policyCreate->function )
+            array('content', 'create'),
+            array($policyCreate->module, $policyCreate->function)
         );
     }
 
     /**
      * Test for the addPolicy() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::addPolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewPolicyCreateStruct
@@ -552,36 +526,34 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
 
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         $role = $roleService->addPolicy(
             $role,
-            $roleService->newPolicyCreateStruct( 'content', 'delete' )
+            $roleService->newPolicyCreateStruct('content', 'delete')
         );
         $role = $roleService->addPolicy(
             $role,
-            $roleService->newPolicyCreateStruct( 'content', 'create' )
+            $roleService->newPolicyCreateStruct('content', 'create')
         );
         /* END: Use Case */
 
         $actual = array();
-        foreach ( $role->getPolicies() as $policy )
-        {
+        foreach ($role->getPolicies() as $policy) {
             $actual[] = array(
                 'module' => $policy->module,
-                'function' => $policy->function
+                'function' => $policy->function,
             );
         }
         usort(
             $actual,
-            function ( $p1, $p2 )
-            {
-                return strcasecmp( $p1['function'], $p2['function'] );
+            function ($p1, $p2) {
+                return strcasecmp($p1['function'], $p2['function']);
             }
         );
 
@@ -594,7 +566,7 @@ class RoleServiceTest extends BaseTest
                 array(
                     'module' => 'content',
                     'function' => 'delete',
-                )
+                ),
             ),
             $actual
         );
@@ -614,21 +586,19 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
 
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'create' );
-        $role = $roleService->addPolicy( $role, $policyCreate );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'create');
+        $role = $roleService->addPolicy($role, $policyCreate);
 
         $policy = null;
-        foreach ( $role->getPolicies() as $policy )
-        {
-            if ( $policy->module === 'content' && $policy->function === 'create' )
-            {
+        foreach ($role->getPolicies() as $policy) {
+            if ($policy->module === 'content' && $policy->function === 'create') {
                 break;
             }
         }
@@ -639,7 +609,7 @@ class RoleServiceTest extends BaseTest
             $policy
         );
 
-        return array( $role, $policy );
+        return array($role, $policy);
     }
 
     /**
@@ -647,24 +617,22 @@ class RoleServiceTest extends BaseTest
      *
      * @param array $roleAndPolicy
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::addPolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAddPolicyUpdatesRole
      */
-    public function testAddPolicySetsPolicyProperties( $roleAndPolicy )
+    public function testAddPolicySetsPolicyProperties($roleAndPolicy)
     {
-        list( $role, $policy ) = $roleAndPolicy;
+        list($role, $policy) = $roleAndPolicy;
 
         $this->assertEquals(
-            array( $role->id, 'content', 'create' ),
-            array( $policy->roleId, $policy->module, $policy->function )
+            array($role->id, 'content', 'create'),
+            array($policy->roleId, $policy->module, $policy->function)
         );
     }
 
     /**
      * Test for the addPolicy() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::addPolicy()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\LimitationValidationException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testNewPolicyCreateStruct
@@ -677,34 +645,33 @@ class RoleServiceTest extends BaseTest
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
 
-        $roleCreate = $roleService->newRoleCreateStruct( 'Lumberjack' );
+        $roleCreate = $roleService->newRoleCreateStruct('Lumberjack');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Create new subtree limitation
         $limitation = new SubtreeLimitation(
             array(
-                'limitationValues' => array( "/mountain/forest/tree/42/" )
+                'limitationValues' => array('/mountain/forest/tree/42/'),
             )
         );
 
         // Create policy create struct and add limitation to it
-        $policyCreateStruct = $roleService->newPolicyCreateStruct( 'content', 'remove' );
-        $policyCreateStruct->addLimitation( $limitation );
+        $policyCreateStruct = $roleService->newPolicyCreateStruct('content', 'remove');
+        $policyCreateStruct->addLimitation($limitation);
 
         // This call will fail with an LimitationValidationException, because subtree
         // "/mountain/forest/tree/42/" does not exist
-        $roleService->addPolicy( $role, $policyCreateStruct );
+        $roleService->addPolicy($role, $policyCreateStruct);
         /* END: Use Case */
     }
 
     /**
      * Test for the createRole() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::createRole()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAddPolicyUpdatesRole
      */
@@ -716,7 +683,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Instantiate a new create struct
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
@@ -736,12 +703,11 @@ class RoleServiceTest extends BaseTest
         );
 
         // Create new role instance
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         $policies = array();
-        foreach ( $role->getPolicies() as $policy )
-        {
-            $policies[] = array( 'module' => $policy->module, 'function' => $policy->function );
+        foreach ($role->getPolicies() as $policy) {
+            $policies[] = array('module' => $policy->module, 'function' => $policy->function);
         }
         /* END: Use Case */
 
@@ -749,12 +715,12 @@ class RoleServiceTest extends BaseTest
             array(
                 array(
                     'module' => 'content',
-                    'function' => 'read'
+                    'function' => 'read',
                 ),
                 array(
                     'module' => 'content',
-                    'function' => 'translate'
-                )
+                    'function' => 'translate',
+                ),
             ),
             $policies
         );
@@ -763,7 +729,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the newPolicyUpdateStruct() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::newPolicyUpdateStruct()
      * @depends eZ\Publish\API\Repository\Tests\RepositoryTest::testGetRoleService
      */
@@ -798,34 +763,32 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Instantiate new policy create
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'translate' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'translate');
 
         // Add some limitations for the new policy
         $policyCreate->addLimitation(
             new LanguageLimitation(
                 array(
-                    'limitationValues' => array( 'eng-US', 'eng-GB' )
+                    'limitationValues' => array('eng-US', 'eng-GB'),
                 )
             )
         );
 
         // Instantiate a role create and add the policy create
-        $roleCreate = $roleService->newRoleCreateStruct( 'myRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('myRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $roleCreate->addPolicy( $policyCreate );
+        $roleCreate->addPolicy($policyCreate);
 
         // Create a new role instance.
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Search for the new policy instance
         $policy = null;
-        foreach ( $role->getPolicies() as $policy )
-        {
-            if ( $policy->module === 'content' && $policy->function === 'translate' )
-            {
+        foreach ($role->getPolicies() as $policy) {
+            if ($policy->module === 'content' && $policy->function === 'translate') {
                 break;
             }
         }
@@ -835,13 +798,13 @@ class RoleServiceTest extends BaseTest
         $policyUpdate->addLimitation(
             new ContentTypeLimitation(
                 array(
-                    'limitationValues' => array( 29, 30 )
+                    'limitationValues' => array(29, 30),
                 )
             )
         );
 
         // Update the the policy
-        $policy = $roleService->updatePolicy( $policy, $policyUpdate );
+        $policy = $roleService->updatePolicy($policy, $policyUpdate);
         /* END: Use Case */
 
         $this->assertInstanceOf(
@@ -849,7 +812,7 @@ class RoleServiceTest extends BaseTest
             $policy
         );
 
-        return array( $roleService->loadRole( $role->id ), $policy );
+        return array($roleService->loadRole($role->id), $policy);
     }
 
     /**
@@ -857,21 +820,20 @@ class RoleServiceTest extends BaseTest
      *
      * @param array $roleAndPolicy
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::updatePolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testUpdatePolicy
      */
-    public function testUpdatePolicyUpdatesLimitations( $roleAndPolicy )
+    public function testUpdatePolicyUpdatesLimitations($roleAndPolicy)
     {
-        list( $role, $policy ) = $roleAndPolicy;
+        list($role, $policy) = $roleAndPolicy;
 
         $this->assertEquals(
             array(
                 new ContentTypeLimitation(
                     array(
-                        'limitationValues' => array( 29, 30 )
+                        'limitationValues' => array(29, 30),
                     )
-                )
+                ),
             ),
             $policy->getLimitations()
         );
@@ -884,29 +846,26 @@ class RoleServiceTest extends BaseTest
      *
      * @param \eZ\Publish\API\Repository\Values\User\Role $role
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::updatePolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testUpdatePolicyUpdatesLimitations
      */
-    public function testUpdatePolicyUpdatesRole( $role )
+    public function testUpdatePolicyUpdatesRole($role)
     {
         $limitations = array();
-        foreach ( $role->getPolicies() as $policy )
-        {
-            foreach ( $policy->getLimitations() as $limitation )
-            {
+        foreach ($role->getPolicies() as $policy) {
+            foreach ($policy->getLimitations() as $limitation) {
                 $limitations[] = $limitation;
             }
         }
 
-        $this->assertCount( 1, $limitations );
+        $this->assertCount(1, $limitations);
         $this->assertInstanceOf(
-            "\\eZ\\Publish\\API\\Repository\\Values\\User\\Limitation",
+            '\\eZ\\Publish\\API\\Repository\\Values\\User\\Limitation',
             $limitations[0]
         );
 
         $expectedData = array(
-            'limitationValues' => array( 29, 30 )
+            'limitationValues' => array(29, 30),
         );
         $this->assertPropertiesCorrectUnsorted(
             $expectedData,
@@ -917,7 +876,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the updatePolicy() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::updatePolicy()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\LimitationValidationException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAddPolicy
@@ -934,34 +892,32 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Instantiate new policy create
-        $policyCreate = $roleService->newPolicyCreateStruct( 'content', 'remove' );
+        $policyCreate = $roleService->newPolicyCreateStruct('content', 'remove');
 
         // Add some limitations for the new policy
         $policyCreate->addLimitation(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( "/1/2/" )
+                    'limitationValues' => array('/1/2/'),
                 )
             )
         );
 
         // Instantiate a role create and add the policy create
-        $roleCreate = $roleService->newRoleCreateStruct( 'myRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('myRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
-        $roleCreate->addPolicy( $policyCreate );
+        $roleCreate->addPolicy($policyCreate);
 
         // Create a new role instance.
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Search for the new policy instance
         $policy = null;
-        foreach ( $role->getPolicies() as $policy )
-        {
-            if ( $policy->module === 'content' && $policy->function === 'remove' )
-            {
+        foreach ($role->getPolicies() as $policy) {
+            if ($policy->module === 'content' && $policy->function === 'remove') {
                 break;
             }
         }
@@ -971,21 +927,20 @@ class RoleServiceTest extends BaseTest
         $policyUpdate->addLimitation(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( "/mountain/forest/tree/42/" )
+                    'limitationValues' => array('/mountain/forest/tree/42/'),
                 )
             )
         );
 
         // This call will fail with an LimitationValidationException, because subtree
         // "/mountain/forest/tree/42/" does not exist
-        $policy = $roleService->updatePolicy( $policy, $policyUpdate );
+        $policy = $roleService->updatePolicy($policy, $policyUpdate);
         /* END: Use Case */
     }
 
     /**
      * Test for the removePolicy() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::removePolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAddPolicy
      */
@@ -997,7 +952,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Instantiate a new role create
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
@@ -1006,25 +961,23 @@ class RoleServiceTest extends BaseTest
         $role = $roleService->createRole(
             $roleCreate,
             array(
-                $roleService->newPolicyCreateStruct( 'content', 'create' ),
-                $roleService->newPolicyCreateStruct( 'content', 'delete' ),
+                $roleService->newPolicyCreateStruct('content', 'create'),
+                $roleService->newPolicyCreateStruct('content', 'delete'),
             )
         );
 
         // Delete all policies from the new role
-        foreach ( $role->getPolicies() as $policy )
-        {
-            $role = $roleService->removePolicy( $role, $policy );
+        foreach ($role->getPolicies() as $policy) {
+            $role = $roleService->removePolicy($role, $policy);
         }
         /* END: Use Case */
 
-        $this->assertSame( array(), $role->getPolicies() );
+        $this->assertSame(array(), $role->getPolicies());
     }
 
     /**
      * Test for the deletePolicy() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::deletePolicy()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRole
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAddPolicy
@@ -1037,7 +990,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Instantiate a new role create
-        $roleCreate = $roleService->newRoleCreateStruct( 'newRole' );
+        $roleCreate = $roleService->newRoleCreateStruct('newRole');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
@@ -1046,20 +999,19 @@ class RoleServiceTest extends BaseTest
         $role = $roleService->createRole(
             $roleCreate,
             array(
-                $roleService->newPolicyCreateStruct( 'content', 'create' ),
-                $roleService->newPolicyCreateStruct( 'content', 'delete' ),
+                $roleService->newPolicyCreateStruct('content', 'create'),
+                $roleService->newPolicyCreateStruct('content', 'delete'),
             )
         );
 
         // Delete all policies from the new role
-        foreach ( $role->getPolicies() as $policy )
-        {
-            $roleService->deletePolicy( $policy );
+        foreach ($role->getPolicies() as $policy) {
+            $roleService->deletePolicy($policy);
         }
         /* END: Use Case */
 
-        $role = $roleService->loadRole( $role->id );
-        $this->assertSame( array(), $role->getPolicies() );
+        $role = $roleService->loadRole($role->id);
+        $this->assertSame(array(), $role->getPolicies());
     }
 
     /**
@@ -1077,17 +1029,17 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Load the editor role
-        $role = $roleService->loadRoleByIdentifier( 'Editor' );
+        $role = $roleService->loadRoleByIdentifier('Editor');
 
         // Load all assigned users and user groups
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
 
         /* END: Use Case */
 
-        $this->assertEquals( 1, count( $roleAssignments ) );
+        $this->assertEquals(1, count($roleAssignments));
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserGroupRoleAssignment',
-            reset( $roleAssignments )
+            reset($roleAssignments)
         );
 
         return $roleAssignments;
@@ -1098,22 +1050,20 @@ class RoleServiceTest extends BaseTest
      *
      * @param \eZ\Publish\API\Repository\Values\User\RoleAssignment[] $roleAssignments
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::getRoleAssignments()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testGetRoleAssignments
      */
-    public function testGetRoleAssignmentsContainExpectedLimitation( array $roleAssignments )
+    public function testGetRoleAssignmentsContainExpectedLimitation(array $roleAssignments)
     {
         $this->assertEquals(
             'Subtree',
-            reset( $roleAssignments )->limitation->getIdentifier()
+            reset($roleAssignments)->limitation->getIdentifier()
         );
     }
 
     /**
      * Test for the assignRoleToUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUser()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testGetRoleAssignments
      */
@@ -1126,23 +1076,22 @@ class RoleServiceTest extends BaseTest
         $user = $this->createUserVersion1();
 
         // Load the existing "Administrator" role
-        $role = $roleService->loadRoleByIdentifier( 'Administrator' );
+        $role = $roleService->loadRoleByIdentifier('Administrator');
 
         // Assign the "Administrator" role to the newly created user
-        $roleService->assignRoleToUser( $role, $user );
+        $roleService->assignRoleToUser($role, $user);
 
         // The assignments array will contain the new role<->user assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Administrator + Example User
-        $this->assertEquals( 2, count( $roleAssignments ) );
+        $this->assertEquals(2, count($roleAssignments));
     }
 
     /**
      * Test for the assignRoleToUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUser($role, $user, $roleLimitation)
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      */
@@ -1155,7 +1104,7 @@ class RoleServiceTest extends BaseTest
         $user = $this->createUserVersion1();
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Assign the "Anonymous" role to the newly created user
         $roleService->assignRoleToUser(
@@ -1163,27 +1112,25 @@ class RoleServiceTest extends BaseTest
             $user,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             )
         );
 
         // The assignments array will contain the new role<->user assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Members + Partners + Anonymous + Example User
-        $this->assertEquals( 4, count( $roleAssignments ) );
+        $this->assertEquals(4, count($roleAssignments));
 
         // Get the role limitation
         $roleLimitation = null;
-        foreach ( $roleAssignments as $roleAssignment )
-        {
+        foreach ($roleAssignments as $roleAssignment) {
             $roleLimitation = $roleAssignment->getRoleLimitation();
-            if ( $roleLimitation )
-            {
+            if ($roleLimitation) {
                 $this->assertInstanceOf(
-                    "\\eZ\\Publish\\API\\Repository\\Values\\User\\UserRoleAssignment",
+                    '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserRoleAssignment',
                     $roleAssignment
                 );
                 break;
@@ -1193,7 +1140,7 @@ class RoleServiceTest extends BaseTest
         $this->assertEquals(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             ),
             $roleLimitation
@@ -1205,26 +1152,24 @@ class RoleServiceTest extends BaseTest
             $user,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/', '/1/2/' )
+                    'limitationValues' => array('/1/43/', '/1/2/'),
                 )
             )
         );
 
         // The assignments array will contain the new role<->user assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
 
         // Members + Partners + Anonymous + Example User
-        $this->assertEquals( 4, count( $roleAssignments ) );
+        $this->assertEquals(4, count($roleAssignments));
 
         // Get the role limitation
         $roleLimitation = null;
-        foreach ( $roleAssignments as $roleAssignment )
-        {
+        foreach ($roleAssignments as $roleAssignment) {
             $roleLimitation = $roleAssignment->getRoleLimitation();
-            if ( $roleLimitation )
-            {
+            if ($roleLimitation) {
                 $this->assertInstanceOf(
-                    "\\eZ\\Publish\\API\\Repository\\Values\\User\\UserRoleAssignment",
+                    '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserRoleAssignment',
                     $roleAssignment
                 );
                 break;
@@ -1234,7 +1179,7 @@ class RoleServiceTest extends BaseTest
         $this->assertEquals(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/', '/1/2/' )
+                    'limitationValues' => array('/1/43/', '/1/2/'),
                 )
             ),
             $roleLimitation
@@ -1244,7 +1189,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the assignRoleToUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUser($role, $user, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\LimitationValidationException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
@@ -1258,7 +1202,7 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Get current user
         $currentUser = $repository->getCurrentUser();
@@ -1271,7 +1215,7 @@ class RoleServiceTest extends BaseTest
             $currentUser,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/lorem/ipsum/42/' )
+                    'limitationValues' => array('/lorem/ipsum/42/'),
                 )
             )
         );
@@ -1283,7 +1227,6 @@ class RoleServiceTest extends BaseTest
      *
      * Makes sure assigning role several times throws.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUser($role, $user, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
@@ -1297,22 +1240,19 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Get current user
         $currentUser = $repository->getCurrentUser();
 
         // Assign the "Anonymous" role to the current user
-        try
-        {
+        try {
             $roleService->assignRoleToUser(
                 $role,
                 $currentUser
             );
-        }
-        catch ( Exception $e )
-        {
-            $this->fail( "Got exception at first valid attempt to assign role" );
+        } catch (Exception $e) {
+            $this->fail('Got exception at first valid attempt to assign role');
         }
 
         // Re-Assign the "Anonymous" role to the current user
@@ -1329,7 +1269,6 @@ class RoleServiceTest extends BaseTest
      *
      * Makes sure assigning role several times with same limitations throws.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUser($role, $user, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
@@ -1343,27 +1282,24 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Get current user
         $currentUser = $repository->getCurrentUser();
 
         // Assign the "Anonymous" role to the current user
-        try
-        {
+        try {
             $roleService->assignRoleToUser(
                 $role,
                 $currentUser,
                 new SubtreeLimitation(
                     array(
-                        'limitationValues' => array( '/1/43/', '/1/2/' )
+                        'limitationValues' => array('/1/43/', '/1/2/'),
                     )
                 )
             );
-        }
-        catch ( Exception $e )
-        {
-            $this->fail( "Got exception at first valid attempt to assign role" );
+        } catch (Exception $e) {
+            $this->fail('Got exception at first valid attempt to assign role');
         }
 
         // Re-Assign the "Anonymous" role to the current user
@@ -1373,7 +1309,7 @@ class RoleServiceTest extends BaseTest
             $currentUser,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             )
         );
@@ -1383,7 +1319,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the unassignRoleFromUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::unassignRoleFromUser()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      */
@@ -1396,26 +1331,25 @@ class RoleServiceTest extends BaseTest
         $user = $this->createUserVersion1();
 
         // Load the existing "Member" role
-        $role = $roleService->loadRoleByIdentifier( 'Member' );
+        $role = $roleService->loadRoleByIdentifier('Member');
 
         // Assign the "Member" role to the newly created user
-        $roleService->assignRoleToUser( $role, $user );
+        $roleService->assignRoleToUser($role, $user);
 
         // Unassign user from role
-        $roleService->unassignRoleFromUser( $role, $user );
+        $roleService->unassignRoleFromUser($role, $user);
 
         // The assignments array will not contain the new role<->user assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Members + Editors + Partners
-        $this->assertEquals( 3, count( $roleAssignments ) );
+        $this->assertEquals(3, count($roleAssignments));
     }
 
     /**
      * Test for the unassignRoleFromUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::unassignRoleFromUser()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      */
@@ -1428,18 +1362,17 @@ class RoleServiceTest extends BaseTest
         $user = $this->createUserVersion1();
 
         // Load the existing "Member" role
-        $role = $roleService->loadRoleByIdentifier( 'Member' );
+        $role = $roleService->loadRoleByIdentifier('Member');
 
         // This call will fail with a "InvalidArgumentException", because the
         // user does not have the "Member" role.
-        $roleService->unassignRoleFromUser( $role, $user );
+        $roleService->unassignRoleFromUser($role, $user);
         /* END: Use Case */
     }
 
     /**
      * Test for the getRoleAssignmentsForUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::getRoleAssignmentsForUser()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRoleWithAddPolicy
@@ -1453,42 +1386,41 @@ class RoleServiceTest extends BaseTest
         $user = $this->createUserVersion1();
 
         // Instantiate a role create and add some policies
-        $roleCreate = $roleService->newRoleCreateStruct( 'Example Role' );
+        $roleCreate = $roleService->newRoleCreateStruct('Example Role');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'user', 'login' )
+            $roleService->newPolicyCreateStruct('user', 'login')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'content', 'read' )
+            $roleService->newPolicyCreateStruct('content', 'read')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'content', 'edit' )
+            $roleService->newPolicyCreateStruct('content', 'edit')
         );
 
         // Create the new role instance
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Assign role to new user
-        $roleService->assignRoleToUser( $role, $user );
+        $roleService->assignRoleToUser($role, $user);
 
         // Load the currently assigned role
-        $roleAssignments = $roleService->getRoleAssignmentsForUser( $user );
+        $roleAssignments = $roleService->getRoleAssignmentsForUser($user);
         /* END: Use Case */
 
-        $this->assertEquals( 1, count( $roleAssignments ) );
+        $this->assertEquals(1, count($roleAssignments));
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserRoleAssignment',
-            reset( $roleAssignments )
+            reset($roleAssignments)
         );
     }
 
     /**
      * Test for the getRoleAssignmentsForUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::getRoleAssignmentsForUser()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRoleWithAddPolicy
@@ -1502,16 +1434,15 @@ class RoleServiceTest extends BaseTest
         $adminUser = $repository->getCurrentUser();
 
         // Load the currently assigned role
-        $roleAssignments = $roleService->getRoleAssignmentsForUser( $adminUser );
+        $roleAssignments = $roleService->getRoleAssignmentsForUser($adminUser);
         /* END: Use Case */
 
-        $this->assertEquals( 0, count( $roleAssignments ) );
+        $this->assertEquals(0, count($roleAssignments));
     }
 
     /**
      * Test for the getRoleAssignmentsForUser() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::getRoleAssignmentsForUser()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRoleWithAddPolicy
@@ -1525,20 +1456,19 @@ class RoleServiceTest extends BaseTest
         $adminUser = $repository->getCurrentUser();
 
         // Load the currently assigned role + inherited role assignments
-        $roleAssignments = $roleService->getRoleAssignmentsForUser( $adminUser, true );
+        $roleAssignments = $roleService->getRoleAssignmentsForUser($adminUser, true);
         /* END: Use Case */
 
-        $this->assertEquals( 1, count( $roleAssignments ) );
+        $this->assertEquals(1, count($roleAssignments));
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserGroupRoleAssignment',
-            reset( $roleAssignments )
+            reset($roleAssignments)
         );
     }
 
     /**
      * Test for the assignRoleToUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUserGroup()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testGetRoleAssignments
      */
@@ -1551,23 +1481,22 @@ class RoleServiceTest extends BaseTest
         $userGroup = $this->createUserGroupVersion1();
 
         // Load the existing "Administrator" role
-        $role = $roleService->loadRoleByIdentifier( 'Administrator' );
+        $role = $roleService->loadRoleByIdentifier('Administrator');
 
         // Assign the "Administrator" role to the newly created user group
-        $roleService->assignRoleToUserGroup( $role, $userGroup );
+        $roleService->assignRoleToUserGroup($role, $userGroup);
 
         // The assignments array will contain the new role<->group assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Administrator + Example Group
-        $this->assertEquals( 2, count( $roleAssignments ) );
+        $this->assertEquals(2, count($roleAssignments));
     }
 
     /**
      * Test for the assignRoleToUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUserGroup($role, $userGroup, $roleLimitation)
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUserGroup
      */
@@ -1580,7 +1509,7 @@ class RoleServiceTest extends BaseTest
         $userGroup = $this->createUserGroupVersion1();
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Assign the "Anonymous" role to the newly created user group
         $roleService->assignRoleToUserGroup(
@@ -1588,25 +1517,23 @@ class RoleServiceTest extends BaseTest
             $userGroup,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             )
         );
 
         // The assignments array will contain the new role<->group assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Members + Partners + Anonymous + Example Group
-        $this->assertEquals( 4, count( $roleAssignments ) );
+        $this->assertEquals(4, count($roleAssignments));
 
         // Get the role limitation
         $roleLimitation = null;
-        foreach ( $roleAssignments as $roleAssignment )
-        {
+        foreach ($roleAssignments as $roleAssignment) {
             $roleLimitation = $roleAssignment->getRoleLimitation();
-            if ( $roleLimitation )
-            {
+            if ($roleLimitation) {
                 break;
             }
         }
@@ -1614,7 +1541,7 @@ class RoleServiceTest extends BaseTest
         $this->assertEquals(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             ),
             $roleLimitation
@@ -1626,26 +1553,24 @@ class RoleServiceTest extends BaseTest
             $userGroup,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/', '/1/2/' )
+                    'limitationValues' => array('/1/43/', '/1/2/'),
                 )
             )
         );
 
         // The assignments array will contain the new role<->user assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
 
         // Members + Partners + Anonymous + Example User
-        $this->assertEquals( 4, count( $roleAssignments ) );
+        $this->assertEquals(4, count($roleAssignments));
 
         // Get the role limitation
         $roleLimitation = null;
-        foreach ( $roleAssignments as $roleAssignment )
-        {
+        foreach ($roleAssignments as $roleAssignment) {
             $roleLimitation = $roleAssignment->getRoleLimitation();
-            if ( $roleLimitation )
-            {
+            if ($roleLimitation) {
                 $this->assertInstanceOf(
-                    "\\eZ\\Publish\\API\\Repository\\Values\\User\\UserGroupRoleAssignment",
+                    '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserGroupRoleAssignment',
                     $roleAssignment
                 );
                 break;
@@ -1655,7 +1580,7 @@ class RoleServiceTest extends BaseTest
         $this->assertEquals(
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/', '/1/2/' )
+                    'limitationValues' => array('/1/43/', '/1/2/'),
                 )
             ),
             $roleLimitation
@@ -1665,7 +1590,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the assignRoleToUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUserGroup($role, $userGroup, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\LimitationValidationException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
@@ -1675,17 +1599,17 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $mainGroupId = $this->generateId( 'group', 4 );
+        $mainGroupId = $this->generateId('group', 4);
         /* BEGIN: Use Case */
         // $mainGroupId is the ID of the main "Users" group
 
         $userService = $repository->getUserService();
         $roleService = $repository->getRoleService();
 
-        $userGroup = $userService->loadUserGroup( $mainGroupId );
+        $userGroup = $userService->loadUserGroup($mainGroupId);
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Assign the "Anonymous" role to the newly created user group
         // This call will fail with an LimitationValidationException, because subtree "/lorem/ipsum/42/"
@@ -1695,7 +1619,7 @@ class RoleServiceTest extends BaseTest
             $userGroup,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/lorem/ipsum/42/' )
+                    'limitationValues' => array('/lorem/ipsum/42/'),
                 )
             )
         );
@@ -1707,7 +1631,6 @@ class RoleServiceTest extends BaseTest
      *
      * Makes sure assigning role several times throws.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUserGroup($role, $userGroup, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
@@ -1717,29 +1640,26 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $mainGroupId = $this->generateId( 'group', 4 );
+        $mainGroupId = $this->generateId('group', 4);
         /* BEGIN: Use Case */
         // $mainGroupId is the ID of the main "Users" group
 
         $userService = $repository->getUserService();
         $roleService = $repository->getRoleService();
 
-        $userGroup = $userService->loadUserGroup( $mainGroupId );
+        $userGroup = $userService->loadUserGroup($mainGroupId);
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Assign the "Anonymous" role to the newly created user group
-        try
-        {
+        try {
             $roleService->assignRoleToUserGroup(
                 $role,
                 $userGroup
             );
-        }
-        catch ( Exception $e )
-        {
-            $this->fail( "Got exception at first valid attempt to assign role" );
+        } catch (Exception $e) {
+            $this->fail('Got exception at first valid attempt to assign role');
         }
 
         // Re-Assign the "Anonymous" role to the newly created user group
@@ -1756,7 +1676,6 @@ class RoleServiceTest extends BaseTest
      *
      * Makes sure assigning role several times with same limitations throws.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::assignRoleToUserGroup($role, $userGroup, $roleLimitation)
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadRoleByIdentifier
@@ -1766,34 +1685,31 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $mainGroupId = $this->generateId( 'group', 4 );
+        $mainGroupId = $this->generateId('group', 4);
         /* BEGIN: Use Case */
         // $mainGroupId is the ID of the main "Users" group
 
         $userService = $repository->getUserService();
         $roleService = $repository->getRoleService();
 
-        $userGroup = $userService->loadUserGroup( $mainGroupId );
+        $userGroup = $userService->loadUserGroup($mainGroupId);
 
         // Load the existing "Anonymous" role
-        $role = $roleService->loadRoleByIdentifier( 'Anonymous' );
+        $role = $roleService->loadRoleByIdentifier('Anonymous');
 
         // Assign the "Anonymous" role to the newly created user group
-        try
-        {
+        try {
             $roleService->assignRoleToUserGroup(
                 $role,
                 $userGroup,
                 new SubtreeLimitation(
                     array(
-                        'limitationValues' => array( '/1/43/', '/1/2/' )
+                        'limitationValues' => array('/1/43/', '/1/2/'),
                     )
                 )
             );
-        }
-        catch ( Exception $e )
-        {
-            $this->fail( "Got exception at first valid attempt to assign role" );
+        } catch (Exception $e) {
+            $this->fail('Got exception at first valid attempt to assign role');
         }
 
         // Re-Assign the "Anonymous" role to the newly created user group
@@ -1803,7 +1719,7 @@ class RoleServiceTest extends BaseTest
             $userGroup,
             new SubtreeLimitation(
                 array(
-                    'limitationValues' => array( '/1/43/' )
+                    'limitationValues' => array('/1/43/'),
                 )
             )
         );
@@ -1813,7 +1729,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the unassignRoleFromUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::unassignRoleFromUserGroup()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUserGroup
      */
@@ -1826,26 +1741,25 @@ class RoleServiceTest extends BaseTest
         $userGroup = $this->createUserGroupVersion1();
 
         // Load the existing "Member" role
-        $role = $roleService->loadRoleByIdentifier( 'Member' );
+        $role = $roleService->loadRoleByIdentifier('Member');
 
         // Assign the "Member" role to the newly created user group
-        $roleService->assignRoleToUserGroup( $role, $userGroup );
+        $roleService->assignRoleToUserGroup($role, $userGroup);
 
         // Unassign group from role
-        $roleService->unassignRoleFromUserGroup( $role, $userGroup );
+        $roleService->unassignRoleFromUserGroup($role, $userGroup);
 
         // The assignments array will not contain the new role<->group assignment
-        $roleAssignments = $roleService->getRoleAssignments( $role );
+        $roleAssignments = $roleService->getRoleAssignments($role);
         /* END: Use Case */
 
         // Members + Editors + Partners
-        $this->assertEquals( 3, count( $roleAssignments ) );
+        $this->assertEquals(3, count($roleAssignments));
     }
 
     /**
      * Test for the unassignRoleFromUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::unassignRoleFromUserGroup()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testUnassignRoleFromUserGroup
@@ -1859,18 +1773,17 @@ class RoleServiceTest extends BaseTest
         $userGroup = $this->createUserGroupVersion1();
 
         // Load the existing "Member" role
-        $role = $roleService->loadRoleByIdentifier( 'Member' );
+        $role = $roleService->loadRoleByIdentifier('Member');
 
         // This call will fail with a "InvalidArgumentException", because the
         // user group does not have the "Member" role.
-        $roleService->unassignRoleFromUserGroup( $role, $userGroup );
+        $roleService->unassignRoleFromUserGroup($role, $userGroup);
         /* END: Use Case */
     }
 
     /**
      * Test for the getRoleAssignmentsForUserGroup() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::getRoleAssignmentsForUserGroup()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUserGroup
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testCreateRoleWithAddPolicy
@@ -1884,42 +1797,41 @@ class RoleServiceTest extends BaseTest
         $userGroup = $this->createUserGroupVersion1();
 
         // Instantiate a role create and add some policies
-        $roleCreate = $roleService->newRoleCreateStruct( 'Example Role' );
+        $roleCreate = $roleService->newRoleCreateStruct('Example Role');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'user', 'login' )
+            $roleService->newPolicyCreateStruct('user', 'login')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'content', 'read' )
+            $roleService->newPolicyCreateStruct('content', 'read')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'content', 'edit' )
+            $roleService->newPolicyCreateStruct('content', 'edit')
         );
 
         // Create the new role instance
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Assign role to new user group
-        $roleService->assignRoleToUserGroup( $role, $userGroup );
+        $roleService->assignRoleToUserGroup($role, $userGroup);
 
         // Load the currently assigned role
-        $roleAssignments = $roleService->getRoleAssignmentsForUserGroup( $userGroup );
+        $roleAssignments = $roleService->getRoleAssignmentsForUserGroup($userGroup);
         /* END: Use Case */
 
-        $this->assertEquals( 1, count( $roleAssignments ) );
+        $this->assertEquals(1, count($roleAssignments));
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\User\\UserGroupRoleAssignment',
-            reset( $roleAssignments )
+            reset($roleAssignments)
         );
     }
 
     /**
      * Test for the loadPoliciesByUserId() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadPoliciesByUserId()
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUser
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testAssignRoleToUserGroup
@@ -1928,7 +1840,7 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $anonUserId = $this->generateId( 'user', 10 );
+        $anonUserId = $this->generateId('user', 10);
         /* BEGIN: Use Case */
         // $anonUserId is the ID of the "Anonymous" user.
 
@@ -1936,52 +1848,51 @@ class RoleServiceTest extends BaseTest
         $roleService = $repository->getRoleService();
 
         // Load "Anonymous" user
-        $user = $userService->loadUser( $anonUserId );
+        $user = $userService->loadUser($anonUserId);
 
         // Instantiate a role create and add some policies
-        $roleCreate = $roleService->newRoleCreateStruct( 'User Role' );
+        $roleCreate = $roleService->newRoleCreateStruct('User Role');
 
         // @todo uncomment when support for multilingual names and descriptions is added
         // $roleCreate->mainLanguageCode = 'eng-US';
 
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'notification', 'use' )
+            $roleService->newPolicyCreateStruct('notification', 'use')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'user', 'password' )
+            $roleService->newPolicyCreateStruct('user', 'password')
         );
         $roleCreate->addPolicy(
-            $roleService->newPolicyCreateStruct( 'user', 'selfedit' )
+            $roleService->newPolicyCreateStruct('user', 'selfedit')
         );
 
         // Create the new role instance
-        $role = $roleService->createRole( $roleCreate );
+        $role = $roleService->createRole($roleCreate);
 
         // Assign role to anon user
-        $roleService->assignRoleToUser( $role, $user );
+        $roleService->assignRoleToUser($role, $user);
 
         // Load the currently assigned role
         $policies = array();
-        foreach ( $roleService->loadPoliciesByUserId( $user->id ) as $policy )
-        {
-            $policies[] = array( $policy->roleId, $policy->module, $policy->function );
+        foreach ($roleService->loadPoliciesByUserId($user->id) as $policy) {
+            $policies[] = array($policy->roleId, $policy->module, $policy->function);
         }
         /* END: Use Case */
-        array_multisort( $policies );
+        array_multisort($policies);
 
         $this->assertEquals(
             array(
-                array( 1, 'content', 'pdf' ),
-                array( 1, 'content', 'read' ),
-                array( 1, 'content', 'read' ),
-                array( 1, 'rss', 'feed' ),
-                array( 1, 'user', 'login' ),
-                array( 1, 'user', 'login' ),
-                array( 1, 'user', 'login' ),
-                array( 1, 'user', 'login' ),
-                array( $role->id, 'notification', 'use' ),
-                array( $role->id, 'user', 'password' ),
-                array( $role->id, 'user', 'selfedit' ),
+                array(1, 'content', 'pdf'),
+                array(1, 'content', 'read'),
+                array(1, 'content', 'read'),
+                array(1, 'rss', 'feed'),
+                array(1, 'user', 'login'),
+                array(1, 'user', 'login'),
+                array(1, 'user', 'login'),
+                array(1, 'user', 'login'),
+                array($role->id, 'notification', 'use'),
+                array($role->id, 'user', 'password'),
+                array($role->id, 'user', 'selfedit'),
             ),
             $policies
         );
@@ -1990,7 +1901,6 @@ class RoleServiceTest extends BaseTest
     /**
      * Test for the loadPoliciesByUserId() method.
      *
-     * @return void
      * @see \eZ\Publish\API\Repository\RoleService::loadPoliciesByUserId()
      * @expectedException \eZ\Publish\API\Repository\Exceptions\NotFoundException
      * @depends eZ\Publish\API\Repository\Tests\RoleServiceTest::testLoadPoliciesByUserId
@@ -1999,18 +1909,18 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $nonExistingUserId = $this->generateId( 'user', self::DB_INT_MAX );
+        $nonExistingUserId = $this->generateId('user', self::DB_INT_MAX);
         /* BEGIN: Use Case */
         $roleService = $repository->getRoleService();
 
         // This call will fail with a "NotFoundException", because hopefully no
         // user with an ID equal to self::DB_INT_MAX exists.
-        $roleService->loadPoliciesByUserId( $nonExistingUserId );
+        $roleService->loadPoliciesByUserId($nonExistingUserId);
         /* END: Use Case */
     }
 
     /**
-     * Create a user group fixture in a variable named <b>$userGroup</b>,
+     * Create a user group fixture in a variable named <b>$userGroup</b>,.
      *
      * @return \eZ\Publish\API\Repository\Values\User\UserGroup
      */
@@ -2018,7 +1928,7 @@ class RoleServiceTest extends BaseTest
     {
         $repository = $this->getRepository();
 
-        $mainGroupId = $this->generateId( 'group', 4 );
+        $mainGroupId = $this->generateId('group', 4);
         /* BEGIN: Inline */
         // $mainGroupId is the ID of the main "Users" group
 
@@ -2026,11 +1936,11 @@ class RoleServiceTest extends BaseTest
         $userService = $repository->getUserService();
 
         // Load main group
-        $parentUserGroup = $userService->loadUserGroup( $mainGroupId );
+        $parentUserGroup = $userService->loadUserGroup($mainGroupId);
 
         // Instantiate a new create struct
-        $userGroupCreate = $userService->newUserGroupCreateStruct( 'eng-US' );
-        $userGroupCreate->setField( 'name', 'Example Group' );
+        $userGroupCreate = $userService->newUserGroupCreateStruct('eng-US');
+        $userGroupCreate->setField('name', 'Example Group');
 
         // Create the new user group
         $userGroup = $userService->createUserGroup(

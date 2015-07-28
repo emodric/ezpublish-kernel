@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Content Search handler class
+ * File containing the Content Search handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Solr\Content\CriterionVisitor;
 
 use eZ\Publish\Core\Search\Solr\Content\CriterionVisitor;
@@ -15,41 +14,40 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion\Operator;
 use eZ\Publish\Core\Repository\Values\Content\Query\Criterion\PermissionSubtree;
 
 /**
- * Visits the Subtree criterion
+ * Visits the Subtree criterion.
  */
 class SubtreeIn extends CriterionVisitor
 {
     /**
-     * CHeck if visitor is applicable to current criterion
+     * CHeck if visitor is applicable to current criterion.
      *
      * @param Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function canVisit( Criterion $criterion )
+    public function canVisit(Criterion $criterion)
     {
         return
-            ( $criterion instanceof Criterion\Subtree || $criterion instanceof PermissionSubtree ) &&
-            ( ( $criterion->operator ?: Operator::IN ) === Operator::IN ||
-              $criterion->operator === Operator::EQ );
+            ($criterion instanceof Criterion\Subtree || $criterion instanceof PermissionSubtree) &&
+            (($criterion->operator ?: Operator::IN) === Operator::IN ||
+              $criterion->operator === Operator::EQ);
     }
 
     /**
-     * Map field value to a proper Solr representation
+     * Map field value to a proper Solr representation.
      *
      * @param Criterion $criterion
      * @param CriterionVisitor $subVisitor
      *
      * @return string
      */
-    public function visit( Criterion $criterion, CriterionVisitor $subVisitor = null )
+    public function visit(Criterion $criterion, CriterionVisitor $subVisitor = null)
     {
         $condition = implode(
             ' OR ',
             array_map(
-                function ( $value )
-                {
-                    return 'path_string_id:' . str_replace( '/', '\\\\/', $value ) . '*';
+                function ($value) {
+                    return 'path_string_id:' . str_replace('/', '\\\\/', $value) . '*';
                 },
                 $criterion->value
             )
@@ -58,4 +56,3 @@ class SubtreeIn extends CriterionVisitor
         return "{!parent which='document_type_id:content' v='{$condition}'}";
     }
 }
-

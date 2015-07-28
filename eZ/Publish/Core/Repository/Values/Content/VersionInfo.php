@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\Content\VersionInfo as APIVersionInfo;
@@ -66,15 +65,13 @@ class VersionInfo extends APIVersionInfo
      *
      * @return string
      */
-    public function getName( $languageCode = null )
+    public function getName($languageCode = null)
     {
-        if ( !isset( $languageCode ) )
-        {
+        if (!isset($languageCode)) {
             $languageCode = $this->initialLanguageCode;
         }
 
-        if ( isset( $this->names[$languageCode] ) )
-        {
+        if (isset($this->names[$languageCode])) {
             return $this->names[$languageCode];
         }
 

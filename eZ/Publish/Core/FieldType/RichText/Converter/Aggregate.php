@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\RichText\Converter;
 
 use eZ\Publish\Core\FieldType\RichText\Converter;
@@ -27,7 +26,7 @@ class Aggregate implements Converter
     /**
      * @param \eZ\Publish\Core\FieldType\RichText\Converter[] $converters An array of Converters, sorted by priority
      */
-    public function __construct( array $converters = array() )
+    public function __construct(array $converters = array())
     {
         $this->converters = $converters;
     }
@@ -39,11 +38,10 @@ class Aggregate implements Converter
      *
      * @return \DOMDocument
      */
-    public function convert( DOMDocument $document )
+    public function convert(DOMDocument $document)
     {
-        foreach ( $this->converters as $converter )
-        {
-            $document = $converter->convert( $document );
+        foreach ($this->converters as $converter) {
+            $document = $converter->convert($document);
         }
 
         return $document;

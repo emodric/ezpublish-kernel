@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Routing;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -23,16 +22,16 @@ class RouteReference
      */
     private $route;
 
-    public function __construct( $route, array $params = array() )
+    public function __construct($route, array $params = array())
     {
         $this->route = $route;
-        $this->params = new ParameterBag( $params );
+        $this->params = new ParameterBag($params);
     }
 
     /**
      * @param mixed $route
      */
-    public function setRoute( $route )
+    public function setRoute($route)
     {
         $this->route = $route;
     }
@@ -59,9 +58,9 @@ class RouteReference
      * @param string $parameterName
      * @param mixed $value
      */
-    public function set( $parameterName, $value )
+    public function set($parameterName, $value)
     {
-        $this->params->set( $parameterName, $value );
+        $this->params->set($parameterName, $value);
     }
 
     /**
@@ -73,14 +72,14 @@ class RouteReference
      *
      * @return mixed
      */
-    public function get( $parameterName, $defaultValue = null, $deep = false )
+    public function get($parameterName, $defaultValue = null, $deep = false)
     {
-        return $this->params->get( $parameterName, $defaultValue, $deep );
+        return $this->params->get($parameterName, $defaultValue, $deep);
     }
 
-    public function has( $parameterName )
+    public function has($parameterName)
     {
-        return $this->params->has( $parameterName );
+        return $this->params->has($parameterName);
     }
 
     /**
@@ -88,8 +87,8 @@ class RouteReference
      *
      * @param string $parameterName
      */
-    public function remove( $parameterName )
+    public function remove($parameterName)
     {
-        $this->params->remove( $parameterName );
+        $this->params->remove($parameterName);
     }
 }

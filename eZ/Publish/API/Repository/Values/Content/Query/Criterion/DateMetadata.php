@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
@@ -15,7 +14,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\CriterionInterface;
 use InvalidArgumentException;
 
 /**
- * A criterion that matches content based on one of the date metadata (created or modified)
+ * A criterion that matches content based on one of the date metadata (created or modified).
  *
  * Supported Operators:
  * EQ, IN: matches content whose date is or belongs to a list of timestamps
@@ -35,17 +34,17 @@ use InvalidArgumentException;
 class DateMetadata extends Criterion implements CriterionInterface
 {
     /**
-     * DateMetadata target: modification date
+     * DateMetadata target: modification date.
      */
     const MODIFIED = 'modified';
 
     /**
-     * DateMetadata target: creation date
+     * DateMetadata target: creation date.
      */
     const CREATED = 'created';
 
     /**
-     * Creates a new DateMetadata criterion on $metadata
+     * Creates a new DateMetadata criterion on $metadata.
      *
      * @throws \InvalidArgumentException If target is unknown
      *
@@ -53,13 +52,12 @@ class DateMetadata extends Criterion implements CriterionInterface
      * @param string $operator One of the Operator constants
      * @param mixed $value The match value, either as an array of as a single value, depending on the operator
      */
-    public function __construct( $target, $operator, $value )
+    public function __construct($target, $operator, $value)
     {
-        if ( $target != self::MODIFIED && $target != self::CREATED )
-        {
-            throw new InvalidArgumentException( "Unknown DateMetadata $target" );
+        if ($target != self::MODIFIED && $target != self::CREATED) {
+            throw new InvalidArgumentException("Unknown DateMetadata $target");
         }
-        parent::__construct( $target, $operator, $value );
+        parent::__construct($target, $operator, $value);
     }
 
     public function getSpecifications()

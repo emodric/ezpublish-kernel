@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -25,7 +24,7 @@ class ContentMetadataUpdateStruct extends ValueObject
     public $ownerId;
 
     /**
-     * If set this value overrides the publication date of the content. (Used in staging scenarios)
+     * If set this value overrides the publication date of the content. (Used in staging scenarios).
      *
      * @var \DateTime
      */
@@ -48,7 +47,7 @@ class ContentMetadataUpdateStruct extends ValueObject
     /**
      * If set this value changes the always available flag.
      *
-     * @var boolean
+     * @var bool
      */
     public $alwaysAvailable;
 
@@ -61,7 +60,7 @@ class ContentMetadataUpdateStruct extends ValueObject
      */
     public $remoteId;
 
-     /**
+    /**
      * If set  main location is changed to this value.
      *
      * If the content object has multiple locations,

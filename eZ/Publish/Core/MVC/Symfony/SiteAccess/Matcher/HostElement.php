@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest;
@@ -38,14 +37,14 @@ class HostElement implements VersatileMatcher
      *
      * @param int $elementNumber Number of elements to take into account.
      */
-    public function __construct( $elementNumber )
+    public function __construct($elementNumber)
     {
         $this->elementNumber = (int)$elementNumber;
     }
 
     public function __sleep()
     {
-        return array( 'elementNumber', 'hostElements' );
+        return array('elementNumber', 'hostElements');
     }
 
     /**
@@ -56,7 +55,8 @@ class HostElement implements VersatileMatcher
     public function match()
     {
         $elements = $this->getHostElements();
-        return isset( $elements[$this->elementNumber - 1] ) ? $elements[$this->elementNumber - 1] : false;
+
+        return isset($elements[$this->elementNumber - 1]) ? $elements[$this->elementNumber - 1] : false;
     }
 
     public function getName()
@@ -69,7 +69,7 @@ class HostElement implements VersatileMatcher
      *
      * @param \eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest $request
      */
-    public function setRequest( SimplifiedRequest $request )
+    public function setRequest(SimplifiedRequest $request)
     {
         $this->request = $request;
     }
@@ -79,17 +79,17 @@ class HostElement implements VersatileMatcher
         return $this->request;
     }
 
-    public function reverseMatch( $siteAccessName )
+    public function reverseMatch($siteAccessName)
     {
-        $hostElements = explode( '.', $this->request->host );
+        $hostElements = explode('.', $this->request->host);
         $elementNumber = $this->elementNumber - 1;
-        if ( !isset( $hostElements[$elementNumber] ) )
-        {
+        if (!isset($hostElements[$elementNumber])) {
             return null;
         }
 
         $hostElements[$elementNumber] = $siteAccessName;
-        $this->request->setHost( implode( '.', $hostElements ) );
+        $this->request->setHost(implode('.', $hostElements));
+
         return $this;
     }
 
@@ -98,16 +98,14 @@ class HostElement implements VersatileMatcher
      */
     private function getHostElements()
     {
-        if ( isset( $this->hostElements ) )
-        {
+        if (isset($this->hostElements)) {
             return $this->hostElements;
-        }
-        else if ( !isset( $this->request ) )
-        {
+        } elseif (!isset($this->request)) {
             return array();
         }
 
-        $elements = explode( ".", $this->request->host );
+        $elements = explode('.', $this->request->host);
+
         return $this->hostElements = $elements;
     }
 }

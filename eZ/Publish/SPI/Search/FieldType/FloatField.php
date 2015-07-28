@@ -11,7 +11,7 @@ namespace eZ\Publish\SPI\Search\FieldType;
 use eZ\Publish\SPI\Search\FieldType;
 
 /**
- * Float document field
+ * Float document field.
  */
 class FloatField extends FieldType
 {
@@ -22,4 +22,3 @@ class FloatField extends FieldType
      */
     protected $type = 'ez_float';
 }
-

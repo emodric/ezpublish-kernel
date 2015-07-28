@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\API\Repository\Tests\FieldType\RichTextIntegrationTest class
+ * File contains: eZ\Publish\API\Repository\Tests\FieldType\RichTextIntegrationTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Tests\FieldType;
 
 use eZ\Publish\Core\FieldType\RichText\Value as RichTextValue;
@@ -17,7 +16,7 @@ use eZ\Publish\Core\Repository\Values\Content\Relation;
 use eZ\Publish\API\Repository\Values\Content\Content;
 
 /**
- * Integration test for use field type
+ * Integration test for use field type.
  *
  * @group integration
  * @group field-type
@@ -34,7 +33,7 @@ class RichTextIntegrationTest extends RelationBaseIntegrationTest
     protected function setUp()
     {
         parent::setUp();
-        $this->createdDOMValue = new DOMDocument;
+        $this->createdDOMValue = new DOMDocument();
         $this->createdDOMValue->loadXML(
 <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -45,7 +44,7 @@ class RichTextIntegrationTest extends RelationBaseIntegrationTest
 EOT
         );
 
-        $this->updatedDOMValue = new DOMDocument;
+        $this->updatedDOMValue = new DOMDocument();
         $this->updatedDOMValue->loadXML(
 <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,23 +61,23 @@ EOT
      *
      * @return \eZ\Publish\Core\Repository\Values\Content\Relation[]
      */
-    public function getCreateExpectedRelations( Content $content )
+    public function getCreateExpectedRelations(Content $content)
     {
         $contentService = $this->getRepository()->getContentService();
 
         return array(
             new Relation(
                 array(
-                    "type" => Relation::LINK,
-                    "sourceContentInfo" => $content->contentInfo,
-                    "destinationContentInfo" => $contentService->loadContentInfo( 56 )
+                    'type' => Relation::LINK,
+                    'sourceContentInfo' => $content->contentInfo,
+                    'destinationContentInfo' => $contentService->loadContentInfo(56),
                 )
             ),
             new Relation(
                 array(
-                    "type" => Relation::LINK,
-                    "sourceContentInfo" => $content->contentInfo,
-                    "destinationContentInfo" => $contentService->loadContentInfo( 54 )
+                    'type' => Relation::LINK,
+                    'sourceContentInfo' => $content->contentInfo,
+                    'destinationContentInfo' => $contentService->loadContentInfo(54),
                 )
             ),
         );
@@ -89,30 +88,30 @@ EOT
      *
      * @return \eZ\Publish\Core\Repository\Values\Content\Relation[]
      */
-    public function getUpdateExpectedRelations( Content $content )
+    public function getUpdateExpectedRelations(Content $content)
     {
         $contentService = $this->getRepository()->getContentService();
 
         return array(
             new Relation(
                 array(
-                    "type" => Relation::LINK,
-                    "sourceContentInfo" => $content->contentInfo,
-                    "destinationContentInfo" => $contentService->loadContentInfo( 58 )
+                    'type' => Relation::LINK,
+                    'sourceContentInfo' => $content->contentInfo,
+                    'destinationContentInfo' => $contentService->loadContentInfo(58),
                 )
             ),
             new Relation(
                 array(
-                    "type" => Relation::LINK,
-                    "sourceContentInfo" => $content->contentInfo,
-                    "destinationContentInfo" => $contentService->loadContentInfo( 56 )
+                    'type' => Relation::LINK,
+                    'sourceContentInfo' => $content->contentInfo,
+                    'destinationContentInfo' => $contentService->loadContentInfo(56),
                 )
             ),
         );
     }
 
     /**
-     * Get name of tested field type
+     * Get name of tested field type.
      *
      * @return string
      */
@@ -122,7 +121,7 @@ EOT
     }
 
     /**
-     * Get expected settings schema
+     * Get expected settings schema.
      *
      * @return array
      */
@@ -136,12 +135,12 @@ EOT
             'tagPreset' => array(
                 'type' => 'choice',
                 'default' => RichTextType::TAG_PRESET_DEFAULT,
-            )
+            ),
         );
     }
 
     /**
-     * Get a valid $fieldSettings value
+     * Get a valid $fieldSettings value.
      *
      * @return mixed
      */
@@ -154,7 +153,7 @@ EOT
     }
 
     /**
-     * Get $fieldSettings value not accepted by the field type
+     * Get $fieldSettings value not accepted by the field type.
      *
      * @return mixed
      */
@@ -166,7 +165,7 @@ EOT
     }
 
     /**
-     * Get expected validator schema
+     * Get expected validator schema.
      *
      * @return array
      */
@@ -176,7 +175,7 @@ EOT
     }
 
     /**
-     * Get a valid $validatorConfiguration
+     * Get a valid $validatorConfiguration.
      *
      * @return mixed
      */
@@ -186,19 +185,19 @@ EOT
     }
 
     /**
-     * Get $validatorConfiguration not accepted by the field type
+     * Get $validatorConfiguration not accepted by the field type.
      *
      * @return mixed
      */
     public function getInvalidValidatorConfiguration()
     {
         return array(
-            'unknown' => array( 'value' => 23 )
+            'unknown' => array('value' => 23),
         );
     }
 
     /**
-     * Get initial field data for valid object creation
+     * Get initial field data for valid object creation.
      *
      * @todo add embeds when implemented
      *
@@ -206,7 +205,7 @@ EOT
      */
     public function getValidCreationFieldData()
     {
-        $doc = new DOMDocument;
+        $doc = new DOMDocument();
         $doc->loadXML(
 <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -216,7 +215,8 @@ EOT
 </section>
 EOT
         );
-        return new RichTextValue( $doc );
+
+        return new RichTextValue($doc);
     }
 
     /**
@@ -226,10 +226,8 @@ EOT
      * was stored and loaded correctly.
      *
      * @param Field $field
-     *
-     * @return void
      */
-    public function assertFieldDataLoadedCorrect( Field $field )
+    public function assertFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\RichText\\Value',
@@ -238,14 +236,14 @@ EOT
 
         $this->assertPropertiesCorrect(
             array(
-                'xml' => $this->createdDOMValue
+                'xml' => $this->createdDOMValue,
             ),
             $field->value
         );
     }
 
     /**
-     * Get field data which will result in errors during creation
+     * Get field data which will result in errors during creation.
      *
      * This is a PHPUnit data provider.
      *
@@ -276,23 +274,23 @@ EOT
     }
 
     /**
-     * Get update field externals data
+     * Get update field externals data.
      *
      * @return array
      */
     public function getValidUpdateFieldData()
     {
-        return new RichTextValue( $this->updatedDOMValue );
+        return new RichTextValue($this->updatedDOMValue);
     }
 
     /**
-     * Get externals updated field data values
+     * Get externals updated field data values.
      *
      * This is a PHPUnit data provider
      *
      * @return array
      */
-    public function assertUpdatedFieldDataLoadedCorrect( Field $field )
+    public function assertUpdatedFieldDataLoadedCorrect(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\RichText\\Value',
@@ -301,14 +299,14 @@ EOT
 
         $this->assertPropertiesCorrect(
             array(
-                'xml' => $this->updatedDOMValue
+                'xml' => $this->updatedDOMValue,
             ),
             $field->value
         );
     }
 
     /**
-     * Get field data which will result in errors during update
+     * Get field data which will result in errors during update.
      *
      * This is a PHPUnit data provider.
      *
@@ -341,7 +339,7 @@ EOT
      *
      * @param Field $field
      */
-    public function assertCopiedFieldDataLoadedCorrectly( Field $field )
+    public function assertCopiedFieldDataLoadedCorrectly(Field $field)
     {
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\RichText\\Value',
@@ -350,14 +348,14 @@ EOT
 
         $this->assertPropertiesCorrect(
             array(
-                'xml' => $this->createdDOMValue
+                'xml' => $this->createdDOMValue,
             ),
             $field->value
         );
     }
 
     /**
-     * Get data to test to hash method
+     * Get data to test to hash method.
      *
      * This is a PHPUnit data provider
      *
@@ -378,7 +376,7 @@ EOT
      */
     public function provideToHashData()
     {
-        $xml = new DOMDocument;
+        $xml = new DOMDocument();
         $xml->loadXML(
 <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
@@ -388,16 +386,17 @@ EOT
 </section>
 EOT
         );
+
         return array(
             array(
-                new RichTextValue( $xml ),
-                array( 'xml' => $xml->saveXML() ),
+                new RichTextValue($xml),
+                array('xml' => $xml->saveXML()),
             ),
         );
     }
 
     /**
-     * Get expectations for the fromHash call on our field value
+     * Get expectations for the fromHash call on our field value.
      *
      * This is a PHPUnit data provider
      *
@@ -408,8 +407,7 @@ EOT
         return array(
             array(
                 array(
-                    'xml' =>
-<<<EOT
+                    'xml' => <<<EOT
 <?xml version="1.0" encoding="UTF-8"?>
 <section xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ezxhtml="http://ez.no/xmlns/ezpublish/docbook/xhtml" xmlns:ezcustom="http://ez.no/xmlns/ezpublish/docbook/custom" version="5.0-variant ezpublish-1.0">
     <title>Some text</title>
@@ -417,8 +415,8 @@ EOT
 </section>
 
 EOT
-                )
-            )
+                ),
+            ),
         );
     }
 
@@ -427,20 +425,20 @@ EOT
      * @todo: Requires correct registered FieldTypeService, needs to be
      *        maintained!
      */
-    public function testFromHash( $hash, $expectedValue = null )
+    public function testFromHash($hash, $expectedValue = null)
     {
         $richTextValue = $this
                 ->getRepository()
                 ->getFieldTypeService()
-                ->getFieldType( $this->getTypeName() )
-                ->fromHash( $hash );
+                ->getFieldType($this->getTypeName())
+                ->fromHash($hash);
         $this->assertInstanceOf(
             'eZ\\Publish\\Core\\FieldType\\RichText\\Value',
             $richTextValue
         );
-        $this->assertInstanceOf( 'DOMDocument', $richTextValue->xml );
+        $this->assertInstanceOf('DOMDocument', $richTextValue->xml);
 
-        $this->assertEquals( $hash['xml'], (string)$richTextValue );
+        $this->assertEquals($hash['xml'], (string)$richTextValue);
     }
 
     public function providerForTestIsEmptyValue()
@@ -449,9 +447,10 @@ EOT
 <?xml version="1.0" encoding="UTF-8"?>
 <section xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ezxhtml="http://ez.no/xmlns/ezpublish/docbook/xhtml" xmlns:ezcustom="http://ez.no/xmlns/ezpublish/docbook/custom" version="5.0-variant ezpublish-1.0"/>
 EOT;
+
         return array(
-            array( new RichTextValue ),
-            array( new RichTextValue( $xml ) ),
+            array(new RichTextValue()),
+            array(new RichTextValue($xml)),
         );
     }
 
@@ -467,17 +466,18 @@ EOT;
     <para/>
 </section>
 EOT;
+
         return array(
             array(
-                $this->getValidCreationFieldData()
+                $this->getValidCreationFieldData(),
             ),
-            array( new RichTextValue( $xml ) ),
-            array( new RichTextValue( $xml2 ) ),
+            array(new RichTextValue($xml)),
+            array(new RichTextValue($xml2)),
         );
     }
 
     /**
-     * Get data to test remote id conversion
+     * Get data to test remote id conversion.
      *
      * This is a PHP Unit data provider
      *
@@ -485,8 +485,8 @@ EOT;
      */
     public function providerForTestConvertRemoteObjectIdToObjectId()
     {
-        $remoteId = "[RemoteId]";
-        $objectId = "[ObjectId]";
+        $remoteId = '[RemoteId]';
+        $objectId = '[ObjectId]';
 
         return array(
             array(
@@ -503,8 +503,8 @@ EOT;
         <link xlink:href="ezcontent://' . $objectId . '#fragment">link</link>
     </para>
 </section>
-'
-            )/*, @TODO adapt and enable when embeds are implemented
+',
+            ),/*, @TODO adapt and enable when embeds are implemented
             array(
                 // test embed
             '<?xml version="1.0" encoding="utf-8"?>
@@ -541,12 +541,11 @@ EOT;
     }
 
     /**
-     * This tests the conversion from remote_object_id to object_id
+     * This tests the conversion from remote_object_id to object_id.
      *
-     * @return void
      * @dataProvider providerForTestConvertRemoteObjectIdToObjectId
      */
-    public function testConvertRemoteObjectIdToObjectId( $test, $expected )
+    public function testConvertRemoteObjectIdToObjectId($test, $expected)
     {
         $repository = $this->getRepository();
 
@@ -555,36 +554,36 @@ EOT;
         $locationService = $repository->getLocationService();
 
         // Create Type containing RichText Field definition
-        $createStruct = $contentTypeService->newContentTypeCreateStruct( 'test-RichText' );
+        $createStruct = $contentTypeService->newContentTypeCreateStruct('test-RichText');
         $createStruct->mainLanguageCode = 'eng-GB';
         $createStruct->remoteId = 'test-RichText-abcdefghjklm9876543210';
-        $createStruct->names = array( 'eng-GB' => 'Test' );
+        $createStruct->names = array('eng-GB' => 'Test');
         $createStruct->creatorId = $repository->getCurrentUser()->id;
         $createStruct->creationDate = $this->createDateTime();
 
-        $fieldCreate = $contentTypeService->newFieldDefinitionCreateStruct( 'description', 'ezrichtext' );
-        $fieldCreate->names = array( 'eng-GB' => 'Title' );
+        $fieldCreate = $contentTypeService->newFieldDefinitionCreateStruct('description', 'ezrichtext');
+        $fieldCreate->names = array('eng-GB' => 'Title');
         $fieldCreate->fieldGroup = 'main';
         $fieldCreate->position = 1;
         $fieldCreate->isTranslatable = true;
-        $createStruct->addFieldDefinition( $fieldCreate );
+        $createStruct->addFieldDefinition($fieldCreate);
 
-        $contentGroup = $contentTypeService->loadContentTypeGroupByIdentifier( 'Content' );
-        $contentTypeDraft = $contentTypeService->createContentType( $createStruct, array( $contentGroup ) );
+        $contentGroup = $contentTypeService->loadContentTypeGroupByIdentifier('Content');
+        $contentTypeDraft = $contentTypeService->createContentType($createStruct, array($contentGroup));
 
-        $contentTypeService->publishContentTypeDraft( $contentTypeDraft );
-        $testContentType = $contentTypeService->loadContentType( $contentTypeDraft->id );
+        $contentTypeService->publishContentTypeDraft($contentTypeDraft);
+        $testContentType = $contentTypeService->loadContentType($contentTypeDraft->id);
 
         // Create a folder for tests
         $createStruct = $contentService->newContentCreateStruct(
-            $contentTypeService->loadContentTypeByIdentifier( 'folder' ),
+            $contentTypeService->loadContentTypeByIdentifier('folder'),
             'eng-GB'
         );
 
-        $createStruct->setField( 'name', "Folder Link" );
+        $createStruct->setField('name', 'Folder Link');
         $draft = $contentService->createContent(
             $createStruct,
-            array( $locationService->newLocationCreateStruct( 2 ) )
+            array($locationService->newLocationCreateStruct(2))
         );
 
         $folder = $contentService->publishVersion(
@@ -596,16 +595,16 @@ EOT;
         $remoteId = $folder->versionInfo->contentInfo->remoteId;
 
         // Create value to be tested
-        $testStruct = $contentService->newContentCreateStruct( $testContentType, 'eng-GB' );
-        $testStruct->setField( 'description', str_replace( "[RemoteId]", $remoteId, $test ) );
+        $testStruct = $contentService->newContentCreateStruct($testContentType, 'eng-GB');
+        $testStruct->setField('description', str_replace('[RemoteId]', $remoteId, $test));
         $test = $contentService->createContent(
             $testStruct,
-            array( $locationService->newLocationCreateStruct( $locationId ) )
+            array($locationService->newLocationCreateStruct($locationId))
         );
 
         $this->assertEquals(
-            str_replace( "[ObjectId]", $objectId, $expected ),
-            $test->getField( 'description' )->value->xml->saveXML()
+            str_replace('[ObjectId]', $objectId, $expected),
+            $test->getField('description')->value->xml->saveXML()
         );
     }
 }

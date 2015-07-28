@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\Content\Relation as APIRelation;
@@ -23,21 +22,21 @@ use eZ\Publish\API\Repository\Values\Content\Relation as APIRelation;
 class Relation extends APIRelation
 {
     /**
-     * the content of the source content of the relation
+     * the content of the source content of the relation.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */
     protected $sourceContentInfo;
 
     /**
-     * the content of the destination content of the relation
+     * the content of the destination content of the relation.
      *
      * @var \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */
     protected $destinationContentInfo;
 
     /**
-     * the content of the source content of the relation
+     * the content of the source content of the relation.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */
@@ -47,7 +46,7 @@ class Relation extends APIRelation
     }
 
     /**
-     * the content of the destination content of the relation
+     * the content of the destination content of the relation.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\ContentInfo
      */

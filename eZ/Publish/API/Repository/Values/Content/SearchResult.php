@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -18,21 +17,21 @@ use eZ\Publish\API\Repository\Values\ValueObject;
 class SearchResult extends ValueObject
 {
     /**
-     * the query this result is based on
+     * the query this result is based on.
      *
      * @var Query
      */
     public $query;
 
     /**
-     * Number of results found by the search
+     * Number of results found by the search.
      *
      * @var int
      */
     public $count;
 
     /**
-     * The found items by the search
+     * The found items by the search.
      *
      * @var \eZ\Publish\API\Repository\Values\ValueObject[]
      */

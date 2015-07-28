@@ -22,7 +22,7 @@ class CsrfListener implements EventSubscriberInterface
     /**
      * Name of the HTTP header containing CSRF token.
      */
-    const CSRF_TOKEN_HEADER = "X-CSRF-Token";
+    const CSRF_TOKEN_HEADER = 'X-CSRF-Token';
 
     /**
      * @var \Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfProviderInterface
@@ -58,8 +58,7 @@ class CsrfListener implements EventSubscriberInterface
         $csrfEnabled,
         $csrfTokenIntention,
         CsrfProviderInterface $csrfProvider = null
-    )
-    {
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->csrfEnabled = $csrfEnabled;
         $this->csrfTokenIntention = $csrfTokenIntention;
@@ -83,63 +82,57 @@ class CsrfListener implements EventSubscriberInterface
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\UnauthorizedException
      */
-    public function onKernelRequest( GetResponseEvent $event )
+    public function onKernelRequest(GetResponseEvent $event)
     {
-        if ( !$event->getRequest()->attributes->get( 'is_rest_request' ) )
-        {
+        if (!$event->getRequest()->attributes->get('is_rest_request')) {
             return;
         }
 
-        if ( !$this->csrfEnabled )
-        {
+        if (!$this->csrfEnabled) {
             return;
         }
 
         // skip CSRF validation if no session is running
-        if ( !$event->getRequest()->getSession()->isStarted() )
-        {
+        if (!$event->getRequest()->getSession()->isStarted()) {
             return;
         }
 
-        if ( $this->isMethodSafe( $event->getRequest()->getMethod() ) )
-        {
+        if ($this->isMethodSafe($event->getRequest()->getMethod())) {
             return;
         }
 
-        if ( $this->isLoginRequest( $event->getRequest()->get( "_route" ) ) )
-        {
+        if ($this->isLoginRequest($event->getRequest()->get('_route'))) {
             return;
         }
 
-        if ( !$this->checkCsrfToken( $event->getRequest() ) )
-        {
+        if (!$this->checkCsrfToken($event->getRequest())) {
             throw new UnauthorizedException(
-                "Missing or invalid CSRF token",
-                $event->getRequest()->getMethod() . " " . $event->getRequest()->getPathInfo()
+                'Missing or invalid CSRF token',
+                $event->getRequest()->getMethod() . ' ' . $event->getRequest()->getPathInfo()
             );
         }
 
         // Dispatching event so that CSRF token intention can be injected into Legacy Stack
-        $this->eventDispatcher->dispatch( RestEvents::REST_CSRF_TOKEN_VALIDATED );
+        $this->eventDispatcher->dispatch(RestEvents::REST_CSRF_TOKEN_VALIDATED);
     }
 
     /**
      * @param string $method
      * @return bool
      */
-    protected function isMethodSafe( $method )
+    protected function isMethodSafe($method)
     {
-        return in_array( $method, array( 'GET', 'HEAD', 'OPTIONS' ) );
+        return in_array($method, array('GET', 'HEAD', 'OPTIONS'));
     }
 
     /**
      * @param string $route
      * @return bool
      */
-    protected function isLoginRequest( $route )
+    protected function isLoginRequest($route)
     {
         // TODO: add CSRF token to protect against force-login attacks
-        return $route == "ezpublish_rest_createSession";
+        return $route == 'ezpublish_rest_createSession';
     }
 
     /**
@@ -147,16 +140,15 @@ class CsrfListener implements EventSubscriberInterface
      *
      * @return bool
      */
-    protected function checkCsrfToken( Request $request )
+    protected function checkCsrfToken(Request $request)
     {
-        if ( !$request->headers->has( self::CSRF_TOKEN_HEADER ) )
-        {
+        if (!$request->headers->has(self::CSRF_TOKEN_HEADER)) {
             return false;
         }
 
         return $this->csrfProvider->isCsrfTokenValid(
             $this->csrfTokenIntention,
-            $request->headers->get( self::CSRF_TOKEN_HEADER )
+            $request->headers->get(self::CSRF_TOKEN_HEADER)
         );
     }
 }

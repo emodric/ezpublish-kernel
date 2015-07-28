@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\Tests\Authentication;
 
 use eZ\Publish\Core\MVC\Symfony\Security\Authentication\DefaultAuthenticationSuccessHandler;
@@ -18,22 +17,22 @@ class DefaultAuthenticationSuccessHandlerTest extends PHPUnit_Framework_TestCase
 {
     public function testSetConfigResolver()
     {
-        $successHandler = new DefaultAuthenticationSuccessHandler( new HttpUtils(), array() );
-        $refHandler = new ReflectionObject( $successHandler );
-        $refOptions = $refHandler->getProperty( 'options' );
-        $refOptions->setAccessible( true );
-        $options = $refOptions->getValue( $successHandler );
-        $this->assertSame( '/', $options['default_target_path'] );
+        $successHandler = new DefaultAuthenticationSuccessHandler(new HttpUtils(), array());
+        $refHandler = new ReflectionObject($successHandler);
+        $refOptions = $refHandler->getProperty('options');
+        $refOptions->setAccessible(true);
+        $options = $refOptions->getValue($successHandler);
+        $this->assertSame('/', $options['default_target_path']);
 
         $defaultPage = '/foo/bar';
-        $configResolver = $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        $configResolver = $this->getMock('eZ\Publish\Core\MVC\ConfigResolverInterface');
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'default_page' )
-            ->will( $this->returnValue( $defaultPage ) );
-        $successHandler->setConfigResolver( $configResolver );
-        $options = $refOptions->getValue( $successHandler );
-        $this->assertSame( $defaultPage, $options['default_target_path'] );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('default_page')
+            ->will($this->returnValue($defaultPage));
+        $successHandler->setConfigResolver($configResolver);
+        $options = $refOptions->getValue($successHandler);
+        $this->assertSame($defaultPage, $options['default_target_path']);
     }
 }

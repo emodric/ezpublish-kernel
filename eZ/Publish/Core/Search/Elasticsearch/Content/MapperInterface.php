@@ -1,12 +1,11 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Elasticsearch\Content;
 
 use eZ\Publish\SPI\Persistence\Content;
@@ -27,7 +26,7 @@ interface MapperInterface
      *
      * @return \eZ\Publish\Core\Search\Elasticsearch\Content\Document
      */
-    public function mapContentById( $contentId );
+    public function mapContentById($contentId);
 
     /**
      * Maps given Content to a Document.
@@ -36,7 +35,7 @@ interface MapperInterface
      *
      * @return \eZ\Publish\Core\Search\Elasticsearch\Content\Document
      */
-    public function mapContent( Content $content );
+    public function mapContent(Content $content);
 
     /**
      * Maps given Location to a Document.
@@ -47,5 +46,5 @@ interface MapperInterface
      *
      * @return \eZ\Publish\Core\Search\Elasticsearch\Content\Document
      */
-    public function mapLocation( Location $location );
+    public function mapLocation(Location $location);
 }

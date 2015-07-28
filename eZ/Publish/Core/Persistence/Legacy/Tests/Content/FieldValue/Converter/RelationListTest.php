@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RelationListTest class
+ * File containing the RelationListTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\FieldValue\Converter;
 
 use eZ\Publish\SPI\Persistence\Content\FieldValue;
@@ -18,7 +17,7 @@ use eZ\Publish\SPI\Persistence\Content\FieldTypeConstraints;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Test case for RelationList converter in Legacy storage
+ * Test case for RelationList converter in Legacy storage.
  */
 class RelationListTest extends PHPUnit_Framework_TestCase
 {
@@ -31,9 +30,9 @@ class RelationListTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->converter = $this
-            ->getMockBuilder( "eZ\\Publish\\Core\\Persistence\\Legacy\\Content\\FieldValue\\Converter\\RelationList" )
+            ->getMockBuilder('eZ\\Publish\\Core\\Persistence\\Legacy\\Content\\FieldValue\\Converter\\RelationList')
             ->disableOriginalConstructor()
-            ->setMethods( array( "getRelationXmlHashFromDB" ) )
+            ->setMethods(array('getRelationXmlHashFromDB'))
             ->getMock();
     }
 
@@ -43,10 +42,10 @@ class RelationListTest extends PHPUnit_Framework_TestCase
      */
     public function testToStorageValue()
     {
-        $destinationContentIds = array( 3, 2, 1 );
+        $destinationContentIds = array(3, 2, 1);
         $fieldValue = new FieldValue();
         $fieldValue->sortKey = false;
-        $fieldValue->data = array( "destinationContentIds" => $destinationContentIds );
+        $fieldValue->data = array('destinationContentIds' => $destinationContentIds);
 
         $expectedStorageFieldValue = new StorageFieldValue();
         $expectedStorageFieldValue->dataText = <<<EOT
@@ -58,47 +57,47 @@ EOT;
         $actualStorageFieldValue = new StorageFieldValue();
 
         $this->converter
-            ->expects( $this->once() )
-            ->method( "getRelationXmlHashFromDB" )
-            ->with( $destinationContentIds )
+            ->expects($this->once())
+            ->method('getRelationXmlHashFromDB')
+            ->with($destinationContentIds)
             ->will(
                 $this->returnValue(
                     array(
-                        "1" => array(
+                        '1' => array(
                             array(
-                                "ezcontentobject_remote_id" => "12",
-                                "ezcontentobject_current_version" => "13",
-                                "ezcontentobject_contentclass_id" => "14",
-                                "ezcontentobject_tree_node_id" => "15",
-                                "ezcontentobject_tree_parent_node_id" => "16",
-                                "ezcontentclass_identifier" => "17",
-                            )
+                                'ezcontentobject_remote_id' => '12',
+                                'ezcontentobject_current_version' => '13',
+                                'ezcontentobject_contentclass_id' => '14',
+                                'ezcontentobject_tree_node_id' => '15',
+                                'ezcontentobject_tree_parent_node_id' => '16',
+                                'ezcontentclass_identifier' => '17',
+                            ),
                         ),
-                        "3" => array(
+                        '3' => array(
                             array(
-                                "ezcontentobject_remote_id" => "32",
-                                "ezcontentobject_current_version" => "33",
-                                "ezcontentobject_contentclass_id" => "34",
-                                "ezcontentobject_tree_node_id" => "35",
-                                "ezcontentobject_tree_parent_node_id" => "36",
-                                "ezcontentclass_identifier" => "37",
-                            )
+                                'ezcontentobject_remote_id' => '32',
+                                'ezcontentobject_current_version' => '33',
+                                'ezcontentobject_contentclass_id' => '34',
+                                'ezcontentobject_tree_node_id' => '35',
+                                'ezcontentobject_tree_parent_node_id' => '36',
+                                'ezcontentclass_identifier' => '37',
+                            ),
                         ),
-                        "2" => array(
+                        '2' => array(
                             array(
-                                "ezcontentobject_remote_id" => "22",
-                                "ezcontentobject_current_version" => "23",
-                                "ezcontentobject_contentclass_id" => "24",
-                                "ezcontentobject_tree_node_id" => "25",
-                                "ezcontentobject_tree_parent_node_id" => "26",
-                                "ezcontentclass_identifier" => "27",
-                            )
+                                'ezcontentobject_remote_id' => '22',
+                                'ezcontentobject_current_version' => '23',
+                                'ezcontentobject_contentclass_id' => '24',
+                                'ezcontentobject_tree_node_id' => '25',
+                                'ezcontentobject_tree_parent_node_id' => '26',
+                                'ezcontentclass_identifier' => '27',
+                            ),
                         ),
                     )
                 )
             );
 
-        $this->converter->toStorageValue( $fieldValue, $actualStorageFieldValue );
+        $this->converter->toStorageValue($fieldValue, $actualStorageFieldValue);
 
         $this->assertEquals(
             $expectedStorageFieldValue,
@@ -115,7 +114,7 @@ EOT;
         $destinationContentIds = array();
         $fieldValue = new FieldValue();
         $fieldValue->sortKey = false;
-        $fieldValue->data = array( "destinationContentIds" => $destinationContentIds );
+        $fieldValue->data = array('destinationContentIds' => $destinationContentIds);
 
         $expectedStorageFieldValue = new StorageFieldValue();
         $expectedStorageFieldValue->dataText = <<<EOT
@@ -127,12 +126,12 @@ EOT;
         $actualStorageFieldValue = new StorageFieldValue();
 
         $this->converter
-            ->expects( $this->once() )
-            ->method( "getRelationXmlHashFromDB" )
-            ->with( $destinationContentIds )
-            ->will( $this->returnValue( array() ) );
+            ->expects($this->once())
+            ->method('getRelationXmlHashFromDB')
+            ->with($destinationContentIds)
+            ->will($this->returnValue(array()));
 
-        $this->converter->toStorageValue( $fieldValue, $actualStorageFieldValue );
+        $this->converter->toStorageValue($fieldValue, $actualStorageFieldValue);
 
         $this->assertEquals(
             $expectedStorageFieldValue,
@@ -155,11 +154,11 @@ EOT;
 EOT;
 
         $expectedFieldValue = new FieldValue();
-        $expectedFieldValue->data = array( "destinationContentIds" => array( 3, 2, 1 ) );
+        $expectedFieldValue->data = array('destinationContentIds' => array(3, 2, 1));
 
         $actualFieldValue = new FieldValue();
 
-        $this->converter->toFieldValue( $storageFieldValue, $actualFieldValue );
+        $this->converter->toFieldValue($storageFieldValue, $actualFieldValue);
 
         $this->assertEquals(
             $expectedFieldValue,
@@ -182,11 +181,11 @@ EOT;
 EOT;
 
         $expectedFieldValue = new FieldValue();
-        $expectedFieldValue->data = array( "destinationContentIds" => array() );
+        $expectedFieldValue->data = array('destinationContentIds' => array());
 
         $actualFieldValue = new FieldValue();
 
-        $this->converter->toFieldValue( $storageFieldValue, $actualFieldValue );
+        $this->converter->toFieldValue($storageFieldValue, $actualFieldValue);
 
         $this->assertEquals(
             $expectedFieldValue,
@@ -207,10 +206,10 @@ EOT;
                         'fieldSettings' => array(
                             'selectionMethod' => Type::SELECTION_BROWSE,
                             'selectionDefaultLocation' => 12345,
-                            'selectionContentTypes' => array( "article", "blog_post" ),
-                        )
+                            'selectionContentTypes' => array('article', 'blog_post'),
+                        ),
                     )
-                )
+                ),
             )
         );
 
@@ -223,7 +222,7 @@ EOT;
 
         $actualStorageFieldDefinition = new StorageFieldDefinition();
 
-        $this->converter->toStorageFieldDefinition( $fieldDefinition, $actualStorageFieldDefinition );
+        $this->converter->toStorageFieldDefinition($fieldDefinition, $actualStorageFieldDefinition);
 
         $this->assertEquals(
             $expectedStorageFieldDefinition,
@@ -259,21 +258,21 @@ EOT;
                         'fieldSettings' => array(
                             'selectionMethod' => Type::SELECTION_DROPDOWN,
                             'selectionDefaultLocation' => 54321,
-                            'selectionContentTypes' => array( "forum", "folder" ),
-                        )
+                            'selectionContentTypes' => array('forum', 'folder'),
+                        ),
                     )
                 ),
                 'defaultValue' => new FieldValue(
                     array(
-                        'data' => array( 'destinationContentIds' => array() ),
+                        'data' => array('destinationContentIds' => array()),
                     )
-                )
+                ),
             )
         );
 
         $actualFieldDefinition = new PersistenceFieldDefinition();
 
-        $this->converter->toFieldDefinition( $storageFieldDefinition, $actualFieldDefinition );
+        $this->converter->toFieldDefinition($storageFieldDefinition, $actualFieldDefinition);
 
         $this->assertEquals(
             $expectedFieldDefinition,

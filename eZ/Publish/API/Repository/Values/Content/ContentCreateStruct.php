@@ -6,19 +6,18 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class is used for creating a new content object
+ * This class is used for creating a new content object.
  * @property-write \eZ\Publish\API\Repository\Values\Content\Field[] $fields
  */
 abstract class ContentCreateStruct extends ValueObject
 {
     /**
-     * The content type for which the new content is created
+     * The content type for which the new content is created.
      *
      * @required
      *
@@ -42,14 +41,14 @@ abstract class ContentCreateStruct extends ValueObject
     public $ownerId;
 
     /**
-     * Indicates if the content object is shown in the mainlanguage if its not present in an other requested language
+     * Indicates if the content object is shown in the mainlanguage if its not present in an other requested language.
      *
-     * @var boolean
+     * @var bool
      */
     public $alwaysAvailable;
 
     /**
-     * Remote identifier used as a custom identifier for the object
+     * Remote identifier used as a custom identifier for the object.
      *
      * Needs to be a unique Content->remoteId string value.
      *
@@ -89,5 +88,5 @@ abstract class ContentCreateStruct extends ValueObject
      *
      * @param string|null $language If not given on a translatable field the initial language is used
      */
-    abstract public function setField( $fieldDefIdentifier, $value, $language = null );
+    abstract public function setField($fieldDefIdentifier, $value, $language = null);
 }

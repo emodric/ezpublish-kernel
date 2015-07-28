@@ -5,37 +5,34 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
- * @package eZ\Publish\API\Repository
  */
-
 namespace eZ\Publish\API\Repository;
 
 /**
- * Interface that FieldTypes expose to the public API
+ * Interface that FieldTypes expose to the public API.
  *
- * @package eZ\Publish\API\Repository
  * @see eZ\Publish\SPI\FieldType\FieldType For implementer doc
  */
 interface FieldType
 {
     /**
-     * Returns the field type identifier for this field type
+     * Returns the field type identifier for this field type.
      *
      * @return string
      */
     public function getFieldTypeIdentifier();
 
     /**
-     * Returns a human readable string representation from the given $value
+     * Returns a human readable string representation from the given $value.
      *
      * @param mixed $value
      *
      * @return string
      */
-    public function getName( $value );
+    public function getName($value);
 
     /**
-     * Returns a schema for the settings expected by the FieldType
+     * Returns a schema for the settings expected by the FieldType.
      *
      * Returns an arbitrary value, representing a schema for the settings of
      * the FieldType.
@@ -56,7 +53,7 @@ interface FieldType
     public function getSettingsSchema();
 
     /**
-     * Returns a schema for the validator configuration expected by the FieldType
+     * Returns a schema for the validator configuration expected by the FieldType.
      *
      * Returns an arbitrary value, representing a schema for the validator
      * configuration of the FieldType.
@@ -97,23 +94,23 @@ interface FieldType
     public function getValidatorConfigurationSchema();
 
     /**
-     * Indicates if the field type supports indexing and sort keys for searching
+     * Indicates if the field type supports indexing and sort keys for searching.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSearchable();
 
     /**
      * Indicates if the field definition of this type can appear only once in the same ContentType.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSingular();
 
     /**
      * Indicates if the field definition of this type can be added to a ContentType with Content instances.
      *
-     * @return boolean
+     * @return bool
      */
     public function onlyEmptyInstance();
 
@@ -125,7 +122,7 @@ interface FieldType
     public function getEmptyValue();
 
     /**
-     * Returns if the given $value is considered empty by the field type
+     * Returns if the given $value is considered empty by the field type.
      *
      * Usually, only the value returned by {@link getEmptyValue()} is
      * considered empty but that is not always the case.
@@ -135,12 +132,12 @@ interface FieldType
      *
      * @param mixed $value
      *
-     * @return boolean
+     * @return bool
      */
-    public function isEmptyValue( $value );
+    public function isEmptyValue($value);
 
     /**
-     * Converts an $hash to the Value defined by the field type
+     * Converts an $hash to the Value defined by the field type.
      *
      * This is the reverse operation to {@link toHash()}.
      *
@@ -148,28 +145,28 @@ interface FieldType
      *
      * @return mixed
      */
-    public function fromHash( $hash );
+    public function fromHash($hash);
 
     /**
-     * Converts the given $value into a plain hash format
+     * Converts the given $value into a plain hash format.
      *
      * @param mixed $value
      *
      * @return mixed
      */
-    public function toHash( $value );
+    public function toHash($value);
 
     /**
-     * Converts the given $fieldSettings to a simple hash format
+     * Converts the given $fieldSettings to a simple hash format.
      *
      * @param mixed $fieldSettings
      *
      * @return array|hash|scalar|null
      */
-    public function fieldSettingsToHash( $fieldSettings );
+    public function fieldSettingsToHash($fieldSettings);
 
     /**
-     * Converts the given $fieldSettingsHash to field settings of the type
+     * Converts the given $fieldSettingsHash to field settings of the type.
      *
      * This is the reverse operation of {@link fieldSettingsToHash()}.
      *
@@ -177,24 +174,24 @@ interface FieldType
      *
      * @return mixed
      */
-    public function fieldSettingsFromHash( $fieldSettingsHash );
+    public function fieldSettingsFromHash($fieldSettingsHash);
 
     /**
-     * Converts the given $validatorConfiguration to a simple hash format
+     * Converts the given $validatorConfiguration to a simple hash format.
      *
      * @param mixed $validatorConfiguration
      *
      * @return array|hash|scalar|null
      */
-    public function validatorConfigurationToHash( $validatorConfiguration );
+    public function validatorConfigurationToHash($validatorConfiguration);
 
     /**
      * Converts the given $validatorConfigurationHash to a validator
-     * configuration of the type
+     * configuration of the type.
      *
      * @param array|hash|scalar|null $validatorConfigurationHash
      *
      * @return mixed
      */
-    public function validatorConfigurationFromHash( $validatorConfigurationHash );
+    public function validatorConfigurationFromHash($validatorConfigurationHash);
 }

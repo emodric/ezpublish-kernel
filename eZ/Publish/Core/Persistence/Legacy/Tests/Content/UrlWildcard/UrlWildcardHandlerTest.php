@@ -1,12 +1,11 @@
 <?php
 /**
- * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\UrlWildcardHandlerTest class
+ * File contains: eZ\Publish\Core\Persistence\Legacy\Tests\Content\UrlWildcardHandlerTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\UrlWildcard;
 
 use eZ\Publish\Core\Persistence\Legacy\Tests\TestCase;
@@ -16,7 +15,7 @@ use eZ\Publish\Core\Persistence\Legacy\Content\UrlWildcard\Mapper;
 use eZ\Publish\SPI\Persistence\Content\UrlWildcard;
 
 /**
- * Test case for UrlWildcard Handler
+ * Test case for UrlWildcard Handler.
  */
 class UrlWildcardHandlerTest extends TestCase
 {
@@ -48,18 +47,18 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testLoad()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
-        $urlWildcard = $handler->load( 1 );
+        $urlWildcard = $handler->load(1);
 
         self::assertEquals(
             new UrlWildcard(
                 array(
-                    "id" => 1,
-                    "sourceUrl" => "/developer/*",
-                    "destinationUrl" => "/dev/{1}",
-                    "forward" => false
+                    'id' => 1,
+                    'sourceUrl' => '/developer/*',
+                    'destinationUrl' => '/dev/{1}',
+                    'forward' => false,
                 )
             ),
             $urlWildcard
@@ -74,10 +73,10 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testLoadThrowsNotFoundException()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
-        $handler->load( 100 );
+        $handler->load(100);
     }
 
     /**
@@ -88,22 +87,22 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testCreate()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
         $urlWildcard = $handler->create(
-            "amber",
-            "pattern",
+            'amber',
+            'pattern',
             true
         );
 
         self::assertEquals(
             new UrlWildcard(
                 array(
-                    "id" => 4,
-                    "sourceUrl" => "/amber",
-                    "destinationUrl" => "/pattern",
-                    "forward" => true
+                    'id' => 4,
+                    'sourceUrl' => '/amber',
+                    'destinationUrl' => '/pattern',
+                    'forward' => true,
                 )
             ),
             $urlWildcard
@@ -111,7 +110,7 @@ class UrlWildcardHandlerTest extends TestCase
 
         self::assertEquals(
             $urlWildcard,
-            $handler->load( 4 )
+            $handler->load(4)
         );
     }
 
@@ -124,11 +123,11 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testRemove()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
-        $handler->remove( 1 );
-        $handler->load( 1 );
+        $handler->remove(1);
+        $handler->load(1);
     }
 
     /**
@@ -138,16 +137,16 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testLoadAll()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
         $urlWildcards = $handler->loadAll();
 
         self::assertEquals(
             array(
-                new UrlWildcard( $this->fixtureData[0] ),
-                new UrlWildcard( $this->fixtureData[1] ),
-                new UrlWildcard( $this->fixtureData[2] ),
+                new UrlWildcard($this->fixtureData[0]),
+                new UrlWildcard($this->fixtureData[1]),
+                new UrlWildcard($this->fixtureData[2]),
             ),
             $urlWildcards
         );
@@ -160,14 +159,14 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testLoadAllWithOffset()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
-        $urlWildcards = $handler->loadAll( 2 );
+        $urlWildcards = $handler->loadAll(2);
 
         self::assertEquals(
             array(
-                new UrlWildcard( $this->fixtureData[2] ),
+                new UrlWildcard($this->fixtureData[2]),
             ),
             $urlWildcards
         );
@@ -180,14 +179,14 @@ class UrlWildcardHandlerTest extends TestCase
      */
     public function testLoadAllWithOffsetAndLimit()
     {
-        $this->insertDatabaseFixture( __DIR__ . "/Gateway/_fixtures/urlwildcards.php" );
+        $this->insertDatabaseFixture(__DIR__ . '/Gateway/_fixtures/urlwildcards.php');
         $handler = $this->getHandler();
 
-        $urlWildcards = $handler->loadAll( 1, 1 );
+        $urlWildcards = $handler->loadAll(1, 1);
 
         self::assertEquals(
             array(
-                new UrlWildcard( $this->fixtureData[1] ),
+                new UrlWildcard($this->fixtureData[1]),
             ),
             $urlWildcards
         );
@@ -195,23 +194,23 @@ class UrlWildcardHandlerTest extends TestCase
 
     protected $fixtureData = array(
         array(
-            "id" => 1,
-            "sourceUrl" => "/developer/*",
-            "destinationUrl" => "/dev/{1}",
-            "forward" => false
+            'id' => 1,
+            'sourceUrl' => '/developer/*',
+            'destinationUrl' => '/dev/{1}',
+            'forward' => false,
         ),
         array(
-            "id" => 2,
-            "sourceUrl" => "/repository/*",
-            "destinationUrl" => "/repo/{1}",
-            "forward" => false
+            'id' => 2,
+            'sourceUrl' => '/repository/*',
+            'destinationUrl' => '/repo/{1}',
+            'forward' => false,
         ),
         array(
-            "id" => 3,
-            "sourceUrl" => "/information/*",
-            "destinationUrl" => "/info/{1}",
-            "forward" => false
-        )
+            'id' => 3,
+            'sourceUrl' => '/information/*',
+            'destinationUrl' => '/info/{1}',
+            'forward' => false,
+        ),
     );
 
     /**
@@ -234,9 +233,8 @@ class UrlWildcardHandlerTest extends TestCase
      */
     protected function getHandler()
     {
-        if ( !isset( $this->urlWildcardHandler ) )
-        {
-            $this->gateway = new DoctrineDatabase( $this->getDatabaseHandler() );
+        if (!isset($this->urlWildcardHandler)) {
+            $this->gateway = new DoctrineDatabase($this->getDatabaseHandler());
             $this->mapper = new Mapper();
 
             $this->urlWildcardHandler = new Handler(

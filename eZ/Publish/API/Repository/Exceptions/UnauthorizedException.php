@@ -6,13 +6,12 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Exceptions;
 
 use Exception;
 
 /**
- * This Exception is thrown if the user has is not allowed to perform a service operation
+ * This Exception is thrown if the user has is not allowed to perform a service operation.
  */
 abstract class UnauthorizedException extends Exception
 {

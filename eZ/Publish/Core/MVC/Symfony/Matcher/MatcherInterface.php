@@ -6,11 +6,10 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
 /**
- * Base interface for matchers
+ * Base interface for matchers.
  */
 interface MatcherInterface
 {
@@ -22,5 +21,5 @@ interface MatcherInterface
      *
      * @throws \InvalidArgumentException Should be thrown if $matchingConfig is not valid.
      */
-    public function setMatchingConfig( $matchingConfig );
+    public function setMatchingConfig($matchingConfig);
 }

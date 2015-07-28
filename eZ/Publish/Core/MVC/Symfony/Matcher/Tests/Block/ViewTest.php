@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\Block;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\Block\View as BlockViewMatcher;
@@ -23,7 +22,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->matcher = new BlockViewMatcher;
+        $this->matcher = new BlockViewMatcher();
     }
 
     /**
@@ -33,10 +32,10 @@ class ViewTest extends PHPUnit_Framework_TestCase
      * @param \eZ\Publish\Core\FieldType\Page\Parts\Block $block
      * @param $expectedResult
      */
-    public function testMatchBlock( $matchingConfig, Block $block, $expectedResult )
+    public function testMatchBlock($matchingConfig, Block $block, $expectedResult)
     {
-        $this->matcher->setMatchingConfig( $matchingConfig );
-        $this->assertSame( $expectedResult, $this->matcher->matchBlock( $block ) );
+        $this->matcher->setMatchingConfig($matchingConfig);
+        $this->assertSame($expectedResult, $this->matcher->matchBlock($block));
     }
 
     public function matchBlockProvider()
@@ -45,26 +44,26 @@ class ViewTest extends PHPUnit_Framework_TestCase
 
         $data[] = array(
             'foo',
-            $this->generateBlockForView( 'foo' ),
-            true
+            $this->generateBlockForView('foo'),
+            true,
         );
 
         $data[] = array(
             'foo',
-            $this->generateBlockForView( 'bar' ),
-            false
+            $this->generateBlockForView('bar'),
+            false,
         );
 
         $data[] = array(
-            array( 'foo', 'baz' ),
-            $this->generateBlockForView( 'bar' ),
-            false
+            array('foo', 'baz'),
+            $this->generateBlockForView('bar'),
+            false,
         );
 
         $data[] = array(
-            array( 'foo', 'baz' ),
-            $this->generateBlockForView( 'baz' ),
-            true
+            array('foo', 'baz'),
+            $this->generateBlockForView('baz'),
+            true,
         );
 
         return $data;
@@ -74,10 +73,10 @@ class ViewTest extends PHPUnit_Framework_TestCase
      * @param $view
      * @return \eZ\Publish\Core\FieldType\Page\Parts\Block
      */
-    private function generateBlockForView( $view )
+    private function generateBlockForView($view)
     {
         return new Block(
-            array( 'view' => $view )
+            array('view' => $view)
         );
     }
 }

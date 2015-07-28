@@ -6,12 +6,10 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\ContentType;
 
 /**
- *
- * This class represents a draft of a content type
+ * This class represents a draft of a content type.
  */
 abstract class ContentTypeDraft extends ContentType
 {

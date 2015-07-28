@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\Cache\Http;
 
 use eZ\Bundle\EzPublishCoreBundle\Cache\Http\InstantCachePurger;
@@ -21,10 +20,10 @@ class InstantCachePurgerTest extends BaseTest
     {
         $this
             ->purgeClient
-            ->expects( $this->once() )
-            ->method( 'purgeAll' );
+            ->expects($this->once())
+            ->method('purgeAll');
 
-        $purger = new InstantCachePurger( $this->purgeClient );
-        $purger->clear( 'cache/dir/' );
+        $purger = new InstantCachePurger($this->purgeClient);
+        $purger->clear('cache/dir/');
     }
 }

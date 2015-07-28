@@ -1,22 +1,20 @@
 <?php
 /**
- * File containing the SortClauseVisitor\MapLocationDistance class
+ * File containing the SortClauseVisitor\MapLocationDistance class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Solr\Content\SortClauseVisitor;
 
 use eZ\Publish\Core\Search\Solr\Content\SortClauseVisitor;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\Core\Search\Common\FieldNameResolver;
-use eZ\Publish\API\Repository\Values\Content\Query\CustomFieldInterface;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentException;
 
 /**
- * Visits the sortClause tree into a Solr query
+ * Visits the sortClause tree into a Solr query.
  */
 class MapLocationDistance extends SortClauseVisitor
 {
@@ -28,26 +26,26 @@ class MapLocationDistance extends SortClauseVisitor
     protected $fieldName;
 
     /**
-     * Field map
+     * Field map.
      *
      * @var \eZ\Publish\Core\Search\Common\FieldNameResolver
      */
     protected $fieldNameResolver;
 
     /**
-     * Create from field map and field name
+     * Create from field map and field name.
      *
      * @param \eZ\Publish\Core\Search\Common\FieldNameResolver $fieldNameResolver
      * @param string $fieldName
      */
-    public function __construct( FieldNameResolver $fieldNameResolver, $fieldName )
+    public function __construct(FieldNameResolver $fieldNameResolver, $fieldName)
     {
         $this->fieldNameResolver = $fieldNameResolver;
         $this->fieldName = $fieldName;
     }
 
     /**
-     * Get sort field name
+     * Get sort field name.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause $sortClause
      * @param string $contentTypeIdentifier
@@ -61,8 +59,7 @@ class MapLocationDistance extends SortClauseVisitor
         $contentTypeIdentifier,
         $fieldDefinitionIdentifier,
         $name = null
-    )
-    {
+    ) {
         return $this->fieldNameResolver->getSortFieldName(
             $sortClause,
             $contentTypeIdentifier,
@@ -72,19 +69,19 @@ class MapLocationDistance extends SortClauseVisitor
     }
 
     /**
-     * CHeck if visitor is applicable to current sortClause
+     * CHeck if visitor is applicable to current sortClause.
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\SortClause $sortClause
      *
-     * @return boolean
+     * @return bool
      */
-    public function canVisit( SortClause $sortClause )
+    public function canVisit(SortClause $sortClause)
     {
         return $sortClause instanceof SortClause\MapLocationDistance;
     }
 
     /**
-     * Map field value to a proper Solr representation
+     * Map field value to a proper Solr representation.
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentException If no sortable fields are found for the given sort clause target.
      *
@@ -92,7 +89,7 @@ class MapLocationDistance extends SortClauseVisitor
      *
      * @return string
      */
-    public function visit( SortClause $sortClause )
+    public function visit(SortClause $sortClause)
     {
         /** @var \eZ\Publish\API\Repository\Values\Content\Query\SortClause\Target\MapLocationTarget $target */
         $target = $sortClause->targetData;
@@ -103,15 +100,14 @@ class MapLocationDistance extends SortClauseVisitor
             $this->fieldName
         );
 
-        if ( $fieldName === null )
-        {
+        if ($fieldName === null) {
             throw new InvalidArgumentException(
-                "\$sortClause->targetData",
-                "No searchable fields found for the given sort clause target ".
+                '$sortClause->targetData',
+                'No searchable fields found for the given sort clause target ' .
                 "'{$target->fieldIdentifier}' on '{$target->typeIdentifier}'."
             );
         }
 
-        return "geodist({$fieldName},{$target->latitude},{$target->longitude})" . $this->getDirection( $sortClause );
+        return "geodist({$fieldName},{$target->latitude},{$target->longitude})" . $this->getDirection($sortClause);
     }
 }

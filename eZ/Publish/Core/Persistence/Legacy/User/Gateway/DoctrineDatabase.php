@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase Location Gateway class
+ * File containing the DoctrineDatabase Location Gateway class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\User\Gateway;
 
 use eZ\Publish\Core\Persistence\Legacy\User\Gateway;
@@ -20,64 +19,64 @@ use eZ\Publish\SPI\Persistence\User;
 class DoctrineDatabase extends Gateway
 {
     /**
-     * Database handler
+     * Database handler.
      *
      * @var \eZ\Publish\Core\Persistence\Database\DatabaseHandler
      */
     protected $handler;
 
     /**
-     * Construct from database handler
+     * Construct from database handler.
      *
      * @param \eZ\Publish\Core\Persistence\Database\DatabaseHandler $handler
      */
-    public function __construct( DatabaseHandler $handler )
+    public function __construct(DatabaseHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
-     * Create user
+     * Create user.
      *
      * @param user $user
      *
      * @return mixed
      */
-    public function createUser( User $user )
+    public function createUser(User $user)
     {
         $query = $this->handler->createInsertQuery();
         $query
-            ->insertInto( $this->handler->quoteTable( 'ezuser' ) )
+            ->insertInto($this->handler->quoteTable('ezuser'))
             ->set(
-                $this->handler->quoteColumn( 'contentobject_id' ),
-                $query->bindValue( $user->id, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('contentobject_id'),
+                $query->bindValue($user->id, null, \PDO::PARAM_INT)
             )->set(
-                $this->handler->quoteColumn( 'login' ),
-                $query->bindValue( $user->login )
+                $this->handler->quoteColumn('login'),
+                $query->bindValue($user->login)
             )->set(
-                $this->handler->quoteColumn( 'email' ),
-                $query->bindValue( $user->email )
+                $this->handler->quoteColumn('email'),
+                $query->bindValue($user->email)
             )->set(
-                $this->handler->quoteColumn( 'password_hash' ),
-                $query->bindValue( $user->passwordHash )
+                $this->handler->quoteColumn('password_hash'),
+                $query->bindValue($user->passwordHash)
             )->set(
-                $this->handler->quoteColumn( 'password_hash_type' ),
-                $query->bindValue( $user->hashAlgorithm, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('password_hash_type'),
+                $query->bindValue($user->hashAlgorithm, null, \PDO::PARAM_INT)
             );
         $query->prepare()->execute();
 
         $query = $this->handler->createInsertQuery();
         $query
-            ->insertInto( $this->handler->quoteTable( 'ezuser_setting' ) )
+            ->insertInto($this->handler->quoteTable('ezuser_setting'))
             ->set(
-                $this->handler->quoteColumn( 'user_id' ),
-                $query->bindValue( $user->id, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('user_id'),
+                $query->bindValue($user->id, null, \PDO::PARAM_INT)
             )->set(
-                $this->handler->quoteColumn( 'is_enabled' ),
-                $query->bindValue( $user->isEnabled, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('is_enabled'),
+                $query->bindValue($user->isEnabled, null, \PDO::PARAM_INT)
             )->set(
-                $this->handler->quoteColumn( 'max_login' ),
-                $query->bindValue( $user->maxLogin, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('max_login'),
+                $query->bindValue($user->maxLogin, null, \PDO::PARAM_INT)
             );
         $query->prepare()->execute();
     }
@@ -87,50 +86,50 @@ class DoctrineDatabase extends Gateway
      *
      * @param mixed $userId
      */
-    public function deleteUser( $userId )
+    public function deleteUser($userId)
     {
         $query = $this->handler->createDeleteQuery();
         $query
-            ->deleteFrom( $this->handler->quoteTable( 'ezuser_setting' ) )
+            ->deleteFrom($this->handler->quoteTable('ezuser_setting'))
             ->where(
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'user_id' ),
-                    $query->bindValue( $userId, null, \PDO::PARAM_INT )
+                    $this->handler->quoteColumn('user_id'),
+                    $query->bindValue($userId, null, \PDO::PARAM_INT)
                 )
             );
         $query->prepare()->execute();
 
         $query = $this->handler->createDeleteQuery();
         $query
-            ->deleteFrom( $this->handler->quoteTable( 'ezuser' ) )
+            ->deleteFrom($this->handler->quoteTable('ezuser'))
             ->where(
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'contentobject_id' ),
-                    $query->bindValue( $userId, null, \PDO::PARAM_INT )
+                    $this->handler->quoteColumn('contentobject_id'),
+                    $query->bindValue($userId, null, \PDO::PARAM_INT)
                 )
             );
         $query->prepare()->execute();
     }
 
     /**
-     * Helper for public load* methods, returns content object criteria for fetching users
+     * Helper for public load* methods, returns content object criteria for fetching users.
      *
      * @param \eZ\Publish\Core\Persistence\Database\SelectQuery
      *
      * @return \eZ\Publish\Core\Persistence\Database\SelectQuery
      */
-    private function addContentObjectJoin( $query )
+    private function addContentObjectJoin($query)
     {
         return $query->innerJoin(
-            $this->handler->quoteTable( 'ezcontentobject' ),
+            $this->handler->quoteTable('ezcontentobject'),
             $query->expr->lAnd(
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'id', 'ezcontentobject' ),
-                    $this->handler->quoteColumn( 'contentobject_id', 'ezuser' )
+                    $this->handler->quoteColumn('id', 'ezcontentobject'),
+                    $this->handler->quoteColumn('contentobject_id', 'ezuser')
                 ),
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'status', 'ezcontentobject' ),
-                    $query->bindValue( ContentInfo::STATUS_PUBLISHED, null, \PDO::PARAM_INT )
+                    $this->handler->quoteColumn('status', 'ezcontentobject'),
+                    $query->bindValue(ContentInfo::STATUS_PUBLISHED, null, \PDO::PARAM_INT)
                 )
             )
         );
@@ -143,40 +142,40 @@ class DoctrineDatabase extends Gateway
      *
      * @return array
      */
-    public function load( $userId )
+    public function load($userId)
     {
         $query = $this->handler->createSelectQuery();
         $query->select(
-            $this->handler->quoteColumn( 'contentobject_id', 'ezuser' ),
-            $this->handler->quoteColumn( 'login', 'ezuser' ),
-            $this->handler->quoteColumn( 'email', 'ezuser' ),
-            $this->handler->quoteColumn( 'password_hash', 'ezuser' ),
-            $this->handler->quoteColumn( 'password_hash_type', 'ezuser' ),
-            $this->handler->quoteColumn( 'is_enabled', 'ezuser_setting' ),
-            $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
+            $this->handler->quoteColumn('contentobject_id', 'ezuser'),
+            $this->handler->quoteColumn('login', 'ezuser'),
+            $this->handler->quoteColumn('email', 'ezuser'),
+            $this->handler->quoteColumn('password_hash', 'ezuser'),
+            $this->handler->quoteColumn('password_hash_type', 'ezuser'),
+            $this->handler->quoteColumn('is_enabled', 'ezuser_setting'),
+            $this->handler->quoteColumn('max_login', 'ezuser_setting')
         )->from(
-            $this->handler->quoteTable( 'ezuser' )
+            $this->handler->quoteTable('ezuser')
         );
 
-        $query = $this->addContentObjectJoin( $query );
+        $query = $this->addContentObjectJoin($query);
 
         $query->leftJoin(
-            $this->handler->quoteTable( 'ezuser_setting' ),
+            $this->handler->quoteTable('ezuser_setting'),
             $query->expr->eq(
-                $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
-                $this->handler->quoteColumn( 'contentobject_id', 'ezuser' )
+                $this->handler->quoteColumn('user_id', 'ezuser_setting'),
+                $this->handler->quoteColumn('contentobject_id', 'ezuser')
             )
         )->where(
             $query->expr->eq(
-                $this->handler->quoteColumn( 'contentobject_id', 'ezuser' ),
-                $query->bindValue( $userId, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('contentobject_id', 'ezuser'),
+                $query->bindValue($userId, null, \PDO::PARAM_INT)
             )
         );
 
         $statement = $query->prepare();
         $statement->execute();
 
-        return $statement->fetchAll( \PDO::FETCH_ASSOC );
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**
@@ -186,161 +185,159 @@ class DoctrineDatabase extends Gateway
      *
      * @return array
      */
-    public function loadByLogin( $login )
+    public function loadByLogin($login)
     {
         $query = $this->handler->createSelectQuery();
         $query->select(
-            $this->handler->quoteColumn( 'contentobject_id', 'ezuser' ),
-            $this->handler->quoteColumn( 'login', 'ezuser' ),
-            $this->handler->quoteColumn( 'email', 'ezuser' ),
-            $this->handler->quoteColumn( 'password_hash', 'ezuser' ),
-            $this->handler->quoteColumn( 'password_hash_type', 'ezuser' ),
-            $this->handler->quoteColumn( 'is_enabled', 'ezuser_setting' ),
-            $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
+            $this->handler->quoteColumn('contentobject_id', 'ezuser'),
+            $this->handler->quoteColumn('login', 'ezuser'),
+            $this->handler->quoteColumn('email', 'ezuser'),
+            $this->handler->quoteColumn('password_hash', 'ezuser'),
+            $this->handler->quoteColumn('password_hash_type', 'ezuser'),
+            $this->handler->quoteColumn('is_enabled', 'ezuser_setting'),
+            $this->handler->quoteColumn('max_login', 'ezuser_setting')
         )->from(
-            $this->handler->quoteTable( 'ezuser' )
+            $this->handler->quoteTable('ezuser')
         );
 
-        $query = $this->addContentObjectJoin( $query );
+        $query = $this->addContentObjectJoin($query);
 
         $query->leftJoin(
-            $this->handler->quoteTable( 'ezuser_setting' ),
+            $this->handler->quoteTable('ezuser_setting'),
             $query->expr->eq(
-                $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
-                $this->handler->quoteColumn( 'contentobject_id', 'ezuser' )
+                $this->handler->quoteColumn('user_id', 'ezuser_setting'),
+                $this->handler->quoteColumn('contentobject_id', 'ezuser')
             )
         )->where(
             $query->expr->eq(
-                $this->handler->quoteColumn( 'login', 'ezuser' ),
-                $query->bindValue( $login, null, \PDO::PARAM_STR )
+                $this->handler->quoteColumn('login', 'ezuser'),
+                $query->bindValue($login, null, \PDO::PARAM_STR)
             )
         );
 
         $statement = $query->prepare();
         $statement->execute();
 
-        return $statement->fetchAll( \PDO::FETCH_ASSOC );
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Loads user with user email.
-     *
-     * @param string $email
-     *
-     * @return array
-     */
-     public function loadByEmail( $email )
+     /**
+      * Loads user with user email.
+      *
+      * @param string $email
+      *
+      * @return array
+      */
+     public function loadByEmail($email)
      {
          $query = $this->handler->createSelectQuery();
          $query->select(
-             $this->handler->quoteColumn( 'contentobject_id', 'ezuser' ),
-             $this->handler->quoteColumn( 'login', 'ezuser' ),
-             $this->handler->quoteColumn( 'email', 'ezuser' ),
-             $this->handler->quoteColumn( 'password_hash', 'ezuser' ),
-             $this->handler->quoteColumn( 'password_hash_type', 'ezuser' ),
-             $this->handler->quoteColumn( 'is_enabled', 'ezuser_setting' ),
-             $this->handler->quoteColumn( 'max_login', 'ezuser_setting' )
+             $this->handler->quoteColumn('contentobject_id', 'ezuser'),
+             $this->handler->quoteColumn('login', 'ezuser'),
+             $this->handler->quoteColumn('email', 'ezuser'),
+             $this->handler->quoteColumn('password_hash', 'ezuser'),
+             $this->handler->quoteColumn('password_hash_type', 'ezuser'),
+             $this->handler->quoteColumn('is_enabled', 'ezuser_setting'),
+             $this->handler->quoteColumn('max_login', 'ezuser_setting')
          )->from(
-             $this->handler->quoteTable( 'ezuser' )
+             $this->handler->quoteTable('ezuser')
          );
 
-         $query = $this->addContentObjectJoin( $query );
+         $query = $this->addContentObjectJoin($query);
 
          $query->leftJoin(
-             $this->handler->quoteTable( 'ezuser_setting' ),
+             $this->handler->quoteTable('ezuser_setting'),
              $query->expr->eq(
-                 $this->handler->quoteColumn( 'user_id', 'ezuser_setting' ),
-                 $this->handler->quoteColumn( 'contentobject_id', 'ezuser' )
+                 $this->handler->quoteColumn('user_id', 'ezuser_setting'),
+                 $this->handler->quoteColumn('contentobject_id', 'ezuser')
              )
          )->where(
              $query->expr->eq(
-                 $this->handler->quoteColumn( 'email', 'ezuser' ),
-                 $query->bindValue( $email, null, \PDO::PARAM_STR )
+                 $this->handler->quoteColumn('email', 'ezuser'),
+                 $query->bindValue($email, null, \PDO::PARAM_STR)
              )
          );
 
          $statement = $query->prepare();
          $statement->execute();
 
-         return $statement->fetchAll( \PDO::FETCH_ASSOC );
+         return $statement->fetchAll(\PDO::FETCH_ASSOC);
      }
 
     /**
-     * Update the user information specified by the user struct
+     * Update the user information specified by the user struct.
      *
      * @param User $user
      */
-    public function updateUser( User $user )
+    public function updateUser(User $user)
     {
         $query = $this->handler->createUpdateQuery();
         $query
-            ->update( $this->handler->quoteTable( 'ezuser' ) )
+            ->update($this->handler->quoteTable('ezuser'))
             ->set(
-                $this->handler->quoteColumn( 'login' ),
-                $query->bindValue( $user->login )
+                $this->handler->quoteColumn('login'),
+                $query->bindValue($user->login)
             )->set(
-                $this->handler->quoteColumn( 'email' ),
-                $query->bindValue( $user->email )
+                $this->handler->quoteColumn('email'),
+                $query->bindValue($user->email)
             )->set(
-                $this->handler->quoteColumn( 'password_hash' ),
-                $query->bindValue( $user->passwordHash )
+                $this->handler->quoteColumn('password_hash'),
+                $query->bindValue($user->passwordHash)
             )->set(
-                $this->handler->quoteColumn( 'password_hash_type' ),
-                $query->bindValue( $user->hashAlgorithm )
+                $this->handler->quoteColumn('password_hash_type'),
+                $query->bindValue($user->hashAlgorithm)
             )->where(
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'contentobject_id' ),
-                    $query->bindValue( $user->id, null, \PDO::PARAM_INT )
+                    $this->handler->quoteColumn('contentobject_id'),
+                    $query->bindValue($user->id, null, \PDO::PARAM_INT)
                 )
             );
         $query->prepare()->execute();
 
         $query = $this->handler->createUpdateQuery();
         $query
-            ->update( $this->handler->quoteTable( 'ezuser_setting' ) )
+            ->update($this->handler->quoteTable('ezuser_setting'))
             ->set(
-                $this->handler->quoteColumn( 'is_enabled' ),
-                $query->bindValue( $user->isEnabled, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('is_enabled'),
+                $query->bindValue($user->isEnabled, null, \PDO::PARAM_INT)
             )->set(
-                $this->handler->quoteColumn( 'max_login' ),
-                $query->bindValue( $user->maxLogin, null, \PDO::PARAM_INT )
+                $this->handler->quoteColumn('max_login'),
+                $query->bindValue($user->maxLogin, null, \PDO::PARAM_INT)
             )->where(
                 $query->expr->eq(
-                    $this->handler->quoteColumn( 'user_id' ),
-                    $query->bindValue( $user->id, null, \PDO::PARAM_INT )
+                    $this->handler->quoteColumn('user_id'),
+                    $query->bindValue($user->id, null, \PDO::PARAM_INT)
                 )
             );
         $query->prepare()->execute();
     }
 
     /**
-     * Assigns role to user with given limitation
+     * Assigns role to user with given limitation.
      *
      * @param mixed $contentId
      * @param mixed $roleId
      * @param array $limitation
      */
-    public function assignRole( $contentId, $roleId, array $limitation )
+    public function assignRole($contentId, $roleId, array $limitation)
     {
-        foreach ( $limitation as $identifier => $values )
-        {
-            foreach ( $values as $value )
-            {
+        foreach ($limitation as $identifier => $values) {
+            foreach ($values as $value) {
                 $query = $this->handler->createInsertQuery();
                 $query
-                    ->insertInto( $this->handler->quoteTable( 'ezuser_role' ) )
+                    ->insertInto($this->handler->quoteTable('ezuser_role'))
                     ->set(
-                        $this->handler->quoteColumn( 'contentobject_id' ),
-                        $query->bindValue( $contentId, null, \PDO::PARAM_INT )
+                        $this->handler->quoteColumn('contentobject_id'),
+                        $query->bindValue($contentId, null, \PDO::PARAM_INT)
                     )->set(
-                        $this->handler->quoteColumn( 'role_id' ),
-                        $query->bindValue( $roleId, null, \PDO::PARAM_INT )
+                        $this->handler->quoteColumn('role_id'),
+                        $query->bindValue($roleId, null, \PDO::PARAM_INT)
                     )->set(
-                        $this->handler->quoteColumn( 'limit_identifier' ),
-                        $query->bindValue( $identifier )
+                        $this->handler->quoteColumn('limit_identifier'),
+                        $query->bindValue($identifier)
                     )->set(
-                        $this->handler->quoteColumn( 'limit_value' ),
-                        $query->bindValue( $value )
+                        $this->handler->quoteColumn('limit_value'),
+                        $query->bindValue($value)
                     );
                 $query->prepare()->execute();
             }
@@ -348,25 +345,25 @@ class DoctrineDatabase extends Gateway
     }
 
     /**
-     * Remove role from user or user group
+     * Remove role from user or user group.
      *
      * @param mixed $contentId
      * @param mixed $roleId
      */
-    public function removeRole( $contentId, $roleId )
+    public function removeRole($contentId, $roleId)
     {
         $query = $this->handler->createDeleteQuery();
         $query
-            ->deleteFrom( $this->handler->quoteTable( 'ezuser_role' ) )
+            ->deleteFrom($this->handler->quoteTable('ezuser_role'))
             ->where(
                 $query->expr->lAnd(
                     $query->expr->eq(
-                        $this->handler->quoteColumn( 'contentobject_id' ),
-                        $query->bindValue( $contentId, null, \PDO::PARAM_INT )
+                        $this->handler->quoteColumn('contentobject_id'),
+                        $query->bindValue($contentId, null, \PDO::PARAM_INT)
                     ),
                     $query->expr->eq(
-                        $this->handler->quoteColumn( 'role_id' ),
-                        $query->bindValue( $roleId, null, \PDO::PARAM_INT )
+                        $this->handler->quoteColumn('role_id'),
+                        $query->bindValue($roleId, null, \PDO::PARAM_INT)
                     )
                 )
             );

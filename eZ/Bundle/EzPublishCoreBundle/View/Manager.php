@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\View;
 
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\SiteAccessAware;
@@ -22,11 +21,10 @@ class Manager extends BaseManager implements SiteAccessAware
      *
      * @param SiteAccess $siteAccess
      */
-    public function setSiteAccess( SiteAccess $siteAccess = null )
+    public function setSiteAccess(SiteAccess $siteAccess = null)
     {
-        if ( $this->logger )
-        {
-            $this->logger->debug( 'Changing SiteAccess in view providers' );
+        if ($this->logger) {
+            $this->logger->debug('Changing SiteAccess in view providers');
         }
 
         foreach (
@@ -36,11 +34,9 @@ class Manager extends BaseManager implements SiteAccessAware
                 $this->getAllBlockViewProviders()
             )
             as $provider
-        )
-        {
-            if ( $provider instanceof SiteAccessAware )
-            {
-                $provider->setSiteAccess( $siteAccess );
+        ) {
+            if ($provider instanceof SiteAccessAware) {
+                $provider->setSiteAccess($siteAccess);
             }
         }
     }

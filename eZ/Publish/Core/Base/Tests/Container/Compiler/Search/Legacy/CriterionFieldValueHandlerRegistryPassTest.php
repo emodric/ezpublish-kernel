@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Tests\Container\Compiler\Search\Legacy;
 
 use eZ\Publish\Core\Base\Container\Compiler\Search\Legacy\CriterionFieldValueHandlerRegistryPass;
@@ -28,13 +27,13 @@ class CriterionFieldValueHandlerRegistryPassTest extends AbstractCompilerPassTes
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new CriterionFieldValueHandlerRegistryPass() );
+        $container->addCompilerPass(new CriterionFieldValueHandlerRegistryPass());
     }
 
     public function testRegisterValueHandler()
@@ -44,16 +43,16 @@ class CriterionFieldValueHandlerRegistryPassTest extends AbstractCompilerPassTes
         $def = new Definition();
         $def->addTag(
             'ezpublish.search.legacy.gateway.criterion_field_value_handler',
-            array( 'alias' => $fieldTypeIdentifier )
+            array('alias' => $fieldTypeIdentifier)
         );
-        $this->setDefinition( $serviceId, $def );
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criterion_field_value_handler.registry',
             'register',
-            array( $fieldTypeIdentifier, new Reference( $serviceId ) )
+            array($fieldTypeIdentifier, new Reference($serviceId))
         );
     }
 
@@ -65,15 +64,15 @@ class CriterionFieldValueHandlerRegistryPassTest extends AbstractCompilerPassTes
         $fieldTypeIdentifier = 'field_type_identifier';
         $serviceId = 'service_id';
         $def = new Definition();
-        $def->addTag( 'ezpublish.search.legacy.gateway.criterion_field_value_handler' );
-        $this->setDefinition( $serviceId, $def );
+        $def->addTag('ezpublish.search.legacy.gateway.criterion_field_value_handler');
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.search.legacy.gateway.criterion_field_value_handler.registry',
             'register',
-            array( $fieldTypeIdentifier, new Reference( $serviceId ) )
+            array($fieldTypeIdentifier, new Reference($serviceId))
         );
     }
 }

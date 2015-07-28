@@ -5,20 +5,16 @@
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
- *
- * @package eZ\Publish\API\Repository\Values\Content\Query
  */
-
 namespace eZ\Publish\API\Repository\Values\Content\Query;
 
 /**
- * Base interface for Criterion implementations
- * @package eZ\Publish\API\Repository\Values\Content\Query
+ * Base interface for Criterion implementations.
  */
 interface CriterionInterface
 {
     /**
-     * Creates a new Criterion for $target with operator $operator on $value
+     * Creates a new Criterion for $target with operator $operator on $value.
      *
      * @param string $target The target (field identifier for a field, metadata identifier, etc)
      * @param string $operator The criterion operator, from Criterion\Operator
@@ -26,7 +22,7 @@ interface CriterionInterface
      *
      *@return CriterionInterface
      */
-    public static function createFromQueryBuilder( $target, $operator, $value );
+    public static function createFromQueryBuilder($target, $operator, $value);
 
     /**
      * Criterion description function.

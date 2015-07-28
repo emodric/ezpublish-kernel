@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -22,21 +21,21 @@ use eZ\Publish\API\Repository\Values\ValueObject;
 class Language extends ValueObject
 {
     /**
-     * The language id (auto generated)
+     * The language id (auto generated).
      *
      * @var mixed
      */
     protected $id;
 
     /**
-     * the languageCode code
+     * the languageCode code.
      *
      * @var string
      */
     protected $languageCode;
 
     /**
-     * Human readable name of the language
+     * Human readable name of the language.
      *
      * @var string
      */
@@ -45,7 +44,7 @@ class Language extends ValueObject
     /**
      * Indicates if the language is enabled or not.
      *
-     * @var boolean
+     * @var bool
      */
     protected $enabled;
 }

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\ApiLoader;
 
 use eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageEngineFactory;
@@ -19,23 +18,22 @@ class StorageEngineFactoryTest extends PHPUnit_Framework_TestCase
     {
         /** @var \eZ\Bundle\EzPublishCoreBundle\ApiLoader\StorageRepositoryProvider $storageRepositoryProvider */
         $storageRepositoryProvider = $this
-            ->getMockBuilder( 'eZ\\Bundle\\EzPublishCoreBundle\\ApiLoader\\StorageRepositoryProvider' )
+            ->getMockBuilder('eZ\\Bundle\\EzPublishCoreBundle\\ApiLoader\\StorageRepositoryProvider')
             ->disableOriginalConstructor()
             ->getMock();
-        $factory = new StorageEngineFactory( $storageRepositoryProvider );
+        $factory = new StorageEngineFactory($storageRepositoryProvider);
 
         $storageEngines = array(
-            'foo' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ),
-            'bar' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ),
-            'baz' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' )
+            'foo' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
+            'bar' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
+            'baz' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
         );
 
-        foreach ( $storageEngines as $identifier => $persistenceHandler )
-        {
-            $factory->registerStorageEngine( $persistenceHandler, $identifier );
+        foreach ($storageEngines as $identifier => $persistenceHandler) {
+            $factory->registerStorageEngine($persistenceHandler, $identifier);
         }
 
-        $this->assertSame( $storageEngines, $factory->getStorageEngines() );
+        $this->assertSame($storageEngines, $factory->getStorageEngines());
     }
 
     public function testBuildStorageEngine()
@@ -44,32 +42,31 @@ class StorageEngineFactoryTest extends PHPUnit_Framework_TestCase
         $repositoryAlias = 'main';
         $repositories = array(
             $repositoryAlias => array(
-                'engine' => 'foo'
+                'engine' => 'foo',
             ),
             'another' => array(
-                'engine' => 'bar'
-            )
+                'engine' => 'bar',
+            ),
         );
-        $expectedStorageEngine = $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' );
+        $expectedStorageEngine = $this->getMock('eZ\Publish\SPI\Persistence\Handler');
         $storageEngines = array(
             'foo' => $expectedStorageEngine,
-            'bar' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ),
-            'baz' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' )
+            'bar' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
+            'baz' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
         );
-        $storageRepositoryProvider = new StorageRepositoryProvider( $configResolver, $repositories );
-        $factory = new StorageEngineFactory( $storageRepositoryProvider );
-        foreach ( $storageEngines as $identifier => $persistenceHandler )
-        {
-            $factory->registerStorageEngine( $persistenceHandler, $identifier );
+        $storageRepositoryProvider = new StorageRepositoryProvider($configResolver, $repositories);
+        $factory = new StorageEngineFactory($storageRepositoryProvider);
+        foreach ($storageEngines as $identifier => $persistenceHandler) {
+            $factory->registerStorageEngine($persistenceHandler, $identifier);
         }
 
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'repository' )
-            ->will( $this->returnValue( $repositoryAlias ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('repository')
+            ->will($this->returnValue($repositoryAlias));
 
-        $this->assertSame( $expectedStorageEngine, $factory->buildStorageEngine() );
+        $this->assertSame($expectedStorageEngine, $factory->buildStorageEngine());
     }
 
     /**
@@ -81,33 +78,32 @@ class StorageEngineFactoryTest extends PHPUnit_Framework_TestCase
         $repositoryAlias = 'main';
         $repositories = array(
             $repositoryAlias => array(
-                'engine' => 'undefined_storage_engine'
+                'engine' => 'undefined_storage_engine',
             ),
             'another' => array(
-                'engine' => 'bar'
-            )
+                'engine' => 'bar',
+            ),
         );
 
         $storageEngines = array(
-            'foo' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ),
-            'bar' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ),
-            'baz' => $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' )
+            'foo' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
+            'bar' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
+            'baz' => $this->getMock('eZ\Publish\SPI\Persistence\Handler'),
         );
 
-        $storageRepositoryProvider = new StorageRepositoryProvider( $configResolver, $repositories );
-        $factory = new StorageEngineFactory( $storageRepositoryProvider );
-        foreach ( $storageEngines as $identifier => $persistenceHandler )
-        {
-            $factory->registerStorageEngine( $persistenceHandler, $identifier );
+        $storageRepositoryProvider = new StorageRepositoryProvider($configResolver, $repositories);
+        $factory = new StorageEngineFactory($storageRepositoryProvider);
+        foreach ($storageEngines as $identifier => $persistenceHandler) {
+            $factory->registerStorageEngine($persistenceHandler, $identifier);
         }
 
         $configResolver
-            ->expects( $this->once() )
-            ->method( 'getParameter' )
-            ->with( 'repository' )
-            ->will( $this->returnValue( $repositoryAlias ) );
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('repository')
+            ->will($this->returnValue($repositoryAlias));
 
-        $this->assertSame( $this->getMock( 'eZ\Publish\SPI\Persistence\Handler' ), $factory->buildStorageEngine() );
+        $this->assertSame($this->getMock('eZ\Publish\SPI\Persistence\Handler'), $factory->buildStorageEngine());
     }
 
     /**
@@ -115,6 +111,6 @@ class StorageEngineFactoryTest extends PHPUnit_Framework_TestCase
      */
     protected function getConfigResolverMock()
     {
-        return $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        return $this->getMock('eZ\Publish\Core\MVC\ConfigResolverInterface');
     }
 }

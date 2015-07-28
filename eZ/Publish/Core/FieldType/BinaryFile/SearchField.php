@@ -1,12 +1,11 @@
 <?php
 /**
- * This file is part of the eZ Publish Kernel package
+ * This file is part of the eZ Publish Kernel package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\BinaryFile;
 
 use eZ\Publish\SPI\Persistence\Content\Field;
@@ -14,40 +13,40 @@ use eZ\Publish\SPI\FieldType\Indexable;
 use eZ\Publish\SPI\Search;
 
 /**
- * Indexable definition for BinaryFile field type
+ * Indexable definition for BinaryFile field type.
  */
 class SearchField implements Indexable
 {
     /**
-     * Get index data for field for search backend
+     * Get index data for field for search backend.
      *
      * @param Field $field
      *
      * @return \eZ\Publish\SPI\Search\Field[]
      */
-    public function getIndexData( Field $field )
+    public function getIndexData(Field $field)
     {
         return array(
             new Search\Field(
                 'file_name',
-                $field->value->externalData["fileName"],
+                $field->value->externalData['fileName'],
                 new Search\FieldType\StringField()
             ),
             new Search\Field(
                 'file_size',
-                $field->value->externalData["fileSize"],
+                $field->value->externalData['fileSize'],
                 new Search\FieldType\IntegerField()
             ),
             new Search\Field(
                 'mime_type',
-                $field->value->externalData["mimeType"],
+                $field->value->externalData['mimeType'],
                 new Search\FieldType\StringField()
             ),
         );
     }
 
     /**
-     * Get index field types for search backend
+     * Get index field types for search backend.
      *
      * @return \eZ\Publish\SPI\Search\FieldType[]
      */
@@ -72,6 +71,6 @@ class SearchField implements Indexable
      */
     public function getDefaultField()
     {
-        return "file_name";
+        return 'file_name';
     }
 }

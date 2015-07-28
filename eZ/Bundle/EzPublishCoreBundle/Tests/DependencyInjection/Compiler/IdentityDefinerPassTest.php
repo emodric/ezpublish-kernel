@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\Tests\DependencyInjection\Compiler;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Compiler\IdentityDefinerPass;
@@ -20,18 +19,18 @@ class IdentityDefinerPassTest extends AbstractCompilerPassTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->setDefinition( 'ezpublish.user.hash_generator', new Definition() );
+        $this->setDefinition('ezpublish.user.hash_generator', new Definition());
     }
 
     /**
      * Register the compiler pass under test, just like you would do inside a bundle's load()
-     * method:
+     * method:.
      *
      *   $container->addCompilerPass(new MyCompilerPass());
      */
-    protected function registerCompilerPass( ContainerBuilder $container )
+    protected function registerCompilerPass(ContainerBuilder $container)
     {
-        $container->addCompilerPass( new IdentityDefinerPass() );
+        $container->addCompilerPass(new IdentityDefinerPass());
     }
 
     /**
@@ -40,16 +39,16 @@ class IdentityDefinerPassTest extends AbstractCompilerPassTestCase
     public function testSetIdentityDefiner()
     {
         $def = new Definition();
-        $def->addTag( 'ezpublish.identity_definer' );
+        $def->addTag('ezpublish.identity_definer');
         $serviceId = 'some_service_id';
-        $this->setDefinition( $serviceId, $def );
+        $this->setDefinition($serviceId, $def);
 
         $this->compile();
 
         $this->assertContainerBuilderHasServiceDefinitionWithMethodCall(
             'ezpublish.user.hash_generator',
             'setIdentityDefiner',
-            array( new Reference( $serviceId ) )
+            array(new Reference($serviceId))
         );
     }
 }

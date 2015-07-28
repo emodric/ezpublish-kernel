@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Exception;
 
 use RuntimeException;
@@ -21,8 +20,8 @@ class InvalidSiteAccessException extends RuntimeException
      * @param array $siteAccessList All valid siteaccesses, as a regular array
      * @param string $matchType How $siteAccess was matched
      */
-    public function __construct( $siteAccess, array $siteAccessList, $matchType )
+    public function __construct($siteAccess, array $siteAccessList, $matchType)
     {
-        parent::__construct( "Invalid siteaccess '$siteAccess', matched by $matchType. Valid siteaccesses are " . implode( ', ', $siteAccessList ) );
+        parent::__construct("Invalid siteaccess '$siteAccess', matched by $matchType. Valid siteaccesses are " . implode(', ', $siteAccessList));
     }
 }

@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the RichTextTest class
+ * File containing the RichTextTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Persistence\Legacy\Tests\Content\FieldValue\Converter;
 
 use eZ\Publish\SPI\Persistence\Content\FieldValue;
@@ -15,7 +14,7 @@ use eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter\RichText as 
 use PHPUnit_Framework_TestCase;
 
 /**
- * Test case for RichText converter in Legacy storage
+ * Test case for RichText converter in Legacy storage.
  *
  * @group fieldType
  * @group ezrichtext
@@ -48,7 +47,7 @@ EOT;
 
     protected function tearDown()
     {
-        unset( $this->xmlText );
+        unset($this->xmlText);
         parent::tearDown();
     }
 
@@ -57,12 +56,12 @@ EOT;
      */
     public function testToStorageValue()
     {
-        $value = new FieldValue;
+        $value = new FieldValue();
         $value->data = $this->docbookString;
-        $storageFieldValue = new StorageFieldValue;
+        $storageFieldValue = new StorageFieldValue();
 
-        $this->converter->toStorageValue( $value, $storageFieldValue );
-        self::assertSame( $this->docbookString, $storageFieldValue->dataText );
+        $this->converter->toStorageValue($value, $storageFieldValue);
+        self::assertSame($this->docbookString, $storageFieldValue->dataText);
     }
 
     /**
@@ -70,12 +69,12 @@ EOT;
      */
     public function testToFieldValue()
     {
-        $storageFieldValue = new StorageFieldValue;
+        $storageFieldValue = new StorageFieldValue();
         $storageFieldValue->dataText = $this->docbookString;
-        $fieldValue = new FieldValue;
+        $fieldValue = new FieldValue();
 
-        $this->converter->toFieldValue( $storageFieldValue, $fieldValue );
-        self::assertSame( $this->docbookString, $fieldValue->data );
+        $this->converter->toFieldValue($storageFieldValue, $fieldValue);
+        self::assertSame($this->docbookString, $fieldValue->data);
     }
 
     /**
@@ -83,22 +82,22 @@ EOT;
      *
      * @return string
      */
-    protected function getAbsolutePath( $relativePath )
+    protected function getAbsolutePath($relativePath)
     {
-        return self::getInstallationDir() . "/" . $relativePath;
+        return self::getInstallationDir() . '/' . $relativePath;
     }
 
     /**
      * @return string
      */
-    static protected function getInstallationDir()
+    protected static function getInstallationDir()
     {
         static $installDir = null;
-        if ( $installDir === null )
-        {
+        if ($installDir === null) {
             $config = require 'config.php';
             $installDir = $config['service']['parameters']['install_dir'];
         }
+
         return $installDir;
     }
 }

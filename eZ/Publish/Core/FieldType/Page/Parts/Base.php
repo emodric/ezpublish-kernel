@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the Base class
+ * File containing the Base class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\FieldType\Page\Parts;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
@@ -27,14 +26,14 @@ abstract class Base extends ValueObject
     public $attributes;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $properties
      */
-    public function __construct( array $properties = array() )
+    public function __construct(array $properties = array())
     {
         $this->attributes = array();
-        parent::__construct( $properties );
+        parent::__construct($properties);
     }
 
     /**
@@ -46,8 +45,7 @@ abstract class Base extends ValueObject
     {
         $hash = array();
 
-        foreach ( $this->getProperties() as $property )
-        {
+        foreach ($this->getProperties() as $property) {
             $hash[$property] = $this->$property;
         }
 

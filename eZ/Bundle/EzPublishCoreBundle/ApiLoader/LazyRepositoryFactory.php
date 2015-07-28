@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\ApiLoader;
 
 use eZ\Publish\API\Repository\Repository;
@@ -21,7 +20,7 @@ class LazyRepositoryFactory
      */
     protected $repository;
 
-    public function __construct( Repository $repository )
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }
@@ -36,8 +35,8 @@ class LazyRepositoryFactory
     public function buildRepository()
     {
         $repository = $this->repository;
-        return function () use ( $repository )
-        {
+
+        return function () use ($repository) {
             return $repository;
         };
     }

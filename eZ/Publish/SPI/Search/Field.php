@@ -36,26 +36,23 @@ class Field extends ValueObject
     protected $value;
 
     /**
-     * Type of the search field
+     * Type of the search field.
      *
      * @var FieldType
      */
     protected $type;
 
     /**
-     * Construct from name and value
+     * Construct from name and value.
      *
      * @param string $name
      * @param mixed $value
      * @param FieldType $type
-     *
-     * @return void
      */
-    public function __construct( $name, $value, FieldType $type )
+    public function __construct($name, $value, FieldType $type)
     {
-        $this->name  = $name;
+        $this->name = $name;
         $this->value = $value;
-        $this->type  = $type;
+        $this->type = $type;
     }
 }
-

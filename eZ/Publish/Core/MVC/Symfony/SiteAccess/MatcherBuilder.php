@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\SiteAccess;
 
 use eZ\Publish\Core\MVC\Symfony\Routing\SimplifiedRequest;
@@ -27,16 +26,17 @@ class MatcherBuilder implements MatcherBuilderInterface
      *
      * @return \eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher
      */
-    public function buildMatcher( $matcherIdentifier, $matchingConfiguration, SimplifiedRequest $request )
+    public function buildMatcher($matcherIdentifier, $matchingConfiguration, SimplifiedRequest $request)
     {
         // If class begins with a '\' it means it's a FQ class name,
         // otherwise it is relative to this namespace.
-        if ( $matcherIdentifier[0] !== '\\' )
+        if ($matcherIdentifier[0] !== '\\') {
             $matcherIdentifier = __NAMESPACE__ . "\\Matcher\\$matcherIdentifier";
+        }
 
         /** @var $matcher \eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher */
-        $matcher = new $matcherIdentifier( $matchingConfiguration );
-        $matcher->setRequest( $request );
+        $matcher = new $matcherIdentifier($matchingConfiguration);
+        $matcher->setRequest($request);
 
         return $matcher;
     }

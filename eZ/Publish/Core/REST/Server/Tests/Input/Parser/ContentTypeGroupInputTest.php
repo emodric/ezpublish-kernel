@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing a test class
+ * File containing a test class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\REST\Server\Tests\Input\Parser;
 
 use eZ\Publish\Core\REST\Server\Input\Parser\ContentTypeGroupInput;
@@ -15,20 +14,20 @@ use eZ\Publish\API\Repository\Values\ContentType\ContentTypeGroupCreateStruct;
 class ContentTypeGroupInputTest extends BaseTest
 {
     /**
-     * Tests the ContentTypeGroupInput parser
+     * Tests the ContentTypeGroupInput parser.
      */
     public function testParse()
     {
         $inputArray = array(
             'identifier' => 'Identifier Bar',
             'User' => array(
-                '_href' => '/user/users/14'
+                '_href' => '/user/users/14',
             ),
-            'modificationDate' => '2012-12-31T12:00:00'
+            'modificationDate' => '2012-12-31T12:00:00',
         );
 
         $contentTypeGroupInput = $this->getParser();
-        $result = $contentTypeGroupInput->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $result = $contentTypeGroupInput->parse($inputArray, $this->getParsingDispatcherMock());
 
         $this->assertInstanceOf(
             '\\eZ\\Publish\\API\\Repository\\Values\\ContentType\\ContentTypeGroupCreateStruct',
@@ -49,14 +48,14 @@ class ContentTypeGroupInputTest extends BaseTest
         );
 
         $this->assertEquals(
-            new \DateTime( '2012-12-31T12:00:00' ),
+            new \DateTime('2012-12-31T12:00:00'),
             $result->creationDate,
             'ContentTypeGroupCreateStruct creationDate property not created correctly.'
         );
     }
 
     /**
-     * Test ContentTypeGroupInput parser throwing exception on invalid User
+     * Test ContentTypeGroupInput parser throwing exception on invalid User.
      *
      * @expectedException \eZ\Publish\Core\REST\Common\Exceptions\Parser
      * @expectedExceptionMessage Missing '_href' attribute for User element in ContentTypeGroupInput.
@@ -66,15 +65,15 @@ class ContentTypeGroupInputTest extends BaseTest
         $inputArray = array(
             'identifier' => 'Identifier Bar',
             'User' => array(),
-            'modificationDate' => '2012-12-31T12:00:00'
+            'modificationDate' => '2012-12-31T12:00:00',
         );
 
         $contentTypeGroupInput = $this->getParser();
-        $contentTypeGroupInput->parse( $inputArray, $this->getParsingDispatcherMock() );
+        $contentTypeGroupInput->parse($inputArray, $this->getParsingDispatcherMock());
     }
 
     /**
-     * Returns the content type group input parser
+     * Returns the content type group input parser.
      *
      * @return \eZ\Publish\Core\REST\Server\Input\Parser\ContentTypeGroupInput
      */
@@ -87,7 +86,7 @@ class ContentTypeGroupInputTest extends BaseTest
     }
 
     /**
-     * Get the content type service mock object
+     * Get the content type service mock object.
      *
      * @return \eZ\Publish\API\Repository\ContentTypeService
      */
@@ -101,11 +100,11 @@ class ContentTypeGroupInputTest extends BaseTest
             false
         );
 
-        $contentTypeServiceMock->expects( $this->any() )
-            ->method( 'newContentTypeGroupCreateStruct' )
-            ->with( $this->equalTo( 'Identifier Bar' ) )
+        $contentTypeServiceMock->expects($this->any())
+            ->method('newContentTypeGroupCreateStruct')
+            ->with($this->equalTo('Identifier Bar'))
             ->will(
-                $this->returnValue( new ContentTypeGroupCreateStruct( array( 'identifier' => 'Identifier Bar' ) ) )
+                $this->returnValue(new ContentTypeGroupCreateStruct(array('identifier' => 'Identifier Bar')))
             );
 
         return $contentTypeServiceMock;
@@ -114,7 +113,7 @@ class ContentTypeGroupInputTest extends BaseTest
     public function getParseHrefExpectationsMap()
     {
         return array(
-            array( '/user/users/14', 'userId', 14 )
+            array('/user/users/14', 'userId', 14),
         );
     }
 }

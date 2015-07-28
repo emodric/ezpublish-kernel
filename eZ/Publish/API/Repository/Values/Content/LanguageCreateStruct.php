@@ -6,19 +6,17 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\API\Repository\Values\Content;
 
 use eZ\Publish\API\Repository\Values\ValueObject;
 
 /**
- * This class represents a value for creating a language
+ * This class represents a value for creating a language.
  */
 class LanguageCreateStruct extends ValueObject
 {
-
     /**
-     * The languageCode code
+     * The languageCode code.
      *
      * Needs to be a unique.
      *
@@ -27,7 +25,7 @@ class LanguageCreateStruct extends ValueObject
     public $languageCode;
 
     /**
-     * Human readable name of the language
+     * Human readable name of the language.
      *
      * @var string
      */
@@ -36,8 +34,7 @@ class LanguageCreateStruct extends ValueObject
     /**
      * Indicates if the language is enabled or not.
      *
-     * @var boolean
+     * @var bool
      */
     public $enabled = true;
 }
-

@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\Security\Exception;
 
 use Exception;
@@ -19,8 +18,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class UnauthorizedSiteAccessException extends AccessDeniedException
 {
-    public function __construct( SiteAccess $siteAccess, $username, Exception $previous = null )
+    public function __construct(SiteAccess $siteAccess, $username, Exception $previous = null)
     {
-        parent::__construct( "User '$username' doesn't have user/login permission to SiteAccess '$siteAccess->name'", $previous );
+        parent::__construct("User '$username' doesn't have user/login permission to SiteAccess '$siteAccess->name'", $previous);
     }
 }

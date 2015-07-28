@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Container\ApiLoader;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -14,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 class FieldTypeCollectionFactory extends ContainerAware
 {
     /**
-     * Collection of fieldTypes, lazy loaded via a closure
+     * Collection of fieldTypes, lazy loaded via a closure.
      *
      * @var \Closure[]
      */
@@ -27,17 +26,16 @@ class FieldTypeCollectionFactory extends ContainerAware
      * @param string $fieldTypeServiceId The field type service Id
      * @param string $fieldTypeAlias The field type alias (e.g. "ezstring")
      */
-    public function registerFieldType( $fieldTypeServiceId, $fieldTypeAlias )
+    public function registerFieldType($fieldTypeServiceId, $fieldTypeAlias)
     {
         $container = $this->container;
-        $this->fieldTypes[$fieldTypeAlias] = function () use ( $container, $fieldTypeServiceId )
-        {
-            return $container->get( $fieldTypeServiceId );
+        $this->fieldTypes[$fieldTypeAlias] = function () use ($container, $fieldTypeServiceId) {
+            return $container->get($fieldTypeServiceId);
         };
     }
 
     /**
-     * Returns registered field types (as closures to be lazy loaded in the public API)
+     * Returns registered field types (as closures to be lazy loaded in the public API).
      *
      * @return \Closure[]
      */

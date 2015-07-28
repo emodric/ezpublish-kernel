@@ -6,11 +6,10 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\Parser;
 
 class LocationView extends View
 {
-    const NODE_KEY = "location_view";
-    const INFO = "Template selection settings when displaying a location";
+    const NODE_KEY = 'location_view';
+    const INFO = 'Template selection settings when displaying a location';
 }

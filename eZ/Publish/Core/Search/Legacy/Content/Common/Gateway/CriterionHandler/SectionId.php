@@ -1,12 +1,11 @@
 <?php
 /**
- * File containing the DoctrineDatabase section criterion handler class
+ * File containing the DoctrineDatabase section criterion handler class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
 
 use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler;
@@ -15,7 +14,7 @@ use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
 use eZ\Publish\Core\Persistence\Database\SelectQuery;
 
 /**
- * Section criterion handler
+ * Section criterion handler.
  */
 class SectionId extends CriterionHandler
 {
@@ -24,15 +23,15 @@ class SectionId extends CriterionHandler
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $criterion
      *
-     * @return boolean
+     * @return bool
      */
-    public function accept( Criterion $criterion )
+    public function accept(Criterion $criterion)
     {
         return $criterion instanceof Criterion\SectionId;
     }
 
     /**
-     * Generate query expression for a Criterion this handler accepts
+     * Generate query expression for a Criterion this handler accepts.
      *
      * accept() must be called before calling this method.
      *
@@ -42,12 +41,11 @@ class SectionId extends CriterionHandler
      *
      * @return \eZ\Publish\Core\Persistence\Database\Expression
      */
-    public function handle( CriteriaConverter $converter, SelectQuery $query, Criterion $criterion )
+    public function handle(CriteriaConverter $converter, SelectQuery $query, Criterion $criterion)
     {
         return $query->expr->in(
-            $this->dbHandler->quoteColumn( 'section_id', 'ezcontentobject' ),
+            $this->dbHandler->quoteColumn('section_id', 'ezcontentobject'),
             $criterion->value
         );
     }
 }
-

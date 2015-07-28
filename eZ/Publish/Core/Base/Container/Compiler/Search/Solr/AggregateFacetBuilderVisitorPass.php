@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\Base\Container\Compiler\Search\Solr;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,10 +20,9 @@ class AggregateFacetBuilderVisitorPass implements CompilerPassInterface
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      */
-    public function process( ContainerBuilder $container )
+    public function process(ContainerBuilder $container)
     {
-        if ( !$container->hasDefinition( 'ezpublish.search.solr.content.facet_builder_visitor.aggregate' ) )
-        {
+        if (!$container->hasDefinition('ezpublish.search.solr.content.facet_builder_visitor.aggregate')) {
             return;
         }
 
@@ -32,12 +30,11 @@ class AggregateFacetBuilderVisitorPass implements CompilerPassInterface
             'ezpublish.search.solr.content.facet_builder_visitor.aggregate'
         );
 
-        foreach ( $container->findTaggedServiceIds( 'ezpublish.search.solr.content.facet_builder_visitor' ) as $id => $attributes )
-        {
+        foreach ($container->findTaggedServiceIds('ezpublish.search.solr.content.facet_builder_visitor') as $id => $attributes) {
             $aggregateFacetBuilderVisitorDefinition->addMethodCall(
                 'addVisitor',
                 array(
-                    new Reference( $id ),
+                    new Reference($id),
                 )
             );
         }

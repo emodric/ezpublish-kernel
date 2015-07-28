@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace eZ\Publish\Core\MVC\Symfony\FieldType\Page;
 
 use eZ\Publish\Core\MVC\Symfony\FieldType\View\ParameterProviderInterface;
@@ -23,15 +22,15 @@ class ParameterProvider implements ParameterProviderInterface
      */
     protected $pageService;
 
-    public function __construct( PageService $pageService )
+    public function __construct(PageService $pageService)
     {
         $this->pageService = $pageService;
     }
 
-    public function getViewParameters( Field $field )
+    public function getViewParameters(Field $field)
     {
         return array(
-            'pageService'   => $this->pageService
+            'pageService' => $this->pageService,
         );
     }
 }
