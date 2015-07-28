@@ -44,7 +44,11 @@ class UrlStorage extends GatewayBasedStorage
         $gateway = $this->getGateway($context);
         $url = $field->value->externalData;
 
-        $map = $gateway->getUrlIdMap( array( $url ) );
+        if (empty($url)) {
+            return false;
+        }
+
+        $map = $gateway->getUrlIdMap(array($url));
 
         if (isset($map[$url])) {
             $urlId = $map[$url];
