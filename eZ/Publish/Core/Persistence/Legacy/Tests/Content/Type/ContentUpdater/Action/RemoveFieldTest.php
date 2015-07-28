@@ -79,7 +79,13 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($versionNumbers));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(1))
+            ->expects($this->once())
+            ->method('loadVersionedNameData')
+            ->with($this->equalTo([['id' => $contentId, 'version' => 1]]))
+            ->will($this->returnValue([]));
+
+        $this->getContentGatewayMock()
+            ->expects($this->at(2))
             ->method('load')
             ->with($contentId, 1)
             ->will($this->returnValue(array()));
@@ -87,7 +93,7 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
         $this->getContentMapperMock()
             ->expects($this->once())
             ->method('extractContentFromRows')
-            ->with(array())
+            ->with([], [])
             ->will($this->returnValue(array($content)));
 
         $this->getContentGatewayMock()
@@ -124,7 +130,13 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($versionNumbers));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(1))
+            ->expects($this->once())
+            ->method('loadVersionedNameData')
+            ->with($this->equalTo([['id' => $contentId, 'version' => 1], ['id' => $contentId, 'version' => 2]]))
+            ->will($this->returnValue([]));
+
+        $this->getContentGatewayMock()
+            ->expects($this->at(2))
             ->method('load')
             ->with($contentId, 1)
             ->will($this->returnValue(array()));
@@ -132,11 +144,11 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
         $this->getContentMapperMock()
             ->expects($this->at(0))
             ->method('extractContentFromRows')
-            ->with(array())
+            ->with([], [])
             ->will($this->returnValue(array($content1)));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(2))
+            ->expects($this->at(3))
             ->method('load')
             ->with($contentId, 2)
             ->will($this->returnValue(array()));
@@ -144,7 +156,7 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
         $this->getContentMapperMock()
             ->expects($this->at(1))
             ->method('extractContentFromRows')
-            ->with(array())
+            ->with([], [])
             ->will($this->returnValue(array($content2)));
 
         $this->getContentGatewayMock()
@@ -191,7 +203,13 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($versionNumbers));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(1))
+            ->expects($this->once())
+            ->method('loadVersionedNameData')
+            ->with($this->equalTo([['id' => $contentId, 'version' => 1], ['id' => $contentId, 'version' => 2]]))
+            ->will($this->returnValue([]));
+
+        $this->getContentGatewayMock()
+            ->expects($this->at(2))
             ->method('load')
             ->with($contentId, 1)
             ->will($this->returnValue(array()));
@@ -199,11 +217,11 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
         $this->getContentMapperMock()
             ->expects($this->at(0))
             ->method('extractContentFromRows')
-            ->with(array())
+            ->with([], [])
             ->will($this->returnValue(array($content1)));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(2))
+            ->expects($this->at(3))
             ->method('load')
             ->with($contentId, 2)
             ->will($this->returnValue(array()));
@@ -211,16 +229,16 @@ class RemoveFieldTest extends PHPUnit_Framework_TestCase
         $this->getContentMapperMock()
             ->expects($this->at(1))
             ->method('extractContentFromRows')
-            ->with(array())
+            ->with([], [])
             ->will($this->returnValue(array($content2)));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(3))
+            ->expects($this->at(4))
             ->method('deleteField')
             ->with($this->equalTo('3-cro-HR'));
 
         $this->getContentGatewayMock()
-            ->expects($this->at(4))
+            ->expects($this->at(5))
             ->method('deleteField')
             ->with($this->equalTo('3-hun-HU'));
 
