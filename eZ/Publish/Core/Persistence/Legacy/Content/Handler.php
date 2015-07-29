@@ -318,7 +318,7 @@ class Handler implements BaseContentHandler
 
         $contentObjects = $this->mapper->extractContentFromRows(
             $rows,
-            $this->contentGateway->loadVersionedNameData([['id' => $id, 'version' => $version]])
+            $this->contentGateway->loadVersionedNameData(array(array('id' => $id, 'version' => $version)))
         );
         $content = $contentObjects[0];
 
@@ -372,7 +372,7 @@ class Handler implements BaseContentHandler
 
         $versionInfo = $this->mapper->extractVersionInfoListFromRows(
             $rows,
-            $this->contentGateway->loadVersionedNameData([['id' => $contentId, 'version' => $versionNo]])
+            $this->contentGateway->loadVersionedNameData(array(array('id' => $contentId, 'version' => $versionNo)))
         );
 
         return reset($versionInfo);
@@ -389,15 +389,15 @@ class Handler implements BaseContentHandler
     {
         $rows = $this->contentGateway->listVersionsForUser($userId, VersionInfo::STATUS_DRAFT);
         if (empty($rows)) {
-            return [];
+            return array();
         }
 
         $idVersionPairs = array_map(
             function ($row) {
-                return [
+                return array(
                     'id' => $row['ezcontentobject_version_contentobject_id'],
                     'version' => $row['ezcontentobject_version_version'],
-                ];
+                );
             },
             $rows
         );
