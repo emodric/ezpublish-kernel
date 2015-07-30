@@ -234,6 +234,15 @@ Changes affecting version compatibility with former or future versions.
   type does not index data, you should use common implementation for the case, found at
   `eZ\Publish\Core\FieldType\Unindexed`.
 
+* 5.4.5: $languageFilter specification has changed to work as priority list of languages
+  To be able to sort on translated values in a predictable way we need to deal with
+  one language per content object at a time. This change only affects how the sort is
+  performed internally, and not which fields are returned in the case of findContent.
+  This furthermore better matches the behaviour of language lists for SiteAccess.
+  Behaviour of Search engines will be gradually changed to reflect this change, Solr first.
+  Note: Possibility to search across all languages remains, however Field SortClause will
+  for instance not work properly in this case, and we plan to start to give warnings about this.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.

@@ -53,7 +53,7 @@ class SearchService implements SearchServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if query is not valid
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query $query
-     * @param array $languageFilter - a map of filters for the returned fields.
+     * @param array $languageFilter Configuration for specifying prioritized languages query will be performed on.
      *        Currently supported: <code>array("languages" => array(<language1>,..))</code>.
      * @param bool $filterOnUserPermissions if true only the objects which is the user allowed to read are returned.
      *
@@ -72,7 +72,7 @@ class SearchService implements SearchServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if there is more than than one result matching the criterions
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $filter
-     * @param array $languageFilter - a map of filters for the returned fields.
+     * @param array $languageFilter Configuration for specifying prioritized languages query will be performed on.
      *        Currently supported: <code>array("languages" => array(<language1>,..))</code>.
      * @param bool $filterOnUserPermissions if true only the objects which is the user allowed to read are returned.
      *
