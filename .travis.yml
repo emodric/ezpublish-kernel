@@ -55,7 +55,7 @@ matrix:
 # test only master (+ Pull requests)
 branches:
   only:
-    - 5.4
+    - "5.4"
 
 # setup requirements for running unit tests
 before_script:
