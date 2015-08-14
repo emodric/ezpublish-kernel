@@ -148,7 +148,14 @@ Changes affecting version compatibility with former or future versions.
 
 * 5.4.5: `eZ\Publish\Core\Repository\SearchService::findLocations()` now has new parameter
   `$fieldFilters`, which is put on the second place, pushing `$filterOnUserPermissions` to the
-  third place.
+  third place. Using boolean on second argument is still supported, but will generate a deprecation 
+  warning, as a E_USER_DEPRECATED message.
+
+* 5.4.5: Interfaces `eZ\Publish\SPI\Search\Content\Handler` and `eZ\Publish\SPI\Search\Content\Location\Handler`
+  are removed, merged to the existing `eZ\Publish\SPI\Search\Handler` interface. Consequently, classes
+  `eZ\Publish\Core\Search\Legacy\Content\Location\Handler` and `eZ\Publish\Core\Search\Legacy\Handler`
+  are removed, and class `eZ\Publish\Core\Search\Legacy\Content\Handler` is updated and now implements
+  `eZ\Publish\SPI\Search\Handler` interface.
 
 ## Deprecations
 
