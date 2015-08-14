@@ -146,6 +146,10 @@ Changes affecting version compatibility with former or future versions.
   when deleting last version of the Content. Since Content without a version does not make sense, in
   this case `eZ\Publish\Core\Repository\ContentService::deleteContent()` should be used instead.
 
+* 5.4.5: `eZ\Publish\Core\Repository\SearchService::findLocations()` now has new parameter
+  `$fieldFilters`, which is put on the second place, pushing `$filterOnUserPermissions` to the
+  third place.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.

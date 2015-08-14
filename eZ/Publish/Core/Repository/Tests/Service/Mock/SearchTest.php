@@ -859,7 +859,7 @@ class SearchTest extends BaseServiceMockTest
             ->with($this->equalTo($spiLocation))
             ->will($this->returnValue($locationMock));
 
-        $result = $service->findLocations($serviceQuery, false);
+        $result = $service->findLocations($serviceQuery, array(), false);
 
         $this->assertEquals(
             new SearchResult(
@@ -925,6 +925,7 @@ class SearchTest extends BaseServiceMockTest
         try {
             $result = $service->findLocations(
                 new LocationQuery(array('sortClauses' => $sortClauses)),
+                array(),
                 true
             );
         } catch (InvalidArgumentException $e) {
@@ -970,12 +971,30 @@ class SearchTest extends BaseServiceMockTest
             ->with($criterionMock)
             ->will($this->throwException(new Exception('Handler threw an exception')));
 
-        $service->findLocations($query, true);
+        $service->findLocations($query, array(), true);
     }
 
     /**
      * Test for the findLocations() method.
+     *
+     * @expectedException \PHPUnit_Framework_Error_Deprecated
      */
+    public function testFindLocationsDeprecated()
+    {
+        $repositoryMock = $this->getRepositoryMock();
+        /** @var \eZ\Publish\SPI\Search\Handler $searchHandlerMock */
+        $searchHandlerMock = $this->getSPIMockHandler('Search\\Handler');
+        $domainMapperMock = $this->getDomainMapperMock();
+        $service = new SearchService(
+            $repositoryMock,
+            $searchHandlerMock,
+            $domainMapperMock,
+            $this->getPermissionsCriterionHandlerMock(),
+            array()
+        );
+
+        $result = $service->findLocations(new LocationQuery(), false);
+    }
 
     /**
      * Test for the findContent() method.
@@ -1024,7 +1043,7 @@ class SearchTest extends BaseServiceMockTest
                 )
             );
 
-        $result = $service->findLocations(new LocationQuery(), false);
+        $result = $service->findLocations(new LocationQuery(), array(), false);
 
         $this->assertEquals(
             new SearchResult(
