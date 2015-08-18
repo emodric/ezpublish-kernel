@@ -753,7 +753,7 @@ class SearchTest extends BaseServiceMockTest
     /**
      * Test for the findLocations() method.
      */
-    public function functionFindLocationsWithPermission()
+    public function testFindLocationsWithPermission()
     {
         $repositoryMock = $this->getRepositoryMock();
         /** @var \eZ\Publish\SPI\Search\Handler $searchHandlerMock */
@@ -801,7 +801,7 @@ class SearchTest extends BaseServiceMockTest
             ->with($criterionMock)
             ->will($this->returnValue(true));
 
-        $result = $service->findLocations($query, true);
+        $result = $service->findLocations($query, array(), true);
 
         $this->assertEquals(
             new SearchResult(
