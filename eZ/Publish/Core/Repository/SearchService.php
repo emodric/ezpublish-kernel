@@ -264,12 +264,28 @@ class SearchService implements SearchServiceInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if query is not valid
      *
      * @param \eZ\Publish\API\Repository\Values\Content\LocationQuery $query
+     * @param array $fieldFilters Configuration for specifying prioritized languages query will be performed on.
+     *        Currently supports: <code>array("languages" => array(<language1>,..), "useAlwaysAvailable" => bool)</code>
+     *                            useAlwaysAvailable defaults to true to avoid exceptions on missing translations
      * @param bool $filterOnUserPermissions if true only the objects which is the user allowed to read are returned.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
      */
-    public function findLocations(LocationQuery $query, $filterOnUserPermissions = true)
+    public function findLocations(LocationQuery $query, $fieldFilters = array(), $filterOnUserPermissions = true)
     {
+        // Check for usage of deprecated signature (without $fieldFilters parameter)
+        if (is_bool($fieldFilters)) {
+            $filterOnUserPermissions = $fieldFilters;
+            $fieldFilters = array();
+
+            trigger_error(
+                'Providing $filterOnUserPermissions as a second argument is deprecated. ' .
+                'New parameter $fieldFilters was added to the second place, by that parameter ' .
+                '$filterOnUserPermissions is pushed to the third place.',
+                E_USER_DEPRECATED
+            );
+        }
+
         $query = clone $query;
         $query->filter = $query->filter ?: new Criterion\MatchAll();
 
@@ -283,7 +299,7 @@ class SearchService implements SearchServiceInterface
             $query->limit = self::MAX_LIMIT;
         }
 
-        $result = $this->searchHandler->findLocations($query);
+        $result = $this->searchHandler->findLocations($query, $fieldFilters);
 
         foreach ($result->searchHits as $hit) {
             $hit->valueObject = $this->domainMapper->buildLocationDomainObject(

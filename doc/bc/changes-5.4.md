@@ -146,6 +146,17 @@ Changes affecting version compatibility with former or future versions.
   when deleting last version of the Content. Since Content without a version does not make sense, in
   this case `eZ\Publish\Core\Repository\ContentService::deleteContent()` should be used instead.
 
+* 5.4.5: `eZ\Publish\Core\Repository\SearchService::findLocations()` now has new parameter
+  `$fieldFilters`, which is put on the second place, pushing `$filterOnUserPermissions` to the
+  third place. Using boolean on second argument is still supported, but will generate a deprecation 
+  warning, as a E_USER_DEPRECATED message.
+
+* 5.4.5: Interfaces `eZ\Publish\SPI\Search\Content\Handler` and `eZ\Publish\SPI\Search\Content\Location\Handler`
+  are removed, merged to the existing `eZ\Publish\SPI\Search\Handler` interface. Consequently, classes
+  `eZ\Publish\Core\Search\Legacy\Content\Location\Handler` and `eZ\Publish\Core\Search\Legacy\Handler`
+  are removed, and class `eZ\Publish\Core\Search\Legacy\Content\Handler` is updated and now implements
+  `eZ\Publish\SPI\Search\Handler` interface.
+
 ## Deprecations
 
 * `imagemagick` siteaccess settings are now deprecated. It is mandatory to remove them.
