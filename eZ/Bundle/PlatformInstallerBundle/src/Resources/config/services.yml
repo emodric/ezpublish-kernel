@@ -23,5 +23,6 @@ services:
             - @cache_clearer
             - @filesystem
             - %kernel.cache_dir%
+            - %search_engine%
         tags:
             - { name: console.command }
