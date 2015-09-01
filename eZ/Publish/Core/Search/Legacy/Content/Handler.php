@@ -97,17 +97,15 @@ class Handler implements SearchHandlerInterface
     /**
      * Finds content objects for the given query.
      *
-     * @todo define structs for the field filters
-     *
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if Query criterion is not applicable to its target
      *
      * @param \eZ\Publish\API\Repository\Values\Content\Query $query
-     * @param array $fieldFilters - a map of filters for the returned fields.
+     * @param array $languageFilter - a map of filters for the returned fields.
      *        Currently supported: <code>array("languages" => array(<language1>,..))</code>.
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Search\SearchResult
      */
-    public function findContent(Query $query, array $fieldFilters = array())
+    public function findContent(Query $query, array $languageFilter = array())
     {
         $start = microtime(true);
         $query->filter = $query->filter ?: new Criterion\MatchAll();
@@ -144,14 +142,13 @@ class Handler implements SearchHandlerInterface
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if Criterion is not applicable to its target
      * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException if there is more than than one result matching the criterions
      *
-     * @todo define structs for the field filters
      * @param \eZ\Publish\API\Repository\Values\Content\Query\Criterion $filter
-     * @param array $fieldFilters - a map of filters for the returned fields.
+     * @param array $languageFilter - a map of filters for the returned fields.
      *        Currently supported: <code>array("languages" => array(<language1>,..))</code>.
      *
      * @return \eZ\Publish\SPI\Persistence\Content\ContentInfo
      */
-    public function findSingle(Criterion $filter, array $fieldFilters = array())
+    public function findSingle(Criterion $filter, array $languageFilter = array())
     {
         $searchQuery = new Query();
         $searchQuery->filter = $filter;
@@ -160,7 +157,7 @@ class Handler implements SearchHandlerInterface
         $searchQuery->limit = 2;// Because we optimize away the count query below
         $searchQuery->performCount = true;
         $searchQuery->sortClauses = null;
-        $result = $this->findContent($searchQuery, $fieldFilters);
+        $result = $this->findContent($searchQuery, $languageFilter);
 
         if (empty($result->searchHits)) {
             throw new NotFoundException('Content', 'findSingle() found no content for given $criterion');
@@ -176,7 +173,7 @@ class Handler implements SearchHandlerInterface
     /**
      * @see \eZ\Publish\SPI\Search\Content\Handler::findLocations
      */
-    public function findLocations(LocationQuery $query, array $fieldFilters = array())
+    public function findLocations(LocationQuery $query, array $languageFilter = array())
     {
         $start = microtime(true);
         $query->filter = $query->filter ?: new Criterion\MatchAll();

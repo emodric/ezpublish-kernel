@@ -151,6 +151,10 @@ Changes affecting version compatibility with former or future versions.
   third place. Using boolean on second argument is still supported, but will generate a deprecation 
   warning, as a E_USER_DEPRECATED message.
 
+* 5.4.5: $fieldFilters argument on Search service has been renamed to $languageFilter
+  Reason is to better communicate what the argument is used for. No changes
+  to it's structure is done so this is a purly cosmetic change.
+
 * 5.4.5: Interfaces `eZ\Publish\SPI\Search\Content\Handler` and `eZ\Publish\SPI\Search\Content\Location\Handler`
   are removed, merged to the existing `eZ\Publish\SPI\Search\Handler` interface. Consequently, classes
   `eZ\Publish\Core\Search\Legacy\Content\Location\Handler` and `eZ\Publish\Core\Search\Legacy\Handler`
