@@ -14,9 +14,7 @@ interface ViewBuilder
     /**
      * Tests if the builder matches the given argument.
      *
-     * Example: match against a request's controller string.
-     *
-     * @param mixed $argument
+     * @param mixed $argument Anything the builder can decide against. Example: a controller's request string.
      *
      * @return bool true if the ViewBuilder matches the argument, false otherwise.
      */
