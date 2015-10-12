@@ -27,6 +27,22 @@ parameters:
 
     assetic.asset_factory.class: eZ\Bundle\EzPublishCoreBundle\Assetic\AssetFactory
 
+    ezpublish.view.cache_response_listener.class: eZ\Bundle\EzPublishCoreBundle\EventListener\CacheViewResponseListener
+    ezpublish.view.view_parameters.injector.viewbase_layout.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\ViewbaseLayout
+    ezpublish.view.view_parameters.injector.value_objects_ids.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\ValueObjectsIds
+    ezpublish.view.view_parameters.injector.no_layout.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\NoLayout
+    ezpublish.view.view_parameters.injector.embed_object_parameters.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\EmbedObjectParameters
+    ezpublish.view.view_parameters.injector.custom_parameters.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\CustomParameters
+    ezpublish.view.view_parameters.injector.dispatcher.class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\EventDispatcherInjector
+    ezpublish.view.renderer_listener.class: eZ\Bundle\EzPublishCoreBundle\EventListener\ViewRendererListener
+    ezpublish.view.template_renderer.class: eZ\Publish\Core\MVC\Symfony\View\Renderer\TemplateRenderer
+    ezpublish.view.builder_parameter_collector.request_attributes.class: eZ\Publish\Core\MVC\Symfony\View\Builder\ParameterCollector\RequestAttributes
+    ezpublish.view_builder.block.class: eZ\Publish\Core\MVC\Symfony\View\Builder\BlockViewBuilder
+    ezpublish.view_builder.content.class: eZ\Publish\Core\MVC\Symfony\View\Builder\ContentViewBuilder
+    ezpublish.view_builder.registry.class: eZ\Publish\Core\MVC\Symfony\View\Builder\ViewBuilderRegistry
+    ezpublish.view.configurator.class: eZ\Publish\Core\MVC\Symfony\View\Configurator\ViewProvider
+    ezpublish.view_provider.registry.class: eZ\Publish\Core\MVC\Symfony\View\Provider\Registry
+
 services:
     twig.extension.intl:
         class: %twig.extension.intl.class%
@@ -165,19 +181,19 @@ services:
         class: %ezpublish.view.custom_location_controller_checker.class%
 
     ezpublish.view_provider.registry:
-        class: eZ\Publish\Core\MVC\Symfony\View\Provider\Registry
+        class: %ezpublish.view_provider.registry.class%
 
     ezpublish.view.configurator:
-        class: eZ\Publish\Core\MVC\Symfony\View\Configurator\ViewProvider
+        class: %ezpublish.view.configurator.class%
         arguments: [@ezpublish.view_provider.registry]
 
     ezpublish.view_builder.registry:
-        class: eZ\Publish\Core\MVC\Symfony\View\Builder\ViewBuilderRegistry
+        class: %ezpublish.view_builder.registry.class%
         arguments:
             - [@ezpublish.view_builder.content, @ezpublish.view_builder.block]
 
     ezpublish.view_builder.content:
-        class: eZ\Publish\Core\MVC\Symfony\View\Builder\ContentViewBuilder
+        class: %ezpublish.view_builder.content.class%
         arguments:
             - @ezpublish.api.repository
             - @security.authorization_checker
@@ -185,56 +201,56 @@ services:
             - @ezpublish.view.view_parameters.injector.dispatcher
 
     ezpublish.view_builder.block:
-        class: eZ\Publish\Core\MVC\Symfony\View\Builder\BlockViewBuilder
+        class: %ezpublish.view_builder.block.class%
         arguments: [@ezpublish.fieldType.ezpage.pageService]
 
-   ezpublish.view.builder_parameter_collector.request_attributes:
-        class: eZ\Publish\Core\MVC\Symfony\View\Builder\ParameterCollector\RequestAttributes
+    ezpublish.view.builder_parameter_collector.request_attributes:
+        class: %ezpublish.view.builder_parameter_collector.request_attributes.class%
         tags:
             - {name: kernel.event_subscriber}
 
     ezpublish.view.template_renderer:
-        class: eZ\Publish\Core\MVC\Symfony\View\Renderer\TemplateRenderer
+        class: %ezpublish.view.template_renderer.class%
         arguments: [@templating, @event_dispatcher]
 
     ezpublish.view.renderer_listener:
-        class: eZ\Bundle\EzPublishCoreBundle\EventListener\ViewRendererListener
+        class: %ezpublish.view.renderer_listener.class%
         arguments: [@ezpublish.view.template_renderer]
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.view_parameters.injector.dispatcher:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\EventDispatcherInjector
+        class: %ezpublish.view.view_parameters.injector.dispatcher.class%
         arguments: [@event_dispatcher]
 
     ezpublish.view.view_parameters.injector.custom_parameters:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\CustomParameters
+        class: %ezpublish.view.view_parameters.injector.custom_parameters.class%
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.view_parameters.injector.embed_object_parameters:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\EmbedObjectParameters
+        class: %ezpublish.view.view_parameters.injector.embed_object_parameters.class%
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.view_parameters.injector.no_layout:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\NoLayout
+        class: %ezpublish.view.view_parameters.injector.no_layout.class%
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.view_parameters.injector.value_objects_ids:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\ValueObjectsIds
+        class: %ezpublish.view.view_parameters.injector.value_objects_ids.class%
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.view_parameters.injector.viewbase_layout:
-        class: eZ\Publish\Core\MVC\Symfony\View\ParametersInjector\ViewbaseLayout
+        class: %ezpublish.view.view_parameters.injector.viewbase_layout.class%
         arguments: [%ezpublish.content_view.viewbase_layout%]
         tags:
             - { name: kernel.event_subscriber }
 
     ezpublish.view.cache_response_listener:
-        class: eZ\Bundle\EzPublishCoreBundle\EventListener\CacheViewResponseListener
+        class: %ezpublish.view.cache_response_listener.class%
         arguments:
             - $content.view_cache$
             - $content.ttl_cache$
