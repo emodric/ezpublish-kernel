@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File containing the Section Id matcher class.
+ * File containing the Remote matcher class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -14,9 +14,10 @@ use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued;
 use eZ\Publish\API\Repository\Values\Content\Location as APILocation;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\View\ContentView;
+use eZ\Publish\Core\MVC\Symfony\View\LocationValueView;
 use eZ\Publish\Core\MVC\Symfony\View\View;
 
-class Section extends MultipleValued
+class LocationRemote extends MultipleValued
 {
     /**
      * Checks if a Location object matches.
@@ -27,7 +28,6 @@ class Section extends MultipleValued
      */
     public function matchLocation(APILocation $location)
     {
-        return isset($this->values[$location->getContentInfo()->sectionId]);
     }
 
     /**
@@ -39,15 +39,14 @@ class Section extends MultipleValued
      */
     public function matchContentInfo(ContentInfo $contentInfo)
     {
-        return isset($this->values[$contentInfo->sectionId]);
     }
 
     public function match(View $view)
     {
-        if (!$view instanceof ContentView) {
+        if (!$view instanceof LocationValueView) {
             return false;
         }
 
-        return isset($this->values[$view->getContent()->contentInfo->sectionId]);
+        return isset($this->values[$view->getLocation()->remoteId]);
     }
 }
