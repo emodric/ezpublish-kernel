@@ -4,7 +4,6 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\View;
 
-
 /**
  * A view that can embedded into another element.
  */
