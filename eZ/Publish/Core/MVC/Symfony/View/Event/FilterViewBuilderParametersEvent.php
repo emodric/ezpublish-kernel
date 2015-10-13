@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * An event that collects the parameters the ViewBuilder will be provided to build View objects.
- *
- * @todo could also be a FilterViewBuilderParametersEvent (to be consistent with FilterResponseEvent for ex.)
  */
 class FilterViewBuilderParametersEvent extends Event
 {
