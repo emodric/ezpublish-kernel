@@ -22,7 +22,7 @@ interface ViewMatcherInterface
     public function setMatchingConfig($matchingConfig);
 
     /**
-     * Matches the $view against a set of matchers
+     * Matches the $view against a set of matchers.
      *
      * @param \eZ\Publish\Core\MVC\Symfony\View\View $view
      *
