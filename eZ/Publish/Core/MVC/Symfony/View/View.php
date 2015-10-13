@@ -13,6 +13,9 @@ namespace eZ\Publish\Core\MVC\Symfony\View;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
+/**
+ * Main interface for Views of Value objects (content, block...).
+ */
 interface View
 {
     /**
@@ -20,6 +23,14 @@ interface View
      * Can be either a valid template identifier such as "MyBundle:subfolder:my_template.html.twig" or a closure.
      * In the case of a closure, it will receive an array of parameters as an argument and must return the result to display.
      *
+     * The prototype of the closure must be :
+     * <code>
+     * function (array $params = [])
+     * {
+     *     // Do something to render
+     *     // Must return a string to display
+     * }
+     * </code>
      * Must throw a \eZ\Publish\Core\Base\Exceptions\InvalidArgumentType exception if $templateIdentifier is invalid.
      *
      * @param string|\Closure $templateIdentifier

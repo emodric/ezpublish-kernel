@@ -8,33 +8,6 @@ use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 
-/**
- * Main object to be rendered by the View Manager when viewing a value object (content, block...).
- * Holds the path to the template to be rendered by the view manager and the parameters to inject in it.
- *
- * The template path can be a closure. In that case, the view manager will invoke it instead of loading a template.
- * $parameters will be passed to the callable in addition to the Content or Location object (depending on the context).
- * The prototype of the closure must be :
- * <code>
- * namespace Foo;
- * use eZ\Publish\API\Repository\Values\Content\ContentInfo;
- * use eZ\Publish\API\Repository\Values\Content\Location;
- *
- * // For a content
- * function ( ContentInfo $contentInfo, array $parameters = array() )
- * {
- *     // Do something to render
- *     // Must return a string to display
- * }
- *
- * // For a location
- * function ( Location $location, array $parameters = array() )
- * {
- *     // Do something to render
- *     // Must return a string to display
- * }
- * </code>
- */
 abstract class BaseView implements View
 {
     /**
