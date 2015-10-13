@@ -4,7 +4,6 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
-use eZ\Publish\Core\MVC\Symfony\Matcher\Block\MatcherInterface;
 use eZ\Publish\Core\MVC\Symfony\View\View;
 
 /**
@@ -14,6 +13,10 @@ interface ViewMatcherInterface extends MatcherInterface
 {
     /**
      * Matches the $view against a set of matchers
+     *
+     * @param \eZ\Publish\Core\MVC\Symfony\View\View $view
+     *
+     * @return bool
      */
     public function match(View $view);
 }

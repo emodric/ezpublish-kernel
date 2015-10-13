@@ -10,14 +10,13 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased;
 
-use eZ\Publish\Core\MVC\Symfony\Matcher\ViewMatcherInterface as BaseMatcherInterface;
 use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 
 /**
  * Main interface for content/location matchers.
  */
-interface ViewMatcherInterface extends BaseMatcherInterface
+interface ViewMatcherInterface extends MatcherInterface
 {
     /**
      * Checks if a Location object matches.
