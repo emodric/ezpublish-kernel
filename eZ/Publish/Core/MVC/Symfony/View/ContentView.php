@@ -45,7 +45,7 @@ class ContentView extends BaseView implements View, ContentValueView, LocationVa
     /** @var \eZ\Publish\API\Repository\Values\Content\Content */
     private $content;
 
-    /** @var \eZ\Publish\API\Repository\Values\Content\Location */
+    /** @var \eZ\Publish\API\Repository\Values\Content\Location|null */
     private $location;
 
     /** @var bool */
