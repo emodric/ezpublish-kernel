@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @todo could also be a FilterViewBuilderParametersEvent (to be consistent with FilterResponseEvent for ex.)
  */
-class ViewBuilderParametersFilterEvent extends Event
+class FilterViewBuilderParametersEvent extends Event
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Request

@@ -4,7 +4,7 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\View\Builder\ParametersFilter;
 
-use eZ\Publish\Core\MVC\Symfony\View\Event\ViewBuilderParametersFilterEvent;
+use eZ\Publish\Core\MVC\Symfony\View\Event\FilterViewBuilderParametersEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use eZ\Publish\Core\MVC\Symfony\View\Events as ViewEvents;
 
@@ -22,9 +22,9 @@ class RequestAttributes implements EventSubscriberInterface
      * Adds all the request attributes to the parameters.
 
 *
-*@param \eZ\Publish\Core\MVC\Symfony\View\Event\ViewBuilderParametersFilterEvent $e
+*@param \eZ\Publish\Core\MVC\Symfony\View\Event\FilterViewBuilderParametersEvent $e
      */
-    public function addRequestAttributes(ViewBuilderParametersFilterEvent $e)
+    public function addRequestAttributes(FilterViewBuilderParametersEvent $e)
     {
         $parameterBag = $e->getParameters();
         $parameterBag->add($e->getRequest()->attributes->all());
