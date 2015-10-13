@@ -72,7 +72,7 @@ abstract class AbstractMatcherFactory implements MatcherFactoryInterface
      *
      * @throws InvalidArgumentException
      *
-     * @return \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface
+     * @return \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface|\eZ\Publish\Core\MVC\Symfony\Matcher\ViewMatcherInterface
      */
     protected function getMatcher($matcherIdentifier)
     {
@@ -147,7 +147,7 @@ abstract class AbstractMatcherFactory implements MatcherFactoryInterface
      * Checks if $valueObject matches $matcher rules.
      *
      * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface $matcher
-     * @param ValueObject $valueObject
+     * @param \eZ\Publish\Core\MVC\Symfony\View\View $valueObject
      *
      * @return bool
      */

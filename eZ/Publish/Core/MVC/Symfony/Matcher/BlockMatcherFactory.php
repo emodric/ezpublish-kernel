@@ -35,7 +35,7 @@ class BlockMatcherFactory extends AbstractMatcherFactory
     /**
      * Checks if $valueObject matches $matcher rules.
      *
-     * @param \eZ\Publish\Core\MVC\Symfony\Matcher\Block\MatcherInterface|\eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface $matcher
+     * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface $matcher
      * @param ValueObject $valueObject
      *
      * @throws InvalidArgumentException
