@@ -27,7 +27,7 @@ class ParentContentType extends MultipleValued
      *
      * @return bool
      */
-    public function matchLocation(APILocation $location)
+    protected function matchLocation(APILocation $location)
     {
         $parentContentType = $this->repository->sudo(
             function (Repository $repository) use ($location) {
@@ -42,24 +42,6 @@ class ParentContentType extends MultipleValued
         return isset($this->values[$parentContentType->identifier]);
     }
 
-    /**
-     * Checks if a ContentInfo object matches.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
-     *
-     * @return bool
-     */
-    public function matchContentInfo(ContentInfo $contentInfo)
-    {
-        $location = $this->repository->sudo(
-            function (Repository $repository) use ($contentInfo) {
-                return $repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
-            }
-        );
-
-        return $this->matchLocation($location);
-    }
-
     public function match(View $view)
     {
         if ($view instanceof LocationValueView) {
@@ -67,7 +49,14 @@ class ParentContentType extends MultipleValued
         }
 
         if ($view instanceof ContentValueView) {
-            return $this->matchContentInfo($view->getContent()->contentInfo);
+            $contentInfo = $view->getContent()->contentInfo;
+            $location = $this->repository->sudo(
+                function (Repository $repository) use ($contentInfo) {
+                    return $repository->getLocationService()->loadLocation($contentInfo->mainLocationId);
+                }
+            );
+
+            return $this->matchLocation($location);
         }
 
         return false;

@@ -37,32 +37,6 @@ class BlockMatcherFactoryTest extends AbstractMatcherFactoryTest
     }
 
     /**
-     * @expectedException InvalidArgumentException
-     *
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::__construct
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::match
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::getMatcher
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\BlockMatcherFactory::getMatcher
-     */
-    public function testMatchNonContentBasedMatcher()
-    {
-        $matcherFactory = new $this->matcherFactoryClass(
-            $this->getRepositoryMock(),
-            array(
-                'full' => array(
-                    'test' => array(
-                        'template' => 'foo.html.twig',
-                        'match' => array(
-                            '\\eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\ContentBased\\Id\\Location' => true,
-                        ),
-                    ),
-                ),
-            )
-        );
-        $matcherFactory->match($this->getMatchableValueObject(), 'full');
-    }
-
-    /**
      * Returns the matcher class to use in test configuration.
      * Must be relative to the matcher's ::MATCHER_RELATIVE_NAMESPACE constant.
      * i.e.: Id\\Location.

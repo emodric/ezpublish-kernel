@@ -10,6 +10,7 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Block;
 
+use eZ\Publish\Core\MVC\Symfony\Matcher\ViewMatcherInterface;
 use eZ\Publish\Core\MVC\RepositoryAware;
 
 /**

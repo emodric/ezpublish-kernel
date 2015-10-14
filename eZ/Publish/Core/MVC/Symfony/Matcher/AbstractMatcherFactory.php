@@ -88,7 +88,15 @@ abstract class AbstractMatcherFactory implements MatcherFactoryInterface
         if (!class_exists($matcherIdentifier)) {
             throw new InvalidArgumentException("Invalid matcher class '$matcherIdentifier'");
         }
-        $this->matchers[$matcherIdentifier] = new $matcherIdentifier();
+
+        $matcher = new $matcherIdentifier();
+        if (!$matcher instanceof ViewMatcherInterface) {
+            throw new InvalidArgumentException(
+                'Matchers must implement eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\ViewMatcherInterface.'
+            );
+        }
+
+        $this->matchers[$matcherIdentifier] = $matcher;
 
         if ($this->matchers[$matcherIdentifier] instanceof RepositoryAwareInterface) {
             $this->matchers[$matcherIdentifier]->setRepository($this->repository);
@@ -141,14 +149,4 @@ abstract class AbstractMatcherFactory implements MatcherFactoryInterface
 
         return $this->alreadyMatched[$viewType][$view] = null;
     }
-
-    /**
-     * Checks if $valueObject matches $matcher rules.
-     *
-     * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface $matcher
-     * @param \eZ\Publish\Core\MVC\Symfony\View\View $valueObject
-     *
-     * @return bool
-     */
-    abstract protected function doMatch(MatcherInterface $matcher, View $valueObject);
 }

@@ -103,8 +103,8 @@ class UrlAliasTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::matchLocation
+     * @dataProvider matchLocationValueViewProvider
+     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::match
      * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::setMatchingConfig
      * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
      *
@@ -112,17 +112,17 @@ class UrlAliasTest extends BaseTest
      * @param \eZ\Publish\API\Repository\Repository $repository
      * @param bool $expectedResult
      */
-    public function testMatchLocation($matchingConfig, Repository $repository, $expectedResult)
+    public function testMatchLocationValueView($matchingConfig, Repository $repository, $expectedResult)
     {
         $this->matcher->setRepository($repository);
         $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchLocation($this->getLocationMock())
+            $this->matcher->match($this->getLocationValueViewMock($this->getLocationMock()))
         );
     }
 
-    public function matchLocationProvider()
+    public function matchLocationValueViewProvider()
     {
         return array(
             array(
@@ -154,13 +154,15 @@ class UrlAliasTest extends BaseTest
     }
 
     /**
-     * @expectedException \RuntimeException
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::matchContentInfo
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\UrlAlias::setMatchingConfig
      */
-    public function testMatchContentInfo()
+    public function testMatchContentValueView()
     {
         $this->matcher->setMatchingConfig('foo/bar');
-        $this->matcher->matchContentInfo($this->getContentInfoMock());
+        $this->assertSame(
+            false,
+            $this->matcher->match($this->getContentValueViewMock($this->getContentMock($this->getContentInfoMock())))
+        );
     }
 }

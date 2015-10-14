@@ -10,31 +10,34 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests;
 
-abstract class ContentBasedMatcherFactoryTest extends AbstractMatcherFactoryTest
+class ContentBasedMatcherFactoryTest extends AbstractMatcherFactoryTest
 {
+    protected $matcherFactoryClass = 'eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\ContentBasedMatcherFactory';
+
     /**
-     * @expectedException InvalidArgumentException
+     * Returns a valid ValueObject (supported by current MatcherFactory), that will match the test rules.
+     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory.
      *
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::__construct
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::match
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\AbstractMatcherFactory::getMatcher
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBasedMatcherFactory::getMatcher
+     * @return \eZ\Publish\API\Repository\Values\ValueObject
      */
-    public function testMatchNonContentBasedMatcher()
+    protected function getMatchableValueObject()
     {
-        $matcherFactory = new $this->matcherFactoryClass(
-            $this->getRepositoryMock(),
-            array(
-                'full' => array(
-                    'test' => array(
-                        'template' => 'foo.html.twig',
-                        'match' => array(
-                            '\\eZ\Publish\Core\MVC\Symfony\Matcher\Block\\Type' => true,
-                        ),
-                    ),
-                ),
-            )
-        );
-        $matcherFactory->match($this->getMatchableValueObject(), 'full');
+        return $this->getContentView(array('id' => 456));
+    }
+
+    /**
+     * Returns a valid ValueObject (supported by current MatcherFactory), that won't match the test rules.
+     * i.e. Should return eZ\Publish\API\Repository\Values\Content\Location for LocationMatcherFactory.
+     *
+     * @return \eZ\Publish\API\Repository\Values\ValueObject
+     */
+    protected function getNonMatchableValueObject()
+    {
+        return $this->getContentView(array('id' => 123456789));
+    }
+
+    protected function getMatcherClass()
+    {
+        return 'Id\\Content';
     }
 }

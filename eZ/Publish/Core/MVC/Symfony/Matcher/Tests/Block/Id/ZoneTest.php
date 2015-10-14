@@ -12,12 +12,12 @@ namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\Block\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\Block\Id\Zone as ZoneIdMatcher;
 use eZ\Publish\Core\FieldType\Page\Parts\Block;
-use PHPUnit_Framework_TestCase;
+use eZ\Publish\Core\MVC\Symfony\Matcher\Tests\Block\BaseTest;
 
-class ZoneTest extends PHPUnit_Framework_TestCase
+class ZoneTest extends BaseTest
 {
     /**
-     * @var \eZ\Publish\Core\MVC\Symfony\Matcher\Block\MatcherInterface
+     * @var \eZ\Publish\Core\MVC\Symfony\Matcher\ViewMatcherInterface
      */
     private $matcher;
 
@@ -37,7 +37,7 @@ class ZoneTest extends PHPUnit_Framework_TestCase
     public function testMatchBlock($matchingConfig, Block $block, $expectedResult)
     {
         $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchBlock($block));
+        $this->assertSame($expectedResult, $this->matcher->match($this->getBlockViewMock($block)));
     }
 
     public function matchBlockProvider()

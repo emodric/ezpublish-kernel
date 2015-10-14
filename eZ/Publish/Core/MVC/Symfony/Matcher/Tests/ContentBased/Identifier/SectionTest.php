@@ -64,36 +64,7 @@ class SectionTest extends BaseTest
         return $repository;
     }
 
-    /**
-     * @dataProvider matchSectionProvider
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\Section::matchLocation
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
-     * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
-     *
-     * @param string|string[] $matchingConfig
-     * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param bool $expectedResult
-     */
-    public function testMatchLocation($matchingConfig, Repository $repository, $expectedResult)
-    {
-        $this->matcher->setRepository($repository);
-        $this->matcher->setMatchingConfig($matchingConfig);
-        $location = $this->getLocationMock();
-        $location
-            ->expects($this->once())
-            ->method('getContentInfo')
-            ->will(
-                $this->returnValue(
-                    $this->getContentInfoMock()
-                )
-            );
-        $this->assertSame(
-            $expectedResult,
-            $this->matcher->matchLocation($location)
-        );
-    }
-
-    public function matchSectionProvider()
+    public function matchContentViewProvider()
     {
         return array(
             array(
@@ -120,8 +91,8 @@ class SectionTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchSectionProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\Section::matchContentInfo
+     * @dataProvider matchContentValueViewProvider
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\Section::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
      *
@@ -129,13 +100,14 @@ class SectionTest extends BaseTest
      * @param \eZ\Publish\API\Repository\Repository $repository
      * @param bool $expectedResult
      */
-    public function testMatchContentInfo($matchingConfig, Repository $repository, $expectedResult)
+    public function testMatchContentView($matchingConfig, Repository $repository, $expectedResult)
     {
         $this->matcher->setRepository($repository);
         $this->matcher->setMatchingConfig($matchingConfig);
+
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo($this->getContentInfoMock())
+            $this->matcher->match($this->getContentViewMock($this->getContentMock($this->getContentInfoMock())))
         );
     }
 }

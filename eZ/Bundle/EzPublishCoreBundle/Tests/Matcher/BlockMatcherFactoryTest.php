@@ -16,37 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BlockMatcherFactoryTest extends BaseMatcherFactoryTest
 {
-    public function testGetMatcherForLocation()
-    {
-        $matcherServiceIdentifier = 'my.matcher.service';
-        $resolverMock = $this->getResolverMock($matcherServiceIdentifier);
-        $container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('has')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array($matcherServiceIdentifier, true),
-                    )
-                )
-            );
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('get')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array($matcherServiceIdentifier, ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $this->getMock('eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\Block\\MatcherInterface')),
-                    )
-                )
-            );
-
-        $matcherFactory = new BlockMatcherFactory($resolverMock, $this->getMock('eZ\\Publish\\API\\Repository\\Repository'));
-        $matcherFactory->setContainer($container);
-        $matcherFactory->match($this->getBlockMock());
-    }
-
     public function testSetSiteAccessNull()
     {
         $matcherServiceIdentifier = 'my.matcher.service';

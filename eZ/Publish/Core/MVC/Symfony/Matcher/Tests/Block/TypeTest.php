@@ -12,12 +12,11 @@ namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\Block;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\Block\Type as BlockTypeMatcher;
 use eZ\Publish\Core\FieldType\Page\Parts\Block;
-use PHPUnit_Framework_TestCase;
 
-class TypeTest extends PHPUnit_Framework_TestCase
+class TypeTest extends BaseTest
 {
     /**
-     * @var \eZ\Publish\Core\MVC\Symfony\Matcher\Block\MatcherInterface
+     * @var \eZ\Publish\Core\MVC\Symfony\Matcher\ViewMatcherInterface
      */
     private $matcher;
 
@@ -37,7 +36,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
     public function testMatchBlock($matchingConfig, Block $block, $expectedResult)
     {
         $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchBlock($block));
+        $this->assertSame($expectedResult, $this->matcher->match($this->getBlockViewMock($block)));
     }
 
     public function matchBlockProvider()

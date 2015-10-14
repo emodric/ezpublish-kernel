@@ -11,7 +11,6 @@
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\Matcher\Id;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Remote as RemoteIdMatcher;
-use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\BaseTest;
 
@@ -29,62 +28,21 @@ class RemoteTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Remote::matchLocation
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
-     *
-     * @param string|string[] $matchingConfig
-     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
-     * @param bool $expectedResult
-     */
-    public function testMatchLocation($matchingConfig, Location $location, $expectedResult)
-    {
-        $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchLocation($location));
-    }
-
-    public function matchLocationProvider()
-    {
-        return array(
-            array(
-                'foo',
-                $this->getLocationMock(array('remoteId' => 'foo')),
-                true,
-            ),
-            array(
-                'foo',
-                $this->getLocationMock(array('remoteId' => 'bar')),
-                false,
-            ),
-            array(
-                array('foo', 'baz'),
-                $this->getLocationMock(array('remoteId' => 'bar')),
-                false,
-            ),
-            array(
-                array('foo', 'baz'),
-                $this->getLocationMock(array('remoteId' => 'baz')),
-                true,
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider matchContentInfoProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Remote::matchContentInfo
+     * @dataProvider matchContentViewProvider
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Remote::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      *
      * @param string|string[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param bool $expectedResult
      */
-    public function testMatchContentInfo($matchingConfig, ContentInfo $contentInfo, $expectedResult)
+    public function testMatchContentView($matchingConfig, ContentInfo $contentInfo, $expectedResult)
     {
         $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchContentInfo($contentInfo));
+        $this->assertSame($expectedResult, $this->matcher->match($this->getContentViewMock($this->getContentMock($contentInfo))));
     }
 
-    public function matchContentInfoProvider()
+    public function matchContentViewProvider()
     {
         return array(
             array(

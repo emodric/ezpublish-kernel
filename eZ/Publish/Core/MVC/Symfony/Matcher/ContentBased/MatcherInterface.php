@@ -16,6 +16,8 @@ use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 
 /**
  * Main interface for content/location matchers.
+ *
+ * @deprecated since 6.0.0. ViewMatcherInterface should be used instead.
  */
 interface MatcherInterface extends BaseMatcherInterface
 {

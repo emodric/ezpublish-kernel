@@ -12,53 +12,11 @@ namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier;
 
 use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued;
 use eZ\Publish\API\Repository\Repository;
-use eZ\Publish\API\Repository\Values\Content\Location;
-use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\View\ContentView;
 use eZ\Publish\Core\MVC\Symfony\View\View;
 
 class Section extends MultipleValued
 {
-    /**
-     * Checks if a Location object matches.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
-     *
-     * @return bool
-     */
-    public function matchLocation(Location $location)
-    {
-        $section = $this->repository->sudo(
-            function (Repository $repository) use ($location) {
-                return $repository->getSectionService()->loadSection(
-                    $location->getContentInfo()->sectionId
-                );
-            }
-        );
-
-        return isset($this->values[$section->identifier]);
-    }
-
-    /**
-     * Checks if a ContentInfo object matches.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
-     *
-     * @return bool
-     */
-    public function matchContentInfo(ContentInfo $contentInfo)
-    {
-        $section = $this->repository->sudo(
-            function (Repository $repository) use ($contentInfo) {
-                return $repository->getSectionService()->loadSection(
-                    $contentInfo->sectionId
-                );
-            }
-        );
-
-        return isset($this->values[$section->identifier]);
-    }
-
     public function match(View $view)
     {
         if (!$view instanceof ContentView) {

@@ -28,78 +28,19 @@ class ContentTypeGroupTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\ContentTypeGroup::matchLocation
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\ContentTypeGroup::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
-     *
-     * @param int|int[] $matchingConfig
-     * @param \eZ\Publish\API\Repository\Repository $repository
-     * @param bool $expectedResult
      */
-    public function testMatchLocation($matchingConfig, Repository $repository, $expectedResult)
+    public function testMatchLocationValueView()
     {
-        $this->matcher->setRepository($repository);
-        $this->matcher->setMatchingConfig($matchingConfig);
-
         $this->assertSame(
-            $expectedResult,
-            $this->matcher->matchLocation($this->generateLocationMock())
-        );
-    }
-
-    public function matchLocationProvider()
-    {
-        $data = array();
-
-        $data[] = array(
-            123,
-            $this->generateRepositoryMockForContentTypeGroupId(123),
-            true,
-        );
-
-        $data[] = array(
-            123,
-            $this->generateRepositoryMockForContentTypeGroupId(456),
             false,
+            $this->matcher->match($this->getLocationValueViewMock($this->getLocationMock()))
         );
-
-        $data[] = array(
-            array(123, 789),
-            $this->generateRepositoryMockForContentTypeGroupId(456),
-            false,
-        );
-
-        $data[] = array(
-            array(123, 789),
-            $this->generateRepositoryMockForContentTypeGroupId(789),
-            true,
-        );
-
-        return $data;
     }
 
     /**
-     * Generates a Location mock.
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function generateLocationMock()
-    {
-        $location = $this->getLocationMock();
-        $location
-            ->expects($this->any())
-            ->method('getContentInfo')
-            ->will(
-                $this->returnValue(
-                    $this->getContentInfoMock(array('contentTypeId' => 42))
-                )
-            );
-
-        return $location;
-    }
-
-    /**
-     * @dataProvider matchContentInfoProvider
+     * @dataProvider matchContentValueViewProvider
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\ContentTypeGroup::matchContentInfo
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      *
@@ -107,18 +48,20 @@ class ContentTypeGroupTest extends BaseTest
      * @param \eZ\Publish\API\Repository\Repository $repository
      * @param bool $expectedResult
      */
-    public function testMatchContentInfo($matchingConfig, Repository $repository, $expectedResult)
+    public function testMatchContentValueView($matchingConfig, Repository $repository, $expectedResult)
     {
         $this->matcher->setRepository($repository);
         $this->matcher->setMatchingConfig($matchingConfig);
 
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo($this->getContentInfoMock(array('contentTypeId' => 42)))
+            $this->matcher->match(
+                $this->getContentValueViewMock($this->getContentMock($this->getContentInfoMock(array('contentTypeId' => 42))))
+            )
         );
     }
 
-    public function matchContentInfoProvider()
+    public function matchContentValueViewProvider()
     {
         $data = array();
 

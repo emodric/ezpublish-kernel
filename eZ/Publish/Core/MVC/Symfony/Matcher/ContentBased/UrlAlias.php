@@ -10,53 +10,11 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased;
 
-use eZ\Publish\API\Repository\Values\Content\Location;
-use eZ\Publish\API\Repository\Values\Content\ContentInfo;
 use eZ\Publish\Core\MVC\Symfony\View\LocationValueView;
 use eZ\Publish\Core\MVC\Symfony\View\View;
 
 class UrlAlias extends MultipleValued
 {
-    /**
-     * Checks if a Location object matches.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
-     *
-     * @return bool
-     */
-    public function matchLocation(Location $location)
-    {
-        $urlAliasService = $this->repository->getURLAliasService();
-        $locationUrls = array_merge(
-            $urlAliasService->listLocationAliases($location),
-            $urlAliasService->listLocationAliases($location, false)
-        );
-
-        foreach ($this->values as $pattern => $val) {
-            foreach ($locationUrls as $urlAlias) {
-                if (strpos($urlAlias->path, "/$pattern") === 0) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Not supported since UrlAlias is meaningful for location objects only.
-     *
-     * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
-     *
-     * @throws \RuntimeException
-     *
-     * @return bool
-     */
-    public function matchContentInfo(ContentInfo $contentInfo)
-    {
-        throw new \RuntimeException('matchContentInfo() is not supported by UrlAlias matcher');
-    }
-
     public function setMatchingConfig($matchingConfig)
     {
         if (!is_array($matchingConfig)) {
@@ -79,6 +37,21 @@ class UrlAlias extends MultipleValued
             return false;
         }
 
-        return $this->matchLocation($view->getLocation());
+        $location = $view->getLocation();
+        $urlAliasService = $this->repository->getURLAliasService();
+        $locationUrls = array_merge(
+            $urlAliasService->listLocationAliases($location),
+            $urlAliasService->listLocationAliases($location, false)
+        );
+
+        foreach ($this->values as $pattern => $val) {
+            foreach ($locationUrls as $urlAlias) {
+                if (strpos($urlAlias->path, "/$pattern") === 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

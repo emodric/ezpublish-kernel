@@ -10,65 +10,12 @@
  */
 namespace eZ\Bundle\EzPublishCoreBundle\Matcher;
 
-use eZ\Publish\API\Repository\Repository;
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
-use eZ\Publish\Core\MVC\Symfony\Matcher\LocationMatcherFactory as BaseMatcherFactory;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess\SiteAccessAware;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LocationMatcherFactory extends BaseMatcherFactory implements SiteAccessAware, ContainerAwareInterface
+class LocationMatcherFactory extends ContentBasedMatcherFactory implements SiteAccessAware, ContainerAwareInterface
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var \eZ\Publish\Core\MVC\ConfigResolverInterface;
-     */
-    private $configResolver;
-
-    public function __construct(ConfigResolverInterface $configResolver, Repository $repository)
-    {
-        $this->configResolver = $configResolver;
-        parent::__construct(
-            $repository,
-            $this->configResolver->getParameter('location_view')
-        );
-    }
-
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @param string $matcherIdentifier
-     *
-     * @return \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MatcherInterface
-     */
-    protected function getMatcher($matcherIdentifier)
-    {
-        if ($this->container->has($matcherIdentifier)) {
-            return $this->container->get($matcherIdentifier);
-        }
-
-        return parent::getMatcher($matcherIdentifier);
-    }
-
-    /**
-     * Changes internal configuration to use the one for passed SiteAccess.
-     *
-     * @param SiteAccess $siteAccess
-     */
-    public function setSiteAccess(SiteAccess $siteAccess = null)
-    {
-        if ($siteAccess === null) {
-            return;
-        }
-
-        $this->matchConfig = $this->configResolver->getParameter('location_view', 'ezsettings', $siteAccess->name);
-    }
+    const CONFIG_NAME = 'location_view';
 }

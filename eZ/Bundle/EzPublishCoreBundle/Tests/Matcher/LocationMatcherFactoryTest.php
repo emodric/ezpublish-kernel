@@ -16,40 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LocationMatcherFactoryTest extends BaseMatcherFactoryTest
 {
-    public function testGetMatcherForLocation()
-    {
-        $matcherServiceIdentifier = 'my.matcher.service';
-        $resolverMock = $this->getResolverMock($matcherServiceIdentifier);
-        $container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('has')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array($matcherServiceIdentifier, true),
-                    )
-                )
-            );
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('get')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array(
-                            $matcherServiceIdentifier,
-                            ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
-                            $this->getMock('eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\ViewMatcherInterface')),
-                    )
-                )
-            );
-
-        $matcherFactory = new LocationMatcherFactory($resolverMock, $this->getMock('eZ\\Publish\\API\\Repository\\Repository'));
-        $matcherFactory->setContainer($container);
-        $matcherFactory->match($this->getLocationMock(), 'full');
-    }
-
     public function testSetSiteAccessNull()
     {
         $matcherServiceIdentifier = 'my.matcher.service';

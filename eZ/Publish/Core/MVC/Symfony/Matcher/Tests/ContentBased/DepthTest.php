@@ -10,8 +10,8 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\Matcher;
 
-use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth as DepthMatcher;
 use eZ\Publish\API\Repository\Values\Content\Location;
+use eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth as DepthMatcher;
 use eZ\Publish\Core\MVC\Symfony\Matcher\Tests\ContentBased\BaseTest;
 use eZ\Publish\API\Repository\Repository;
 
@@ -29,21 +29,21 @@ class DepthTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth::matchLocation
+     * @dataProvider matchLocationValueViewProvider
+     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth::match
      * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Values\Content\Location $location
      * @param bool $expectedResult
      */
-    public function testMatchLocation($matchingConfig, Location $location, $expectedResult)
+    public function testMatchLocationValueView($matchingConfig, Location $location, $expectedResult)
     {
         $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchLocation($location));
+        $this->assertSame($expectedResult, $this->matcher->match($this->getLocationValueViewMock($location)));
     }
 
-    public function matchLocationProvider()
+    public function matchLocationValueViewProvider()
     {
         return array(
             array(
@@ -80,8 +80,8 @@ class DepthTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchContentInfoProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth::matchContentInfo
+     * @dataProvider matchContentValueViewProvider
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Depth::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
      *
@@ -89,17 +89,19 @@ class DepthTest extends BaseTest
      * @param \eZ\Publish\API\Repository\Repository $repository
      * @param bool $expectedResult
      */
-    public function testMatchContentInfo($matchingConfig, Repository $repository, $expectedResult)
+    public function testMatchContentValueView($matchingConfig, Repository $repository, $expectedResult)
     {
         $this->matcher->setRepository($repository);
         $this->matcher->setMatchingConfig($matchingConfig);
+
+        $contentMock = $this->getContentMock($this->getContentInfoMock(array('mainLocationId' => 42)));
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo($this->getContentInfoMock(array('mainLocationId' => 42)))
+            $this->matcher->match($this->getContentValueViewMock($contentMock))
         );
     }
 
-    public function matchContentInfoProvider()
+    public function matchContentValueViewProvider()
     {
         return array(
             array(

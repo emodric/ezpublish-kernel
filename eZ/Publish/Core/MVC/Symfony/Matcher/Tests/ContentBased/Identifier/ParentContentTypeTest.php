@@ -94,8 +94,8 @@ class ParentContentTypeTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\ParentContentType::matchLocation
+     * @dataProvider matchLocationValueViewProvider
+     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\ParentContentType::match
      * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
      *
@@ -109,11 +109,11 @@ class ParentContentTypeTest extends BaseTest
         $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchLocation($this->getLocationMock())
+            $this->matcher->match($this->getLocationValueViewMock($this->getLocationMock()))
         );
     }
 
-    public function matchLocationProvider()
+    public function matchLocationValueViewProvider()
     {
         return array(
             array(
@@ -140,8 +140,8 @@ class ParentContentTypeTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\ParentContentType::matchContentInfo
+     * @dataProvider matchLocationValueViewProvider
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Identifier\ParentContentType::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      * @covers \eZ\Publish\Core\MVC\RepositoryAware::setRepository
      *
@@ -155,7 +155,7 @@ class ParentContentTypeTest extends BaseTest
         $this->matcher->setMatchingConfig($matchingConfig);
         $this->assertSame(
             $expectedResult,
-            $this->matcher->matchContentInfo($this->getContentInfoMock())
+            $this->matcher->match($this->getContentValueViewMock($this->getContentMock($this->getContentInfoMock())))
         );
     }
 }

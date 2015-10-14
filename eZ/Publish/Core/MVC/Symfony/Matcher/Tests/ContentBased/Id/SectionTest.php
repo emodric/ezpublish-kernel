@@ -29,84 +29,21 @@ class SectionTest extends BaseTest
     }
 
     /**
-     * @dataProvider matchLocationProvider
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Section::matchLocation
-     * @covers \eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
-     *
-     * @param int|int[] $matchingConfig
-     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
-     * @param bool $expectedResult
-     */
-    public function testMatchLocation($matchingConfig, Location $location, $expectedResult)
-    {
-        $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchLocation($location));
-    }
-
-    public function matchLocationProvider()
-    {
-        return array(
-            array(
-                123,
-                $this->generateLocationForSectionId(123),
-                true,
-            ),
-            array(
-                123,
-                $this->generateLocationForSectionId(456),
-                false,
-            ),
-            array(
-                array(123, 789),
-                $this->generateLocationForSectionId(456),
-                false,
-            ),
-            array(
-                array(123, 789),
-                $this->generateLocationForSectionId(789),
-                true,
-            ),
-        );
-    }
-
-    /**
-     * Generates a Location mock in respect of a given content Id.
-     *
-     * @param int $sectionId
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function generateLocationForSectionId($sectionId)
-    {
-        $location = $this->getLocationMock();
-        $location
-            ->expects($this->any())
-            ->method('getContentInfo')
-            ->will(
-                $this->returnValue(
-                    $this->getContentInfoMock(array('sectionId' => $sectionId))
-                )
-            );
-
-        return $location;
-    }
-
-    /**
-     * @dataProvider matchContentInfoProvider
-     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Section::matchContentInfo
+     * @dataProvider matchContentViewProvider
+     * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\Id\Section::match
      * @covers eZ\Publish\Core\MVC\Symfony\Matcher\ContentBased\MultipleValued::setMatchingConfig
      *
      * @param int|int[] $matchingConfig
      * @param \eZ\Publish\API\Repository\Values\Content\ContentInfo $contentInfo
      * @param bool $expectedResult
      */
-    public function testMatchContentInfo($matchingConfig, ContentInfo $contentInfo, $expectedResult)
+    public function testMatchContentView($matchingConfig, ContentInfo $contentInfo, $expectedResult)
     {
         $this->matcher->setMatchingConfig($matchingConfig);
-        $this->assertSame($expectedResult, $this->matcher->matchContentInfo($contentInfo));
+        $this->assertSame($expectedResult, $this->matcher->match($this->getContentViewMock($this->getContentMock($contentInfo))));
     }
 
-    public function matchContentInfoProvider()
+    public function matchContentViewProvider()
     {
         return array(
             array(

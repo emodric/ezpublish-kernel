@@ -10,40 +10,7 @@
  */
 namespace eZ\Publish\Core\MVC\Symfony\Matcher;
 
-use eZ\Publish\API\Repository\Values\ValueObject;
-use eZ\Publish\Core\MVC\Symfony\Matcher\Block\MatcherInterface as BlockMatcherInterface;
-use eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface as BaseMatcherInterface;
-use eZ\Publish\Core\MVC\Symfony\View\View;
-use InvalidArgumentException;
-
 class BlockMatcherFactory extends AbstractMatcherFactory
 {
     const MATCHER_RELATIVE_NAMESPACE = 'eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\Block';
-
-    protected function getMatcher($matcherIdentifier)
-    {
-        $matcher = parent::getMatcher($matcherIdentifier);
-        if (!$matcher instanceof BlockMatcherInterface) {
-            throw new InvalidArgumentException(
-                'Matcher for Blocks must implement eZ\\Publish\\Core\\MVC\\Symfony\\Matcher\\Block\\MatcherInterface.'
-            );
-        }
-
-        return $matcher;
-    }
-
-    /**
-     * Checks if $valueObject matches $matcher rules.
-     *
-     * @param \eZ\Publish\Core\MVC\Symfony\Matcher\MatcherInterface $matcher
-     * @param ValueObject $valueObject
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return bool
-     */
-    protected function doMatch(BaseMatcherInterface $matcher, View $view)
-    {
-        return $matcher->match($view);
-    }
 }
