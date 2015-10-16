@@ -24,4 +24,32 @@ interface CachableView
      * @return bool
      */
     public function isCacheEnabled();
+
+    /**
+     * Returns max age value.
+     *
+     * @return int
+     */
+    public function getMaxAge();
+
+    /**
+     * Sets the max age value.
+     *
+     * @param int $maxAge
+     */
+    public function setMaxAge($maxAge);
+
+    /**
+     * Returns shared max age value.
+     *
+     * @return int
+     */
+    public function getSharedMaxAge();
+
+    /**
+     * Sets the shared max age value.
+     *
+     * @param int $sharedMaxAge
+     */
+    public function setSharedMaxAge($sharedMaxAge);
 }

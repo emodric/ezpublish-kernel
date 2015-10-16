@@ -67,7 +67,15 @@ class CacheViewResponseListener implements EventSubscriberInterface
 
         $response->setPublic();
         if ($this->enableTtlCache) {
-            $response->setSharedMaxAge($this->defaultTtl);
+            if (($maxAge = $view->getMaxAge()) !== null) {
+                $response->setMaxAge($maxAge);
+            }
+
+            if (($sharedMaxAge = $view->getSharedMaxAge()) !== null) {
+                $response->setSharedMaxAge($sharedMaxAge);
+            } else {
+                $response->setSharedMaxAge($this->defaultTtl);
+            }
         }
     }
 }

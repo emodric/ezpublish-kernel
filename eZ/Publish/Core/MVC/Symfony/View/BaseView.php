@@ -39,6 +39,12 @@ abstract class BaseView implements View
     /** @var bool */
     private $isCacheEnabled = true;
 
+    /** @var int */
+    private $maxAge;
+
+    /** @var int */
+    private $sharedMaxAge;
+
     /**
      * @param string|\Closure $templateIdentifier Valid path to the template. Can also be a closure.
      * @param string $viewType
@@ -210,5 +216,45 @@ abstract class BaseView implements View
     public function isCacheEnabled()
     {
         return $this->isCacheEnabled;
+    }
+
+    /**
+     * Returns max age value.
+     *
+     * @return int
+     */
+    public function getMaxAge()
+    {
+        return $this->maxAge;
+    }
+
+    /**
+     * Sets the max age value.
+     *
+     * @param int $maxAge
+     */
+    public function setMaxAge($maxAge)
+    {
+        $this->maxAge = (int)$maxAge;
+    }
+
+    /**
+     * Returns shared max age value.
+     *
+     * @return int
+     */
+    public function getSharedMaxAge()
+    {
+        return $this->sharedMaxAge;
+    }
+
+    /**
+     * Sets the shared max age value.
+     *
+     * @param int $sharedMaxAge
+     */
+    public function setSharedMaxAge($sharedMaxAge)
+    {
+        $this->sharedMaxAge = (int)$sharedMaxAge;
     }
 }
